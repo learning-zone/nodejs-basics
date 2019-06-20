@@ -8,10 +8,10 @@
 
 <dt>Primitive Types</dt>
 <dd>1. String<br/>  
-    2. Number  
-    3. Boolean  
-    4. Undefined  
-    5. Null  
+    2. Number<br/>  
+    3. Boolean<br/>  
+    4. Undefined<br/>  
+    5. Null<br/>  
     6. RegExp </dd>
 
 
