@@ -19,9 +19,9 @@
 <dd>Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.</dd>
 
 <dt>Node.js Module</dt>
-<dd>1. Core Modules
-    1. Local Modules
-    1. Third Party Modules </dd>
+<dd>1. Core Modules<br/>
+    2. Local Modules<br/>
+    3. Third Party Modules </dd>
 
 
 <dt>Core Modules</dt>
