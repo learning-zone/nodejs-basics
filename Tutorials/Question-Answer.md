@@ -7,12 +7,12 @@
   <dd>Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.</dd>
 
 <dt>Primitive Types</dt>
-<dd>1. String
-    1. Number
-    1. Boolean
-    1. Undefined
-    1. Null
-    1. RegExp </dd>
+<dd>1. String  
+    2. Number  
+    3. Boolean  
+    4. Undefined  
+    5. Null  
+    6. RegExp </dd>
 
 
 <dt>Buffer</dt>
