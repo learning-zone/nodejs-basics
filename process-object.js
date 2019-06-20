@@ -2,28 +2,27 @@
 //  Process() Object
 //--------------------
 
-// Example: 01
 const process = require('process');
 //console.log(process);
 
-// Example: 02
+// Example: Exit
 /* process.on('exit', code => {
   console.log(`About to exit with code: ${code}`);
 });
  */
-// Example: 03
+// Example: Warning
 process.on('warning', warning => {
   console.warn(warning.name); // Print the warning name
   console.warn(warning.message); // Print the warning message
   console.warn(warning.stack); // Print the stack trace
 });
 
-// Example: 04 process.argv
+// Example: process.argv
 process.argv.forEach((val, index) => {
   console.log(`process.argv: ${index}: ${val}`);
 });
 
-// Example: 05 process.chdir (directory)
+// Example: process.chdir (directory)
 console.log(`Starting directory: ${process.cwd()}`);
 try {
   process.chdir('./assets');
@@ -32,7 +31,7 @@ try {
   console.error(`chdir: ${err}`);
 }
 
-// Example: 06 process.cpuUsage()
+// Example: process.cpuUsage()
 const startUsage = process.cpuUsage();      
 const now = Date.now();                    // spin the CPU for 500 milliseconds
 while (Date.now() - now < 500);
@@ -40,13 +39,13 @@ while (Date.now() - now < 500);
 console.log(process.cpuUsage(startUsage)); // { user: 452000, system: 16000 }
 
 
-// Example: 07 process.memoryUsage()
+// Example: process.memoryUsage()
 console.log(process.memoryUsage());
 
 
-// Example: 07 process.pid()
+// Example: process.pid()
 console.log(`This process is pid: ${process.pid}`);
 
 
-// Example: 08 process.platform()
+// Example: process.platform()
 console.log(`This platform is: ${process.platform}`);
