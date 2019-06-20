@@ -1,4 +1,4 @@
-// Example: 01 The EventEmitter class is defined and exposed by the events module
+// Example: The EventEmitter class is defined and exposed by the events module
 const EventEmitter = require('events'); 
 const util = require('util');
 
@@ -11,7 +11,7 @@ eventObject.on('event', () => {
 eventObject.emit('event');
 
 
-// Example: 02 Asynchronous vs. Synchronous
+// Example: Asynchronous vs. Synchronous
 const eventObject2 = new Event();
 eventObject2.on('event', () => {
   setImmediate(() => {     // Used for Asynchronous function call
@@ -21,12 +21,12 @@ eventObject2.on('event', () => {
 eventObject2.emit('event');
 
 
-// Example: 03 Error Events
+// Example: Error Events
 //const eventObject3 = new Event();
 //eventObject3.emit('error', new Error('whoops! An error occurred.'));
 
 
-// Example: 04 
+// Example: Inherits
 class Person {
     constructor(name) {
         this.name = name;
