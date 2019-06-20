@@ -5,7 +5,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('What is your favorite food? ', answer => {
-  console.log(`Oh!, so your favorite food is ${answer}`);
+rl.question('\nWhat is your favorite food? ', answer => {
+  console.log(`\nOh!, so your favorite food is ${answer}`);
   rl.close();
 });
