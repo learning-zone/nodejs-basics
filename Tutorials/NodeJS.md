@@ -40,7 +40,7 @@
 
 <dt>Example: Load and Use Core http Module</dt>
 <dd>
-`
+```
 var http = require('http');
 var server = http.createServer(function(req, res){
 
@@ -48,7 +48,8 @@ var server = http.createServer(function(req, res){
 
 });
 server.listen(8080);
-`</dd>
+```
+</dd>
 
 
 </dl>
