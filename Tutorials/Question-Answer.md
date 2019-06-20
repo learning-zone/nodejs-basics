@@ -31,7 +31,7 @@ Node.js includes an additional data type called Buffer (not available in browser
 **Core Modules**  
 
 |  Core Module |	Description                                                                 |
-|:------------:|:------------------------------------------------------------------------------:|
+|:-------------|:-------------------------------------------------------------------------------|
 |http	       | http module includes classes, methods and events to create Node.js http server.|
 |url	       | url module includes methods for URL resolution and parsing.                    |
 |querystring   | querystring module includes methods to deal with query string.                 |
