@@ -40,14 +40,14 @@
 
 <dt>Example: Load and Use Core http Module</dt>
 <dd>
-```var http = require(http);
+  
+```
+   var http = require(http);
    var server = http.createServer(function(req, res){
-
       //write code here
     });
     server.listen(8080);
 ```
+
 </dd>
-
-
 </dl>
