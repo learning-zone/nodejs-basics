@@ -1,5 +1,5 @@
 
-// Example 02: Creating child process with exec() Module
+// Example: Creating child process with exec() Module
 var exec = require('child_process').exec;
 
 exec('git version', function(err, stdout) {
