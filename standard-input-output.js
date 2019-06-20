@@ -1,6 +1,5 @@
-// Example: 01
+// Example: stdout()
 process.stdout.write('Hello World\n');
-
 
 
 // Example: 02
