@@ -115,10 +115,16 @@ fs.appendFile(dir + '\\assets\\test.txt', '\nThis is second paragraph!', functio
 });
 
 
+// Example: File Status
+ fs.stat(path, (err, stats) => {
+  if (err) throw err;
+  console.log(`stats: ${JSON.stringify(stats)}`);
+});
+
+
 // Example: Deleting a file 
 fs.unlink(path, err => {
   if (err) throw err;
   console.log(`Successfully deleted file: ${path}`);
 });  
-
 
