@@ -1,0 +1,1 @@
+This is test file to test fs module of Node.js
