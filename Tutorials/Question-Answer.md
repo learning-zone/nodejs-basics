@@ -5,30 +5,27 @@
 
   <dt>Node.js Process Model</dt>
   <dd>Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.</dd>
-</dl>
 
-**Primitive Types**  
-
-1. String
-1. Number
-1. Boolean
-1. Undefined
-1. Null
-1. RegExp  
+<dt>Primitive Types</dt>
+<dd>1. String
+    1. Number
+    1. Boolean
+    1. Undefined
+    1. Null
+    1. RegExp </dd>
 
 
-**Buffer**  
-Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.  
+<dt>Buffer</dt>
+<dd>Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.</dd>
+
+<dt>Node.js Module</dt>
+<dd>1. Core Modules
+    1. Local Modules
+    1. Third Party Modules </dd>
 
 
-**Node.js Module**  
-
-1. Core Modules
-1. Local Modules
-1. Third Party Modules  
-
-
-**Core Modules**  
+<dt>Core Modules</dt>
+<dd>
 
 |  Core Module |	Description                                                                 |
 |:-------------|:-------------------------------------------------------------------------------|
@@ -38,3 +35,12 @@ Node.js includes an additional data type called Buffer (not available in browser
 |path	       | path module includes methods to deal with file paths.                          |
 |fs	           | fs module includes classes, methods, and events to work with file I/O.         |
 |util	       | util module includes utility functions useful for programmers.                 |
+
+</dd>
+
+
+<dt></dt>
+<dd></dd>
+
+
+</dl>
