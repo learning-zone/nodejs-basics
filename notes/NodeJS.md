@@ -50,4 +50,29 @@
 ```
 
 </dd>
+
+<dt>Local Module</dt>
+<dd>Local modules are modules created locally in your Node.js application.</dd>
+
+
+<dt>Example: log.js</dt>
+<dd>
+```
+var log = {
+            info: function (info) { 
+                console.log('Info: ' + info);
+            },
+            warning:function (warning) { 
+                console.log('Warning: ' + warning);
+            },
+            error:function (error) { 
+                console.log('Error: ' + error);
+            }
+    };
+
+module.exports = log
+
+```
+
+</dd>
 </dl>
