@@ -336,4 +336,53 @@ em.emit('SecondEvent', 'This is second event emitter example.');
 
 </dd>
 
+<dt>Express.js Framework</dt>
+<dd>Express.js is based on the Node.js middleware module called <code>connect</code> which in turn uses <code>http</code> module. So, any middleware which is based on connect will also work with Express.js.</dd>
+
+
+<dt>Example: Express.js Web Server</dt>
+<dd>
+
+```
+var express = require('express');
+var app = express();
+
+var server = app.listen(4200, function () {
+    console.log('Node server is running..');
+});
+
+```
+
+</dd>
+
+<dt>Example: Configure Routes in Express.js</dt>
+<dd>
+
+```
+var express = require('express');
+var app = express();
+
+app.get('/', function (req, res) {
+    res.send('<html><body><h1>Hello World</h1></body></html>');
+});
+
+app.post('/submit-data', function (req, res) {
+    res.send('POST Request');
+});
+
+app.put('/update-data', function (req, res) {
+    res.send('PUT Request');
+});
+
+app.delete('/delete-data', function (req, res) {
+    res.send('DELETE Request');
+});
+
+var server = app.listen(4200, function () {
+    console.log('Node server is running..');
+});
+
+```
+</dd>
+
 </dl>
