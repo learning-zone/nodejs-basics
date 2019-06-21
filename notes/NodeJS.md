@@ -95,7 +95,7 @@ console.log('Node.js web server at port 4200 is running..')
 
 </dd>
 
-<dt>Handle HTTP Request</dt>
+<dt>Handle HTTP Request `server.js`</dt>
 <dd>
 
 ```
