@@ -95,11 +95,10 @@ console.log('Node.js web server at port 4200 is running..')
 
 </dd>
 
-<dt>Handle HTTP Request `server.js`</dt>
+<dt>Handle HTTP Request</dt>
 <dd>
 
 ```
-//server.js
 
 var http = require('http'); // Import Node.js core module
 
