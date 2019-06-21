@@ -137,4 +137,20 @@ console.log('Node.js web server at port 4200 is running..')
 ```
 </dd>
 
+<dt>Node.js File System <fs></dt>
+<dd>Node.js includes fs module to access physical file system. The fs module is responsible for all the asynchronous or synchronous file I/O operations.</dd>
+
+<dt>Example: Reading File</dt>
+<dd>
+
+```
+var fs = require('fs');
+
+fs.readFile('file.txt', function (err, data) {
+    if (err) throw err;
+
+    console.log(data);
+});
+```
+</dd>
 </dl>
