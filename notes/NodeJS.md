@@ -153,4 +153,20 @@ fs.readFile('file.txt', function (err, data) {
 });
 ```
 </dd>
+
+<dt>Example: Creating & Writing File</dt>
+<dd>
+
+```
+var fs = require('fs');
+
+fs.writeFile('file.txt', 'Hello World!', function (err) {
+      if (err)
+        console.log(err);
+      else
+        console.log('Write operation complete.');
+});
+
+```
+</dd>
 </dl>
