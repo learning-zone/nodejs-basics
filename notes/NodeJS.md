@@ -74,4 +74,23 @@ module.exports = log
 
 ```
 </dd>
+
+<dt>Create Node.js Web Server</dt>
+<dd>
+
+```
+var http = require('http');  //Import core module
+var server = http.createServer(function (req, res) {   //creating server
+
+    //handle incomming requests here..
+
+});
+
+server.listen(4200); //listen for any incoming requests
+console.log('Node.js web server at port 4200 is running..')
+
+```
+
+</dd>
+
 </dl>
