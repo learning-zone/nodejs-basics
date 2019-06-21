@@ -263,4 +263,53 @@ fs.readFile('test.txt', 'utf8', function (err, data) {
 
 </dd>
 
+
+<dt>Node.js EventEmitter</dt>
+<dd>Node.js allows us to create and handle custom events easily by using events module. Event module includes EventEmitter class which can be used to raise and handle custom events.</dd>
+
+<dt>Example: EventEmitter</dt>
+<dd>
+
+```
+var emitter = require('events').EventEmitter;
+
+var em = new emitter();
+
+//Subscribe FirstEvent
+em.addListener('FirstEvent', function (data) {
+    console.log('First subscriber: ' + data);
+});
+
+//Subscribe SecondEvent
+em.on('SecondEvent', function (data) {
+    console.log('First subscriber: ' + data);
+});
+
+// Raising FirstEvent
+em.emit('FirstEvent', 'This is first event emitter example.');
+
+// Raising SecondEvent
+em.emit('SecondEvent', 'This is second event emitter example.');
+```
+</dd>
+
+
+<dt>EventEmitter class</dt>
+<dd>
+
+|EventEmitter Methods                   |   Description                                                                                                 |
+|:------------------------------------  |:--------------------------------------------------------------------------------------------------------------|
+|emitter.addListener(event, listener)   |Adds a listener to the end of the listeners array for the specified event.                                     |
+|emitter.on(event, listener)            |Adds a listener to the end of the listeners array for the specified event.                                     |
+|emitter.once(event, listener)          |This listener is invoked only the next time the event is fired, after which it is removed.                     |
+|emitter.removeListener(event, listener)|Removes a listener from the listener array for the specified event.                                            |
+|emitter.removeAllListeners([event])    |Removes all listeners, or those of the specified event.                                                        |
+|emitter.setMaxListeners(n)             |By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.      |
+|emitter.getMaxListeners()              |Returns the current maximum listener value for the emitter which is either set by emitter.setMaxListeners(n)   |
+|emitter.listeners(event)               |Returns a copy of the array of listeners for the specified event.                                              |
+|emitter.emit(event[, arg1])            |Raise the specified events with the supplied arguments.                                                        |
+|emitter.listenerCount(type)            |Returns the number of listeners listening to the type of event.                                                |
+
+</dd>
+
 </dl>
