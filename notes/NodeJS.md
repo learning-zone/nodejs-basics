@@ -48,7 +48,6 @@
     });
     server.listen(8080);
 ```
-
 </dd>
 
 <dt>Local Module</dt>
@@ -57,6 +56,7 @@
 
 <dt>Example: log.js</dt>
 <dd>
+  
 ```
 var log = {
             info: function (info) { 
@@ -73,6 +73,5 @@ var log = {
 module.exports = log
 
 ```
-
 </dd>
 </dl>
