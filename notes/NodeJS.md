@@ -99,7 +99,6 @@ console.log('Node.js web server at port 4200 is running..')
 <dd>
 
 ```
-
 var http = require('http'); // Import Node.js core module
 
 var server = http.createServer(function (req, res) {   //create web server
