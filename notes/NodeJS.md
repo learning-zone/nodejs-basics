@@ -161,12 +161,76 @@ fs.readFile('file.txt', function (err, data) {
 var fs = require('fs');
 
 fs.writeFile('file.txt', 'Hello World!', function (err) {
-      if (err)
-        console.log(err);
-      else
-        console.log('Write operation complete.');
+    if (err)
+      console.log(err);
+    else
+      console.log('Write operation complete.');
 });
 
 ```
 </dd>
+
+<dt>Example: Append File Content</dt>
+<dd>
+
+```
+var fs = require('fs');
+
+fs.appendFile('file.txt', 'Hello World!', function (err) {
+    if (err)
+      console.log(err);
+    else
+      console.log('Append operation complete.');
+});
+
+```
+</dd>
+<dt>Example: File open and read</dt>
+<dd>
+
+```
+var fs = require('fs');
+
+fs.open('file.txt', 'r', function (err, fd) {
+
+    if (err) {
+      return console.error(err);
+    }
+
+    var buffr = new Buffer(1024);
+
+    fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) {
+
+        if (err) throw err;
+
+        // Print only read bytes to avoid junk.
+        if (bytes > 0) {
+          console.log(buffr.slice(0, bytes).toString());
+        }
+
+        // Close the opened file.
+        fs.close(fd, function (err) {
+          if (err) throw err;
+        });
+    });
+});
+
+```
+</dd>
+
+<dt>Example: File Delete</dt>
+<dd>
+
+```
+var fs = require('fs');
+
+fs.unlink('test.txt', function () {
+
+    console.log('File Deleted.');
+
+});
+```
+</dd>
+
+
 </dl>
