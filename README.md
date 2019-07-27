@@ -1,7 +1,7 @@
-# NodeJS Questions
+# Node.js Questions
 
 
-1. How to create a simple server in Node js that returns Hello World?
+1. How to create a simple server in Node.js that returns Hello World?
 1. How do Node.js works?
 1. What is an error-first callback?
 1. What is callback hell in Node.js?
@@ -30,7 +30,7 @@
 1. What is the preferred method of resolving unhandled exceptions in Node.js?
 1. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
 1. What is typically the first argument passed to a Node.js callback handler?
-1. How Node js read the content of a file?
+1. How Node.js read the content of a file?
 1. What is JIT and how is it related to Node.js? 
 1. What is difference between put and patch?
 1. List types of Http requests supported by Node.js.
