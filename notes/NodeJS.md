@@ -27,7 +27,7 @@
 <dd>
 
 |  Core Module |	Description                                                                 |
-|:-------------|:-------------------------------------------------------------------------------|
+|--------------|--------------------------------------------------------------------------------|
 |http	       | http module includes classes, methods and events to create Node.js http server.|
 |url	       | url module includes methods for URL resolution and parsing.                    |
 |querystring   | querystring module includes methods to deal with query string.                 |
@@ -218,9 +218,7 @@ fs.open('file.txt', 'r', function (err, fd) {
 var fs = require('fs');
 
 fs.unlink('test.txt', function () {
-
     console.log('File Deleted.');
-
 });
 ```
 </dd>
@@ -231,9 +229,7 @@ fs.unlink('test.txt', function () {
 var fs = require('fs');
 
 fs.readFile('test.txt', 'utf8', function (err, data) {
-
     debugger;
-
     if (err) throw err;
     console.log(data);
 });
@@ -244,7 +240,7 @@ fs.readFile('test.txt', 'utf8', function (err, data) {
 <dd>
 
 | Command	      | Description                                                      |
-|:--------------|:-----------------------------------------------------------------|
+|-----------------|------------------------------------------------------------------|
 |next	          |  Stop at the next statement.                                     |
 |cont	          |  Continue execute and stop at the debugger statement if any.     |
 |step	          |  Step in function.                                               |
@@ -289,8 +285,8 @@ em.emit('SecondEvent', 'This is second event emitter example.');
 <dt>EventEmitter class</dt>
 <dd>
 
-|EventEmitter Methods                   |   Description                                                                                                 |
-|:------------------------------------  |:--------------------------------------------------------------------------------------------------------------|
+|EventEmitter Methods                   |   Description                                                        |
+|---------------------------------------|----------------------------------------------------------------------|
 |emitter.addListener(event, listener)   |Adds a listener to the end of the listeners array for the specified event.                                     |
 |emitter.on(event, listener)            |Adds a listener to the end of the listeners array for the specified event.                                     |
 |emitter.once(event, listener)          |This listener is invoked only the next time the event is fired, after which it is removed.                     |
