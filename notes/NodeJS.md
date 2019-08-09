@@ -41,7 +41,7 @@
 <dt>Example: Load and Use Core http Module</dt>
 <dd>
   
-```
+```javascript
    var http = require(http);
 
    var server = http.createServer(function(req, res){
@@ -54,11 +54,10 @@
 <dt>Local Module</dt>
 <dd>Local modules are modules created locally in your Node.js application.</dd>
 
-
 <dt>Example: log.js</dt>
 <dd>
   
-```
+```javascript
 var log = {
             info: function (info) { 
                 console.log('Info: ' + info);
@@ -72,14 +71,13 @@ var log = {
     };
 
 module.exports = log
-
 ```
 </dd>
 
 <dt>Create Node.js Web Server</dt>
 <dd>
 
-```
+```javascript
 var http = require('http');  //Import core module
 
 var server = http.createServer(function (req, res) {   //creating server
@@ -90,7 +88,6 @@ var server = http.createServer(function (req, res) {   //creating server
 
 server.listen(4200); //listen for any incoming requests
 console.log('Node.js web server at port 4200 is running..')
-
 ```
 
 </dd>
@@ -98,7 +95,7 @@ console.log('Node.js web server at port 4200 is running..')
 <dt>Handle HTTP Request</dt>
 <dd>
 
-```
+```javascript
 var http = require('http'); // Import Node.js core module
 
 var server = http.createServer(function (req, res) {   //create web server
@@ -133,7 +130,6 @@ var server = http.createServer(function (req, res) {   //create web server
 
 server.listen(4200); // listen for any incoming requests
 console.log('Node.js web server at port 4200 is running..')
-
 ```
 </dd>
 
@@ -143,7 +139,7 @@ console.log('Node.js web server at port 4200 is running..')
 <dt>Example: Reading File</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.readFile('file.txt', function (err, data) {
@@ -157,7 +153,7 @@ fs.readFile('file.txt', function (err, data) {
 <dt>Example: Creating & Writing File</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.writeFile('file.txt', 'Hello World!', function (err) {
@@ -166,14 +162,13 @@ fs.writeFile('file.txt', 'Hello World!', function (err) {
     else
       console.log('Write operation complete.');
 });
-
 ```
 </dd>
 
 <dt>Example: Append File Content</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.appendFile('file.txt', 'Hello World!', function (err) {
@@ -182,13 +177,12 @@ fs.appendFile('file.txt', 'Hello World!', function (err) {
     else
       console.log('Append operation complete.');
 });
-
 ```
 </dd>
 <dt>Example: File open and read</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.open('file.txt', 'r', function (err, fd) {
@@ -214,14 +208,13 @@ fs.open('file.txt', 'r', function (err, fd) {
         });
     });
 });
-
 ```
 </dd>
 
 <dt>Example: File Delete</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.unlink('test.txt', function () {
@@ -234,7 +227,7 @@ fs.unlink('test.txt', function () {
 <dt>Debug Node.js Application</dt>
 <dd>
 
-```
+```javascript
 var fs = require('fs');
 
 fs.readFile('test.txt', 'utf8', function (err, data) {
@@ -244,7 +237,6 @@ fs.readFile('test.txt', 'utf8', function (err, data) {
     if (err) throw err;
     console.log(data);
 });
-
 ```
 </dd>
 
@@ -270,7 +262,7 @@ fs.readFile('test.txt', 'utf8', function (err, data) {
 <dt>Example: EventEmitter</dt>
 <dd>
 
-```
+```javascript
 var emitter = require('events').EventEmitter;
 
 var em = new emitter();
@@ -343,14 +335,13 @@ em.emit('SecondEvent', 'This is second event emitter example.');
 <dt>Example: Express.js Web Server</dt>
 <dd>
 
-```
+```javascript
 var express = require('express');
 var app = express();
 
 var server = app.listen(4200, function () {
     console.log('Node server is running..');
 });
-
 ```
 
 </dd>
@@ -358,7 +349,7 @@ var server = app.listen(4200, function () {
 <dt>Example: Configure Routes in Express.js</dt>
 <dd>
 
-```
+```javascript
 var express = require('express');
 var app = express();
 
@@ -381,14 +372,13 @@ app.delete('/delete-data', function (req, res) {
 var server = app.listen(4200, function () {
     console.log('Node server is running..');
 });
-
 ```
 </dd>
 
 <dt>Example: Connecting MongoDB</dt>
 <dd>
 
-```
+```javascript
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
@@ -399,14 +389,13 @@ MongoClient.connect("mongodb://localhost:27017/MyDb", function (err, db) {
      //Write databse Insert/Update/Query code here..
 
 });
-
 ```
 </dd>
 
 <dt>Insert Documents</dt>
 <dd>
 
-```
+```javascript
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
@@ -425,15 +414,13 @@ MongoClient.connect("mongodb://localhost:27017/exampleDB", function (err, db) {
         });
     });
 });
-
 ```
 </dd>
 
 <dt>Update/Delete Documents</dt>
 <dd>
 
-```
-
+```javascript
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
@@ -461,7 +448,7 @@ MongoClient.connect("mongodb://localhost:27017/exampleDB", function (err, db) {
 <dt>Query Database</dt>
 <dd>
 
-```
+```javascript
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
@@ -475,8 +462,6 @@ MongoClient.connect("mongodb://localhost:27017/exampleDB", function (err, db) {
         });
     });
 });
-
 ```
 </dd>
-
 </dl>
