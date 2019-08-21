@@ -8,12 +8,12 @@ runtime: nodejs10
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
 
-<dl>
-  <dt>NodeJS</dt>
-  <dd>Node.js is an open-source server side runtime environment built on Chrome's V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript. </dd>
+#### Q. What is Node.js?
+Node.js is an open-source server side runtime environment built on Chrome's V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript. 
 
-  <dt>Node.js Process Model</dt>
-  <dd>Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.</dd>
+
+#### Q. What is Node.js Process Model?
+Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
 
 <dt>Primitive Types</dt>
 <dd>1. String<br/>  
@@ -467,4 +467,4 @@ MongoClient.connect("mongodb://localhost:27017/exampleDB", function (err, db) {
 });
 ```
 </dd>
-</dl>
+
