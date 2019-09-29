@@ -151,7 +151,32 @@ Node.js runs in a single process and the application code runs in a single threa
 #### Q. What is chaining process in node.js?
 #### Q. What is a control flow function? what are the steps does it execute?
 #### Q. What is npm in node.js?
-#### Q. When to use node.js and when not to use it?
+#### Q. When to use Node.js and when not to use it?
+* **When Should We Use Node.Js?**
+It’s ideal to use Node.js for developing streaming or event-based real-time applications that require less CPU usage such as.
+
+* Chat applications.
+* Game servers.
+Node.js is good for fast and high-performance servers, that face the need to handle thousands of user requests simultaneously.
+
+* Good For A Collaborative Environment.
+It is suitable for environments where multiple people work together. For example, they post their documents, modify them by doing check-out and check-in of these documents.
+
+Node.js supports such situations by creating an event loop for every change made to the document. The “Event loop” feature of Node.js enables it to handle multiple events simultaneously without getting blocked.
+
+* Advertisement Servers.
+Here again, we have servers that handle thousands of request for downloading advertisements from a central host. And Node.js is an ideal solution to handle such tasks.
+
+* Streaming Servers.
+Another ideal scenario to use Node.js is for multimedia streaming servers where clients fire request’s towards the server to download different multimedia contents from it.
+
+To summarize, it’s good to use Node.js, when you need high levels of concurrency but less amount of dedicated CPU time.
+
+Last but not the least, since Node.js uses JavaScript internally, so it fits best for building client-side applications that also use JavaScript.
+
+* When To Not Use Node.Js?
+However, we can use Node.js for a variety of applications. But it is a single threaded framework, so we should not use it for cases where the application requires long processing time. If the server is doing some calculation, it won’t be able to process any other requests. Hence, Node.js is best when processing needs less dedicated CPU time.
+
 #### Q. Explain how does node.js work?
 #### Q. Is Node.js entirely based on a single-thread?
 #### Q. How to make post request in node.js?
