@@ -263,6 +263,16 @@ Moreover, Node.js has an optimized design which utilizes both JavaScript and C++
 To explain it practically, let’s assume there are 100s of requests lined up in Node.js queue. As per design, the main thread of Node.js event loop will receive all of them and forwards to background workers for execution. Once the workers finish processing requests, the registered callbacks get notified on event loop thread to pass the result back to the user.
 
 #### Q. How to make post request in Node.js?
+Following code snippet can be used to make a Post Request in Node.js.
+```javascript
+var request = require('request');
+    request.post('http://www.example.com/action', { form: { key: 'value' } },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body)
+        }
+    });
+```
 #### Q. Can you create http server in nodejs, explain the code used for it?
 #### Q. How to load html in Node.js?
 #### Q. How can you listen on port 80 with Node?
