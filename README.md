@@ -288,6 +288,37 @@ server.listen(4200); // The port where you want to start with.
 ```
 
 #### Q. How to load html in Node.js?
+To load HTML in Node.js we have to change the “Content-type” in the HTML code from text/plain to text/html.
+Let’s see an example where we have created a static file in web server.
+```javascript
+fs.readFile(filename, "binary", function(err, file) {
+    if(err) { 
+        response.writeHead(500, {"Content-Type": "text/plain"});
+        response.write(err + "\n");
+        response.end();
+        return;
+    }
+
+response.writeHead(200);
+response.write(file, "binary");
+response.end();
+});
+```
+Now we will modify this code to load an HTML page instead of plain text.
+```javascript
+fs.readFile(filename, "binary", function(err, file) {
+    if(err) { 
+        response.writeHead(500, {"Content-Type": "text/html"});
+        response.write(err + "\n");
+        response.end();
+        return;
+    }
+
+response.writeHead(200, {"Content-Type": "text/html"});
+response.write(file);
+response.end();
+});
+```
 #### Q. How can you listen on port 80 with Node?
 #### Q. What is an event loop in Node.js ?
 #### Q. What is the difference between operational and programmer errors?
