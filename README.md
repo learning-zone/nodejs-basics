@@ -192,11 +192,11 @@ The above command will allocate a new buffer holding the string with <utf8> as t
 buffer.write(string)
 ```
 This class also offers other methods like <readInt8> and <writeUInt8> that allows read/write from various types of data to the buffer.
-#### Q. What is chaining process in node.js?
+#### Q. What is chaining process in Node.js?
 #### Q. What is a control flow function? what are the steps does it execute?
-#### Q. What is npm in node.js?
+#### Q. What is npm in Node.js?
 #### Q. When to use Node.js and when not to use it?
-* **When Should We Use Node.Js?**
+* **When Should We Use Node.js?**
 It’s ideal to use Node.js for developing streaming or event-based real-time applications that require less CPU usage such as.
 
 * Chat applications.
@@ -221,11 +221,11 @@ Last but not the least, since Node.js uses JavaScript internally, so it fits bes
 * When To Not Use Node.Js?
 However, we can use Node.js for a variety of applications. But it is a single threaded framework, so we should not use it for cases where the application requires long processing time. If the server is doing some calculation, it won’t be able to process any other requests. Hence, Node.js is best when processing needs less dedicated CPU time.
 
-#### Q. Explain how does node.js work?
+#### Q. Explain how does Node.js work?
 #### Q. Is Node.js entirely based on a single-thread?
-#### Q. How to make post request in node.js?
+#### Q. How to make post request in Node.js?
 #### Q. Can you create http server in nodejs, explain the code used for it?
-#### Q. How to load html in node.js?
+#### Q. How to load html in Node.js?
 #### Q. How can you listen on port 80 with Node?
 #### Q. What is an event loop in Node.js ?
 #### Q. What is the difference between operational and programmer errors?
