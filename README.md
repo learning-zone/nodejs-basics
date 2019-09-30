@@ -206,6 +206,22 @@ It executes the following steps.
 * Call the next step in the program.
 
 #### Q. What is npm in Node.js?
+NPM stands for Node Package Manager. It provides following two main functionalities.
+
+* It works as an Online repository for node.js packages/modules which are present at <nodejs.org>.
+* It works as Command line utility to install packages, do version management and dependency management of Node.js packages.
+NPM comes bundled along with Node.js installable. We can verify its version using the following command-
+```javascript
+$ npm --version
+```
+NPM helps to install any Node.js module using the following command.
+```javascript
+$ npm install <Module Name>
+```
+For example, following is the command to install a famous Node.js web framework module called express-
+```javascript
+$ npm install express
+```
 #### Q. When to use Node.js and when not to use it?
 * **When Should We Use Node.js?**
 It’s ideal to use Node.js for developing streaming or event-based real-time applications that require less CPU usage such as.
