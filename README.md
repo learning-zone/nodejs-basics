@@ -193,7 +193,18 @@ buffer.write(string)
 ```
 This class also offers other methods like <readInt8> and <writeUInt8> that allows read/write from various types of data to the buffer.
 #### Q. What is chaining process in Node.js?
+It’s an approach to connect the output of one stream to the input of another stream, thus creating a chain of multiple stream operations.
+
 #### Q. What is a control flow function? what are the steps does it execute?
+It is a generic piece of code which runs in between several asynchronous function calls is known as control flow function.
+
+It executes the following steps.
+
+* Control the order of execution.
+* Collect data.
+* Limit concurrency.
+* Call the next step in the program.
+
 #### Q. What is npm in Node.js?
 #### Q. When to use Node.js and when not to use it?
 * **When Should We Use Node.js?**
