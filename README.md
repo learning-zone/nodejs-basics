@@ -103,6 +103,44 @@ Node.js runs in a single process and the application code runs in a single threa
 * **Buffer**: Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
 
 #### Q. How to create a simple server in Node.js that returns Hello World?
+**Step 01**: Create a project directory
+```
+cmd> mkdir myapp
+cmd> cd myapp
+```
+**Step 02**: Initialize project and link it to npm
+```
+npm init
+```
+This creates a `package.json` file in your myapp folder. The file contains references for all npm packages you have downloaded to your project. The command will prompt you to enter a number of things.
+You can enter your way through all of them EXCEPT this one:
+```
+entry point: (index.js) 
+```
+Rename this to:
+```
+app.js
+```
+**Step 03**: Install Express in the myapp directory
+```
+npm install express --save
+```
+**Step 04**: app.js
+```
+var express = require('express');
+var app = express();
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+```
+**Step 05**: Run the app
+```
+node app.js
+``` 
 #### Q. How do Node.js works?
 #### Q. What is an error-first callback?
 #### Q. What is callback hell in Node.js?
