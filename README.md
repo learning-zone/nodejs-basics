@@ -91,7 +91,6 @@ Node.js is an open-source server side runtime environment built on Chrome's V8 J
 Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
 
 #### Q. What are the data types in Node.js?
-
 **Primitive Types**  
 * String 
 * Number 
@@ -320,12 +319,12 @@ response.end();
 });
 ```
 #### Q. How can you listen on port 80 with Node?
-#### Q. What is an event loop in Node.js ?
+#### Q. What is an event loop in Node.js?
 #### Q. What is the difference between operational and programmer errors?
 #### Q. Why npm shrinkwrap is useful?
 #### Q. What is your favourite HTTP framework and why?
 #### Q. What does event-driven programming mean?
-#### Q. What are the Challenges with Node.js ?
+#### Q. What are the Challenges with Node.js?
 #### Q. What is the difference between Node.js vs Ajax?
 #### Q. How Node.js overcomes the problem of blocking of I/O operations?
 #### Q. Mention the steps by which you can async in Node.js?
