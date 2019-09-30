@@ -147,7 +147,51 @@ Node.js runs in a single process and the application code runs in a single threa
 * **There is an Active and vibrant community for the Node.js framework** – The active community always keeps the framework updated with the latest trends in the web development.
 * **No Buffering** – Node.js applications never buffer any data. They simply output the data in chunks.
 
-#### Q. What are globals in node.js?
+#### Q. What are globals in Node.js?
+There are three keywords in Node.js which constitute as Globals. These are Global, Process, and Buffer.
+
+* **Global**  
+The Global keyword represents the global namespace object. It acts as a container for all other <global> objects. If we type `console.log(global)`, it will print out all of them.
+
+An important point to note about the global objects is that not all of them are in the global scope, some of them fall in the module scope. So, it’s wise to declare them without using the var keyword or add them to Global object.
+
+Variables declared using the var keyword become local to the module whereas those declared without it get subscribed to the global object.
+
+* **Process**  
+It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
+
+It primarily gives back the information about the application or the environment.
+```javascript
+<process.execPath> – to get the execution path of the Node app.
+<process.Version> – to get the Node version currently running.
+<process.platform> – to get the server platform.
+```
+Some of the other useful Process methods are as follows.
+```javascript
+<process.memoryUsage> – To know the memory used by Node application.
+<process.NextTick> – To attach a callback function that will get called during the next loop. It can cause a delay in executing a function.
+```
+
+* **Buffer**  
+The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
+
+We can convert JavaScript string objects into Buffers. But it requires mentioning the encoding type explicitly.
+```javascript
+<ascii> – Specifies 7-bit ASCII data.
+<utf8> – Represents multibyte encoded Unicode char set.
+<utf16le> – Indicates 2 or 4 bytes, little endian encoded Unicode chars.
+<base64> – Used for Base64 string encoding.
+<hex> – Encodes each byte as two hexadecimal chars.
+```
+Here is the syntax to use the Buffer class.
+```javascript
+var buffer = new Buffer(string, [encoding]);
+```
+The above command will allocate a new buffer holding the string with <utf8> as the default encoding. However, if you like to write a <string> to an existing buffer object, then use the following line of code.
+```javascript
+buffer.write(string)
+```
+This class also offers other methods like <readInt8> and <writeUInt8> that allows read/write from various types of data to the buffer.
 #### Q. What is chaining process in node.js?
 #### Q. What is a control flow function? what are the steps does it execute?
 #### Q. What is npm in node.js?
