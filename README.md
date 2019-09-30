@@ -273,7 +273,20 @@ var request = require('request');
         }
     });
 ```
-#### Q. Can you create http server in nodejs, explain the code used for it?
+#### Q. Can you create http server in Node.js, explain the code used for it?
+Yes, we can create HTTP Server in Node.js. We can use the <http-server> command to do so.
+
+Following is the sample code.
+```javascript
+var http = require('http');
+var requestListener = function (request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('Welcome Viewers\n');
+}
+var server = http.createServer(requestListener);
+server.listen(4200); // The port where you want to start with.
+```
+
 #### Q. How to load html in Node.js?
 #### Q. How can you listen on port 80 with Node?
 #### Q. What is an event loop in Node.js ?
