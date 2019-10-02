@@ -168,6 +168,8 @@ The main heart of Node JS Processing model is “Event Loop”.
         * Event Loop in turn, sends that Response to the respective Client.
 
 #### Q. What is an error-first callback?
+The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
+
 #### Q. What is callback hell in Node.js?
 #### Q. What are Promises?
 #### Q. What tools can be used to assure consistent style? Why is it important?
