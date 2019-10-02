@@ -170,7 +170,7 @@ The main heart of Node JS Processing model is “Event Loop”.
 #### Q. What is an error-first callback?
 The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
 ```javascript
-fs.readFile( "foo.txt", function ( err, data ) {
+fs.readFile( "file.json", function ( err, data ) {
   if ( err ) {
     console.error( err );
   }
