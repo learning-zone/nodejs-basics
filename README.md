@@ -182,7 +182,7 @@ Any asynchronous method expects one of the arguments to be a callback. The full 
 In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
 
 #### Q. What is callback hell in Node.js?
-`Callback Hell` is caused by deeply nesting asynchronous functions.
+`Callback hell` is a phenomenon that afflicts a JavaScript developer when he tries to execute multiple asynchronous operations one after the other.
 
 An asynchronous function is one where some external activity must complete before a result can be processed; it is “asynchronous” in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
 ```javascript
@@ -198,8 +198,111 @@ getData(function(a){
     });
 });
 ```
+* **Techniques for avoiding callback hell**  
+There are multiple techniques for dealing with callback hell. In this tutorial, we will have a look at the below two in particular.
 
+1. Using Async.js
+1. Using Promises
+1. Using Async-Await
+* **Managing callbacks using Async.js**  
+`Async` is a really powerful npm module for managing asynchronous nature of JavaScript. Along with Node.js, it also works for JavaScript written for browsers.
 
+Async provides lots of powerful utilities to work with asynchronous processes under different scenarios.
+```
+npm install --save async
+```
+* **ASYNC WATERFALL**  
+```javascript
+var async = require('async');
+async.waterfall([
+    function(callback) {
+        //doSomething
+        callback(null, paramx); //paramx will be availaible as the first parameter to the next function
+        /**
+            The 1st parameter passed in callback.
+            @null or @undefined or @false control moves to the next function
+            in the array
+            if @true or @string the control is immedeatly moved
+            to the final callback fucntion
+            rest of the functions in the array
+            would not be executed
+        */
+    },
+    function(arg1, callback) {
+        //doSomething else
+      // arg1 now equals paramx
+        callback(null, result);
+    },
+    function(arg1, callback) {
+        //do More
+        // arg1 now equals 'result'
+        callback(null, 'done');
+    },
+    function(arg1, callback) {
+        //even more
+        // arg1 now equals 'done'
+        callback(null, 'done');
+    }
+], function (err, result) {
+    //final callback function
+    //finally do something when all function are done.
+    // result now equals 'done'
+});
+```
+* **ASYNC SERIES**  
+```javascript
+var async = require('async');
+async.series([
+    function(callback){
+        // do some stuff ...
+        callback(null, 'one');
+        /**
+            The 1st parameter passed in callback.
+            @null or @undefined or @false control moves to the next function
+            in the array
+            if @true or @string the control is immedeatly moved
+            to the final callback fucntion with the value of err same as
+            passed over here and
+            rest of the functions in the array
+            would not be executed
+        */
+    },
+    function(callback){
+        // do some more stuff ...
+        callback(null, 'two');
+    }
+],
+// optional callback
+function(err, results){
+    // results is now equal to ['one', 'two']
+});
+```
+* **Managing callbacks hell using promises**  
+```javascript
+var outputPromise = getInputPromise().then(function (input) {
+    //handle success
+}, function (error) {
+    //handle error
+});
+```
+* **Using Async Await**  
+Async await makes asynchronous code look like it’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
+```javascript
+const getrandomnumber = function(){
+    return new Promise((resolve, reject)=>{
+        setTimeout(() => {
+            resolve(Math.floor(Math.random() * 20));
+        }, 1000);
+    });
+}
+
+const addRandomNumber = async function(){
+    const sum = await getrandomnumber() + await getrandomnumber();
+    console.log(sum);
+}
+
+addRandomNumber();
+```
 #### Q. What are Promises?
 #### Q. What tools can be used to assure consistent style? Why is it important?
 #### Q. When should you npm and when yarn?
