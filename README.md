@@ -278,6 +278,8 @@ function(err, results){
 });
 ```
 * **Managing callbacks hell using promises**  
+Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned. The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
+
 ```javascript
 var outputPromise = getInputPromise().then(function (input) {
     //handle success
