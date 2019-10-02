@@ -177,6 +177,9 @@ fs.readFile( "file.json", function ( err, data ) {
   console.log( data );
 });
 ```
+Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block. 
+
+In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
 
 #### Q. What is callback hell in Node.js?
 #### Q. What are Promises?
