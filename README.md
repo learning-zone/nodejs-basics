@@ -182,6 +182,24 @@ Any asynchronous method expects one of the arguments to be a callback. The full 
 In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
 
 #### Q. What is callback hell in Node.js?
+`Callback Hell` is caused by deeply nesting asynchronous functions.
+
+An asynchronous function is one where some external activity must complete before a result can be processed; it is “asynchronous” in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
+```javascript
+getData(function(a){
+    getMoreData(a, function(b){
+        getMoreData(b, function(c){ 
+            getMoreData(c, function(d){ 
+	            getMoreData(d, function(e){ 
+		            ...
+		        });
+	        });
+        });
+    });
+});
+```
+
+
 #### Q. What are Promises?
 #### Q. What tools can be used to assure consistent style? Why is it important?
 #### Q. When should you npm and when yarn?
