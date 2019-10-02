@@ -151,7 +151,7 @@ So the server never needs to create additional threads or switch between threads
 Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model. It follows Single Threaded with Event Loop Model. Node JS Processing model mainly based on Javascript Event based model with Javascript callback mechanism.
 
 The main heart of Node JS Processing model is “Event Loop”. 
-* **Single Threaded Event Loop Model Processing Steps:**  
+**Single Threaded Event Loop Model Processing Steps:**  
 * Clients Send request to Web Server.
 * Node JS Web Server internally maintains a Limited Thread pool to provide services to the Client Requests.
 * Node JS Web Server receives those requests and places them into a Queue. It is known as “Event Queue”.
