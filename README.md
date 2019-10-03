@@ -322,7 +322,10 @@ var myPromise = new Promise(function(resolve, reject){
    ....
 })
 ```
-#### Q. What tools can be used to assure consistent style? Why is it important?
+#### Q. What tools can be used to assure consistent style?
+* ESLint
+* Standard
+
 #### Q. When should you npm and when yarn?
 #### Q. What is a stub? Name a use case!
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
