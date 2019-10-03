@@ -318,14 +318,9 @@ The core idea behind promises is that a promise represents the result of an asyn
 Once a promise is fulfilled or rejected, it is immutable (i.e. it can never change again).
 * **Creating a Promise**
 ```javascript
-function readFile(filename, enc) {
-  return new Promise(function (fulfill, reject) {
-    fs.readFile(filename, enc, function (err, res) {
-      if (err) reject(err);
-      else fulfill(res);
-    });
-  });
-}
+var myPromise = new Promise(function(resolve, reject){
+   ....
+})
 ```
 #### Q. What tools can be used to assure consistent style? Why is it important?
 #### Q. When should you npm and when yarn?
