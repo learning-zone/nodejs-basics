@@ -352,6 +352,29 @@ npm install yarn --global
 * Flat Mode: Resolve mismatching versions of dependencies to a single version to avoid creating duplicates.
 
 #### Q. What is a stub? Name a use case!
+Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
+
+**Features of Stub:**  
+
+* Produces simple, lightweight Objects capable of extending down their tree
+* Compatible with Nodejs
+* Easily extendable directly or through an ExtensionManager
+* Comes with predefined, usable extensions
+
+Stubs are functions/programs that simulate the behaviours of components/modules. Stubs provide canned answers to function calls made during test cases. Also, you can assert on with what these stubs were called.
+
+A use-case can be a file read, when you do not want to read an actual file:
+```javascript
+var fs = require('fs');
+
+var readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {  
+  return cb(null, 'filecontent');
+});
+
+expect(readFileStub).to.be.called;  
+readFileStub.restore();
+```
+
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
 #### Q. How can you secure your HTTP cookies against XSS attacks?
 #### Q. How can you make sure your dependencies are safe?
