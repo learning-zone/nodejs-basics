@@ -305,7 +305,29 @@ const addRandomNumber = async function(){
 
 addRandomNumber();
 ```
-#### Q. What are Promises?
+#### Q. What are Promises in Node.js?
+It allows to associate handlers to an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
+
+Promises in node.js promised to do some work and then had separate callbacks that would be executed for success and failure as well as handling timeouts. Another way to think of promises in node.js was that they were emitters that could emit only two events: success and error.The cool thing about promises is you can combine them into dependency chains (do Promise C only when Promise A and Promise B complete).
+
+The core idea behind promises is that a promise represents the result of an asynchronous operation. A promise is in one of three different states:
+
+* pending - The initial state of a promise.
+* fulfilled - The state of a promise representing a successful operation.
+* rejected - The state of a promise representing a failed operation.
+Once a promise is fulfilled or rejected, it is immutable (i.e. it can never change again).
+* **Creating a Promise**
+```javascript
+function readFile(filename, enc) {
+  return new Promise(function (fulfill, reject) {
+    fs.readFile(filename, enc, function (err, res) {
+      if (err) reject(err);
+      else fulfill(res);
+    });
+  });
+}
+```
+
 #### Q. What tools can be used to assure consistent style? Why is it important?
 #### Q. When should you npm and when yarn?
 #### Q. What is a stub? Name a use case!
