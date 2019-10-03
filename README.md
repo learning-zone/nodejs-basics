@@ -327,7 +327,6 @@ function readFile(filename, enc) {
   });
 }
 ```
-
 #### Q. What tools can be used to assure consistent style? Why is it important?
 #### Q. When should you npm and when yarn?
 #### Q. What is a stub? Name a use case!
