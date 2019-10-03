@@ -340,7 +340,7 @@ Yarn was developed by Facebook in attempt to resolve some of npm’s shortcoming
 npm install yarn --global
 ```
 
-* **Comparing Yarn vs npm**  
+**Comparing Yarn vs npm**    
 * Fast: Yarn caches every package it downloads so it never needs to again. It also parallelizes operations to maximize resource utilization so install times are faster than ever.
 * Reliable: Using a detailed, but concise, lockfile format, and a deterministic algorithm for installs, Yarn is able to guarantee that an install that worked on one system will work exactly the same way on any other system.
 * Secure: Yarn uses checksums to verify the integrity of every installed package before its code is executed.
