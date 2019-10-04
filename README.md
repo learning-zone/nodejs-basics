@@ -377,10 +377,18 @@ readFileStub.restore();
 ```
 
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
-A test pyramid describes that when writings test cases there should be a lot more low-level unit tests than high level end-to-end tests.
-
+The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
 
 ![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/testPyramid.png "Test Pyramid")
+
+
+Mike Cohn's original test pyramid consists of three layers that your test suite should consist of (bottom to top):
+
+1. Unit Tests
+1. Service Tests
+1. User Interface Tests
+
+
 
 #### Q. How can you secure your HTTP cookies against XSS attacks?
 #### Q. How can you make sure your dependencies are safe?
