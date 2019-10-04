@@ -436,7 +436,7 @@ Node.js is a single-threaded application, but it can support concurrency via the
 **Event-Driven Programming**  
 In an event-driven application, there is generally a main loop that listens for events, and then triggers a callback function when one of those events is detected.
 
-Although events look quite similar to callbacks, the difference lies in the fact that callback functions are called when an asynchronous function returns its result, whereas event handling works on the observer pattern. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners as follows −
+Although events look quite similar to callbacks, the difference lies in the fact that callback functions are called when an asynchronous function returns its result, whereas event handling works on the observer pattern. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners as follows
 ```javascript
 // Import events module
 var events = require('events');
