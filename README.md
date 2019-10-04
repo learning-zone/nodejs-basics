@@ -377,10 +377,10 @@ readFileStub.restore();
 ```
 
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
+A test pyramid describes that when writings test cases there should be a lot more low-level unit tests than high level end-to-end tests.
 
 
-
-![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/testPyramid.png "Logo Title Text 1")
+![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/testPyramid.png "Test Pyramid")
 
 #### Q. How can you secure your HTTP cookies against XSS attacks?
 #### Q. How can you make sure your dependencies are safe?
