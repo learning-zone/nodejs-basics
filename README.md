@@ -418,6 +418,16 @@ Example :
 Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 ```
 #### Q. How can you make sure your dependencies are safe?
+The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
+
+1. npm outdated
+2. Trace by RisingStack
+3. NSP
+4. GreenKeeper
+5. Snyk
+6. npm audit
+7. npm audit fix
+
 #### Q. What is Event loop in Node.js? And How does it work?
 #### Q. What is REPL? What purpose it is used for?
 #### Q. What is the difference between Asynchronous and Non-blocking?
