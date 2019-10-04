@@ -388,9 +388,35 @@ Mike Cohn's original test pyramid consists of three layers that your test suite 
 1. Service Tests
 1. User Interface Tests
 
-
-
 #### Q. How can you secure your HTTP cookies against XSS attacks?
+
+1. When the web server sets cookies, it can provide some additional attributes to make sure the cookies won't be accessible by using malicious JavaScript. One such attribute is HttpOnly.
+
+Example :
+```javascript
+Set-Cookie: [name]=[value]; HttpOnly
+```
+
+HttpOnly makes sure the cookies will be submitted only to the domain they originated from.
+
+2. The "Secure" attribute can make sure the cookies are sent over secured channel only.
+
+Example :
+```javascript
+Set-Cookie: [name]=[value]; Secure
+```
+3. The web server can use X-XSS-Protection response header to make sure pages do not load when they detect reflected cross-site scripting (XSS) attacks.
+
+Example :
+```javascript
+X-XSS-Protection: 1; mode=block
+```
+4. The web server can use HTTP Content-Security-Policy response header to control what resources a user agent is allowed to load for a certain page. It can help to prevent various types of attacks like Cross Site Scripting (XSS) and data injection attacks.
+
+Example :
+```javascript
+Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
+```
 #### Q. How can you make sure your dependencies are safe?
 #### Q. What is Event loop in Node.js? And How does it work?
 #### Q. What is REPL? What purpose it is used for?
