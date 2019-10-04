@@ -377,6 +377,11 @@ readFileStub.restore();
 ```
 
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
+
+
+
+![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/testPyramid.png "Logo Title Text 1")
+
 #### Q. How can you secure your HTTP cookies against XSS attacks?
 #### Q. How can you make sure your dependencies are safe?
 #### Q. What is Event loop in Node.js? And How does it work?
