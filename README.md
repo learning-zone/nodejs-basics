@@ -482,6 +482,16 @@ REPL (READ, EVAL, PRINT, LOOP) is a computer environment similar to Shell (Unix/
 * **Print**: The result is printed after the evaluation.
 * **Loop**: Loops the input command. To come out of NODE REPL, press ctrl+c twice
 
+Simple Expression
+```javascript
+$ node
+> 10 + 20
+30
+> 10 + ( 20 * 30 ) - 40
+570
+>
+```
+
 #### Q. What is the difference between Asynchronous and Non-blocking?
 #### Q. How to debug an application in Node.js?
 #### Q. What are some of the most popular modules of Node.js?
