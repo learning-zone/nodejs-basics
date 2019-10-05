@@ -696,6 +696,10 @@ response.end();
 });
 ```
 #### Q. How can you listen on port 80 with Node?
+Instead of running on port 80 we can redirect port 80 to your application's port (>1024) using
+```
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
 #### Q. What is an event loop in Node.js?
 #### Q. What is the difference between operational and programmer errors?
 #### Q. Why npm shrinkwrap is useful?
