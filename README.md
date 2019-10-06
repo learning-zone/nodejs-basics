@@ -742,7 +742,7 @@ fs.createReadStream('input.txt')
 console.log("File Compressed.");
 ```
 
-#### Q. What is crypto in Node.js? How do you cipher the secured information in Node.js?
+#### Q. What is crypto in Node.js? How do you cipher the secure information in Node.js?
 #### Q. What is the use of DNS module in Node.js?
 #### Q. What are the security mechanisms available in Node.js?
 #### Q. Name the types of API functions in Node.js.
