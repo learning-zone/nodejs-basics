@@ -656,7 +656,7 @@ For example
 * **error** − This event is fired when there is any error receiving or writing data.
 * **finish** − This event is fired when all the data has been flushed to underlying system. 
 
-* **Reading from a Stream**  
+**Reading from a Stream**  
 ```javascript
 var fs = require("fs");
 var data = '';
