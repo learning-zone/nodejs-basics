@@ -682,7 +682,8 @@ readerStream.on('error', function(err) {
 
 console.log("Program Ended");
 ```
-* **Writing to a Stream**   
+
+**Writing to a Stream**   
 ```javascript
 var fs = require("fs");
 var data = 'Simply Easy Learning';
@@ -707,7 +708,8 @@ writerStream.on('error', function(err) {
 
 console.log("Program Ended");
 ```
-* **Piping the Streams**  
+
+**Piping the Streams**  
 Piping is a mechanism where we provide the output of one stream as the input to another stream. It is normally used to get data from one stream and to pass the output of that stream to another stream. There is no limit on piping operations.
 
 ```javascript
@@ -725,7 +727,8 @@ readerStream.pipe(writerStream);
 
 console.log("Program Ended");
 ```
-* **Chaining the Streams** 
+
+**Chaining the Streams** 
 Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations.  
 ```javascript
 var fs = require("fs");
