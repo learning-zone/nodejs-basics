@@ -531,14 +531,14 @@ node-debug app.js
 * **Tracing**
     * Interactive Stack Traces with TraceGL
 
-* **Logging**
+* **Logging**  
 Libraries that output debugging information
     * Caterpillar
     * Tracer
     * scribbles
 
 Libraries that enhance stack trace information  
-    * Longjohn
+* Longjohn
 
 #### Q. What are some of the most popular modules of Node.js?
 #### Q. What is EventEmitter in Node.js?
