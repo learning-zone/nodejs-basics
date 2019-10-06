@@ -728,7 +728,7 @@ readerStream.pipe(writerStream);
 console.log("Program Ended");
 ```
 
-**Chaining the Streams** 
+**Chaining the Streams**   
 Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations.  
 ```javascript
 var fs = require("fs");
