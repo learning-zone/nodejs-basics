@@ -776,6 +776,43 @@ console.log(decrypted);
 ```
 
 #### Q. What is the use of DNS module in Node.js?
+DNS is a node module used to do name resolution facility which is provided by the operating system as well as used to do an actual DNS lookup. No need for memorising IP addresses – DNS servers provide a nifty solution of converting domain or subdomain names to IP addresses. This module provides an asynchronous network wrapper and can be imported using the following syntax.
+```javascript
+const dns = require('dns'); 
+```
+Example: `dns.lookup()` function  
+```javascript
+const dns = require('dns');  
+dns.lookup('www.google.com', (err, addresses, family) => {  
+  console.log('addresses:', addresses);  
+  console.log('family:',family);  
+});  
+```
+Example: `resolve4()` and `reverse()` functions
+```javascript
+const dns = require('dns');  
+dns.resolve4('www.google.com', (err, addresses) => {  
+  if (err) throw err;  
+  console.log(`addresses: ${JSON.stringify(addresses)}`);  
+  addresses.forEach((a) => {  
+    dns.reverse(a, (err, hostnames) => {  
+      if (err) {  
+        throw err;  
+      }  
+      console.log(`reverse for ${a}: ${JSON.stringify(hostnames)}`);  
+    });  
+  });  
+});   
+```
+Example: print the localhost name using `lookupService()` function
+```javascript
+const dns = require('dns');  
+dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {  
+  console.log(hostname, service);  
+    // Prints: localhost  
+}); 
+```
+
 #### Q. What are the security mechanisms available in Node.js?
 #### Q. Name the types of API functions in Node.js.
 #### Q. How does Node.js handle child threads?
