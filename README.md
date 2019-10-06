@@ -535,9 +535,9 @@ node-debug app.js
 Libraries that output debugging information
     * Caterpillar
     * Tracer
-* scribbles
+    * scribbles
 
-Libraries that enhance stack trace information
+Libraries that enhance stack trace information  
     * Longjohn
 
 #### Q. What are some of the most popular modules of Node.js?
