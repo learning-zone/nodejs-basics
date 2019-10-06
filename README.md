@@ -814,6 +814,77 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
 ```
 
 #### Q. What are the security mechanisms available in Node.js?
+* **Using the Helmet module**  
+Helmet helps to secure your Express applications by setting various HTTP headers, like:
+
+* X-Frame-Options to mitigates clickjacking attacks,
+* Strict-Transport-Security to keep your users on HTTPS,
+* X-XSS-Protection to prevent reflected XSS attacks,
+* X-DNS-Prefetch-Control to disable browsers’ DNS prefetching.
+```javascript
+const express = require('express')
+const helmet = require('helmet')
+const app = express()
+
+app.use(helmet())
+```
+* Validating user input  
+Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
+
+To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
+```javascript
+const Joi = require('joi');
+
+const schema = Joi.object().keys({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    access_token: [Joi.string(), Joi.number()],
+    birthyear: Joi.number().integer().min(1900).max(2013),
+    email: Joi.string().email()
+}).with('username', 'birthyear').without('password', 'access_token')
+
+// Return result
+const result = Joi.validate({
+    username: 'abc',
+    birthyear: 1994
+}, schema)
+// result.error === null -> valid
+```
+* Securing your Regular Expressions  
+Regular Expressions are a great way to manipulate texts and get the parts that you need from them. However, there is an attack vector called Regular Expression Denial of Service attack, which exposes the fact that most Regular Expression implementations may reach extreme situations for specially crafted input, that cause them to work extremely slowly.
+
+The Regular Expressions that can do such a thing are commonly referred as Evil Regexes. These expressions contain:
+*grouping with repetition,
+*inside the repeated group:
+    *repetition, or
+    *alternation with overlapping  
+
+Examples of Evil Regular Expressions patterns:
+```
+(a+)+
+([a-zA-Z]+)*
+(a|aa)+
+```
+* Security.txt  
+Security.txt defines a standard to help organizations define the process for security researchers to securely disclose security vulnerabilities.
+```javascript
+const express = require('express')
+const securityTxt = require('express-security.txt')
+
+const app = express()
+
+app.get('/security.txt', securityTxt({
+  // your security address
+  contact: 'email@example.com',
+  // your pgp key
+  encryption: 'encryption',
+  // if you have a hall of fame for securty resourcers, include the link here
+  acknowledgements: 'http://acknowledgements.example.com'
+}))
+```
+
+
+
 #### Q. Name the types of API functions in Node.js.
 #### Q. How does Node.js handle child threads?
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
