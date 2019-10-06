@@ -654,7 +654,8 @@ For example
 * **data** − This event is fired when there is data is available to read.
 * **end** − This event is fired when there is no more data to read.
 * **error** − This event is fired when there is any error receiving or writing data.
-* **finish** − This event is fired when all the data has been flushed to underlying system.
+* **finish** − This event is fired when all the data has been flushed to underlying system. 
+
 * **Reading from a Stream**  
 ```javascript
 var fs = require("fs");
