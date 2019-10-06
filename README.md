@@ -582,6 +582,64 @@ Libraries that enhance stack trace information
 * **Zmq**: Bindings for node.js and io.js to ZeroMQ .It is a high-performance asynchronous messaging library, aimed at use in distributed or concurrent applications.
 
 #### Q. What is EventEmitter in Node.js?
+All objects that emit events are members of EventEmitter class. These objects expose an `eventEmitter.on()` function that allows one or more functions to be attached to named events emitted by the object.
+
+When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
+Example
+```javascript
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+// listener #1
+var listner1 = function listner1() {
+   console.log('listner1 executed.');
+}
+
+// listener #2
+var listner2 = function listner2() {
+   console.log('listner2 executed.');
+}
+
+// Bind the connection event with the listner1 function
+eventEmitter.addListener('connection', listner1);
+
+// Bind the connection event with the listner2 function
+eventEmitter.on('connection', listner2);
+
+var eventListeners = require('events').EventEmitter.listenerCount
+   (eventEmitter,'connection');
+console.log(eventListeners + " Listner(s) listening to connection event");
+
+// Fire the connection event 
+eventEmitter.emit('connection');
+
+// Remove the binding of listner1 function
+eventEmitter.removeListener('connection', listner1);
+console.log("Listner1 will not listen now.");
+
+// Fire the connection event 
+eventEmitter.emit('connection');
+
+eventListeners = require('events').EventEmitter.listenerCount(eventEmitter,'connection');
+console.log(eventListeners + " Listner(s) listening to connection event");
+
+console.log("Program Ended.");
+```
+Now run the main.js 
+```
+$ node main.js
+```
+Output
+```
+2 Listner(s) listening to connection event
+listner1 executed.
+listner2 executed.
+Listner1 will not listen now.
+listner2 executed.
+1 Listner(s) listening to connection event
+Program Ended.
+```
+
 #### Q. How many types of streams are present in node.js?
 #### Q. What is crypto in Node.js? How do you cipher the secured information in Node.js?
 #### Q. What is the use of DNS module in Node.js?
