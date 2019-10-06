@@ -504,6 +504,14 @@ $ node
 3) Asynchronous is the opposite of synchronous while nonblocking I/O is the opposite of blocking. They both are fairly similar but they are also different as asynchronous is used with a broader range of operations while nonblocking is mostly used with I/O.
 
 #### Q. How to debug an application in Node.js?
+* **node-inspector**
+```
+npm install -g node-inspector
+```
+Run
+```
+node-debug app.js
+```
 #### Q. What are some of the most popular modules of Node.js?
 #### Q. What is EventEmitter in Node.js?
 #### Q. How many types of streams are present in node.js?
