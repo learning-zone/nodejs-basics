@@ -515,11 +515,11 @@ node-debug app.js
 
 * **Debugging**
 
-* Debugger
-* Node Inspector
-* Visual Studio Code
-* Cloud9
-* Brackets
+1. Debugger
+1. Node Inspector
+1. Visual Studio Code
+1. Cloud9
+1. Brackets
 
 * **Profiling**
 ```
@@ -527,19 +527,19 @@ node-debug app.js
 2. node --prof-process ./the-generated-log-file
 ```
 * **Heapdumps**
-* node-heapdump with Chrome Developer Tools
+1. node-heapdump with Chrome Developer Tools
 
 * **Tracing**
-* Interactive Stack Traces with TraceGL
+1. Interactive Stack Traces with TraceGL
 
 * **Logging**
 Libraries that output debugging information
-* Caterpillar
-* Tracer
-* scribbles
+1. Caterpillar
+1. Tracer
+1. scribbles
 
 Libraries that enhance stack trace information
-* Longjohn
+1. Longjohn
 
 #### Q. What are some of the most popular modules of Node.js?
 #### Q. What is EventEmitter in Node.js?
