@@ -913,6 +913,16 @@ fs.readFile('/file.md', (err, data) => {
 Since `fs.readFile()` is non-blocking, moreWork() does not have to wait for the file read to complete before being called. This allows for higher throughput.
 
 #### Q. How does Node.js handle child threads?
+Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
+Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
+
+* Nodejs Primary application runs in an event loop, which is in a single thread.
+* Background I/O is running in a thread pool that is only accessible to C/C++ or other compiled/native modules and mostly transparent to the JS.
+* Node v11/12 now has experimental worker_threads, which is another option.
+* Node.js does support forking multiple processes ( which are executed on different cores ).
+* It is important to know that state is not shared between master and forked process.
+* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
 #### Q. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
 #### Q. What is typically the first argument passed to a Node.js callback handler?
