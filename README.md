@@ -884,6 +884,34 @@ app.get('/security.txt', securityTxt({
 ```
 
 #### Q. Name the types of API functions in Node.js.
+There are two types of API functions in Node.js:
+
+* Asynchronous, Non-blocking functions
+* Synchronous, Blocking functions
+
+
+* **Blocking functions** - In a blocking operation, all other code is blocked from executing until an I/O event that is being waited on occurs. Blocking functions execute synchronously.
+For example:
+```javascript
+const fs = require('fs');
+const data = fs.readFileSync('/file.md'); // blocks here until file is read
+console.log(data);
+// moreWork(); will run after console.log
+```
+The second line of code blocks the execution of additional JavaScript until the entire file is read. moreWork () will only be called after Console.log
+
+* **Non-blocking functions** - In a non-blocking operation, multiple I/O calls can be performed without the execution of the program being halted. Non-blocking functions execute asynchronously.
+For example:
+```javascript
+const fs = require('fs');
+fs.readFile('/file.md', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+// moreWork(); will run before console.log
+```
+Since `fs.readFile()` is non-blocking, moreWork() does not have to wait for the file read to complete before being called. This allows for higher throughput.
+
 #### Q. How does Node.js handle child threads?
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
 #### Q. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
