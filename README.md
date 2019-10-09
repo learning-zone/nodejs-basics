@@ -961,6 +961,41 @@ function callback(err, results) {
 }
 ```
 #### Q. How Node.js read the content of a file?
+The "normal" way in Node.js is probably to read in the content of a file in a non-blocking, asynchronous way. That is, to tell Node to read in the file, and then to get a callback when the file-reading has been finished. That would allow us to hand several requests in parallel.
+
+Common use for the File System module:
+* Read files
+* Create files
+* Update files
+* Delete files
+* Rename files
+
+* **Read Files**
+index.html
+```html
+<html>
+<body>
+  <h1>My Header</h1>
+  <p>My paragraph.</p>
+</body>
+</html>
+```
+read_file.js
+```javascript
+var http = require('http');
+var fs = require('fs');
+http.createServer(function (req, res) {
+  fs.readFile('index.html', function(err, data) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    res.end();
+  });
+}).listen(8080);
+```
+Initiate read_file.js:
+```
+C:\>node read_file.js
+```
 #### Q. What is JIT and how is it related to Node.js? 
 #### Q. What is difference between put and patch?
 #### Q. List types of Http requests supported by Node.js.
