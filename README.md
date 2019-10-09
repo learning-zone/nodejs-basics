@@ -1282,6 +1282,35 @@ The first one (and the default one on all platforms except Windows), is the roun
 The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
 
 #### Q. What does emitter do and what is dispatcher?
+Node.js core API is based on asynchronous event-driven architecture in which certain kind of objects called emitters periodically emit events that cause listener objects to be called.
+
+All objects that emit events are members of EventEmitter class. These objects expose an eventEmitter.on() function that allows one or more functions to be attached to named events emitted by the object.
+
+When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
+```javascript
+const EventEmitter = require('events');
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter();
+myEmitter.on('event', function(a, b) {
+  console.log(a, b, this);
+  // Prints:
+  //   Technoetics Club MyEmitter {
+  //     domain: null,
+  //     _events: { event: [Function] },
+  //     _eventsCount: 1,
+  //     _maxListeners: undefined }
+});
+myEmitter.emit('event','Technoetics', 'Club');
+```
+Here we create a myEmitter object and emit event at the end which triggers the callback function and we are able to get the desired output.
+
+By default, all listeners attached to a particular event object are called by the EventListener object synchronously in the order in which they are registered or attached to the event object.
+
+**Dispatcher**  
+The Dispatcher has functionality not provided nor expected in EventEmitter, the most notable being waitFor, which allows a store to ensure that another store has been updated in response to an action before it proceeds.
+
+Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API that you might object-assign onto multiple stores.
+
 #### Q. How to stop master process without suspending all of its child processes?
 #### Q. What do you understand by Reactor Pattern in Node.js
 #### Q. What are the key features of Node.js?
