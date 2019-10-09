@@ -950,6 +950,16 @@ Cluster supports two types of load distribution:
 * The main process assigns the port to a child process and child process itself listen the port.
 
 #### Q. What is typically the first argument passed to a Node.js callback handler?
+The first argument to any callback handler is an optional error object
+```javascript
+function callback(err, results) {
+    // usually we'll check for the error before handling results
+    if(err) {
+        // handle error somehow and return
+    }
+    // no error, perform standard callback handling
+}
+```
 #### Q. How Node.js read the content of a file?
 #### Q. What is JIT and how is it related to Node.js? 
 #### Q. What is difference between put and patch?
