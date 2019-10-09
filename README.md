@@ -924,6 +924,21 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 * We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
 
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
+Unhandled exceptions in Node.js can be caught at the Process level by attaching a handler for uncaughtException event.
+```javascript
+process.on(‘uncaughtException’, function(err) {
+console.log(‘Caught exception: ‘ + err);
+});
+```
+Process is a global object that provides information about the current Node.js process. Process is a listener function that is always listening to events.
+
+Few events are :
+
+1. Exit
+1. disconnect
+1. unhandledException
+1. rejectionHandled
+
 #### Q. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
 #### Q. What is typically the first argument passed to a Node.js callback handler?
 #### Q. How Node.js read the content of a file?
