@@ -1162,6 +1162,28 @@ request(options, function(err, res, body) {
 Using the options object, this request uses the GET method to retrieve JSON data directly from Reddit, which is returned as a string in the body field. From here, you can use `JSON.parse` and use the data as a normal JavaScript object.
 
 #### Q. Why to use Express.js?
+ExpressJS is a prebuilt NodeJS framework that can help you in creating server-side web applications faster and smarter. Simplicity, minimalism, flexibility, scalability are some of its characteristics and since it is made in NodeJS itself, it inherited its performance as well.
+
+Express 3.x is a light-weight web application framework to help organize your web application into an MVC architecture on the server side. You can then use a database like `MongoDB` with `Mongoose` (for modeling) to provide a backend for your Node.js application. Express.js basically helps you manage everything, from routes, to handling requests and views.
+
+It has become the standard server framework for node.js. Express is the backend part of something known as the MEAN stack. The MEAN is a free and open-source JavaScript software stack for building dynamic web sites and web applications which has the following components;
+
+1. **MongoDB** - The standard NoSQL database
+2. **Express.js** - The default web applications framework
+3. **Angular.js** - The JavaScript MVC framework used for web applications
+4. **Node.js** - Framework used for scalable server-side and networking applications.
+
+The Express.js framework makes it very easy to develop an application which can be used to handle multiple types of requests like the GET, PUT, and POST and DELETE requests.
+
+**using Express**  
+```javascript
+var express=require('express');
+var app=express();
+app.get('/',function(req,res) {
+  res.send('Hello World!');
+});
+var server=app.listen(3000,function() {});
+```
 #### Q. Write the steps for setting up an Express JS application.
 #### Q. Since node is a single threaded process, how to make use of all CPUs?
 #### Q. What does emitter do and what is dispatcher?
