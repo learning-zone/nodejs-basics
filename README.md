@@ -940,6 +940,15 @@ Few events are :
 1. rejectionHandled
 
 #### Q. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
+Since Node.js is by default a single thread application, it will run on a single processor core and will not take full advantage of multiple core resources. However, Node.js provides support for deployment on multiple-core systems, to take greater advantage of the hardware. The Cluster module is one of the core Node.js modules and it allows running multiple Node.js worker processes that will share the same port.
+
+The cluster module helps to spawn new processes on the operating system. Each process works independently, so you cannot use shared state between child processes. Each process communicates with the main process by IPC and pass server handles back and forth.
+
+Cluster supports two types of load distribution:
+
+* The main process listens on a port, accepts new connection and assigns it to a child process in a round robin fashion.
+* The main process assigns the port to a child process and child process itself listen the port.
+
 #### Q. What is typically the first argument passed to a Node.js callback handler?
 #### Q. How Node.js read the content of a file?
 #### Q. What is JIT and how is it related to Node.js? 
