@@ -42,7 +42,7 @@
 |36. |[Write the steps for setting up an Express JS application.](#q-write-the-steps-for-setting-up-an-express-js-application)
 |37. |[Since node is a single threaded process, how to make use of all CPUs?](#q-since-node-is-a-single-threaded-process-how-to-make-use-of-all-cpus)|
 |38. |[What does emitter do and what is dispatcher?](#q-what-does-emitter-do-and-what-is-dispatcher)|
-|39. |[How to stop master process without suspending all of its child processes?](#q-how-to-stop-master-process-without-suspending-all-of-its-child-processes)|
+|39. |[How to kill child processes that spawn their own child processes in Node.js?](#q-how-to-kill-child-processes-that-spawn-their-own-child-processes-in-nodejs)|
 |40. |[What do you understand by Reactor Pattern in Node.js](#q-what-do-you-understand-by-reactor-pattern-in-nodejs)
 |41. |[What are the key features of node.js?](#q-what-are-the-key-features-of-nodejs)|
 |42. |[What are globals in node.js?](#q-what-are-globals-in-nodejs)|
@@ -1311,7 +1311,25 @@ The Dispatcher has functionality not provided nor expected in EventEmitter, the 
 
 Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API that you might object-assign onto multiple stores.
 
-#### Q. How to stop master process without suspending all of its child processes?
+#### Q. How to kill child processes that spawn their own child processes in Node.js?
+If a child process in Node.js spawn their own child processes, kill() method will not kill the child process’s own child processes. For example, if I start a process that starts it’s own child processes via child_process module, killing that child process will not make my program to quit.
+```javascript
+var spawn = require('child_process').spawn;
+var child = spawn('my-command');
+
+child.kill();
+```
+The program above will not quit if `my-command` spins up some more processes.
+**PID range hack**  
+We can start child processes with {detached: true} option so those processes will not be attached to main process but they will go to a new group of processes. Then using process.kill(-pid) method on main process we can kill all processes that are in the same group of a child process with the same pid group. In my case, I only have one processes in this group.
+```javascript
+var spawn = require('child_process').spawn;
+var child = spawn('my-command', {detached: true});
+
+process.kill(-child.pid);
+```
+Please note - before pid. This converts a pid to a group of pids for process kill() method.
+
 #### Q. What do you understand by Reactor Pattern in Node.js
 #### Q. What are the key features of Node.js?
 * **Asynchronous event driven IO helps concurrent request handling** – All APIs of Node.js are asynchronous. This feature means that if a Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. Thus it will not wait for the response from the previous requests.
