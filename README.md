@@ -1127,6 +1127,40 @@ require('http').METHODS
   '510': 'Not Extended',
   '511': 'Network Authentication Required' }
   ```
+**Making HTTP Requests**  
+```javascript
+const request = require('request');
+
+request('https://nodejs.org/', function(err, res, body) {
+    console.log(body);
+});
+```
+The first argument to request can either be a URL string, or an object of options. Here are some of the more common options you'll encounter in your applications:
+
+* **url**: The destination URL of the HTTP request
+* **method**: The HTTP method to be used (GET, POST, DELETE, etc)
+* **headers**: An object of HTTP headers (key-value) to be set in the request
+* **form**: An object containing key-value form data
+```javascript
+const request = require('request');
+
+const options = {
+    url: 'https://nodejs.org/file.json',
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'Accept-Charset': 'utf-8',
+        'User-Agent': 'my-reddit-client'
+    }
+};
+
+request(options, function(err, res, body) {
+    let json = JSON.parse(body);
+    console.log(json);
+});
+```
+Using the options object, this request uses the GET method to retrieve JSON data directly from Reddit, which is returned as a string in the body field. From here, you can use `JSON.parse` and use the data as a normal JavaScript object.
+
 #### Q. Why to use Express.js?
 #### Q. Write the steps for setting up an Express JS application.
 #### Q. Since node is a single threaded process, how to make use of all CPUs?
