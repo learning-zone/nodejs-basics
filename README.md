@@ -1185,6 +1185,50 @@ app.get('/',function(req,res) {
 var server=app.listen(3000,function() {});
 ```
 #### Q. Write the steps for setting up an Express JS application.
+**Install Express Generator**  
+```
+C:\node>npm install -g express-generator
+```
+**Create an Express Project**  
+```
+C:\node>express --view="ejs" nodetest1
+```
+**Edit Dependencies**  
+MAKE SURE TO CD INTO YOUR nodetest FOLDER. OK, now we have some basic structure in there, but we're not quite done. You'll note that the express-generator routine created a file called package.json in your nodetest1 directory. Open this up in a text editor and it'll look like this:
+```javascript
+// C:\node\nodetest1\package.json
+{
+  "name": "nodetest1",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0"
+  }
+}
+```
+This is a basic JSON file describing our app and its dependencies. We need to add a few things to it. Specifically, calls for MongoDB and Monk. 
+```javascript
+C:\node\nodetest1>npm install --save monk@^6.0.6 mongodb@^3.1.13
+```
+**Install Dependencies**  
+```
+C:\node\nodetest1>npm install
+C:\node\nodetest1>npm start
+```
+Node Console
+```
+> nodetest1@0.0.0 start C:\node\nodetest1
+> node ./bin/www
+```
+
 #### Q. Since node is a single threaded process, how to make use of all CPUs?
 #### Q. What does emitter do and what is dispatcher?
 #### Q. How to stop master process without suspending all of its child processes?
