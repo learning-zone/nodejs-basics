@@ -968,9 +968,9 @@ Common use for the File System module:
 * Create files
 * Update files
 * Delete files
-* Rename files
+* Rename files  
 
-* **Read Files**
+**Read Files**  
 index.html
 ```html
 <html>
