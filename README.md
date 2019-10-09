@@ -926,8 +926,8 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
 Unhandled exceptions in Node.js can be caught at the Process level by attaching a handler for uncaughtException event.
 ```javascript
-process.on(‘uncaughtException’, function(err) {
-console.log(‘Caught exception: ‘ + err);
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err);
 });
 ```
 Process is a global object that provides information about the current Node.js process. Process is a listener function that is always listening to events.
