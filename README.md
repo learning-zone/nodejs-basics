@@ -1340,7 +1340,7 @@ The callback function further mostly have other callbacks associated within repr
 
 When all the items in the Event Queue are processed and there are no pending operations left, Node.js terminates the application automatically.
 
-![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/reactor-pattern.png "Reactor-Pattern")
+![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/reactor-pattern.jpg "Test Pyramid")
 
 1. The application generates a new I/O operation by submitting a request to the Event Demultiplexer. The application also specifies a handler, which will be invoked when the operation completes. Submitting a new request to the Event Demultiplexer is a non-blocking call and it immediately returns the control back to the application.
 2. When a set of I/O operations completes, the Event Demultiplexer pushes the new events into the Event Queue.
