@@ -1726,7 +1726,7 @@ var server = http.createServer(app);
 #### Q. What is the difference between process.nextTick() and setImmediate()?
 The difference between `process.nextTick()` and `setImmediate()` is that `process.nextTick()` defers the execution of an action till the next pass around the event loop or it simply calls the callback function once the ongoing execution of the event loop is finished whereas `setImmediate()` executes a callback on the next cycle of the event loop and it gives back to the event loop for executing any I/O operations.
 
-#### Q. What is Difference between JavaScript and Node.js?
+#### Q. What is difference between JavaScript and Node.js?
 |BASIS Of Comparison Between JavaScript vs Node JS	|JavaScript	|Node JS    |
 |---------------------------------------------------|-----------|-----------|
 Type	|JavaScript is a programming language. It running in any web browser with a proper browser engine.|	It is an interpreter and environment for JavaScript with some specific useful libraries which JavaScript programming can use separately.|
