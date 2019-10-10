@@ -67,7 +67,7 @@
 |61. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
 |62. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)||
 |63. |[What is the difference between process.nextTick() and setImmediate() ?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
-|64. |[What is Difference between JavaScript and Node.js?](#q-what-is-difference-between-javaScript-and-nodejs)|
+|64. |[What is difference between JavaScript and Node.js?](#q-what-is-difference-between-javaScript-and-nodejs)|
 
 #### Q. What does the runtime environment mean in Node.js?
 The Node.js runtime is the software stack responsible for installing your web service's code and its dependencies and running your service.
