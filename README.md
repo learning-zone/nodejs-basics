@@ -1593,6 +1593,22 @@ Improper maintenance of an application can result in issues related to stability
 7. Dig into the roots
 
 #### Q. What is the difference between Node.js vs Ajax?
+**AJAX** — AJAX stands for Asynchronous Javascript and XML, it’s used to allow web pages (client-side) to update asynchronously by communicating with a web server and by exchanging data. This essentially means that applications can talk to a server in the background of the application. It uses some core components to function:
+1. The browser’s XMLHttpRequest object to request data from a server
+1. HTML/CSS to display or collect data
+1. DOM for dynamic display
+1. JSON/XML for interchanging the data
+1. Javascript to unify everything
+
+**Node.js**  
+Node.js allows the developers to develop a web application in a single language called JavaScript for both client side and server side.
+
+Unlike the other programming languages, Node.js has its cycle of the event in the form of language which is very beneficial for high-performance and scalable application development.
+
+It is required for those web applications where traffic rate is very high. Node.js is an event based I/O language and its response time is very high rather than the other traditional languages. It is being used by the famous websites like Linked in, Twitter and Gmail.
+
+The runtime environment of Node.js interprets JavaScript, which is very easy and simple to understand and code. Due to this reason, even the developers find it easy going which keeps them happy and relaxed. It is pertinent for real-time collaborative apps.
+
 #### Q. How Node.js overcomes the problem of blocking of I/O operations?
 #### Q. Mention the steps by which you can async in Node.js?
 #### Q. What are the timing features of Node.js?
