@@ -1532,6 +1532,8 @@ Instead of running on port 80 we can redirect port 80 to your application's port
 iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 ```
 #### Q. What is the difference between operational and programmer errors?
+Operation errors are not bugs, but problems with the system, like request timeout or hardware failure. On the other hand programmer errors are actual bugs.
+
 #### Q. Why npm shrinkwrap is useful?
 #### Q. What is your favourite HTTP framework and why?
 #### Q. What does event-driven programming mean?
