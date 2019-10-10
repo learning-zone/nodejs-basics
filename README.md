@@ -1675,6 +1675,19 @@ doSomeLongRunningProcess(() => {
   performance.mark('B');
   performance.measure('A to B', 'A', 'B');
 });
+``` 
+**`request` module**  
+The popular request module has a built-in method to measure HTTP timings. You can enable it with the time property.
+```javascript
+const request = require('request')
+
+request({
+  uri: 'https://risingstack.com',
+  method: 'GET',
+  time: true
+}, (err, resp) => {
+  console.log(err || resp.timings)
+})
 ```
 #### Q. What is LTS releases of Node.js why should you care?
 #### Q. Why should you separate Express 'app' and 'server'?
