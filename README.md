@@ -1621,6 +1621,7 @@ ES 2017 introduced Asynchronous functions. Async functions are essentially a cle
 * It is non blocking (just like promises and callbacks).
 * Async/Await was created to simplify the process of working with and writing chained promises.
 * Async functions return a Promise. If the function throws an error, the Promise will be rejected. If the function returns a value, the Promise will be resolved.  
+
 Syntax  
 ```javascript
 // Normal Function
