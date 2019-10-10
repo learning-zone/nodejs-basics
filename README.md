@@ -1365,13 +1365,13 @@ Variables declared using the var keyword become local to the module whereas thos
 It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
 
 It primarily gives back the information about the application or the environment.
-```javascript
+```
 <process.execPath> – to get the execution path of the Node app.
 <process.Version> – to get the Node version currently running.
 <process.platform> – to get the server platform.
 ```
 Some of the other useful Process methods are as follows.
-```javascript
+```
 <process.memoryUsage> – To know the memory used by Node application.
 <process.NextTick> – To attach a callback function that will get called during the next loop. It can cause a delay in executing a function.
 ```
@@ -1380,7 +1380,7 @@ Some of the other useful Process methods are as follows.
 The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
 
 We can convert JavaScript string objects into Buffers. But it requires mentioning the encoding type explicitly.
-```javascript
+```
 <ascii> – Specifies 7-bit ASCII data.
 <utf8> – Represents multibyte encoded Unicode char set.
 <utf16le> – Indicates 2 or 4 bytes, little endian encoded Unicode chars.
