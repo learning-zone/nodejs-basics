@@ -1723,5 +1723,7 @@ app.set('port', port);
 var server = http.createServer(app);
 ```
 
-#### Q. What is the difference between process.nextTick() and setImmediate() ?
+#### Q. What is the difference between process.nextTick() and setImmediate()?
+The difference between `process.nextTick()` and `setImmediate()` is that `process.nextTick()` defers the execution of an action till the next pass around the event loop or it simply calls the callback function once the ongoing execution of the event loop is finished whereas `setImmediate()` executes a callback on the next cycle of the event loop and it gives back to the event loop for executing any I/O operations.
+
 #### Q. Differentiate between JavaScript and Node.js.
