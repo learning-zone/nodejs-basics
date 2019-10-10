@@ -56,21 +56,19 @@
 |50. |[Can you create http server in nodejs, explain the code used for it?](#q-can-you-create-http-server-in-nodejs-explain-the-code-used-for-it)|
 |51. |[How to load html in node.js?](#q-how-to-load-html-in-nodejs)|
 |52. |[How can you listen on port 80 with Node?](#q-how-can-you-listen-on-port-80-with-node)|
-|53. |[What is an event loop in Node.js ?](#q-what-is-an-event-loop-in-nodejs)||
-|54. |[What is the difference between operational and programmer errors?](#q-what-is-the-difference-between-operational-and-programmer-errors)|
-|55. |[Why npm shrinkwrap is useful?](#q-why-npm-shrinkwrap-is-useful)|
-|56. |[What is your favourite HTTP framework and why?](#q-what-is-your-favourite-http-framework-and-why)|
-|57. |[What does event-driven programming mean?](#q-what-does-event-driven-programming-mean)|
-|58. |[What are the Challenges with Node.js ?](#q-what-are-the-challenges-with-nodejs)||
-|59. |[What is the difference between Node.js vs Ajax?](#q-what-is-the-difference-between-nodejs-vs-ajax)|
-|60. |[How Node.js overcomes the problem of blocking of I/O operations?](#q-how-nodejs-overcomes-the-problem-of-blocking-of-i-o-operations)|
-|61. |[Mention the steps by which you can async in Node.js?](#q-mention-the-steps-by-which-you-can-async-in-nodejs)|
-|62. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
-|63. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
-|64. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)||
-|65. |[What is the difference between process.nextTick() and setImmediate() ?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
-|66. |[Differentiate between JavaScript and Node.js.](#q-differentiate-between-javascript-and-nodejs)|
-
+|53. |[What is the difference between operational and programmer errors?](#q-what-is-the-difference-between-operational-and-programmer-errors)|
+|54. |[Why npm shrinkwrap is useful?](#q-why-npm-shrinkwrap-is-useful)|
+|55. |[What is your favourite HTTP framework and why?](#q-what-is-your-favourite-http-framework-and-why)|
+|56. |[What does event-driven programming mean?](#q-what-does-event-driven-programming-mean)|
+|57. |[What are the Challenges with Node.js ?](#q-what-are-the-challenges-with-nodejs)||
+|58. |[What is the difference between Node.js vs Ajax?](#q-what-is-the-difference-between-nodejs-vs-ajax)|
+|59. |[How Node.js overcomes the problem of blocking of I/O operations?](#q-how-nodejs-overcomes-the-problem-of-blocking-of-i-o-operations)|
+|60. |[Mention the steps by which you can async in Node.js?](#q-mention-the-steps-by-which-you-can-async-in-nodejs)|
+|61. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
+|62. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
+|63. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)||
+|64. |[What is the difference between process.nextTick() and setImmediate() ?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
+|65. |[Differentiate between JavaScript and Node.js.](#q-differentiate-between-javascript-and-nodejs)|
 
 
 #### Q. What does the runtime environment mean in Node.js?
@@ -1533,7 +1531,6 @@ Instead of running on port 80 we can redirect port 80 to your application's port
 ```
 iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 ```
-#### Q. What is an event loop in Node.js?
 #### Q. What is the difference between operational and programmer errors?
 #### Q. Why npm shrinkwrap is useful?
 #### Q. What is your favourite HTTP framework and why?
