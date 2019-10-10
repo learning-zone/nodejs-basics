@@ -1535,6 +1535,12 @@ iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 Operation errors are not bugs, but problems with the system, like request timeout or hardware failure. On the other hand programmer errors are actual bugs.
 
 #### Q. Why npm shrinkwrap is useful?
+NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed. Having same versions of packages on all environments can help you test systems and deploy with confidence. If all tests pass on one machine, you can be sure that it will pass on all other because you know that you use same code!
+```
+npm shrinkwrap
+```
+It should create new npm-shrinkwrap.json file with information about all packages you use.
+
 #### Q. What is your favourite HTTP framework and why?
 #### Q. What does event-driven programming mean?
 #### Q. What are the Challenges with Node.js?
