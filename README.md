@@ -59,17 +59,15 @@
 |53. |[What is the difference between operational and programmer errors?](#q-what-is-the-difference-between-operational-and-programmer-errors)|
 |54. |[Why npm shrinkwrap is useful?](#q-why-npm-shrinkwrap-is-useful)|
 |55. |[What is your favourite HTTP framework and why?](#q-what-is-your-favourite-http-framework-and-why)|
-|56. |[What does event-driven programming mean?](#q-what-does-event-driven-programming-mean)|
-|57. |[What are the Challenges with Node.js ?](#q-what-are-the-challenges-with-nodejs)||
-|58. |[What is the difference between Node.js vs Ajax?](#q-what-is-the-difference-between-nodejs-vs-ajax)|
-|59. |[How Node.js overcomes the problem of blocking of I/O operations?](#q-how-nodejs-overcomes-the-problem-of-blocking-of-i-o-operations)|
-|60. |[Mention the steps by which you can async in Node.js?](#q-mention-the-steps-by-which-you-can-async-in-nodejs)|
-|61. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
-|62. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
-|63. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)||
-|64. |[What is the difference between process.nextTick() and setImmediate() ?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
-|65. |[Differentiate between JavaScript and Node.js.](#q-differentiate-between-javascript-and-nodejs)|
-
+|56. |[What are the Challenges with Node.js ?](#q-what-are-the-challenges-with-nodejs)||
+|57. |[What is the difference between Node.js vs Ajax?](#q-what-is-the-difference-between-nodejs-vs-ajax)|
+|58. |[How Node.js overcomes the problem of blocking of I/O operations?](#q-how-nodejs-overcomes-the-problem-of-blocking-of-i-o-operations)|
+|59. |[Mention the steps by which you can async in Node.js?](#q-mention-the-steps-by-which-you-can-async-in-nodejs)|
+|60. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
+|61. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
+|62. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)||
+|63. |[What is the difference between process.nextTick() and setImmediate() ?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
+|64. |[Differentiate between JavaScript and Node.js.](#q-differentiate-between-javascript-and-nodejs)|
 
 #### Q. What does the runtime environment mean in Node.js?
 The Node.js runtime is the software stack responsible for installing your web service's code and its dependencies and running your service.
@@ -1576,7 +1574,6 @@ Template engines allow developer to embed backend variables into HTML files, and
 **Database Integration**  
 As a minimal framework, Express does not consider database integration as a required aspect within its package, thus it leans toward no specific database usage whatsoever. While adopting a particular data storage technology, be it MySQL, MongoDB, PostgreSQL, Redis, ElasticSearch or something else, it’s just a matter of installing the particular npm package as database driver. These third party database drivers do not conform to unified syntax when doing CRUD instructions, which makes switching databases a big hassle and error prone.
 
-#### Q. What does event-driven programming mean?
 #### Q. What are the Challenges with Node.js?
 #### Q. What is the difference between Node.js vs Ajax?
 #### Q. How Node.js overcomes the problem of blocking of I/O operations?
