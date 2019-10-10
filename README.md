@@ -1690,6 +1690,10 @@ request({
 })
 ```
 #### Q. What is LTS releases of Node.js why should you care?
+An LTS(Long Term Support) version of Node.js receives all the critical bug fixes, security updates and performance
+
+LTS versions of Node.js are supported for at least 18 months and are indicated by even version numbers (e.g. 4, 6, 8). They’re best for production since the LTS release line is focussed on stability and security, whereas the Current release line has a shorter lifespan and more frequent updates to the code. Changes to LTS versions are limited to bug fixes for stability, security updates, possible npm updates, documentation updates and certain performance improvements that can be demonstrated to not break existing applications.
+
 #### Q. Why should you separate Express 'app' and 'server'?
 #### Q. What is the difference between process.nextTick() and setImmediate() ?
 #### Q. Differentiate between JavaScript and Node.js.
