@@ -1600,8 +1600,7 @@ Improper maintenance of an application can result in issues related to stability
 1. JSON/XML for interchanging the data
 1. Javascript to unify everything
 
-**Node.js**  
-Node.js allows the developers to develop a web application in a single language called JavaScript for both client side and server side.
+**Node.js** — Node.js allows the developers to develop a web application in a single language called JavaScript for both client side and server side.
 
 Unlike the other programming languages, Node.js has its cycle of the event in the form of language which is very beneficial for high-performance and scalable application development.
 
