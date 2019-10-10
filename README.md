@@ -1542,6 +1542,40 @@ npm shrinkwrap
 It should create new npm-shrinkwrap.json file with information about all packages you use.
 
 #### Q. What is your favourite HTTP framework and why?
+**Express.js**: Express provides a thin layer on top of Node.js with web application features such as basic routing, middleware, template engine and static files serving, so the drastic I/O performance of Node.js doesn’t get compromised.
+
+Express is a minimal, un-opinionated framework. it doesn’t apply any of the prevalent design patterns such as MVC, MVP, MVVM or whatever is trending out of the box. For fans of simplicity, this is a big plus among all other frameworks because you can build your application with your own preference and no unnecessary learning curve. This is especially advantageous when creating a new personal project with no historical burden, but as the project or developing team grows, lack of standardization may lead to extra work for project/code management, and worst case scenario it may lead to the inability to maintain.  
+
+**Generator**  
+Even though the framework is un-opinionated, it does have the generator that generates specific project folder structure. After installing express-generator npm package and creating application skeleton with generator command, an application folder with clear hierarchy will be created to help you organize images, front-end static JavaScript, stylesheet files and HTML template files.
+```
+npm install express-generator -g
+express helloapp
+```
+**Middleware**  
+Middleware are basically just functions that have full access to both request and response objects.
+```
+var app = express();
+
+app.use(cookieParser());
+app.use(bodyParser());
+app.use(logger());
+app.use(authentication());
+
+app.get('/', function (req, res) {
+  // ...
+});
+
+app.listen(3000);
+```
+An Express application is essentially Node.js with a host of middleware functions, whether you want to customize your own middleware or take advantage of the built-in middlewares of the framework, Express made the process natural and intuitive.
+
+**Template Engine**  
+Template engines allow developer to embed backend variables into HTML files, and when requested the template file will be rendered to plain HTML format with the variables interpolated with their actual values. By default, the express-generator uses Pug (originally known as Jade) template engine, but other options like Mustache and EJS also work with Express seamlessly.
+
+**Database Integration**  
+As a minimal framework, Express does not consider database integration as a required aspect within its package, thus it leans toward no specific database usage whatsoever. While adopting a particular data storage technology, be it MySQL, MongoDB, PostgreSQL, Redis, ElasticSearch or something else, it’s just a matter of installing the particular npm package as database driver. These third party database drivers do not conform to unified syntax when doing CRUD instructions, which makes switching databases a big hassle and error prone.
+
 #### Q. What does event-driven programming mean?
 #### Q. What are the Challenges with Node.js?
 #### Q. What is the difference between Node.js vs Ajax?
