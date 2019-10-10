@@ -1682,7 +1682,7 @@ The popular request module has a built-in method to measure HTTP timings. You ca
 const request = require('request')
 
 request({
-  uri: 'https://risingstack.com',
+  uri: 'https://nodejs.org',
   method: 'GET',
   time: true
 }, (err, resp) => {
