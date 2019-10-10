@@ -1695,5 +1695,33 @@ An LTS(Long Term Support) version of Node.js receives all the critical bug fixes
 LTS versions of Node.js are supported for at least 18 months and are indicated by even version numbers (e.g. 4, 6, 8). They’re best for production since the LTS release line is focussed on stability and security, whereas the Current release line has a shorter lifespan and more frequent updates to the code. Changes to LTS versions are limited to bug fixes for stability, security updates, possible npm updates, documentation updates and certain performance improvements that can be demonstrated to not break existing applications.
 
 #### Q. Why should you separate Express 'app' and 'server'?
+Keeping the API declaration separated from the network related configuration (port, protocol, etc) allows testing the API in-process, without performing network calls, with all the benefits that it brings to the table: fast testing execution and getting coverage metrics of the code. It also allows deploying the same API under flexible and different network conditions. Bonus: better separation of concerns and cleaner code.
+
+API declaration, should reside in app.js:
+```javascript
+var app = express();
+app.use(bodyParser.json());
+app.use("/api/events", events.API);
+app.use("/api/forms", forms);
+```
+Server network declaration, should reside in /bin/www:
+```javascript
+var app = require('../app');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+```
+
 #### Q. What is the difference between process.nextTick() and setImmediate() ?
 #### Q. Differentiate between JavaScript and Node.js.
