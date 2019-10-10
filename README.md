@@ -1609,6 +1609,10 @@ It is required for those web applications where traffic rate is very high. Node.
 The runtime environment of Node.js interprets JavaScript, which is very easy and simple to understand and code. Due to this reason, even the developers find it easy going which keeps them happy and relaxed. It is pertinent for real-time collaborative apps.
 
 #### Q. How Node.js overcomes the problem of blocking of I/O operations?
+Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads. 
+
+Node.js uses an event loop for this. An event loop is “an entity that handles and processes external events and converts them into callback invocations”. Whenever data is needed nodejs registers a callback and sends the operation to this event loop. Whenever the data is available the callback is called.
+
 #### Q. Mention the steps by which you can async in Node.js?
 #### Q. What are the timing features of Node.js?
 #### Q. What is LTS releases of Node.js why should you care?
