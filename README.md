@@ -1427,7 +1427,7 @@ For example, following is the command to install a famous Node.js web framework 
 $ npm install express
 ```
 #### Q. When to use Node.js and when not to use it?
-**When Should We Use Node.js?**  
+**When to use Node.js?**  
 It’s ideal to use Node.js for developing streaming or event-based real-time applications that require less CPU usage such as.
 
 * Chat applications.
@@ -1445,7 +1445,7 @@ To summarize, it’s good to use Node.js, when you need high levels of concurren
 
 Last but not the least, since Node.js uses JavaScript internally, so it fits best for building client-side applications that also use JavaScript.
 
-**When To Not Use Node.Js?**  
+**When to not use Node.Js?**  
 However, we can use Node.js for a variety of applications. But it is a single threaded framework, so we should not use it for cases where the application requires long processing time. If the server is doing some calculation, it won’t be able to process any other requests. Hence, Node.js is best when processing needs less dedicated CPU time.
 
 #### Q. Explain how does Node.js work?
