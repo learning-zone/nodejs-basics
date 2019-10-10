@@ -1443,7 +1443,7 @@ To summarize, it’s good to use Node.js, when you need high levels of concurren
 
 Last but not the least, since Node.js uses JavaScript internally, so it fits best for building client-side applications that also use JavaScript.
 
-**When to not use Node.Js**  
+**When to not use Node.js**  
 However, we can use Node.js for a variety of applications. But it is a single threaded framework, so we should not use it for cases where the application requires long processing time. If the server is doing some calculation, it won’t be able to process any other requests. Hence, Node.js is best when processing needs less dedicated CPU time.
 
 #### Q. Explain how does Node.js work?
