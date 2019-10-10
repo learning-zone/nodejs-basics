@@ -194,7 +194,6 @@ getData(function(a){
 });
 ```
 **Techniques for avoiding callback hell**    
-There are multiple techniques for dealing with callback hell. In this tutorial, we will have a look at the below two in particular.
 
 1. Using Async.js
 1. Using Promises
