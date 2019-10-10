@@ -1660,6 +1660,22 @@ addAsync(10).then((sum) => {
 ```
 
 #### Q. What are the timing features of Node.js?
+The Performance Timing API provides an implementation of the W3C Performance Timeline specification. The purpose of the API is to support collection of high resolution performance metrics. This is the same Performance API as implemented in modern Web browsers.
+```javascript
+const { PerformanceObserver, performance } = require('perf_hooks');
+
+const obs = new PerformanceObserver((items) => {
+  console.log(items.getEntries()[0].duration);
+  performance.clearMarks();
+});
+obs.observe({ entryTypes: ['measure'] });
+
+performance.mark('A');
+doSomeLongRunningProcess(() => {
+  performance.mark('B');
+  performance.measure('A to B', 'A', 'B');
+});
+```
 #### Q. What is LTS releases of Node.js why should you care?
 #### Q. Why should you separate Express 'app' and 'server'?
 #### Q. What is the difference between process.nextTick() and setImmediate() ?
