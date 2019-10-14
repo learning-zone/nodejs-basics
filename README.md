@@ -373,7 +373,7 @@ readFileStub.restore();
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
 The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
 
-![alt text](https://github.com/learning-zone/NodeJS/blob/master/assets/testPyramid.png "Test Pyramid")
+![alt text](https://github.com/learning-zone/nodejs-interview-questions/blob/master/assets/testPyramid.png "Test Pyramid")
 
 
 Mike Cohn's original test pyramid consists of three layers that your test suite should consist of (bottom to top):
