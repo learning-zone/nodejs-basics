@@ -1,6 +1,6 @@
 ## Node.js Interview Questions and Answers
 
-> Click :star2: if you like the project. Pull Request are highly appreciated.
+Click :star2: if you like the project. Pull Request are highly appreciated.
 
 |Sl.No|Node.js Questions|
 |------|-----------------|
