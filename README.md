@@ -1405,6 +1405,10 @@ The above command will allocate a new buffer holding the string with <utf8> as t
 buffer.write(string)
 ```
 This class also offers other methods like <readInt8> and <writeUInt8> that allows read/write from various types of data to the buffer.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. What is chaining process in Node.js?
 It’s an approach to connect the output of one stream to the input of another stream, thus creating a chain of multiple stream operations.
 
@@ -1435,6 +1439,10 @@ For example, following is the command to install a famous Node.js web framework 
 ```javascript
 $ npm install express
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. When to use Node.js and when not to use it?
 **When to use Node.js**  
 It’s ideal to use Node.js for developing streaming or event-based real-time applications that require less CPU usage such as.
