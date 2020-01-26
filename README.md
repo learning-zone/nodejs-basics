@@ -32,6 +32,9 @@ Node.js runs in a single process and the application code runs in a single threa
 
 
 * **Buffer**: Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. How to create a simple server in Node.js that returns Hello World?
 **Step 01**: Create a project directory
@@ -96,6 +99,9 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
         * Picks up one Thread and assign this Client Request to that thread.
         * That Thread is responsible for taking that request, process it, perform Blocking IO operations, prepare response and send it back to the Event Loop
         * Event Loop in turn, sends that Response to the respective Client.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is an error-first callback?
 The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
