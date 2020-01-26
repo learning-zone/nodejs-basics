@@ -536,6 +536,9 @@ Libraries that enhance stack trace information
 * **Xml2js**: A Simple XML to JavaScript object converter.
 * **Yo**: A CLI tool for running Yeoman generators
 * **Zmq**: Bindings for node.js and io.js to ZeroMQ .It is a high-performance asynchronous messaging library, aimed at use in distributed or concurrent applications.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is EventEmitter in Node.js?
 All objects that emit events are members of EventEmitter class. These objects expose an `eventEmitter.on()` function that allows one or more functions to be attached to named events emitted by the object.
