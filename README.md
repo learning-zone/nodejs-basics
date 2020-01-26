@@ -739,6 +739,9 @@ var decrypted = decipher.update(encrypted, 'hex', 'utf8');
 decrypted += decipher.final('utf8');  
 console.log(decrypted);  
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is the use of DNS module in Node.js?
 DNS is a node module used to do name resolution facility which is provided by the operating system as well as used to do an actual DNS lookup. No need for memorising IP addresses – DNS servers provide a nifty solution of converting domain or subdomain names to IP addresses. This module provides an asynchronous network wrapper and can be imported using the following syntax.
@@ -777,6 +780,9 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
     // Prints: localhost  
 }); 
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What are the security mechanisms available in Node.js?
 * **Using the Helmet module**  
