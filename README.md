@@ -853,6 +853,9 @@ app.get('/security.txt', securityTxt({
   acknowledgements: 'http://acknowledgements.example.com'
 }))
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. Name the types of API functions in Node.js.
 There are two types of API functions in Node.js:
@@ -893,6 +896,9 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 * Node.js does support forking multiple processes ( which are executed on different cores ).
 * It is important to know that state is not shared between master and forked process.
 * We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is the preferred method of resolving unhandled exceptions in Node.js?
 Unhandled exceptions in Node.js can be caught at the Process level by attaching a handler for uncaughtException event.
