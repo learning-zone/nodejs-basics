@@ -1326,6 +1326,9 @@ var child = spawn('my-command', {detached: true});
 process.kill(-child.pid);
 ```
 Please note - before pid. This converts a pid to a group of pids for process kill() method.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What do you understand by Reactor Pattern in Node.js?
 
@@ -1345,6 +1348,9 @@ When all the items in the Event Queue are processed and there are no pending ope
 4. For each event, the associated handler is invoked.
 5. The handler, which is part of the application code, will give back the control to the Event Loop when its execution completes (5a). However, new asynchronous operations might be requested during the execution of the handler (5b), causing new operations to be inserted in the Event Demultiplexer (1), before the control is given back to the Event Loop.
 6. When all the items in the Event Queue are processed, the loop will block again on the Event Demultiplexer which will then trigger another cycle.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What are the key features of Node.js?
 * **Asynchronous event driven IO helps concurrent request handling** – All APIs of Node.js are asynchronous. This feature means that if a Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. Thus it will not wait for the response from the previous requests.
