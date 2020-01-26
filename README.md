@@ -1469,6 +1469,9 @@ A Node.js application creates a single thread on its invocation. Whenever Node.j
 Node.js works asynchronously by using the event loop and callback functions, to handle multiple requests coming in parallel. An Event Loop is a functionality which handles and processes all your external events and just converts them to a callback function. It invokes all the event handlers at a proper time. Thus, lots of work is done on the back-end, while processing a single request, so that the new incoming request doesn’t have to wait if the processing is not complete.
 
 While processing a request, Node.js attaches a callback function to it and moves it to the back-end. Now, whenever its response is ready, an event is called which triggers the associated callback function to send this response.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. Is Node.js entirely based on a single-thread?
 Yes, it’s true that Node.js processes all requests on a single thread. But it’s just a part of the theory behind Node.js design. In fact, more than the single thread mechanism, it makes use of events and callbacks to handle a large no. of requests asynchronously.
@@ -1501,6 +1504,9 @@ var requestListener = function (request, response) {
 var server = http.createServer(requestListener);
 server.listen(4200); // The port where you want to start with.
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. How to load html in Node.js?
 To load HTML in Node.js we have to change the “Content-type” in the HTML code from text/plain to text/html.
@@ -1534,6 +1540,10 @@ response.write(file);
 response.end();
 });
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. How can you listen on port 80 with Node?
 Instead of running on port 80 we can redirect port 80 to your application's port (>1024) using
 ```
