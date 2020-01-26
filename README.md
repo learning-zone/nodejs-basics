@@ -318,6 +318,9 @@ var readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {
 expect(readFileStub).to.be.called;  
 readFileStub.restore();
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is a test pyramid? How can you implement it when talking about HTTP APIs?
 The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
@@ -360,6 +363,10 @@ Example :
 ```javascript
 Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. How can you make sure your dependencies are safe?
 The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
 
