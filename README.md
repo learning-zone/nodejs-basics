@@ -925,6 +925,9 @@ Cluster supports two types of load distribution:
 
 * The main process listens on a port, accepts new connection and assigns it to a child process in a round robin fashion.
 * The main process assigns the port to a child process and child process itself listen the port.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is typically the first argument passed to a Node.js callback handler?
 The first argument to any callback handler is an optional error object
@@ -973,6 +976,10 @@ Initiate read_file.js:
 ```
 C:\>node read_file.js
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. What is JIT and how is it related to Node.js? 
 Node.js has depended on the V8 JavaScript engine to provide code execution in the language. The V8 is a JavaScript engine built at the google development center, in Germany. It is open source and written in C++. It is used for both client side (Google Chrome) and server side (node.js) JavaScript applications. A central piece of the V8 engine that allows it to execute JavaScript at high speed is the JIT (Just In Time) compiler. This is a dynamic compiler that can optimize code during runtime. When V8 was first built the JIT Compiler was dubbed FullCodegen. Then, the V8 team implemented Crankshaft, which included many performance optimizations that FullCodegen did not implement.
 
