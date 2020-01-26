@@ -598,6 +598,9 @@ listner2 executed.
 1 Listner(s) listening to connection event
 Program Ended.
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. How many types of streams are present in node.js?
 Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
@@ -700,6 +703,9 @@ fs.createReadStream('input.txt')
   
 console.log("File Compressed.");
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is crypto in Node.js? How do you cipher the secure information in Node.js?
 The Node.js Crypto module supports cryptography. It provides cryptographic functionality that includes a set of wrappers for open SSL's hash HMAC, cipher, decipher, sign and verify functions.
