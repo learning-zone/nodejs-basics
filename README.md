@@ -1218,6 +1218,10 @@ Node Console
 > nodetest1@0.0.0 start C:\node\nodetest1
 > node ./bin/www
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. Since node is a single threaded process, how to make use of all CPUs?
 Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
 Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
@@ -1270,6 +1274,9 @@ The cluster module supports two methods of distributing incoming connections.
 The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
 
 The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What does emitter do and what is dispatcher?
 Node.js core API is based on asynchronous event-driven architecture in which certain kind of objects called emitters periodically emit events that cause listener objects to be called.
