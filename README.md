@@ -1593,6 +1593,9 @@ Template engines allow developer to embed backend variables into HTML files, and
 
 **Database Integration**  
 As a minimal framework, Express does not consider database integration as a required aspect within its package, thus it leans toward no specific database usage whatsoever. While adopting a particular data storage technology, be it MySQL, MongoDB, PostgreSQL, Redis, ElasticSearch or something else, it’s just a matter of installing the particular npm package as database driver. These third party database drivers do not conform to unified syntax when doing CRUD instructions, which makes switching databases a big hassle and error prone.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What are the Challenges with Node.js?
 **Challenges with Node.js Application Maintenance**  
@@ -1627,6 +1630,9 @@ Unlike the other programming languages, Node.js has its cycle of the event in th
 It is required for those web applications where traffic rate is very high. Node.js is an event based I/O language and its response time is very high rather than the other traditional languages. It is being used by the famous websites like Linked in, Twitter and Gmail.
 
 The runtime environment of Node.js interprets JavaScript, which is very easy and simple to understand and code. Due to this reason, even the developers find it easy going which keeps them happy and relaxed. It is pertinent for real-time collaborative apps.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. How Node.js overcomes the problem of blocking of I/O operations?
 Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads. 
@@ -1678,6 +1684,9 @@ addAsync(10).then((sum) => {
   console.log(sum);
 });
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What are the timing features of Node.js?
 The Performance Timing API provides an implementation of the W3C Performance Timeline specification. The purpose of the API is to support collection of high resolution performance metrics. This is the same Performance API as implemented in modern Web browsers.
