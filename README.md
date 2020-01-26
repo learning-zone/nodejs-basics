@@ -241,6 +241,10 @@ const addRandomNumber = async function(){
 
 addRandomNumber();
 ```
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. What are Promises in Node.js?
 It allows to associate handlers to an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
 
@@ -287,6 +291,9 @@ npm install yarn --global
 * Multiple Registries: Install any package from either npm or Bower and keep your package workflow the same.
 * Network Resilience: A single request failing won't cause an install to fail. Requests are retried upon failure.
 * Flat Mode: Resolve mismatching versions of dependencies to a single version to avoid creating duplicates.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. What is a stub? Name a use case!
 Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
