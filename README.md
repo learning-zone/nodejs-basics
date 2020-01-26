@@ -1002,6 +1002,9 @@ update - PUT
 delete - DELETE
 
 **PATCH**: Submits a partial modification to a resource. If you only need to update one field for the resource, you may want to use the PATCH method.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. List types of Http requests supported by Node.js.
 The HTTP core module is a key module to Node.js networking.
@@ -1144,6 +1147,9 @@ request(options, function(err, res, body) {
 });
 ```
 Using the options object, this request uses the GET method to retrieve JSON data directly from Reddit, which is returned as a string in the body field. From here, you can use `JSON.parse` and use the data as a normal JavaScript object.
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
 
 #### Q. Why to use Express.js?
 ExpressJS is a prebuilt NodeJS framework that can help you in creating server-side web applications faster and smarter. Simplicity, minimalism, flexibility, scalability are some of its characteristics and since it is made in NodeJS itself, it inherited its performance as well.
