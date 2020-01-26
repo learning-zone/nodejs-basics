@@ -1205,7 +1205,7 @@ MAKE SURE TO CD INTO YOUR nodetest FOLDER. OK, now we have some basic structure 
 }
 ```
 This is a basic JSON file describing our app and its dependencies. We need to add a few things to it. Specifically, calls for MongoDB and Monk. 
-```javascript
+```cmd
 C:\node\nodetest1>npm install --save monk@^6.0.6 mongodb@^3.1.13
 ```
 **Install Dependencies**  
