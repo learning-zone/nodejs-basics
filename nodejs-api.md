@@ -2,7 +2,7 @@
 
 
 
-#### Global Objects
+#### * Global Objects
 
 In browsers, the top-level scope is the global scope.
 That means that in browsers if you're in the global scope var something will define a global variable.
@@ -18,7 +18,7 @@ In Node this is different. The top-level scope is not the global scope; var some
 |Buffer;      | The Buffer class is a global type for dealing with binary data directly.|
 
 
-#### Console
+#### * Console
 
 |  API                                  |  Description   |
 |---------------------------------------|---------------------------------|
