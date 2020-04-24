@@ -7,7 +7,7 @@
 
 * *[NodeJS APIs](nodejs-api.md)*
 
-| Sl.No|  NodeJS Questions|
+| Sl.No|  Node.js Questions|
 |------|------------------|
 | 01. |[What does the runtime environment mean in Node.js?](#q-what-does-the-runtime-environment-mean-in-nodejs)|
 | 02. |[What is Node.js?](#q-what-is-nodejs)|
