@@ -30,7 +30,7 @@ In Node this is different. The top-level scope is not the global scope; var some
 |console.time(label);                   |Mark a time.|
 |console.timeEnd(label);                |Finish timer, record output.|
 |console.trace(label);                  |Print a stack trace to stderr of the current position.|
-|console.assert(expression, [message]); |Same as assert.ok() where if the expression evaluates as false throw an AssertionError with message.|
+|`console.assert(expression, [message]);` |Same as assert.ok() where if the expression evaluates as false throw an AssertionError with message.|
 
 
 ## Timers
