@@ -20,7 +20,7 @@
 | 09. |[What are Promises in Node.js?](#q-what-are-promises-in-nodejs)|
 | 10. |[What tools can be used to assure consistent style?](#q-what-tools-can-be-used-to-assure-consistent-style)|
 | 11. |[When should you npm and when yarn?](#q-when-should-you-npm-and-when-yarn)|
-| 12. |[What is a stub? Name a use case!](#q-what-is-a-stub--name-a-use-case)|
+| 12. |[What is a stub?](#q-what-is-a-stub)|
 | 13. |[What is a test pyramid? How can you implement it when talking about HTTP APIs?](#q-what-is-a-test-pyramid--how-can-you-implement-it-when-talking-about-http-apis)|
 | 14. |[How can you secure your HTTP cookies against XSS attacks?](#q-how-can-you-secure-your-http-cookies-against-xss-attacks)|
 | 15. |[How can you make sure your dependencies are safe?](#q-how-can-you-make-sure-your-dependencies-are-safe)|
@@ -369,7 +369,7 @@ npm install yarn --global
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***What is a stub?*** Name a use case!
+#### Q. ***What is a stub?*** 
 Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
 
 **Features of Stub:**  
