@@ -78,7 +78,7 @@
 
 <br/>
 
-#### Q. ***What does the runtime environment mean in Node.js?***
+#### Q. **What does the runtime environment mean in Node.js?***
 The Node.js runtime is the software stack responsible for installing your web service's code and its dependencies and running your service.
 
 The Node.js runtime for App Engine in the standard environment is declared in the `app.yaml` file:
@@ -88,7 +88,7 @@ runtime: nodejs10
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
 
-#### Q. What is Node.js?
+#### Q. _What is Node.js?_
 Node.js is an open-source server side runtime environment built on Chrome's V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript. 
 
 
