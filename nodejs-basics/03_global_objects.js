@@ -13,6 +13,3 @@ console.log(__filename);
 // Displays filename 
 var path = require("path");
 console.log(path.basename(__filename)); 
-
-
-
