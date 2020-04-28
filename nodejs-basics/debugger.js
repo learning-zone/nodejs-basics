@@ -15,3 +15,8 @@ setTimeout(() => {
   console.log('World');
 }, 1000);
 console.log('Hello');
+
+/**
+ * $ node inspect debugger.js
+ * $ node --inspect=127.0.0.1:9230 debugger.js
+ */
