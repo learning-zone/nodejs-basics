@@ -1,5 +1,5 @@
 /**
- * NodeJS Timer Module
+ * Timer Module
  * 
  */
 
