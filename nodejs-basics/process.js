@@ -39,6 +39,11 @@ console.log(`Uptime: ${process.uptime()}`);
 
 
 
+// Returns an object having information of memory usage.
+console.log(`Memory Usage: ${JSON.stringify(process.memoryUsage())}`);  
+
+
+
 // Print command line arguments
 process.argv.forEach((value, index, array) => {  
     console.log(`${index}: ${value}`);  
