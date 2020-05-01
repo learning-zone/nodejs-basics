@@ -5,7 +5,7 @@ config = {
         host: "localhost",  
         user: "root",  
         password: "root",
-        database: "javatpoint"   
+        database: "learning_zone"   
     })
 }; 
 module.exports = config;
