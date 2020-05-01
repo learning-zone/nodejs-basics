@@ -137,7 +137,7 @@ app.js
 npm install express --save
 ```
 **Step 04**: app.js
-```
+```javascript
 var express = require('express');
 var app = express();
 app.get('/', function (req, res) {
