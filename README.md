@@ -1649,7 +1649,7 @@ express helloapp
 ```
 **Middleware**  
 Middleware are basically just functions that have full access to both request and response objects.
-```
+```javascript
 var app = express();
 
 app.use(cookieParser());
