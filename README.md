@@ -1251,7 +1251,7 @@ app.get('/',function(req,res) {
 });
 var server=app.listen(3000,function() {});
 ```
-#### Q. ***Write the steps for setting up an Express JS application.
+#### Q. ***Write the steps for setting up an Express JS application?***
 **Install Express Generator**  
 ```
 C:\node>npm install -g express-generator
