@@ -7,6 +7,7 @@ db_pool.getConnection((err) => {
   if (err) throw err;  
   console.log("Connected!");  
  
+  // execute the SQL QUery
   db_pool.query(sql, (err, result) => {  
     if (err) throw err;  
     
