@@ -1848,6 +1848,7 @@ Type	|JavaScript is a programming language. It running in any web browser with a
 
 #### Q. ***What are the difference between Events and Callbacks?***
 #### Q. ***Explain RESTful Web Services in Node.js?***
+#### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
