@@ -1,8 +1,8 @@
-let con = require('./config').mysql_connect;
+let db_pool = require('./config').mysql_connect;
 
 
 // connect to the MySQL server
-con.connect(function(err) {  
+db_pool.getConnection(function(err) {  
   if (err) throw err;  
   console.log("Connected!");  
 
@@ -15,7 +15,7 @@ con.connect(function(err) {
               ];  
 
   // execute the insert statment
-  con.query(stmt, [values], function (err, result) {  
+  db_pool.query(stmt, [values], function (err, result) {  
     if (err) {
       return console.error(err.message);
     } 
@@ -23,10 +23,6 @@ con.connect(function(err) {
     // get total records
     console.log("Number of records inserted: " + result.affectedRows);  
   });
-  
-  
-  // close the database connection
-  con.end();
 }); 
 
 
