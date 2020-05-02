@@ -1,3 +1,7 @@
+/**
+ * CONNECTION POOL
+ * 
+ */
 var mysql = require('mysql');
 
 config = {
@@ -10,5 +14,3 @@ config = {
     })
 }; 
 module.exports = config;
-
-
