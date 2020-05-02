@@ -1,0 +1,29 @@
+<div class="page-data">
+    
+    <form method="post" >
+        <table cellpadding="11">
+        <tr>
+            <td class="label">Name</td><td>: <input type="text" name="name" required ng-model="student.name"></td>
+            </tr>
+            <tr>
+            <td class="label" valign="top">Address</td>
+            <td valign="top">: <textarea name="address" required cols="30" rows="5" ng-model="student.address"></textarea></td>
+        </tr>
+        <tr>
+            <td class="label">Email</td><td>: <input type="text" name="email" required ng-model="student.email"></td>
+            </tr>
+            <tr>
+            <td class="label">Phone</td><td>: <input type="text" name="phone" required ng-model="student.mobile"></td>
+            </tr>
+            <tr>
+            <td class="label"></td>
+            <td>
+                &nbsp; <input type="submit" name="submit" value="Save" ng-click="addCustomers(student)">
+                <input type="button" name="cancel" value="Cancel" class="cancel" ng-click="cancelAdd()">
+            </td>
+            </tr>
+        </table>
+    </form>
+    
+</div>
+        
