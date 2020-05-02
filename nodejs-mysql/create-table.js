@@ -1,7 +1,7 @@
-var con = require('./config').mysql_connect; 
+let db_pool = require('./config').mysql_connect; 
 
 // connect to the MySQL server
-con.connect(function(err) {  
+db_pool.getConnection((err) => {  
   if (err) throw err;  
     console.log("Connected!"); 
 
@@ -14,8 +14,8 @@ con.connect(function(err) {
                    )`;
 
 
-  con.query(statement, function (err, result) {  
-  if (err) throw err;  
-    console.log("Table created!");  
-  });
+  db_pool.query(statement, (err, result) => {  
+    if (err) throw err;  
+      console.log("Table created!");  
+    });
 });  
