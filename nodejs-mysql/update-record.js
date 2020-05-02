@@ -6,6 +6,7 @@ let sql = "UPDATE employee SET city = 'Ranchi' WHERE id = 1";
 db_pool.getConnection((err) => {  
   if (err) throw err;  
    
+  // execute the SQL QUery
   db_pool.query(sql, (err, result) => {  
     if (err) throw err;  
 
