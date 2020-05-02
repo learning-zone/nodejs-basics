@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "ejs": "^1.0.0",
-    "express": "3.5.1",
+    "express": "3.11.0",
     "express-myconnection": "1.0.4",
     "jade": "*",
     "mysql": "2.2.0"
