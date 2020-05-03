@@ -45,9 +45,7 @@ body {
 .a-inside.delete{background-color:#D23641;color:#fff;}
 
 input[type="text"]{
-    
     border:1px solid #ddd;
-    height:26px;
     width:300px;
 }
 .cancel{
