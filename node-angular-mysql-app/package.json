@@ -1,7 +1,8 @@
 {
-  "name": "application-name",
+  "name": "single-page-application",
   "version": "0.0.1",
-  "private": true,
+  "description": "A fully functioning Node.js application with Angular and MySql",
+  "private": false,
   "scripts": {
     "start": "node server.js"
   },
@@ -11,5 +12,15 @@
     "express-myconnection": "1.0.4",
     "jade": "*",
     "mysql": "^2.18.1"
+  },
+  "author": "",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learning-zone/nodejs-interview-questions.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/learning-zone/nodejs-interview-questions/issues"
   }
 }
