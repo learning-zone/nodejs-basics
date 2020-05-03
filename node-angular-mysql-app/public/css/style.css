@@ -6,10 +6,6 @@ body {
   height:100%;
 }
 
-a {
-  color: #00B7FF;
-}
-
 #wrapper {
   margin-top: 0px;
   width: 99%;
@@ -34,7 +30,8 @@ a {
     float: left;
 }
 .data-btn button{
-    padding:10px 20px;background:#18bb7c;border:1px solid #fff;
+    padding:10px 20px;
+    border:1px solid #fff;
     color:#FEFFFD;font-weight:bold;
 }
 .data-btn button a{

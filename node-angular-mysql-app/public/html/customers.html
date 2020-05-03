@@ -1,7 +1,7 @@
 <div class="page-data">
   <div class="tool-section">
     <div class="data-btn">
-      <button><a href="#!add_customer"> Add </a></button>
+      <button class="btn btn-primary"><a href="#!add_customer"> Add </a></button>
     </div>
     <div class="data-search">
       <input type="text" value="" placeholder="Search Here" ng-model="searchText" />
@@ -19,15 +19,15 @@
         <th width="120px">Action</th>
       </tr>
       <tr ng-repeat="customer in customers | filter:searchText">
-        <td width="50px">{{customer.id}}</td>
+        <td width="50px" align="center">{{customer.id}}</td>
         <td>{{customer.name}}</td>
         <td>{{customer.address}}</td>
         <td>{{customer.phone}}</td>
         <td>{{customer.email}}</td>
-        <td width="120px">
-          <a class="a-inside edit" href="#!edit_customer/edit/{{customer.id}}">Edit</a>
+        <td width="150px" align="center">
+          <a class="btn btn-primary" href="#!edit_customer/edit/{{customer.id}}">Edit</a>
 
-          <a class="a-inside delete" href="#!delete_customer/delete/{{customer.id}}">Delete</a>
+          <a class="btn btn-danger" href="#!delete_customer/delete/{{customer.id}}">Delete</a>
         </td>
       </tr>
     </table>
