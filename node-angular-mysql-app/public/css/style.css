@@ -27,7 +27,10 @@ a {
     padding-left:40px;
     background:#00304C;color:#FEFFFD;
 }
-.data-btn{padding-left:8px}
+.data-btn{
+    padding-left:8px;
+    float: left;
+}
 .data-btn button{
     padding:10px 20px;background:#18bb7c;border:1px solid #fff;
     color:#FEFFFD;font-weight:bold;
@@ -69,4 +72,9 @@ textarea{ border:1px solid #ddd;width:296px;}
     margin-top:10%;
     padding: 2%;
     text-align: center;
+}
+
+.data-search {
+    float: right;
+    position: relative;
 }
