@@ -19,7 +19,9 @@ a {
   border-radius: 4px;
 }
 
-.page-container{padding:20px;}
+.page-container{
+    padding-top: 8%;
+}
 .page-data{padding:10px;}
 .page-header{
     
@@ -77,4 +79,10 @@ textarea{ border:1px solid #ddd;width:296px;}
 .data-search {
     float: right;
     position: relative;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 100% !important;
+    }
 }
