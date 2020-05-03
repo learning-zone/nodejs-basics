@@ -4,7 +4,7 @@
       <button><a href="#!add_customer"> Add </a></button>
     </div>
     <div class="data-search">
-      <input type="text" value="" placeholder="Search Here" id="search" />
+      <input type="text" value="" placeholder="Search Here" ng-model="searchText" />
     </div>
   </div>
 
@@ -18,7 +18,7 @@
         <th>Email</th>
         <th width="120px">Action</th>
       </tr>
-      <tr ng-repeat="customer in customers">
+      <tr ng-repeat="customer in customers | filter:searchText">
         <td width="50px">{{customer.id}}</td>
         <td>{{customer.name}}</td>
         <td>{{customer.address}}</td>
@@ -26,7 +26,7 @@
         <td>{{customer.email}}</td>
         <td width="120px">
           <a class="a-inside edit" href="#!edit_customer/edit/{{customer.id}}">Edit</a>
-          
+
           <a class="a-inside delete" href="#!delete_customer/delete/{{customer.id}}">Delete</a>
         </td>
       </tr>
