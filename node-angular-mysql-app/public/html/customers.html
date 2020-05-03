@@ -9,15 +9,17 @@
   </div>
 
   <div class="data-table">
-    <table border="1" cellpadding="7" cellspacing="7">
+    <table border="1" cellpadding="7" cellspacing="7" class="table table-hover">
+     <thead class="thead-dark">
       <tr>
-        <th width="50px">No</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th width="120px">Action</th>
+        <th width="50px" scope="col">No</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col" width="120px">Action</th>
       </tr>
+     </thead>
       <tr ng-repeat="customer in customers | filter:searchText">
         <td width="50px" align="center">{{customer.id}}</td>
         <td>{{customer.name}}</td>
