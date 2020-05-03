@@ -72,5 +72,5 @@ app.post('/customers/edit/:id',customers.save_edit);
 //app.use(app.router);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express Server running at http://localhost:' + app.get('port'));
 });
