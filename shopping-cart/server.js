@@ -46,7 +46,7 @@ app.use(
         user: 'root',
         password : 'root',
         port : 3306, //port mysql
-        database:'nodejs'
+        database:'learning_zone'
 
     },'request') //or single
 
