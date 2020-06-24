@@ -75,6 +75,7 @@
 | 64. |[What is difference between JavaScript and Node.js?](#q-what-is-difference-between-javascript-and-nodejs)|
 | 65. |[What are the difference between Events and Callbacks?](#q-what-are-the-difference-between-events-and-callbacks)|
 | 66. |[Explain RESTful Web Services in Node.js?](#q-explain-restful-web-services-in-nodejs)|
+| 67. |[How to handle file upload in Node js?](#q-how-to-handle-file-upload-in-node-js)|
 
 
 
@@ -1849,6 +1850,7 @@ Type	|JavaScript is a programming language. It running in any web browser with a
 #### Q. ***What are the difference between Events and Callbacks?***
 #### Q. ***Explain RESTful Web Services in Node.js?***
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
+#### Q. ***how to handle file upload in node js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
