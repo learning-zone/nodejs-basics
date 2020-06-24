@@ -76,6 +76,8 @@
 | 65. |[What are the difference between Events and Callbacks?](#q-what-are-the-difference-between-events-and-callbacks)|
 | 66. |[Explain RESTful Web Services in Node.js?](#q-explain-restful-web-services-in-nodejs)|
 | 67. |[How to handle file upload in Node js?](#q-how-to-handle-file-upload-in-node-js)|
+| 68. |[Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?](#q-explain-the-terms-body-parser-cookie-parser-debug-jade-morgan-nodemon-pm2-serve-favicon-cors-in-express-js)|
+| 69. |[How does routing work in Node.js](#q-how-does-routing-work-in-node-js)|
 
 
 
@@ -1851,6 +1853,8 @@ Type	|JavaScript is a programming language. It running in any web browser with a
 #### Q. ***Explain RESTful Web Services in Node.js?***
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
 #### Q. ***how to handle file upload in node js?***
+#### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?***
+#### Q. ***How does routing work in Node.js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
