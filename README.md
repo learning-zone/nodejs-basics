@@ -78,7 +78,7 @@
 | 67. |[How to handle file upload in Node js?](#q-how-to-handle-file-upload-in-node-js)|
 | 68. |[Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?](#q-explain-the-terms-body-parser-cookie-parser-debug-jade-morgan-nodemon-pm2-serve-favicon-cors-in-express-js)|
 | 69. |[How does routing work in Node.js](#q-how-does-routing-work-in-node-js)|
-
+| 70. |[How Node prevents blocking code?](#q-how-node-prevents-blocking-code)|
 
 
 
@@ -1855,6 +1855,7 @@ Type	|JavaScript is a programming language. It running in any web browser with a
 #### Q. ***how to handle file upload in node js?***
 #### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?***
 #### Q. ***How does routing work in Node.js?***
+#### Q. ***How Node prevents blocking code?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
