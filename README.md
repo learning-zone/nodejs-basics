@@ -1214,7 +1214,7 @@ request('https://nodejs.org/', function(err, res, body) {
     console.log(body);
 });
 ```
-The first argument to request can either be a URL string, or an object of options. Here are some of the more common options you'll encounter in your applications:
+The first argument to request can either be a URL string, or an object of options. Here are some of the more common options you\'ll encounter in your applications:
 
 * **url**: The destination URL of the HTTP request
 * **method**: The HTTP method to be used (GET, POST, DELETE, etc)
