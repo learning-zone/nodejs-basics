@@ -86,7 +86,7 @@
 <br/>
 
 #### Q. ***What does the runtime environment mean in Node.js?***
-The Node.js runtime is the software stack responsible for installing your web service's code and its dependencies and running your service.
+The Node.js runtime is the software stack responsible for installing your web service\'s code and its dependencies and running your service.
 
 The Node.js runtime for App Engine in the standard environment is declared in the `app.yaml` file:
 ```javascript
@@ -96,7 +96,7 @@ runtime: nodejs10
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
 
 #### Q. ***What is Node.js?***
-Node.js is an open-source server side runtime environment built on Chrome's V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript. 
+Node.js is an open-source server side runtime environment built on Chrome\'s V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript. 
 
 
 #### Q. ***What is Node.js Process Model?***
@@ -112,7 +112,7 @@ Node.js runs in a single process and the application code runs in a single threa
 * RegExp 
 
 
-* **Buffer**: Node.js includes an additional data type called Buffer (not available in browser's JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+* **Buffer**: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
@@ -412,7 +412,7 @@ The "Test Pyramid" is a metaphor that tells us to group software tests into buck
 ![alt text](https://github.com/learning-zone/nodejs-interview-questions/blob/master/assets/testPyramid.png "Test Pyramid")
 
 
-Mike Cohn's original test pyramid consists of three layers that your test suite should consist of (bottom to top):
+Mike Cohn\'s original test pyramid consists of three layers that your test suite should consist of (bottom to top):
 
 1. Unit Tests
 1. Service Tests
@@ -581,21 +581,22 @@ Libraries that enhance stack trace information
 * Longjohn
 
 #### Q. ***What are some of the most popular modules of Node.js?***
+
 * **Async**: Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript.
 * **Browserify**: Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single <script> tag.
 * **Bower**: Bower is a package manager for the web. It works by fetching and installing packages from all over, taking care of hunting, finding, downloading, and saving the stuff you’re looking for.
 * **Backbone**: Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface.
 * **Csv**: csv module has four sub modules which provides CSV generation, parsing, transformation and serialization for Node.js.
-* **Debug**: Debug is a tiny node.js debugging utility modelled after node core's debugging technique.
+* **Debug**: Debug is a tiny node.js debugging utility modelled after node core\'s debugging technique.
 * **Express**: Express is a fast, un-opinionated, minimalist web framework. It provides small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs.
 * **Forever**: A simple CLI tool for ensuring that a given node script runs continuously (i.e. forever).
 * **Grunt**: is a JavaScript Task Runner that facilitates creating new projects and makes performing repetitive but necessary tasks such as linting, unit testing, concatenating and minifying files (among other things) trivial.
 * **Gulp**: is a streaming build system that helps you automate painful or time-consuming tasks in your development workflow.
 * **Hapi**: is a streaming build system that helps you automate painful or time-consuming tasks in your development workflow.
-* **Http-server**: is a simple, zero-configuration command-line http server. It is powerful enough for production usage, but it's simple and hackable enough to be used for testing, local development, and learning.
+* **Http-server**: is a simple, zero-configuration command-line http server. It is powerful enough for production usage, but it\'s simple and hackable enough to be used for testing, local development, and learning.
 * **Inquirer**: A collection of common interactive command line user interfaces.
 * **Jquery**: jQuery is a fast, small, and feature-rich JavaScript library.
-* **Jshint**: Static analysis tool to detect errors and potential problems in JavaScript code and to enforce your team's coding conventions.
+* **Jshint**: Static analysis tool to detect errors and potential problems in JavaScript code and to enforce your team\'s coding conventions.
 * **Koa**: Koa is web app framework. It is an expressive HTTP middleware for node.js to make web applications and APIs more enjoyable to write.
 * **Lodash**: The lodash library exported as a node module. Lodash is a modern JavaScript utility library delivering modularity, performance, & extras.
 * **Less**: The less library exported as a node module.
@@ -792,7 +793,8 @@ console.log("File Compressed.");
 </div>
 
 #### Q. ***What is crypto in Node.js? How do you cipher the secure information in Node.js?***
-The Node.js Crypto module supports cryptography. It provides cryptographic functionality that includes a set of wrappers for open SSL's hash HMAC, cipher, decipher, sign and verify functions.
+
+The Node.js Crypto module supports cryptography. It provides cryptographic functionality that includes a set of wrappers for open SSL\'s hash HMAC, cipher, decipher, sign and verify functions.
 
 * **Hash**: A hash is a fixed-length string of bits i.e. procedurally and deterministically generated from some arbitrary block of source data.
 * **HMAC**: HMAC stands for Hash-based Message Authentication Code. It is a process for applying a hash algorithm to both data and a secret key that results in a single final hash.
@@ -869,6 +871,7 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
 </div>
 
 #### Q. ***What are the security mechanisms available in Node.js?***
+
 * **Using the Helmet module**  
 Helmet helps to secure your Express applications by setting various HTTP headers, like:
 
@@ -876,6 +879,7 @@ Helmet helps to secure your Express applications by setting various HTTP headers
     * Strict-Transport-Security to keep your users on HTTPS,
     * X-XSS-Protection to prevent reflected XSS attacks,
     * X-DNS-Prefetch-Control to disable browsers’ DNS prefetching.
+
 ```javascript
 const express = require('express')
 const helmet = require('helmet')
@@ -883,10 +887,12 @@ const app = express()
 
 app.use(helmet())
 ```
+
 * **Validating user input**    
 Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
 
 To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
+
 ```javascript
 const Joi = require('joi');
 
@@ -920,8 +926,10 @@ Examples of Evil Regular Expressions patterns:
 ([a-zA-Z]+)*
 (a|aa)+
 ```
-* **Security.txt**    
+* **Security.txt**   
+
 Security.txt defines a standard to help organizations define the process for security researchers to securely disclose security vulnerabilities.
+
 ```javascript
 const express = require('express')
 const securityTxt = require('express-security.txt')
@@ -1629,7 +1637,7 @@ response.end();
 </div>
 
 #### Q. ***How can you listen on port 80 with Node?***
-Instead of running on port 80 we can redirect port 80 to your application's port (>1024) using
+Instead of running on port 80 we can redirect port 80 to your application\'s port (>1024) using
 ```
 iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 ```
