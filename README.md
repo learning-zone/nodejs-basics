@@ -305,7 +305,7 @@ var outputPromise = getInputPromise().then(function (input) {
 });
 ```
 * **Using Async Await**  
-Async await makes asynchronous code look like it’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
+Async await makes asynchronous code look like it\’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
 
 ```javascript
 const getrandomnumber = function(){
