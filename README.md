@@ -328,7 +328,7 @@ addRandomNumber();
 </div>
 
 #### Q. ***What are Promises in Node.js?***
-It allows to associate handlers to an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
+It allows to associate handlers to an asynchronous action\'s eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
 
 Promises in node.js promised to do some work and then had separate callbacks that would be executed for success and failure as well as handling timeouts. Another way to think of promises in node.js was that they were emitters that could emit only two events: success and error.The cool thing about promises is you can combine them into dependency chains (do Promise C only when Promise A and Promise B complete).
 
@@ -345,6 +345,7 @@ var myPromise = new Promise(function(resolve, reject){
    ....
 })
 ```
+
 #### Q. ***What tools can be used to assure consistent style?***
 * ESLint
 * Standard
