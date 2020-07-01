@@ -1,12 +1,12 @@
 # Node.js Token Based Authentication & Authorization
 
 
-## Project Setup
+#### Project Setup
 ```
   npm install
 ```
 
-### Run
+#### Run
 ```
   npm start
 ```
@@ -35,4 +35,4 @@
 
 ## Project Structure
 
-<img src="assets/node-js-jwt-authentication-mysql-project-structure.png" alt="Project Structure" />
+<img src="../assets/node-js-jwt-authentication-mysql-project-structure.png" alt="Project Structure" />
