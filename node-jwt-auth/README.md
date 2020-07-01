@@ -12,7 +12,7 @@ Working with Front-end:
 
 > [React JWT Authentication (without Redux) example](https://bezkoder.com/react-jwt-auth/)
 
-## Project setup
+## Project Setup
 ```
   npm install
 ```
