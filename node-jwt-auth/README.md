@@ -14,10 +14,10 @@ Working with Front-end:
 
 ## Project setup
 ```
-npm install
+  npm install
 ```
 
 ### Run
 ```
-node server.js
+  npm start
 ```
