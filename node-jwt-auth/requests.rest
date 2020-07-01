@@ -1,0 +1,27 @@
+### Sign-Up
+POST http://localhost:8080/api/auth/signup
+Content-Type: application/json
+
+{
+	"username": "admin",
+	"email": "admin@gmail.com",
+	"roles": ["moderator", "user"]
+}
+
+
+### All User
+GET http://localhost:8080/api/test/all
+
+
+### User Role
+GET http://localhost:8080/api/test/user
+
+
+### Sign-In
+POST http://localhost:8080/api/auth/signin
+Content-Type: application/json
+
+{
+	"username": "mod",
+	"password": "12345678"
+}
