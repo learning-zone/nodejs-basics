@@ -37,6 +37,6 @@
 
 <img src="../assets/node-js-jwt-authentication-mysql-project-structure.png" alt="Project Structure" />
 
-## Referece
+## Reference
 
-[Node Authentication](https://bezkoder.com/node-js-jwt-authentication-mysql/)
+* *[Authentication & Authorization in Node](https://bezkoder.com/node-js-jwt-authentication-mysql/)*
