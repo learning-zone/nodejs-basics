@@ -1,7 +1,7 @@
 {
   "name": "node-js-jwt-auth",
   "version": "1.0.0",
-  "description": "Node.js Demo for JWT Authentication",
+  "description": "Node.js Token Based Authentication and Authorization",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
@@ -14,7 +14,7 @@
     "express",
     "mysql"
   ],
-  "author": "bezkoder",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
