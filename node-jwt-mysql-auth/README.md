@@ -11,7 +11,7 @@
   npm start
 ```
 
-## RestAPI call used in this project
+## Rest APIs 
 
 | Methods | Urls             | Actions                 |
 |---------|------------------|-------------------------|
