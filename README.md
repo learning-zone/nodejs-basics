@@ -79,7 +79,7 @@
 | 68. |[Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?](#q-explain-the-terms-body-parser-cookie-parser-debug-jade-morgan-nodemon-pm2-serve-favicon-cors-in-express-js)|
 | 69. |[How does routing work in Node.js](#q-how-does-routing-work-in-node-js)|
 | 70. |[How Node prevents blocking code?](#q-how-node-prevents-blocking-code)|
-| 71. |[what is difference between promise and async await in node js?](#q-what-is-difference-between-promise-and-async-await-in-node-js)|
+| 71. |[What is difference between promise and async await in node js?](#q-what-is-difference-between-promise-and-async-await-in-node-js)|
 
 
 
