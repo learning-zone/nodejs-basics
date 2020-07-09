@@ -80,6 +80,7 @@
 | 69. |[How does routing work in Node.js](#q-how-does-routing-work-in-node-js)|
 | 70. |[How Node prevents blocking code?](#q-how-node-prevents-blocking-code)|
 | 71. |[What is difference between promise and async await in node js?](#q-what-is-difference-between-promise-and-async-await-in-node-js)|
+| 72. |[How to use JSON Web Token (JWT) for authentication in node js?](#q-how-to-use-json-web-token-jwt-for-authentication-in-node-js?)|
 
 
 
@@ -1871,6 +1872,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***How does routing work in Node.js?***
 #### Q. ***How Node prevents blocking code?***
 #### Q. ***What is difference between promise and async await in node js?***
+#### Q. ***How to use JSON Web Token (JWT) for authentication in node js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
