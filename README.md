@@ -57,7 +57,7 @@
 | 46. |[When to use Node.js and when not to use it?](#q-when-to-use-nodejs-and-when-not-to-use-it)|
 | 47. |[Explain how does Node.js work?](#q-explain-how-does-nodejs-work)|
 | 48. |[Is Node.js entirely based on a single-thread?](#q-is-nodejs-entirely-based-on-a-single-thread)|
-| 09. |[How to make post request in Node.js?](#q-how-to-make-post-request-in-nodejs)|
+| 49. |[How to make post request in Node.js?](#q-how-to-make-post-request-in-nodejs)|
 | 50. |[Can you create http server in Node.js, explain the code used for it?](#q-can-you-create-http-server-in-nodejs--explain-the-code-used-for-it)|
 | 51. |[How to load html in Node.js?](#q-how-to-load-html-in-nodejs)|
 | 52. |[How can you listen on port 80 with Node?](#q-how-can-you-listen-on-port-80-with-node)|
