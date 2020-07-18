@@ -184,7 +184,7 @@ node app.js
 
 #### Q. ***How do Node.js works?***
 
-<img src="assets/event-loop.png" alt="Node Architecture" width="500px" />
+<img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
 
 Node is completely event-driven. Basically the server consists of one thread processing one event after another.
 
