@@ -445,7 +445,7 @@ npm install yarn --global
 </div>
 
 #### Q. ***What is a stub?***
- 
+
 Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
 
 **Features of Stub:**  
@@ -510,13 +510,13 @@ Set-Cookie: [name]=[value]; Secure
 ```
 3. The web server can use X-XSS-Protection response header to make sure pages do not load when they detect reflected cross-site scripting (XSS) attacks.
 
-Example :
+Example:
 ```javascript
 X-XSS-Protection: 1; mode=block
 ```
 4. The web server can use HTTP Content-Security-Policy response header to control what resources a user agent is allowed to load for a certain page. It can help to prevent various types of attacks like Cross Site Scripting (XSS) and data injection attacks.
 
-Example :
+Example:
 ```javascript
 Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 ```
