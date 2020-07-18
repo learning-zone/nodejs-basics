@@ -184,6 +184,8 @@ node app.js
 
 #### Q. ***How do Node.js works?***
 
+<img src="assets/event-loop.png" alt="Node Architecture" width="500px" />
+
 Node is completely event-driven. Basically the server consists of one thread processing one event after another.
 
 A new request coming in is one kind of event. The server starts processing it and when there is a blocking IO operation, it does not wait until it completes and instead registers a callback function. The server then immediately starts to process another event (maybe another request). When the IO operation is finished, that is another kind of event, and the server will process it (i.e. continue working on the request) by executing the callback as soon as it has time.
