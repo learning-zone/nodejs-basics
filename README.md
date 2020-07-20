@@ -547,7 +547,8 @@ The event loop is what allows Node.js to perform non-blocking I/O operations —
 
 Node.js is a single-threaded application, but it can support concurrency via the concept of `event` and `callbacks`. Every API of Node.js is asynchronous and being single-threaded, they use `async function calls` to maintain concurrency. Node uses observer pattern. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
 
-**Event-Driven Programming**  
+**Event-Driven Programming**
+
 In an event-driven application, there is generally a main loop that listens for events, and then triggers a callback function when one of those events is detected.
 
 Although events look quite similar to callbacks, the difference lies in the fact that callback functions are called when an asynchronous function returns its result, whereas event handling works on the observer pattern. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners as follows
@@ -559,7 +560,9 @@ var events = require('events');
 // Create an eventEmitter object
 var eventEmitter = new events.EventEmitter();
 ```
+
 Example
+
 ```javascript
 // Import events module
 var events = require('events');
@@ -857,7 +860,8 @@ writerStream.on('error', function(err) {
 console.log("Program Ended");
 ```
 
-**Piping the Streams**  
+**Piping the Streams**
+
 Piping is a mechanism where we provide the output of one stream as the input to another stream. It is normally used to get data from one stream and to pass the output of that stream to another stream. There is no limit on piping operations.
 
 ```javascript
@@ -877,7 +881,9 @@ console.log("Program Ended");
 ```
 
 **Chaining the Streams**
+
 Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations.  
+
 ```javascript
 var fs = require("fs");
 var zlib = require('zlib');
@@ -977,13 +983,14 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
 
 ## Q. ***What are the security mechanisms available in Node.js?***
 
-* **Using the Helmet module**  
+**Using the Helmet module**
+
 Helmet helps to secure your Express applications by setting various HTTP headers, like:
 
-    * X-Frame-Options to mitigates clickjacking attacks,
-    * Strict-Transport-Security to keep your users on HTTPS,
-    * X-XSS-Protection to prevent reflected XSS attacks,
-    * X-DNS-Prefetch-Control to disable browsers’ DNS prefetching.
+* X-Frame-Options to mitigates clickjacking attacks,
+* Strict-Transport-Security to keep your users on HTTPS,
+* X-XSS-Protection to prevent reflected XSS attacks,
+* X-DNS-Prefetch-Control to disable browsers DNS prefetching.
 
 ```javascript
 const express = require('express')
@@ -993,7 +1000,8 @@ const app = express()
 app.use(helmet())
 ```
 
-* **Validating user input**
+**Validating user input**
+
 Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
 
 To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
@@ -1016,7 +1024,9 @@ const result = Joi.validate({
 }, schema)
 // result.error === null -> valid
 ```
-* **Securing your Regular Expressions**
+
+**Securing your Regular Expressions**
+
 Regular Expressions are a great way to manipulate texts and get the parts that you need from them. However, there is an attack vector called Regular Expression Denial of Service attack, which exposes the fact that most Regular Expression implementations may reach extreme situations for specially crafted input, that cause them to work extremely slowly.
 
 The Regular Expressions that can do such a thing are commonly referred as Evil Regexes. These expressions contain:
@@ -1031,7 +1041,8 @@ Examples of Evil Regular Expressions patterns:
 ([a-zA-Z]+)*
 (a|aa)+
 ```
-* **Security.txt**
+
+**Security.txt**
 
 Security.txt defines a standard to help organizations define the process for security researchers to securely disclose security vulnerabilities.
 
@@ -1279,7 +1290,7 @@ require('http').METHODS
   ```
 
   **http.STATUS_CODES**
-  
+
   ```javascript
   require('http').STATUS_CODES
 { '100': 'Continue',
@@ -1529,6 +1540,7 @@ Node.js core API is based on asynchronous event-driven architecture in which cer
 All objects that emit events are members of EventEmitter class. These objects expose an eventEmitter.on() function that allows one or more functions to be attached to named events emitted by the object.
 
 When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
+
 ```javascript
 const EventEmitter = require('events');
 class MyEmitter extends EventEmitter {}
@@ -1544,11 +1556,13 @@ myEmitter.on('event', function(a, b) {
 });
 myEmitter.emit('event','Technoetics', 'Club');
 ```
+
 Here we create a myEmitter object and emit event at the end which triggers the callback function and we are able to get the desired output.
 
 By default, all listeners attached to a particular event object are called by the EventListener object synchronously in the order in which they are registered or attached to the event object.
 
-**Dispatcher**  
+**Dispatcher**
+
 The Dispatcher has functionality not provided nor expected in EventEmitter, the most notable being waitFor, which allows a store to ensure that another store has been updated in response to an action before it proceeds.
 
 Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API that you might object-assign onto multiple stores.
@@ -1592,7 +1606,7 @@ The callback function further mostly have other callbacks associated within repr
 
 When all the items in the Event Queue are processed and there are no pending operations left, Node.js terminates the application automatically.
 
-<img src="assets/reactor-pattern.jpg" alt="Test Pyramid" />
+<img src="assets/reactor-pattern.jpg" alt="Test Pyramid" width="800px" />
 
 1. The application generates a new I/O operation by submitting a request to the Event Demultiplexer. The application also specifies a handler, which will be invoked when the operation completes. Submitting a new request to the Event Demultiplexer is a non-blocking call and it immediately returns the control back to the application.
 2. When a set of I/O operations completes, the Event Demultiplexer pushes the new events into the Event Queue.
