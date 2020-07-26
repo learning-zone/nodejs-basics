@@ -1,8 +1,24 @@
-## Node.js APIs
+# Node APIs List
 
+- [Global Objects](#global-objects)
+- [Console](#console)
+- [Timers](#timers)
+- [Modules](#modules)
+- [Process](#process)
+- [Child Process](#child-process)
+- [Util](#util)
+- [Events](#events)
+- [Stream](#stream)
+- [File System](#file-system)
+- [Path](#path)
+- [HTTP](#http)
+- [URL](#url)
+- [Query String](#query-string)
+- [Assert](#assert)
+- [OS](#os)
+- [Buffer](#buffer)
 
-
-#### Global Objects
+## Global Objects
 
 In browsers, the top-level scope is the global scope.
 That means that in browsers if you're in the global scope var something will define a global variable.
@@ -17,8 +33,7 @@ In Node this is different. The top-level scope is not the global scope; var some
 |process;     | The process object is a global object and can be accessed from anywhere. It is an instance of EventEmitter.|
 |Buffer;      | The Buffer class is a global type for dealing with binary data directly.|
 
-
-#### Console
+## Console
 
 |  API                                  |  Description   |
 |---------------------------------------|---------------------------------|
@@ -32,9 +47,7 @@ In Node this is different. The top-level scope is not the global scope; var some
 |console.trace(label);                  |Print a stack trace to stderr of the current position.|
 |console.assert(expression, [message]); |Same as assert.ok() where if the expression evaluates as false throw an AssertionError with message.|
 
-
-#### Timers
-
+## Timers
 
 |  API                                        |  Description                        |
 |---------------------------------------------|-------------------------------------|
@@ -47,9 +60,7 @@ In Node this is different. The top-level scope is not the global scope; var some
 |unref();  | Allow you to create a timer that is active but if it is the only item left in the event loop, node won't keep the program running.|
 |ref();    | If you had previously unref()d a timer you can call ref() to explicitly request the timer hold the program open.
 
-
-#### Modules
-
+## Modules
 
 ```javascript
 var module = require('./module.js');    // Loads the module module.js in the same directory.
@@ -81,8 +92,7 @@ module.exports = function(width) {
 }
 ```
 
-#### Process
-
+## Process
 
 ```javascript
 process.on('exit', function(code) {});              // Emitted when the process is about to exit
@@ -124,12 +134,10 @@ process.on('uncaughtException', function(err) {});  // Emitted when an exception
 |process.uptime();            |Number of seconds Node has been running.|
 |process.hrtime();            |Returns the current high-resolution real time in a [seconds, nanoseconds] tuple Array.|
 
+## Child Process
 
-#### Child Process
- 
 Node provides a tri-directional popen facility through the child_process module.
 It is possible to stream data through a child's stdin, stdout, and stderr in a fully non-blocking way.
-
 
 |  API                     |  Description                         |
 |--------------------------|--------------------------------------|
@@ -147,11 +155,9 @@ child_process.exec(command, [options], callback);             |Runs a command in
 child_process.execFile(file, [args], [options], [callback]);  |Runs a command in a shell and buffers the output.|
 child_process.fork(modulePath, [args], [options]);            |This is a special case of the spawn() functionality for spawning Node processes. In addition to having all the methods in a normal ChildProcess instance, the returned object has a communication channel built-in. |
 
-
-#### Util
+## Util
 
 These functions are in the module 'util'. Use require('util') to access them.
-
 
 |  API                        |  Description                         |
 |-----------------------------|--------------------------------------|
@@ -168,13 +174,11 @@ These functions are in the module 'util'. Use require('util') to access them.
 |util.isError(object);          |Returns true if the given "object" is an Error. false otherwise.|
 |util.inherits(constructor, superConstructor); |Inherit the prototype methods from one constructor into another.|
 
-
-#### Events
+## Events
 
 All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require("events");
 To access the EventEmitter class, require('events').EventEmitter.
 All EventEmitters emit the event 'newListener' when new listeners are added and 'removeListener' when a listener is removed.
-
 
 |  API                                  |  Description                         |
 |---------------------------------------|--------------------------------------|
@@ -188,11 +192,9 @@ All EventEmitters emit the event 'newListener' when new listeners are added and 
 |emitter.emit(event, [arg1], [arg2], [...]); |Execute each of the listeners in order with the supplied arguments. Returns true if event had listeners, false otherwise.|
 |EventEmitter.listenerCount(emitter, event);  |Return the number of listeners for a given event.|
 
-
-#### Stream
+## Stream
 
 A stream is an abstract interface implemented by various objects in Node. For example a request to an HTTP server is a stream, as is stdout. Streams are readable, writable, or both. All streams are instances of EventEmitter.
-
 
 The Readable stream interface is the abstraction for a source of data that you are reading from.
 In other words, data comes out of a Readable stream.
@@ -203,6 +205,7 @@ zlib streams, crypto streams, tcp sockets, child process stdout and stderr, proc
 ```javascript
 var readable = getReadableStreamSomehow();
 ```
+
 |  API                                  |  Description                         |
 |---------------------------------------|--------------------------------------|
 |readable.on('readable', function() {});  |When a chunk of data can be read from the stream, it will emit a 'readable' event|
@@ -216,7 +219,6 @@ var readable = getReadableStreamSomehow();
 |readable.pipe(destination, [options]);   |This method pulls all the data out of a readable stream, and writes it to the supplied destination, automatically managing the flow so that the destination is not overwhelmed by a fast readable stream|
 |readable.unpipe([destination]);          |This method will remove the hooks set up for a previous pipe() call. If the destination is not specified, then all pipes are removed.|
 |readable.unshift(chunk);                  |This is useful in certain cases where a stream is being consumed by a parser, which needs to "un-consume" some data that it has optimistically pulled out of the source, so that the stream can be passed on to some other party.|
-
 
 The Writable stream interface is an abstraction for a destination that you are writing data to.
 Examples of writable streams include: http requests on the client, http responses on the server, fs write streams,
@@ -244,12 +246,10 @@ Transform streams are Duplex streams where the output is in some way computed fr
 
 Examples of Transform streams include: zlib streams, crypto streams.
 
-
-#### File System
+## File System
 
 To use this module do require('fs').
 All the methods have asynchronous and synchronous forms.
-
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
@@ -325,20 +325,17 @@ All the methods have asynchronous and synchronous forms.
 |stats.isFIFO()|  |
 |stats.isSocket()|  |
 
-
 ```javascript
 fs.createReadStream(path, [options]);   // Returns a new ReadStream object.
 fs.createWriteStream(path, [options]);  // Returns a new WriteStream object.
 ```
 
-
-#### Path
+## Path
 
 Use require('path') to use this module.
 This module contains utilities for handling and transforming file paths.
 Almost all these methods perform only string transformations.
 The file system is not consulted to check whether paths are valid.
-
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
@@ -352,11 +349,9 @@ The file system is not consulted to check whether paths are valid.
 |path.sep;                            |The platform-specific file separator. '\\' or '/'.|
 |path.delimiter;                      |The platform-specific path delimiter, ';' or ':'.|
 
-
-#### HTTP
+## HTTP
 
 To use the HTTP server and client one must require('http').
-
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
@@ -412,12 +407,9 @@ To use the HTTP server and client one must require('http').
 |message.socket;                         |The net.Socket object associated with the connection.|
 |message.setTimeout(msecs, callback);    |Calls message.connection.setTimeout(msecs, callback).|
 
-
-
-#### URL
+## URL
 
 This module has utilities for URL resolution and parsing. Call require('url') to use it.
-
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
@@ -425,22 +417,18 @@ This module has utilities for URL resolution and parsing. Call require('url') to
 |url.format(urlObj);                                         |Take a parsed URL object, and return a formatted URL string.|
 |url.resolve(from, to);                                      |Take a base URL, and a href URL, and resolve them as a browser would for an anchor tag.|
 
-
-#### Query String
+## Query String
 
 This module provides utilities for dealing with query strings. Call require('querystring') to use it.
-
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
 |querystring.stringify(obj, [sep], [eq]);        | Serialize an object to a query string. Optionally override the default separator ('&') and assignment ('=') characters.|
 |querystring.parse(str, [sep], [eq], [options]); | Deserialize a query string to an object. Optionally override the default |separator ('&') and assignment ('=') characters.|
 
-
-#### Assert
+## Assert
 
 This module is used for writing unit tests for your applications, you can access it with require('assert').
-
 
 |  API                                               |  Description                         |
 |----------------------------------------------------|--------------------------------------|
@@ -456,12 +444,10 @@ This module is used for writing unit tests for your applications, you can access
 |assert.doesNotThrow(block, [message]);             |Expects block not to throw an error, see assert.throws for details.|
 |assert.ifError(value);                             |Tests if value is not a false value, throws if it is a true value. |Useful when testing the first argument, error in callbacks.|
 
-
-#### OS
+## OS
 
 Provides a few basic operating-system related utility functions.
 Use require('os') to access this module.
-
 
 |  API                    | Description                         |
 |-------------------------|--------------------------------------|
@@ -480,11 +466,9 @@ Use require('os') to access this module.
 |os.networkInterfaces();  |Get a list of network interfaces.
 |os.EOL;                  |A constant defining the appropriate End-of-line marker for the operating system.
 
-
-#### Buffer
+## Buffer
 
 Buffer is used to dealing with binary data. Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap
-
 
 |  API                    | Description                          |
 |-------------------------|--------------------------------------|
@@ -504,4 +488,3 @@ Buffer is used to dealing with binary data. Buffer is similar to an array of int
 |buf[index];                         |Get and set the octet at index|
 |buf.length;                         |The size of the buffer in bytes, Note that this is not necessarily the size of the contents|
 |buffer.INSPECT_MAX_BYTES;           |How many bytes will be returned when buffer.inspect() is called. This can be overridden by user modules.|
-
