@@ -80,6 +80,7 @@
 | 70. |[How Node prevents blocking code?](#q-how-node-prevents-blocking-code)|
 | 71. |[What is difference between promise and async await in node js?](#q-what-is-difference-between-promise-and-async-await-in-node-js)|
 | 72. |[How to use JSON Web Token (JWT) for authentication in node js?](#q-how-to-use-json-web-token-jwt-for-authentication-in-node-js?)|
+| 73. |[How to build a microservices architecture with node js?](#q-how-to-build-a-microservices-architecture-with-node-js?)|
 
 <br/>
 
@@ -2154,30 +2155,26 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 
 ## Q. ***What is difference between JavaScript and Node.js?***
 
-
 |    	|JavaScript	|Node JS    |
 |-------|-----------|-----------|
 |Type	|JavaScript is a programming language. It running in any web browser with a proper browser engine.|	It is an interpreter and environment for JavaScript with some specific useful libraries which JavaScript programming can use separately.|
 |Utility	|Mainly using for any client-side activity for a web application, like possible attribute validation or refreshing the page in a specific interval or provide some dynamic changes in web pages without refreshing the page.|	It mainly used for accessing or performing any non-blocking operation of any operating system, like creating or executing a shell script or accessing any hardware specific information or running any backend job.|
 |Running Engine| JavaScript running any engine like Spider monkey (FireFox), JavaScript Core (Safari), V8 (Google Chrome).|	Node JS only run in a V8 engine which mainly used by google chrome. And javascript program which will be written under this Node JS will be always run in V8 Engine.|
 
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***What are the difference between Events and Callbacks?***
-
 #### Q. ***Explain RESTful Web Services in Node.js?***
-
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
-
 #### Q. ***how to handle file upload in node js?***
-
 #### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?***
-
 #### Q. ***How does routing work in Node.js?***
-
 #### Q. ***How Node prevents blocking code?***
-
 #### Q. ***What is difference between promise and async await in node js?***
-
 #### Q. ***How to use JSON Web Token (JWT) for authentication in node js?***
+#### Q. ***How to build a microservices architecture with node js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
