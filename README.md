@@ -2172,7 +2172,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***Explain RESTful Web Services in Node.js?***
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
 #### Q. ***how to handle file upload in node js?***
-#### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra in Express JS?***
+#### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
 #### Q. ***How does routing work in Node.js?***
 #### Q. ***How Node prevents blocking code?***
 #### Q. ***What is difference between promise and async await in node js?***
