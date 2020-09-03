@@ -83,6 +83,7 @@
 | 73. |[How to build a microservices architecture with node js?](#q-how-to-build-a-microservices-architecture-with-node-js)|
 | 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js)|
 | 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
+| 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
 
 <br/>
 
@@ -2171,7 +2172,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***Explain RESTful Web Services in Node.js?***
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
 #### Q. ***how to handle file upload in node js?***
-#### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors in Express JS?***
+#### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra in Express JS?***
 #### Q. ***How does routing work in Node.js?***
 #### Q. ***How Node prevents blocking code?***
 #### Q. ***What is difference between promise and async await in node js?***
@@ -2179,6 +2180,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***How to build a microservices architecture with node js?***
 #### Q. ***How to use Q promise in node js?***
 #### Q. ***How to use locale (i18n) in node js?***
+#### Q. ***How to Implement Memcached in Nodejs?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
