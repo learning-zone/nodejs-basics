@@ -79,9 +79,10 @@
 | 69. |[How does routing work in Node.js](#q-how-does-routing-work-in-node-js)|
 | 70. |[How Node prevents blocking code?](#q-how-node-prevents-blocking-code)|
 | 71. |[What is difference between promise and async await in node js?](#q-what-is-difference-between-promise-and-async-await-in-node-js)|
-| 72. |[How to use JSON Web Token (JWT) for authentication in node js?](#q-how-to-use-json-web-token-jwt-for-authentication-in-node-js?)|
-| 73. |[How to build a microservices architecture with node js?](#q-how-to-build-a-microservices-architecture-with-node-js?)|
-| 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js?)|
+| 72. |[How to use JSON Web Token (JWT) for authentication in node js?](#q-how-to-use-json-web-token-jwt-for-authentication-in-node-js)|
+| 73. |[How to build a microservices architecture with node js?](#q-how-to-build-a-microservices-architecture-with-node-js)|
+| 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js)|
+| 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
 
 <br/>
 
@@ -2177,6 +2178,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***How to use JSON Web Token (JWT) for authentication in node js?***
 #### Q. ***How to build a microservices architecture with node js?***
 #### Q. ***How to use Q promise in node js?***
+#### Q. ***How to use locale (i18n) in node js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
