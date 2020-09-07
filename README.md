@@ -84,6 +84,7 @@
 | 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js)|
 | 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
+| 77. |[Explain Error Handling in node js?](#q-explain-error-handling-in-node-js)|
 
 <br/>
 
@@ -2180,7 +2181,8 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 #### Q. ***How to build a microservices architecture with node js?***
 #### Q. ***How to use Q promise in node js?***
 #### Q. ***How to use locale (i18n) in node js?***
-#### Q. ***How to Implement Memcached in Nodejs?***
+#### Q. ***How to implement Memcached in Nodejs?***
+#### Q. ***Explain Error Handling in node js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
