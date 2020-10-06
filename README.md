@@ -181,7 +181,7 @@ app.listen(3000, function () {
 
 ```
 node app.js
-``` 
+```
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -189,7 +189,9 @@ node app.js
 
 ## Q. ***How do Node.js works?***
 
-<img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
+<p align="center">
+  <img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
+</p>
 
 Node is completely event-driven. Basically the server consists of one thread processing one event after another.
 
@@ -483,7 +485,9 @@ readFileStub.restore();
 
 The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
 
-<img src="assets/testPyramid.png" alt="Test Pyramid" />
+<p align="center">
+  <img src="assets/testPyramid.png" alt="Test Pyramid" />
+</p>
 
 Mike Cohn\'s original test pyramid consists of three layers that your test suite should consist of (bottom to top):
 
@@ -1611,7 +1615,9 @@ The callback function further mostly have other callbacks associated within repr
 
 When all the items in the Event Queue are processed and there are no pending operations left, Node.js terminates the application automatically.
 
-<img src="assets/reactor-pattern.jpg" alt="Test Pyramid" width="800px" />
+<p align="center">
+  <img src="assets/reactor-pattern.jpg" alt="Test Pyramid" width="800px" />
+</p>
 
 1. The application generates a new I/O operation by submitting a request to the Event Demultiplexer. The application also specifies a handler, which will be invoked when the operation completes. Submitting a new request to the Event Demultiplexer is a non-blocking call and it immediately returns the control back to the application.
 2. When a set of I/O operations completes, the Event Demultiplexer pushes the new events into the Event Queue.
