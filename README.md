@@ -1730,7 +1730,7 @@ When all the items in the Event Queue are processed and there are no pending ope
 
 There are three keywords in Node.js which constitute as Globals. These are Global, Process, and Buffer.
 
-* **Global**
+**1. Global**
 
 The Global keyword represents the global namespace object. It acts as a container for all other `global` objects. If we type `console.log(global)`, it will print out all of them.
 
@@ -1738,7 +1738,7 @@ An important point to note about the global objects is that not all of them are 
 
 Variables declared using the var keyword become local to the module whereas those declared without it get subscribed to the global object.
 
-* **Process**
+**2. Process**
 
 It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
 
@@ -1753,7 +1753,7 @@ Some of the other useful Process methods are as follows.
 * `<process.memoryUsage>` – To know the memory used by Node application.
 * `<process.NextTick>` – To attach a callback function that will get called during the next loop. It can cause a delay in executing a function.
 
-* **Buffer**
+**3. Buffer**
 
 The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
 
