@@ -527,7 +527,7 @@ HttpOnly makes sure the cookies will be submitted only to the domain they origin
 Set-Cookie: [name]=[value]; Secure
 ```
 
-**3.**The web server can use X-XSS-Protection response header to make sure pages do not load when they detect reflected cross-site scripting (XSS) attacks.
+**3.** The web server can use X-XSS-Protection response header to make sure pages do not load when they detect reflected cross-site scripting (XSS) attacks.
 
 ```javascript
 X-XSS-Protection: 1; mode=block
