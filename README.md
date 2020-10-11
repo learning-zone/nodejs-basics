@@ -579,7 +579,7 @@ var events = require('events');
 var eventEmitter = new events.EventEmitter();
 ```
 
-Example
+*Example*:
 
 ```javascript
 // Import events module
@@ -757,7 +757,7 @@ All objects that emit events are members of EventEmitter class. These objects ex
 
 When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
 
-Example
+*Example*:
 
 ```javascript
 var events = require('events');
@@ -833,7 +833,7 @@ There are four types of streams
 
 Each type of Stream is an EventEmitter instance and throws several events at different instance of times.  
 
-Example
+*Example*:
 
 * **data** − This event is fired when there is data is available to read.
 * **end** − This event is fired when there is no more data to read.
@@ -983,10 +983,10 @@ console.log(decrypted);
 DNS is a node module used to do name resolution facility which is provided by the operating system as well as used to do an actual DNS lookup. No need for memorising IP addresses – DNS servers provide a nifty solution of converting domain or subdomain names to IP addresses. This module provides an asynchronous network wrapper and can be imported using the following syntax.
 
 ```javascript
-const dns = require('dns'); 
+const dns = require('dns');
 ```
 
-Example: `dns.lookup()` function  
+*Example*: `dns.lookup()` function  
 
 ```javascript
 const dns = require('dns');  
@@ -996,7 +996,7 @@ dns.lookup('www.google.com', (err, addresses, family) => {
 });  
 ```
 
-Example: `resolve4()` and `reverse()` functions
+*Example*: `resolve4()` and `reverse()` functions
 
 ```javascript
 const dns = require('dns');  
@@ -1014,7 +1014,7 @@ dns.resolve4('www.google.com', (err, addresses) => {
 });
 ```
 
-Example: print the localhost name using `lookupService()` function
+*Example*: print the localhost name using `lookupService()` function
 
 ```javascript
 const dns = require('dns');  
@@ -1125,7 +1125,7 @@ There are two types of API functions in Node.js:
 
 In a blocking operation, all other code is blocked from executing until an I/O event that is being waited on occurs. Blocking functions execute synchronously.
 
-Example:
+*Example*:
 
 ```javascript
 const fs = require('fs');
@@ -1140,7 +1140,7 @@ The second line of code blocks the execution of additional JavaScript until the 
 
 In a non-blocking operation, multiple I/O calls can be performed without the execution of the program being halted. Non-blocking functions execute asynchronously.
 
-Example:
+*Example*:
 
 ```javascript
 const fs = require('fs');
@@ -2049,8 +2049,9 @@ As a minimal framework, Express does not consider database integration as a requ
 
 ## 56Q. ***What are the Challenges with Node.js?***
 
-**Challenges with Node.js Application Maintenance**  
-Improper maintenance of an application can result in issues related to stability or flexibility, often leading to the app’s failure. If the code is not well-written or if developers use outdated tools, the performance can suffer, and users might experience more bugs and app crashes. On top of that, poor-quality code can hamper the app’s scaling capacity and the further development of the application. In the worst case scenario, it might become impossible to introduce new features without rewriting the codebase from scratch. 
+**Challenges with Node.js Application Maintenance**
+
+Improper maintenance of an application can result in issues related to stability or flexibility, often leading to the app\'s failure. If the code is not well-written or if developers use outdated tools, the performance can suffer, and users might experience more bugs and app crashes. On top of that, poor-quality code can hamper the app’s scaling capacity and the further development of the application. In the worst case scenario, it might become impossible to introduce new features without rewriting the codebase from scratch.
 
 1. Extensive stack
 2. Technical Debt
@@ -2069,7 +2070,7 @@ Improper maintenance of an application can result in issues related to stability
 
 ## 57Q. ***What is the difference between Node.js vs Ajax?***
 
-**AJAX**
+**1. AJAX**
 
 AJAX stands for Asynchronous Javascript and XML, it’s used to allow web pages (client-side) to update asynchronously by communicating with a web server and by exchanging data. This essentially means that applications can talk to a server in the background of the application. It uses some core components to function:
 
@@ -2079,7 +2080,7 @@ AJAX stands for Asynchronous Javascript and XML, it’s used to allow web pages 
 1. JSON/XML for interchanging the data
 1. Javascript to unify everything
 
-**Node.js**
+**2. Node.js**
 
 Node.js allows the developers to develop a web application in a single language called JavaScript for both client side and server side.
 
@@ -2131,7 +2132,7 @@ async function add(x,y){
 
 Async functions can make use of the await expression. This will pause the async function and wait for the Promise to resolve prior to moving on.  
 
-Example 
+*Example*:
 
 ```javascript
 function doubleAfter2Seconds(x) {
@@ -2273,7 +2274,7 @@ callback functions are called when an asynchronous function returns its result, 
 
 **1. Callback**: A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
 
-*Example:* synchronous callback
+*Example*: synchronous callback
 
 ```js
 function greeting(name) {
@@ -2290,7 +2291,7 @@ processUserInput(greeting);
 
 **2. Events**: Every action on a computer is an event. Node.js allows us to create and handle custom events easily by using events module. Event module includes `EventEmitter` class which can be used to raise and handle custom events.
 
-*Example:*
+*Example*:
 
 ```js
 var event = require('events');  
