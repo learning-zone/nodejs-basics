@@ -2310,7 +2310,141 @@ eventEmitter.emit('Sum', '10', '20');
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***Explain RESTful Web Services in Node.js?***
+## Q. ***Explain RESTful Web Services in Node.js?***
+
+REST stands for REpresentational State Transfer. REST is web standards based architecture and uses HTTP Protocol.
+It is an architectural style as well as an approach for communications purposes that is often used in various web services development. A REST Server simply provides access to resources and REST client accesses and modifies the resources using HTTP protocol.
+
+**HTTP methods**
+
+* `GET` − Provides read-only access to a resource.
+* `PUT` − Creates a new resource.
+* `DELETE` − Removes a resource.
+* `POST` − Updates an existing resource or creates a new resource.
+* `PATCH`− Update/modify a resource
+
+**Principles of REST**
+
+* Uniform Interface
+* Stateless
+* Cacheable
+* Client-Server
+* Layered System
+* Code on Demand (optional)
+
+*Example*:
+
+**users.json**
+
+```json
+{
+   "user1" : {
+      "id": 1,
+      "name" : "Ehsan Philip",
+      "age" : 24
+   },
+
+   "user2" : {
+      "id": 2,
+      "name" : "Karim Jimenez",
+      "age" : 22
+   },
+
+   "user3" : {
+      "id": 3,
+      "name" : "Giacomo Weir",
+      "age" : 18
+   }
+}
+```
+
+**List Users** ( `GET` method)
+
+Let\'s implement our first RESTful API listUsers using the following code in a server.js file −
+
+```js
+var express = require('express');
+var app = express();
+var fs = require("fs");
+
+app.get('/listUsers', function (req, res) {
+   fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
+      console.log( data );
+      res.end( data );
+   });
+})
+
+var server = app.listen(3000, function () {
+   var host = server.address().address
+   var port = server.address().port
+   console.log("App listening at http://%s:%s", host, port)
+});
+```
+
+**Add User** ( `POST` method )
+
+Following API will show you how to add new user in the list. 
+
+```js
+var express = require('express');
+var app = express();
+var fs = require("fs");
+
+var user = {
+   "user4" : {
+      "id": 4,
+      "name" : "Spencer Amos",
+      "age" : 28
+   }
+}
+
+app.post('/addUser', function (req, res) {
+   // First read existing users.
+   fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
+      data = JSON.parse( data );
+      data["user4"] = user["user4"];
+      console.log( data );
+      res.end( JSON.stringify(data));
+   });
+})
+
+var server = app.listen(3000, function () {
+   var host = server.address().address
+   var port = server.address().port
+   console.log("App listening at http://%s:%s", host, port)
+})
+```
+
+**Delete User**
+
+```js
+var express = require('express');
+var app = express();
+var fs = require("fs");
+
+var id = 2;
+
+app.delete('/deleteUser', function (req, res) {
+   // First read existing users.
+   fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
+      data = JSON.parse( data );
+      delete data["user" + 2];
+      console.log( data );
+      res.end( JSON.stringify(data));
+   });
+})
+
+var server = app.listen(3000, function () {
+   var host = server.address().address
+   var port = server.address().port
+   console.log("App listening at http://%s:%s", host, port)
+})
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
 #### Q. ***how to handle file upload in node js?***
 #### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
