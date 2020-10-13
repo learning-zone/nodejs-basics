@@ -2445,18 +2445,114 @@ var server = app.listen(3000, function () {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***What is the difference between mysql.createConnection() and mysql.createPool() in Node.js MySQL module?***
-#### Q. ***how to handle file upload in node js?***
+## Q. ***How to handle file upload in Node.js?***
+
+* **express**: Popular web framework built on top of Node.js, used for creating REST-API.
+* **body-parser**: Parse incoming request bodies in a middleware
+* **multer**: Middleware for handling multipart/form-data — file uploads
+
+**1. Installing the dependencies**
+
+```bash
+npm install express body-parser multer --save
+```
+
+**2. Package.json**
+
+```json
+{
+  "name": "file_upload",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.13.3",
+    "multer": "1.1.0"
+  },
+  "devDependencies": {
+    "should": "~7.1.0",
+    "mocha": "~2.3.3",
+    "supertest": "~1.1.0"
+  }
+}
+```
+
+**3. Server.js**
+
+```js
+var express = require("express");
+var bodyParser = require('body-parser');
+var multer  = require('multer');
+var app = express();
+
+// for text/number data transfer between clientg and server
+app.use(bodyParser());
+
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now());
+  }
+});
+
+var upload = multer({ storage : storage}).single('userPhoto');
+
+app.get('/', function(req, res) {
+      res.sendFile(__dirname + "/index.html");
+});
+
+// POST: upload for single file upload
+app.post('/api/photo', function(req, res) {
+    upload(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        res.end("File is uploaded");
+    });
+});
+
+app.listen(3000, function(){
+    console.log("Listening on port 3000");
+});
+```
+
+**4. index.html**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Multer-File-Upload</title>
+</head>
+<body>
+    <h1>MULTER File Upload | Single File Upload</h1> 
+
+    <form id = "uploadForm"
+         enctype = "multipart/form-data"
+         action = "/api/photo"
+         method = "post"
+    >
+      <input type="file" name="userPhoto" />
+      <input type="submit" value="Upload Image" name="submit">
+    </form>
+</body>
+</html>
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
 #### Q. ***How does routing work in Node.js?***
 #### Q. ***How Node prevents blocking code?***
-#### Q. ***What is difference between promise and async await in node js?***
-#### Q. ***How to use JSON Web Token (JWT) for authentication in node js?***
-#### Q. ***How to build a microservices architecture with node js?***
-#### Q. ***How to use Q promise in node js?***
-#### Q. ***How to use locale (i18n) in node js?***
-#### Q. ***How to implement Memcached in Nodejs?***
-#### Q. ***Explain Error Handling in node js?***
+#### Q. ***What is difference between promise and async await in Node.js?***
+#### Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
+#### Q. ***How to build a microservices architecture with Node.js?***
+#### Q. ***How to use Q promise in Node.js?***
+#### Q. ***How to use locale (i18n) in Node.js?***
+#### Q. ***How to implement Memcached in Node.js?***
+#### Q. ***Explain Error Handling in Node.js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
