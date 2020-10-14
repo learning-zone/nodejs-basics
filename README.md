@@ -2555,9 +2555,9 @@ app.listen(3000, function(){
 npm install express ejs body-parser
 ```
 
-**server.js**
-
 ```js
+// server.js
+
 var express = require('express')
 var bodyParser = require('body-parser')
 
