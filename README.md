@@ -2584,7 +2584,126 @@ app.post('/api/users', jsonParser, function (req, res) {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***How does routing work in Node.js?***
+## Q. ***How does routing work in Node.js?***
+
+Routing defines the way in which the client requests are handled by the application endpoints. We define routing using methods of the Express app object that correspond to HTTP methods; for example, `app.get()` to handle `GET` requests and `app.post` to handle `POST` requests, `app.all()` to handle all HTTP methods and `app.use()` to specify middleware as the callback function.
+
+These routing methods "listens" for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
+
+*Syntax*:
+
+```js
+app.METHOD(PATH, HANDLER)
+```
+
+Where:
+
+* app is an instance of express.
+* METHOD is an `HTTP request method`.
+* PATH is a path on the server.
+* HANDLER is the function executed when the route is matched.
+
+**a) Route methods**
+
+```js
+// GET method route
+app.get('/', function (req, res) {
+  res.send('GET request')
+})
+
+// POST method route
+app.post('/login', function (req, res) {
+  res.send('POST request')
+})
+
+// ALL method route
+app.all('/secret', function (req, res, next) {
+  console.log('Accessing the secret section ...')
+  next() // pass control to the next handler
+})
+```
+
+**b) Route paths**
+
+Route paths, in combination with a request method, define the endpoints at which requests can be made. Route paths can be strings, string patterns, or regular expressions.
+
+The characters `?`, `+`, `*`, and `()` are subsets of their regular expression counterparts. The hyphen `(-)` and the dot `(.)` are interpreted literally by string-based paths.
+
+*Example*:
+
+```js
+// This route path will match requests to /about.
+app.get('/about', function (req, res) {
+  res.send('about')
+})
+
+
+// This route path will match acd and abcd.
+app.get('/ab?cd', function (req, res) {
+  res.send('ab?cd')
+})
+
+
+app.get(/.*fly$/, function (req, res) {
+  res.send('/.*fly$/')
+})
+```
+
+**c) Route parameters**
+
+Route parameters are named URL segments that are used to capture the values specified at their position in the URL. The captured values are populated in the `req.params` object, with the name of the route parameter specified in the path as their respective keys.
+
+*Example*:
+
+```js
+app.get('/users/:userId', function (req, res) {
+  res.send(req.params)
+})
+```
+
+**Response methods**
+
+| Method            | Description                   |
+|-------------------|-------------------------------|
+|`res.download()`   |Prompt a file to be downloaded.|
+|`res.end()`        |End the response process.|
+|`res.json()`       |Send a JSON response.|
+|`res.jsonp()`      |Send a JSON response with JSONP support.|
+|`res.redirect()`   |Redirect a request.|
+|`res.render()`     |Render a view template.|
+|`res.send()`       |Send a response of various types.|
+|`res.sendFile()`   |Send a file as an octet stream.|
+|`res.sendStatus()` |Set the response status code and send its string representation as the response body.|
+
+**d) Router method**
+
+```js
+var express = require('express')
+var router = express.Router()
+
+// middleware that is specific to this router
+router.use(function timeLog (req, res, next) {
+  console.log('Time: ', Date.now())
+  next()
+})
+
+// define the home page route
+router.get('/', function (req, res) {
+  res.send('Birds home page')
+})
+
+// define the about route
+router.get('/about', function (req, res) {
+  res.send('About birds')
+})
+
+module.exports = router
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***How Node prevents blocking code?***
 #### Q. ***What is difference between promise and async await in Node.js?***
 #### Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
