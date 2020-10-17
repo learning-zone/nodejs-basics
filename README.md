@@ -2543,7 +2543,7 @@ app.listen(3000, function(){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
+## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
 
 ### 1. body-parser
 
@@ -2610,6 +2610,59 @@ app.get('/', function (req, res) {
 })
 
 app.listen(3000)
+```
+
+### 3. `morgan`
+
+HTTP request logger middleware for node.js.
+
+**Installation**
+
+```bash
+npm install morgan
+```
+
+*Example*: write logs to a file
+
+```js
+var express = require('express')
+var fs = require('fs')
+var morgan = require('morgan')
+var path = require('path')
+
+var app = express()
+
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
+
+app.get('/', function (req, res) {
+  res.send('hello, world!')
+})
+```
+
+### 4. `nodemon`
+
+Nodemon is a utility that will monitor for any changes in source and automatically restart your server.
+
+**Installation**
+
+```bash
+npm install -g nodemon
+```
+
+*Example*:
+
+```json
+{
+  // ...
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  // ...
+}
 ```
 
 <div align="right">
