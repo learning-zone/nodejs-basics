@@ -2545,7 +2545,7 @@ app.listen(3000, function(){
 
 ## Q. ***Explain the terms body-parser, cookie-parser, debug, jade, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
 
-**1. body-parser**
+### 1. body-parser
 
 `body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. This body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 
@@ -2580,7 +2580,7 @@ app.post('/api/users', jsonParser, function (req, res) {
 })
 ```
 
-**2. cookie-parser**
+### 2. cookie-parser
 
 A cookie is a piece of data that is sent to the client-side with a request and is stored on the client-side itself by the Web Browser the user is currently using.
 
