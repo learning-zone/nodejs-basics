@@ -2580,6 +2580,38 @@ app.post('/api/users', jsonParser, function (req, res) {
 })
 ```
 
+**2. cookie-parser**
+
+A cookie is a piece of data that is sent to the client-side with a request and is stored on the client-side itself by the Web Browser the user is currently using.
+
+The `cookie-parser` middleware\'s cookieParser function takes a `secret` string or array of strings as the first argument and an `options` object as the second argument.
+
+**Installation**
+
+```bash
+npm install cookie-parser
+```
+
+*Example*:
+
+```js
+var express = require('express')
+var cookieParser = require('cookie-parser')
+
+var app = express()
+app.use(cookieParser())
+
+app.get('/', function (req, res) {
+  // Cookies that have not been signed
+  console.log('Cookies: ', req.cookies)
+
+  // Cookies that have been signed
+  console.log('Signed Cookies: ', req.signedCookies)
+})
+
+app.listen(3000)
+```
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
