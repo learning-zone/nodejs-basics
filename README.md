@@ -2665,6 +2665,24 @@ npm install -g nodemon
 }
 ```
 
+### 5. pm2
+
+PM2[**P**(rocess) **M**(anager) **2**] is a production process manager for Node.js applications with a built-in load balancer. It allows to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
+
+**Installation**
+
+```bash
+npm install pm2 -g
+```
+
+**Start an application**
+
+```bash
+pm2 start app.js
+```
+
+**[[Read More](https://pm2.keymetrics.io/docs/usage/quick-start/)]**
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
