@@ -2545,7 +2545,7 @@ app.listen(3000, function(){
 
 ## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
 
-### 1. `body-parser`
+**a) `body-parser`**
 
 `body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. This body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 
@@ -2580,7 +2580,7 @@ app.post('/api/users', jsonParser, function (req, res) {
 })
 ```
 
-### 2. `cookie-parser`
+**b) `cookie-parser`**
 
 A cookie is a piece of data that is sent to the client-side with a request and is stored on the client-side itself by the Web Browser the user is currently using.
 
@@ -2612,7 +2612,7 @@ app.get('/', function (req, res) {
 app.listen(3000)
 ```
 
-### 3. `morgan`
+**c) `morgan`**
 
 HTTP request logger middleware for node.js.
 
@@ -2643,7 +2643,7 @@ app.get('/', function (req, res) {
 })
 ```
 
-### 4. `nodemon`
+**d) `nodemon`**
 
 Nodemon is a utility that will monitor for any changes in source and automatically restart your server.
 
@@ -2665,7 +2665,7 @@ npm install -g nodemon
 }
 ```
 
-### 5. pm2
+**e) `pm2`**
 
 PM2[**P**(rocess) **M**(anager) **2**] is a production process manager for Node.js applications with a built-in load balancer. It allows to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
 
@@ -2682,6 +2682,31 @@ pm2 start app.js
 ```
 
 **[[Read More](https://pm2.keymetrics.io/docs/usage/quick-start/)]**
+
+**f) `serve-favicon`**
+
+Node.js middleware for serving a favicon. The `serve-favicon` module lets us exclude requests for the favicon in our logger middleware. It also caches the icon in memory to improve performance by reducing disk access. In addition, it provides an `ETag` based on the contents of the icon, rather than file system properties.
+
+**Installation**
+
+```bash
+npm install serve-favicon
+```
+
+*Example*:
+
+```js
+var express = require('express')
+var favicon = require('serve-favicon')
+var path = require('path')
+
+var app = express()
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+
+// Add your routes here, etc.
+
+app.listen(3000)
+```
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
