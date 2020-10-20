@@ -2708,6 +2708,50 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.listen(3000)
 ```
 
+**g) cors**
+
+**C**ross-**O**rigin **R**esource **S**haring (CORS) headers allow apps running in the browser to make requests to servers on different domains (also known as origins). CORS headers are set on the server side - the HTTP server is responsible for indicating that a given HTTP request can be cross-origin. CORS defines a way in which a browser and server can interact and determine whether or not it is safe to allow a cross-origin request.
+
+**Installation**
+
+```bash
+npm install cors
+```
+
+**Example: Enable All CORS Requests**
+
+```js
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+app.use(cors())
+
+app.get('/products/:id', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+
+app.listen(8080, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+```
+
+**Example: Enable CORS for a Single Route**
+
+```js
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+app.get('/products/:id', cors(), function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for a Single Route'})
+})
+
+app.listen(8080, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+```
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
