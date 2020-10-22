@@ -2762,19 +2762,19 @@ When a NodeJs application runs, it injects a global variable called `process.env
 npm install dotenv
 ```
 
-**Example**
-
-**.env**
+**Usage**
 
 ```js
+// .env
+
 DB_HOST=localhost
 DB_USER=admin
 DB_PASS=root
 ```
 
-**Config.js**
-
 ```js
+// config.js
+
 const db = require('db')
 
 db.connect({
