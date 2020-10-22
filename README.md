@@ -2543,7 +2543,7 @@ app.listen(3000, function(){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, .env, checksum, fs-extra, moment in Express JS?***
+## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, checksum, fs-extra, moment in Express JS?***
 
 **a) body-parser**
 
@@ -2749,6 +2749,38 @@ app.get('/products/:id', cors(), function (req, res, next) {
 
 app.listen(8080, function () {
   console.log('CORS-enabled web server listening on port 80')
+})
+```
+
+**h) dotenv**
+
+When a NodeJs application runs, it injects a global variable called `process.env` which contains information about the state of environment in which the application is running. The `dotenv` loads environment variables stored in the `.env` file into `process.env`.
+
+**Installation**
+
+```bash
+npm install dotenv
+```
+
+**Example**
+
+**.env**
+
+```js
+DB_HOST=localhost
+DB_USER=admin
+DB_PASS=root
+```
+
+**Config.js**
+
+```js
+const db = require('db')
+
+db.connect({
+  host: process.env.DB_HOST,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS
 })
 ```
 
