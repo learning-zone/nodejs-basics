@@ -2543,7 +2543,7 @@ app.listen(3000, function(){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, checksum, fs-extra, moment in Express JS?***
+## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
 
 **a) body-parser**
 
@@ -2784,6 +2784,29 @@ db.connect({
 })
 ```
 
+**i) fs-extra**
+
+`fs-extra` contains methods that aren\'t included in the vanilla Node.js fs package. Such as recursive `mkdir`, `copy`, and `remove`. It also uses graceful-fs to prevent `EMFILE` errors.
+
+**Installation**
+
+```bash
+npm install fs-extra
+```
+
+**Usage**
+
+```js
+const fs = require('fs-extra')
+
+
+// Async with callbacks:
+fs.copy('/tmp/myfile', '/tmp/mynewfile', err => {
+  if (err) return console.error(err)
+  console.log('success!')
+})
+```
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
@@ -2916,7 +2939,8 @@ module.exports = router
 #### Q. ***How to use Q promise in Node.js?***
 #### Q. ***How to use locale (i18n) in Node.js?***
 #### Q. ***How to implement Memcached in Node.js?***
-#### Q. ***Explain Error Handling in Node.js?***
+#### Q. ***Explain error handling in Node.js?***
+#### Q. ***How to generate and verify checksum of the given string in Node.js***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
