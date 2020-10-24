@@ -2807,6 +2807,42 @@ fs.copy('/tmp/myfile', '/tmp/mynewfile', err => {
 })
 ```
 
+**j) moment**
+
+A JavaScript date library for parsing, validating, manipulating, and formatting dates.
+
+**Installation**
+
+```bash
+npm install moment --save
+```
+
+**Usage**
+
+* Format Dates
+
+```bash
+moment().format('MMMM Do YYYY, h:mm:ss a'); // October 24th 2020, 3:15:22 pm
+moment().format('dddd');                    // Saturday
+moment().format("MMM Do YY");               // Oct 24th 20
+```
+
+* Relative Time
+
+```bash
+moment("20111031", "YYYYMMDD").fromNow(); // 9 years ago
+moment("20120620", "YYYYMMDD").fromNow(); // 8 years ago
+moment().startOf('day').fromNow();        // 15 hours ago
+```
+
+* Calendar Time
+
+```bash
+moment().subtract(10, 'days').calendar(); // 10/14/2020
+moment().subtract(6, 'days').calendar();  // Last Sunday at 3:18 PM
+moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
+```
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
