@@ -2974,7 +2974,36 @@ module.exports = router
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***How Node prevents blocking code?***
+#### Q. ***How node.js prevents blocking code?***
+
+**Blocking vs Non-blocking**
+
+**Blocking** is when the execution of additional JavaScript in the Node.js process must wait until a non-JavaScript operation completes. This happens because the event loop is unable to continue running JavaScript while a **blocking** operation is occurring.
+
+Synchronous methods in the Node.js standard library that use **libuv** are the most commonly used blocking operations. Native modules may also have blocking methods. Blocking methods execute `synchronously` and non-blocking methods execute `asynchronously`.
+
+*Example:*
+
+```js
+// Blocking
+const fs = require('fs');
+const data = fs.readFileSync('/file.md'); // blocks here until file is read
+console.log(data);
+moreWork(); // will run after console.log
+
+// Non-blocking
+const fs = require('fs');
+fs.readFile('/file.md', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+moreWork(); // will run before console.log
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***What is difference between promise and async await in Node.js?***
 #### Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
 #### Q. ***How to build a microservices architecture with Node.js?***
