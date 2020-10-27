@@ -85,6 +85,7 @@
 | 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
 | 77. |[Explain Error Handling in node js?](#q-explain-error-handling-in-node-js)|
+| 78. |[How to generate and verify checksum of the given string in Node.js](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-node-js)|
 
 <br/>
 
@@ -2310,7 +2311,7 @@ eventEmitter.emit('Sum', '10', '20');
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***Explain RESTful Web Services in Node.js?***
+## 66Q. ***Explain RESTful Web Services in Node.js?***
 
 REST stands for REpresentational State Transfer. REST is web standards based architecture and uses HTTP Protocol.
 It is an architectural style as well as an approach for communications purposes that is often used in various web services development. A REST Server simply provides access to resources and REST client accesses and modifies the resources using HTTP protocol.
@@ -2445,7 +2446,7 @@ var server = app.listen(3000, function () {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***How to handle file upload in Node.js?***
+## 67Q. ***How to handle file upload in Node.js?***
 
 * **express**: Popular web framework built on top of Node.js, used for creating REST-API.
 * **body-parser**: Parse incoming request bodies in a middleware
@@ -2543,7 +2544,7 @@ app.listen(3000, function(){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
+## 68Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
 
 **a) body-parser**
 
@@ -2853,7 +2854,7 @@ moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***How does routing work in Node.js?***
+## 69Q. ***How does routing work in Node.js?***
 
 Routing defines the way in which the client requests are handled by the application endpoints. We define routing using methods of the Express app object that correspond to HTTP methods; for example, `app.get()` to handle `GET` requests and `app.post` to handle `POST` requests, `app.all()` to handle all HTTP methods and `app.use()` to specify middleware as the callback function.
 
@@ -2974,7 +2975,7 @@ module.exports = router
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***How node.js prevents blocking code?***
+## 70Q. ***How node.js prevents blocking code?***
 
 **Blocking vs Non-blocking**
 
@@ -3004,7 +3005,7 @@ moreWork(); // will run before console.log
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What is difference between promises and async-await in Node.js?***
+## 71Q. ***What is difference between promises and async-await in Node.js?***
 
 **1. Promises**
 
@@ -3054,13 +3055,13 @@ async function logFetch(url) {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
-#### Q. ***How to build a microservices architecture with Node.js?***
-#### Q. ***How to use Q promise in Node.js?***
-#### Q. ***How to use locale (i18n) in Node.js?***
-#### Q. ***How to implement Memcached in Node.js?***
-#### Q. ***Explain error handling in Node.js?***
-#### Q. ***How to generate and verify checksum of the given string in Node.js***
+#### 72Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
+#### 73Q. ***How to build a microservices architecture with Node.js?***
+#### 74Q. ***How to use Q promise in Node.js?***
+#### 75Q. ***How to use locale (i18n) in Node.js?***
+#### 76Q. ***How to implement Memcached in Node.js?***
+#### 77Q. ***Explain error handling in Node.js?***
+#### 78Q. ***How to generate and verify checksum of the given string in Node.js***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
