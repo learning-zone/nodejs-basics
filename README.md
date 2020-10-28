@@ -3066,6 +3066,10 @@ There are some advantages of using JWT for authorization:
 
 JSON Web Tokens consist of three parts separated by dots (.), which are:
 
+```js
+jwt.sign(payload, secretOrPrivateKey, [options, callback])
+```
+
 * **Header** - Consists of two parts: the type of token (i.e., JWT) and the signing algorithm (i.e., HS512)
 * **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
 * **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
