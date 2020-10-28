@@ -3076,7 +3076,7 @@ JSON Web Tokens consist of three parts separated by dots (.), which are:
 npm install jsonwebtoken bcryptjs --save
 ```
 
-*Example*: **AuthController.js**
+**Example**: AuthController.js
 
 ```js
 var express = require('express');
