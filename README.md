@@ -3056,6 +3056,79 @@ async function logFetch(url) {
 </div>
 
 #### 72Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
+
+JSON Web Token (JWT) is an open standard that defines a compact and self-contained way of securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
+
+There are some advantages of using JWT for authorization:
+
+* Purely stateless. No additional server or infra required to store session information.
+* It can be easily shared among services.
+
+JSON Web Tokens consist of three parts separated by dots (.), which are:
+
+* **Header** - Consists of two parts: the type of token (i.e., JWT) and the signing algorithm (i.e., HS512)
+* **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
+* **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
+
+**Installation**
+
+```bash
+npm install jsonwebtoken bcryptjs --save
+```
+
+*Example*: **AuthController.js**
+
+```js
+var express = require('express');
+var router = express.Router();
+var bodyParser = require('body-parser');
+var User = require('../user/User');
+
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var config = require('../config');
+
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+router.post('/register', function(req, res) {
+  
+  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  
+  User.create({
+    name : req.body.name,
+    email : req.body.email,
+    password : hashedPassword
+  },
+  function (err, user) {
+    if (err) return res.status(500).send("There was a problem registering the user.")
+    // create a token
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
+    });
+    res.status(200).send({ auth: true, token: token });
+  });
+});
+```
+
+**config.js**
+
+```js
+// config.js
+module.exports = {
+  'secret': 'supersecret'
+};
+```
+
+The `jwt.sign()` method takes a payload and the secret key defined in `config.js` as parameters. It creates a unique string of characters representing the payload. In our case, the payload is an object containing only the id of the user.
+
+**[[Read More](https://github.com/auth0/node-jsonwebtoken)]**
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### 73Q. ***How to build a microservices architecture with Node.js?***
 #### 74Q. ***How to use Q promise in Node.js?***
 #### 75Q. ***How to use locale (i18n) in Node.js?***
