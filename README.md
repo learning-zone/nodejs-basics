@@ -3127,7 +3127,7 @@ module.exports = {
 
 The `jwt.sign()` method takes a payload and the secret key defined in `config.js` as parameters. It creates a unique string of characters representing the payload. In our case, the payload is an object containing only the id of the user.
 
-**[[Read More](https://github.com/auth0/node-jsonwebtoken)]**
+* **[[Reference](https://www.npmjs.com/package/jsonwebtoken)]**
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -3140,7 +3140,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
 Microservices are a style of **service-oriented architecture** (SOA) where the app is structured on an assembly of interconnected services. With microservices, the application architecture is built with lightweight protocols. The services are finely seeded in the architecture. Microservices disintegrate the app into smaller services and enable improved modularity.
 
 <p align="center">
-  <img src="assets/monolithic-and-microservices-architecture.jpg" alt="Microservices" width="600px" />
+  <img src="assets/monolithic-and-microservices-architecture.jpg" alt="Microservices" width="400px" />
 </p>
 
 There are few things worth emphasizing about the superiority of microservices, and distributed systems generally, over monolithic architecture:
@@ -3220,7 +3220,59 @@ module.exports = controllers;
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### 74Q. ***How to use Q promise in Node.js?***
+## 74Q. ***How to use Q promise in Node.js?***
+
+A promise is an object that represents the return value or the thrown exception that the function may eventually provide. A promise can also be used as a proxy for a remote object to overcome latency.
+
+Promise is relatively an easy implementation for asynchronous operation. The promise object returned from the function represents an operation which is not completed yet, but it guarantees to the caller of the operation that the operation will be completed in future.
+
+Promise has the following states:
+
+* **Pending** - asynchronous operation is not yet completed.
+* **Fulfilled** - asynchronous operation is completed successfully.
+* **Rejected** - asynchronous operation is terminated with an error.
+* **Settled** - asynchronous operation is either fulfilled or rejected.
+* **Callback** - function is executed if the promise is executed with value.
+* **Errback** - function is executed if the promise is rejected.
+
+**Moving to Promises from Callback**
+
+On the first pass, promises can mitigate the **Pyramid of Doom**: the situation where code marches to the right faster than it marches forward.
+
+```js
+step1(function (value1) {
+    step2(value1, function(value2) {
+        step3(value2, function(value3) {
+            step4(value3, function(value4) {
+                // Do something with value4
+            });
+        });
+    });
+});
+```
+
+With a promise library, it can flatten the pyramid.
+
+```js
+Q.fcall(promisedStep1)
+.then(promisedStep2)
+.then(promisedStep3)
+.then(promisedStep4)
+.then(function (value4) {
+    // Do something with value4
+})
+.catch(function (error) {
+    // Handle any error from all above steps
+})
+.done();
+```
+
+* **[[Reference](https://www.npmjs.com/package/q)]**
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### 75Q. ***How to use locale (i18n) in Node.js?***
 #### 76Q. ***How to implement Memcached in Node.js?***
 #### 77Q. ***Explain error handling in Node.js?***
