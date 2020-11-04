@@ -3273,8 +3273,46 @@ Q.fcall(promisedStep1)
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### 75Q. ***How to use locale (i18n) in Node.js?***
-#### 76Q. ***How to implement Memcached in Node.js?***
+## 75Q. ***How to implement Memcached in Node.js?***
+
+**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
+
+We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
+
+**Installation**
+
+```bash
+npm install memcached
+```
+
+**Setting up the client**
+
+The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
+
+```bash
+var Memcached = require('memcached');
+var memcached = new Memcached(Server locations, options);
+```
+
+**Example usage**:
+
+```js
+var Memcached = require('memcached');
+// all global configurations should be applied to the .config object of the Client.
+Memcached.config.poolSize = 25;
+
+var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:true,failOverServers:['192.168.0.103:11211']});
+```
+
+<br/>
+
+**[[Reference](https://www.npmjs.com/package/memcached)]**
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+#### 76Q. ***How to use locale (i18n) in Node.js?***
 #### 77Q. ***Explain error handling in Node.js?***
 #### 78Q. ***How to generate and verify checksum of the given string in Node.js***
 
