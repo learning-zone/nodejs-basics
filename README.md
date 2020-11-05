@@ -3312,9 +3312,38 @@ var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### 76Q. ***How to use locale (i18n) in Node.js?***
+## 76Q. ***How to generate and verify checksum of the given string in Node.js***
+
+The **checksum** (aka **hash sum**) calculation is a one-way process of mapping an extensive data set of variable length (e.g., message, file), to a smaller data set of a fixed length (hash). The length depends on a hashing algorithm.
+
+For the checksum generation, we can use node `crypto()` module. The module uses `createHash(algorithm)` to create a checksum (hash) generator. The algorithm is dependent on the available algorithms supported by the version of OpenSSL on the platform.
+
+**Example:**
+
+```js
+const crypto = require('crypto');
+
+// To get a list of all available hash algorithms
+crypto.getHashes() // [ 'md5', 'sha1', 'sha3-256', ... ]
+
+  
+// Create hash of SHA1 type
+const key = "MY_SECRET_KEY";
+
+
+// 'digest' is the output of hash function containing  
+// only hexadecimal digits
+hashPwd = crypto.createHash('sha1').update(key).digest('hex');
+  
+console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### 77Q. ***Explain error handling in Node.js?***
-#### 78Q. ***How to generate and verify checksum of the given string in Node.js***
+#### 78Q. ***How to use locale (i18n) in Node.js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
