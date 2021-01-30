@@ -20,11 +20,11 @@
 | 10. |[What tools can be used to assure consistent style?](#q-what-tools-can-be-used-to-assure-consistent-style)|
 | 11. |[When should you npm and when yarn?](#q-when-should-you-npm-and-when-yarn)|
 | 12. |[What is a stub?](#q-what-is-a-stub)|
-| 13. |[What is a test pyramid? How can you implement it when talking about HTTP APIs?](#q-what-is-a-test-pyramid--how-can-you-implement-it-when-talking-about-http-apis)|
+| 13. |[What is a test pyramid? How can you implement it when talking about HTTP APIs?](#q-what-is-a-test-pyramid-how-can-you-implement-it-when-talking-about-http-apis)|
 | 14. |[How can you secure your HTTP cookies against XSS attacks?](#q-how-can-you-secure-your-http-cookies-against-xss-attacks)|
 | 15. |[How can you make sure your dependencies are safe?](#q-how-can-you-make-sure-your-dependencies-are-safe)|
-| 16. |[What is Event loop in Node.js? And How does it work?](#q-what-is-event-loop-in-nodejs--and-how-does-it-work)|
-| 17. |[What is REPL? What purpose it is used for?](#q-what-is-repl--what-purpose-it-is-used-for)|
+| 16. |[What is Event loop in Node.js? And How does it work?](#q-what-is-event-loop-in-nodejs-and-how-does-it-work)|
+| 17. |[What is REPL? What purpose it is used for?](#q-what-is-repl-what-purpose-it-is-used-for)|
 | 18. |[What is the difference between Asynchronous and Non-blocking?](#q-what-is-the-difference-between-asynchronous-and-non-blocking)|
 | 19. |[How to debug an application in Node.js?](#q-how-to-debug-an-application-in-nodejs)|
 | 20. |[What are some of the most popular modules of Node.js?](#q-what-are-some-of-the-most-popular-modules-of-nodejs)|
@@ -70,7 +70,7 @@
 | 60. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
 | 61. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
 | 62. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)|
-| 63. |[What is the difference between process.nextTick() and setImmediate()?](#q-what-is-the-difference-between-processnexttick--and-setimmediate)|
+| 63. |[What is the difference between process.nextTick() and setImmediate()?](#q-what-is-the-difference-between-processnexttick-and-setimmediate)|
 | 64. |[What is difference between JavaScript and Node.js?](#q-what-is-difference-between-javascript-and-nodejs)|
 | 65. |[What are the difference between Events and Callbacks?](#q-what-are-the-difference-between-events-and-callbacks)|
 | 66. |[Explain RESTful Web Services in Node.js?](#q-explain-restful-web-services-in-nodejs)|
