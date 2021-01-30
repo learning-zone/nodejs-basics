@@ -89,7 +89,7 @@
 
 <br/>
 
-## 1Q. ***What does the runtime environment mean in Node.js?***
+## Q. ***What does the runtime environment mean in Node.js?***
 
 The Node.js runtime is the software stack responsible for installing your web service\'s code and its dependencies and running your service.
 
@@ -105,7 +105,7 @@ The runtime environment is literally just the environment your application is ru
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 2Q. ***What is Node.js?***
+## Q. ***What is Node.js?***
 
 Node.js is an open-source server side runtime environment built on Chrome\'s V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript.
 
@@ -113,7 +113,7 @@ Node.js is an open-source server side runtime environment built on Chrome\'s V8 
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 3Q. ***What is Node.js Process Model?***
+## Q. ***What is Node.js Process Model?***
 
 Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
 
@@ -121,7 +121,7 @@ Node.js runs in a single process and the application code runs in a single threa
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 4Q. ***What are the data types in Node.js?***
+## Q. ***What are the data types in Node.js?***
 
 *Primitive Types*
 
@@ -138,7 +138,7 @@ Node.js runs in a single process and the application code runs in a single threa
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 5Q. ***How to create a simple server in Node.js that returns Hello World?***
+## Q. ***How to create a simple server in Node.js that returns Hello World?***
 
 **Step 01**: Create a project directory
 
@@ -196,7 +196,7 @@ node app.js
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 6Q. ***How do Node.js works?***
+## Q. ***How do Node.js works?***
 
 <p align="center">
   <img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
@@ -231,7 +231,7 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 7Q. ***What is an error-first callback?***
+## Q. ***What is an error-first callback?***
 
 The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
 
@@ -252,7 +252,7 @@ In the preceding example, if any exception is thrown during the reading of the f
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 8Q. ***What is callback hell in Node.js?***
+## Q. ***What is callback hell in Node.js?***
 
 `Callback hell` is a phenomenon that afflicts a JavaScript developer when he tries to execute multiple asynchronous operations one after the other.
 
@@ -395,7 +395,7 @@ addRandomNumber();
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 9Q. ***What are Promises in Node.js?***
+## Q. ***What are Promises in Node.js?***
 
 It allows to associate handlers to an asynchronous action\'s eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
 
@@ -420,7 +420,7 @@ var myPromise = new Promise(function(resolve, reject){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 10Q. ***What tools can be used to assure consistent style?***
+## Q. ***What tools can be used to assure consistent style?***
 
 * ESLint
 * Standard
@@ -429,7 +429,7 @@ var myPromise = new Promise(function(resolve, reject){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 11Q. ***When should you npm and when yarn?***
+## Q. ***When should you npm and when yarn?***
 
 * **npm**  
 
@@ -464,7 +464,7 @@ npm install yarn --global
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 12Q. ***What is a stub?***
+## Q. ***What is a stub?***
 
 Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
 
@@ -494,7 +494,7 @@ readFileStub.restore();
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 13Q. ***What is a test pyramid? How can you implement it when talking about HTTP APIs?***
+## Q. ***What is a test pyramid? How can you implement it when talking about HTTP APIs?***
 
 The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
 
@@ -512,7 +512,7 @@ Mike Cohn\'s original test pyramid consists of three layers that your test suite
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 14Q. ***How can you secure your HTTP cookies against XSS attacks?***
+## Q. ***How can you secure your HTTP cookies against XSS attacks?***
 
 **1.** When the web server sets cookies, it can provide some additional attributes to make sure the cookies won\'t be accessible by using malicious JavaScript. One such attribute is HttpOnly.
 
@@ -544,7 +544,7 @@ Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 15Q. ***How can you make sure your dependencies are safe?***
+## Q. ***How can you make sure your dependencies are safe?***
 
 The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
 
@@ -560,7 +560,7 @@ The only option is to automate the update / security audit of your dependencies.
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 16Q. ***What is Event loop in Node.js? And How does it work?***
+## Q. ***What is Event loop in Node.js? And How does it work?***
 
 The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.
 
@@ -615,7 +615,7 @@ console.log("Program Ended.");
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 17Q. ***What is REPL? What purpose it is used for?***
+## Q. ***What is REPL? What purpose it is used for?***
 
 REPL (READ, EVAL, PRINT, LOOP) is a computer environment similar to Shell (Unix/Linux) and command prompt. Node comes with the REPL environment when it is installed. System interacts with the user through outputs of commands/expressions used. It is useful in writing and debugging the codes. The work of REPL can be understood from its full form:
 
@@ -639,7 +639,7 @@ $ node
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 18Q. ***What is the difference between Asynchronous and Non-blocking?***
+## Q. ***What is the difference between Asynchronous and Non-blocking?***
 
 **1. Asynchronous**
 
@@ -659,7 +659,7 @@ Nonblocking immediately responses with whatever data available. Moreover, it doe
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 19Q. ***How to debug an application in Node.js?***
+## Q. ***How to debug an application in Node.js?***
 
 * **node-inspector**
 
@@ -706,7 +706,7 @@ Libraries that enhance stack trace information
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 20Q. ***What are some of the most popular modules of Node.js?***
+## Q. ***What are some of the most popular modules of Node.js?***
 
 * **Async**: Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript.
 * **Browserify**: Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single <script> tag.
@@ -752,7 +752,7 @@ Libraries that enhance stack trace information
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 21Q. ***What is EventEmitter in Node.js?***
+## Q. ***What is EventEmitter in Node.js?***
 
 All objects that emit events are members of EventEmitter class. These objects expose an `eventEmitter.on()` function that allows one or more functions to be attached to named events emitted by the object.
 
@@ -822,7 +822,7 @@ Program Ended.
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 22Q. ***How many types of streams are present in node.js?***
+## Q. ***How many types of streams are present in node.js?***
 
 Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
 There are four types of streams
@@ -936,7 +936,7 @@ console.log("File Compressed.");
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 23Q. ***What is crypto in Node.js? How do you cipher the secure information in Node.js?***
+## Q. ***What is crypto in Node.js? How do you cipher the secure information in Node.js?***
 
 The Node.js Crypto module supports cryptography. It provides cryptographic functionality that includes a set of wrappers for open SSL\'s hash HMAC, cipher, decipher, sign and verify functions.
 
@@ -979,7 +979,7 @@ console.log(decrypted);
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 24Q. ***What is the use of DNS module in Node.js?***
+## Q. ***What is the use of DNS module in Node.js?***
 
 DNS is a node module used to do name resolution facility which is provided by the operating system as well as used to do an actual DNS lookup. No need for memorising IP addresses – DNS servers provide a nifty solution of converting domain or subdomain names to IP addresses. This module provides an asynchronous network wrapper and can be imported using the following syntax.
 
@@ -1029,7 +1029,7 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 25Q. ***What are the security mechanisms available in Node.js?***
+## Q. ***What are the security mechanisms available in Node.js?***
 
 **Using the Helmet module**
 
@@ -1115,7 +1115,7 @@ app.get('/security.txt', securityTxt({
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 26Q. ***Name the types of API functions in Node.js?***
+## Q. ***Name the types of API functions in Node.js?***
 
 There are two types of API functions in Node.js:
 
@@ -1158,7 +1158,7 @@ Since `fs.readFile()` is non-blocking, moreWork() does not have to wait for the 
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 27Q. ***How does Node.js handle child threads?***
+## Q. ***How does Node.js handle child threads?***
 
 Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
 Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
@@ -1174,7 +1174,7 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 28Q. ***What is the preferred method of resolving unhandled exceptions in Node.js?***
+## Q. ***What is the preferred method of resolving unhandled exceptions in Node.js?***
 
 Unhandled exceptions in Node.js can be caught at the Process level by attaching a handler for uncaughtException event.
 
@@ -1197,7 +1197,7 @@ Few events are :
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 29Q. ***How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?***
+## Q. ***How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?***
 
 Since Node.js is by default a single thread application, it will run on a single processor core and will not take full advantage of multiple core resources. However, Node.js provides support for deployment on multiple-core systems, to take greater advantage of the hardware. The Cluster module is one of the core Node.js modules and it allows running multiple Node.js worker processes that will share the same port.
 
@@ -1212,7 +1212,7 @@ Cluster supports two types of load distribution:
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 30Q. ***What is typically the first argument passed to a Node.js callback handler?***
+## Q. ***What is typically the first argument passed to a Node.js callback handler?***
 
 The first argument to any callback handler is an optional error object
 
@@ -1230,7 +1230,7 @@ function callback(err, results) {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 31Q. ***How Node.js read the content of a file?***
+## Q. ***How Node.js read the content of a file?***
 
 The "normal" way in Node.js is probably to read in the content of a file in a non-blocking, asynchronous way. That is, to tell Node to read in the file, and then to get a callback when the file-reading has been finished. That would allow us to hand several requests in parallel.
 
@@ -1278,7 +1278,7 @@ node read_file.js
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 32Q. ***What is JIT and how is it related to Node.js?***
+## Q. ***What is JIT and how is it related to Node.js?***
  
 Node.js has depended on the V8 JavaScript engine to provide code execution in the language. The V8 is a JavaScript engine built at the google development center, in Germany. It is open source and written in C++. It is used for both client side (Google Chrome) and server side (node.js) JavaScript applications. A central piece of the V8 engine that allows it to execute JavaScript at high speed is the JIT (Just In Time) compiler. This is a dynamic compiler that can optimize code during runtime. When V8 was first built the JIT Compiler was dubbed FullCodegen. Then, the V8 team implemented Crankshaft, which included many performance optimizations that FullCodegen did not implement.
 
@@ -1288,7 +1288,7 @@ The `V8` was first designed to increase the performance of the JavaScript execut
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 33Q. ***What is difference between put and patch?***
+## Q. ***What is difference between put and patch?***
 
 PUT and PATCH are HTTP verbs and they both relate to updating a resource. The main difference between PUT and PATCH requests are in the way the server processes the enclosed entity to modify the resource identified by the Request-URI.
 
@@ -1311,7 +1311,7 @@ The most commonly used HTTP verbs POST, GET, PUT, DELETE are similar to CRUD (Cr
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 34Q. ***List types of Http requests supported by Node.js?***
+## Q. ***List types of Http requests supported by Node.js?***
 
 The HTTP core module is a key module to Node.js networking.
 
@@ -1468,7 +1468,7 @@ Using the options object, this request uses the GET method to retrieve JSON data
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 35Q. ***Why to use Express.js?***
+## Q. ***Why to use Express.js?***
 
 ExpressJS is a prebuilt NodeJS framework that can help you in creating server-side web applications faster and smarter. Simplicity, minimalism, flexibility, scalability are some of its characteristics and since it is made in NodeJS itself, it inherited its performance as well.
 
@@ -1498,7 +1498,7 @@ var server=app.listen(3000,function() {});
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 36Q. ***Write the steps for setting up an Express JS application?***
+## Q. ***Write the steps for setting up an Express JS application?***
 
 **1. Install Express Generator**
 
@@ -1559,7 +1559,7 @@ Node Console
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 37Q. ***Since node is a single threaded process, how to make use of all CPUs?***
+## Q. ***Since node is a single threaded process, how to make use of all CPUs?***
 
 Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
 Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
@@ -1621,7 +1621,7 @@ The second approach is where the master process creates the listen socket and se
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 38Q. ***What does emitter do and what is dispatcher?***
+## Q. ***What does emitter do and what is dispatcher?***
 
 Node.js core API is based on asynchronous event-driven architecture in which certain kind of objects called emitters periodically emit events that cause listener objects to be called.
 
@@ -1659,7 +1659,7 @@ Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 39Q. ***How to kill child processes that spawn their own child processes in Node.js?***
+## Q. ***How to kill child processes that spawn their own child processes in Node.js?***
 
 If a child process in Node.js spawn their own child processes, kill() method will not kill the child process’s own child processes. For example, if I start a process that starts it’s own child processes via child_process module, killing that child process will not make my program to quit.
 
@@ -1689,7 +1689,7 @@ Please note - before pid. This converts a pid to a group of pids for process kil
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 40Q. ***What do you understand by Reactor Pattern in Node.js?***
+## Q. ***What do you understand by Reactor Pattern in Node.js?***
 
 Reactor Pattern is an idea of non-blocking I/O operations in Node.js. This pattern provides a handler(in case of Node.js, a callback function) that is associated with each I/O operation. When an I/O request is generated, it is submitted to a demultiplexer.
 
@@ -1714,7 +1714,7 @@ When all the items in the Event Queue are processed and there are no pending ope
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 41Q. ***What are the key features of Node.js?***
+## Q. ***What are the key features of Node.js?***
 
 * **Asynchronous event driven IO helps concurrent request handling** – All APIs of Node.js are asynchronous. This feature means that if a Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. Thus it will not wait for the response from the previous requests.
 * **Fast in Code execution** – Node.js uses the V8 JavaScript Runtime engine, the one which is used by Google Chrome. Node has a wrapper over the JavaScript engine which makes the runtime engine much faster and hence processing of requests within Node.js also become faster.
@@ -1727,7 +1727,7 @@ When all the items in the Event Queue are processed and there are no pending ope
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 42Q. ***What are globals in Node.js?***
+## Q. ***What are globals in Node.js?***
 
 There are three keywords in Node.js which constitute as Globals. These are Global, Process, and Buffer.
 
@@ -1784,7 +1784,7 @@ This class also offers other methods like `readInt8` and `writeUInt8` that allow
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 43Q. ***What is chaining process in Node.js?***
+## Q. ***What is chaining process in Node.js?***
 
 It is an approach to connect the output of one stream to the input of another stream, thus creating a chain of multiple stream operations.
 
@@ -1792,7 +1792,7 @@ It is an approach to connect the output of one stream to the input of another st
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 44Q. ***What is a control flow function? what are the steps does it execute?***
+## Q. ***What is a control flow function? what are the steps does it execute?***
 
 It is a generic piece of code which runs in between several asynchronous function calls is known as control flow function.
 
@@ -1807,7 +1807,7 @@ It executes the following steps.
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 45Q. ***What is npm in Node.js?***
+## Q. ***What is npm in Node.js?***
 
 NPM stands for Node Package Manager. It provides following two main functionalities.
 
@@ -1835,7 +1835,7 @@ npm install express
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 46Q. ***When to use Node.js and when not to use it?***
+## Q. ***When to use Node.js and when not to use it?***
 
 **When to use Node.js** 
 
@@ -1862,7 +1862,7 @@ However, we can use Node.js for a variety of applications. But it is a single th
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 47Q. ***Explain how does Node.js work?***
+## Q. ***Explain how does Node.js work?***
 
 A Node.js application creates a single thread on its invocation. Whenever Node.js receives a request, it first completes its processing before moving on to the next request.
 
@@ -1874,7 +1874,7 @@ While processing a request, Node.js attaches a callback function to it and moves
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 48Q. ***Is Node.js entirely based on a single-thread?***
+## Q. ***Is Node.js entirely based on a single-thread?***
 
 Yes, it is true that Node.js processes all requests on a single thread. But it is just a part of the theory behind Node.js design. In fact, more than the single thread mechanism, it makes use of events and callbacks to handle a large no. of requests asynchronously.
 
@@ -1886,7 +1886,7 @@ To explain it practically, let’s assume there are 100s of requests lined up in
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 49Q. ***How to make post request in Node.js?***
+## Q. ***How to make post request in Node.js?***
 
 Following code snippet can be used to make a Post Request in Node.js.
 
@@ -1904,7 +1904,7 @@ var request = require('request');
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 50Q. ***Can you create http server in Node.js, explain the code used for it?***
+## Q. ***Can you create http server in Node.js, explain the code used for it?***
 
 Yes, we can create HTTP Server in Node.js. We can use the `<http-server>` command to do so.
 
@@ -1924,7 +1924,7 @@ server.listen(4200); // The port where you want to start with.
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 51Q. ***How to load html in Node.js?***
+## Q. ***How to load html in Node.js?***
 
 To load HTML in Node.js we have to change the “Content-type” in the HTML code from text/plain to text/html.
 
@@ -1964,7 +1964,7 @@ response.end();
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 52Q. ***How can you listen on port 80 with Node?***
+## Q. ***How can you listen on port 80 with Node?***
 
 Instead of running on port 80 we can redirect port 80 to your application\'s port (>1024) using
 
@@ -1976,7 +1976,7 @@ iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 53Q. ***What is the difference between operational and programmer errors?***
+## Q. ***What is the difference between operational and programmer errors?***
 
 Operation errors are not bugs, but problems with the system, like request timeout or hardware failure. On the other hand programmer errors are actual bugs.
 
@@ -1984,7 +1984,7 @@ Operation errors are not bugs, but problems with the system, like request timeou
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 54Q. ***Why npm shrinkwrap is useful?***
+## Q. ***Why npm shrinkwrap is useful?***
 
 NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed. Having same versions of packages on all environments can help you test systems and deploy with confidence. If all tests pass on one machine, you can be sure that it will pass on all other because you know that you use same code!
 
@@ -1998,7 +1998,7 @@ It should create new npm-shrinkwrap.json file with information about all package
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 55Q. ***What is your favourite HTTP framework and why?***
+## Q. ***What is your favourite HTTP framework and why?***
 
 **Express.js**
 
@@ -2048,7 +2048,7 @@ As a minimal framework, Express does not consider database integration as a requ
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 56Q. ***What are the Challenges with Node.js?***
+## Q. ***What are the Challenges with Node.js?***
 
 **Challenges with Node.js Application Maintenance**
 
@@ -2069,7 +2069,7 @@ Improper maintenance of an application can result in issues related to stability
 6. Update the stack
 7. Dig into the roots
 
-## 57Q. ***What is the difference between Node.js vs Ajax?***
+## Q. ***What is the difference between Node.js vs Ajax?***
 
 **1. AJAX**
 
@@ -2095,7 +2095,7 @@ The runtime environment of Node.js interprets JavaScript, which is very easy and
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 58Q. ***How Node.js overcomes the problem of blocking of I/O operations?***
+## Q. ***How Node.js overcomes the problem of blocking of I/O operations?***
 
 Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads. 
 
@@ -2105,7 +2105,7 @@ Node.js uses an event loop for this. An event loop is “an entity that handles 
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 59Q. ***Mention the steps by which you can async in Node.js?***
+## Q. ***Mention the steps by which you can async in Node.js?***
 
 ES 2017 introduced Asynchronous functions. Async functions are essentially a cleaner way to work with asynchronous code in JavaScript. 
 
@@ -2161,7 +2161,7 @@ addAsync(10).then((sum) => {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 60Q. ***What are the timing features of Node.js?***
+## Q. ***What are the timing features of Node.js?***
 
 The Performance Timing API provides an implementation of the W3C Performance Timeline specification. The purpose of the API is to support collection of high resolution performance metrics. This is the same Performance API as implemented in modern Web browsers.
 
@@ -2200,7 +2200,7 @@ request({
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 61Q. ***What is LTS releases of Node.js why should you care?***
+## Q. ***What is LTS releases of Node.js why should you care?***
 
 An LTS(Long Term Support) version of Node.js receives all the critical bug fixes, security updates and performance
 
@@ -2210,7 +2210,7 @@ LTS versions of Node.js are supported for at least 18 months and are indicated b
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 62Q. ***Why should you separate Express 'app' and 'server'?***
+## Q. ***Why should you separate Express 'app' and 'server'?***
 
 Keeping the API declaration separated from the network related configuration (port, protocol, etc) allows testing the API in-process, without performing network calls, with all the benefits that it brings to the table: fast testing execution and getting coverage metrics of the code. It also allows deploying the same API under flexible and different network conditions. Bonus: better separation of concerns and cleaner code.
 
@@ -2247,7 +2247,7 @@ var server = http.createServer(app);
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 63Q. ***What is the difference between process.nextTick() and setImmediate()?***
+## Q. ***What is the difference between process.nextTick() and setImmediate()?***
 
 The difference between `process.nextTick()` and `setImmediate()` is that `process.nextTick()` defers the execution of an action till the next pass around the event loop or it simply calls the callback function once the ongoing execution of the event loop is finished whereas `setImmediate()` executes a callback on the next cycle of the event loop and it gives back to the event loop for executing any I/O operations.
 
@@ -2255,7 +2255,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 64Q. ***What is difference between JavaScript and Node.js?***
+## Q. ***What is difference between JavaScript and Node.js?***
 
 |    	|JavaScript	|Node JS    |
 |-------|-----------|-----------|
@@ -2267,7 +2267,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 65Q. ***What are the difference between Events and Callbacks?***
+## Q. ***What are the difference between Events and Callbacks?***
 
 Node.js is a single-threaded application, but it support concurrency via the concept of **event** and **callbacks**. Every API of Node.js is asynchronous and being single-threaded, they use async function calls to maintain concurrency. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
 
@@ -2311,7 +2311,7 @@ eventEmitter.emit('Sum', '10', '20');
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 66Q. ***Explain RESTful Web Services in Node.js?***
+## Q. ***Explain RESTful Web Services in Node.js?***
 
 REST stands for REpresentational State Transfer. REST is web standards based architecture and uses HTTP Protocol.
 It is an architectural style as well as an approach for communications purposes that is often used in various web services development. A REST Server simply provides access to resources and REST client accesses and modifies the resources using HTTP protocol.
@@ -2446,7 +2446,7 @@ var server = app.listen(3000, function () {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 67Q. ***How to handle file upload in Node.js?***
+## Q. ***How to handle file upload in Node.js?***
 
 * **express**: Popular web framework built on top of Node.js, used for creating REST-API.
 * **body-parser**: Parse incoming request bodies in a middleware
@@ -2544,7 +2544,7 @@ app.listen(3000, function(){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 68Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
+## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
 
 **a) body-parser**
 
@@ -2854,7 +2854,7 @@ moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 69Q. ***How does routing work in Node.js?***
+## Q. ***How does routing work in Node.js?***
 
 Routing defines the way in which the client requests are handled by the application endpoints. We define routing using methods of the Express app object that correspond to HTTP methods; for example, `app.get()` to handle `GET` requests and `app.post` to handle `POST` requests, `app.all()` to handle all HTTP methods and `app.use()` to specify middleware as the callback function.
 
@@ -2975,7 +2975,7 @@ module.exports = router
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 70Q. ***How node.js prevents blocking code?***
+## Q. ***How node.js prevents blocking code?***
 
 **Blocking vs Non-blocking**
 
@@ -3005,7 +3005,7 @@ moreWork(); // will run before console.log
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 71Q. ***What is difference between promises and async-await in Node.js?***
+## Q. ***What is difference between promises and async-await in Node.js?***
 
 **1. Promises**
 
@@ -3133,7 +3133,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 73Q. ***How to build a microservices architecture with Node.js?***
+## Q. ***How to build a microservices architecture with Node.js?***
 
 **Microservices**
 
@@ -3220,7 +3220,7 @@ module.exports = controllers;
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 74Q. ***How to use Q promise in Node.js?***
+## Q. ***How to use Q promise in Node.js?***
 
 A promise is an object that represents the return value or the thrown exception that the function may eventually provide. A promise can also be used as a proxy for a remote object to overcome latency.
 
@@ -3273,7 +3273,7 @@ Q.fcall(promisedStep1)
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 75Q. ***How to implement Memcached in Node.js?***
+## Q. ***How to implement Memcached in Node.js?***
 
 **Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
 
@@ -3312,7 +3312,7 @@ var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## 76Q. ***How to generate and verify checksum of the given string in Node.js***
+## Q. ***How to generate and verify checksum of the given string in Node.js***
 
 The **checksum** (aka **hash sum**) calculation is a one-way process of mapping an extensive data set of variable length (e.g., message, file), to a smaller data set of a fixed length (hash). The length depends on a hashing algorithm.
 
