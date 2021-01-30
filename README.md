@@ -36,7 +36,7 @@
 | 26. |[Name the types of API functions in Node.js.](#q-name-the-types-of-api-functions-in-nodejs)
 | 27. |[How does Node.js handle child threads?](#q-how-does-nodejs-handle-child-threads)|
 | 28. |[What is the preferred method of resolving unhandled exceptions in Node.js?](#q-what-is-the-preferred-method-of-resolving-unhandled-exceptions-in-nodejs)|
-| 29. |[How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?](#q-how-does-nodejs-support-multi-processor-platforms--and-does-it-fully-utilize-all-processor-resources)|
+| 29. |[How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?](#q-how-does-nodejs-support-multi-processor-platforms-and-does-it-fully-utilize-all-processor-resources)|
 | 30. |[What is typically the first argument passed to a Node.js callback handler?](#q-what-is-typically-the-first-argument-passed-to-a-nodejs-callback-handler)|
 | 31. |[How Node.js read the content of a file?](#q-how-nodejs-read-the-content-of-a-file)|
 | 32. |[What is JIT and how is it related to Node.js?](#q-what-is-jit-and-how-is-it-related-to-nodejs)|
@@ -44,20 +44,20 @@
 | 34. |[List types of Http requests supported by Node.js.](#q-list-types-of-http-requests-supported-by-nodejs)
 | 35. |[Why to use Express.js?](#q-why-to-use-expressjs)|
 | 36. |[Write the steps for setting up an Express JS application.](#q-write-the-steps-for-setting-up-an-express-js-application)
-| 37. |[Since node is a single threaded process, how to make use of all CPUs?](#q-since-node-is-a-single-threaded-process--how-to-make-use-of-all-cpus)|
+| 37. |[Since node is a single threaded process, how to make use of all CPUs?](#q-since-node-is-a-single-threaded-process-how-to-make-use-of-all-cpus)|
 | 38. |[What does emitter do and what is dispatcher?](#q-what-does-emitter-do-and-what-is-dispatcher)|
 | 39. |[How to kill child processes that spawn their own child processes in Node.js?](#q-how-to-kill-child-processes-that-spawn-their-own-child-processes-in-nodejs)|
 | 40. |[What do you understand by Reactor Pattern in Node.js?](#q-what-do-you-understand-by-reactor-pattern-in-nodejs)|
 | 41. |[What are the key features of Node.js?](#q-what-are-the-key-features-of-nodejs)|
 | 42. |[What are globals in Node.js?](#q-what-are-globals-in-nodejs)|
 | 43. |[What is chaining process in Node.js?](#q-what-is-chaining-process-in-nodejs)|
-| 44. |[What is a control flow function? what are the steps does it execute?](#q-what-is-a-control-flow-function--what-are-the-steps-does-it-execute)|
+| 44. |[What is a control flow function? what are the steps does it execute?](#q-what-is-a-control-flow-function-what-are-the-steps-does-it-execute)|
 | 45. |[What is npm in Node.js?](#q-what-is-npm-in-nodejs)|
 | 46. |[When to use Node.js and when not to use it?](#q-when-to-use-nodejs-and-when-not-to-use-it)|
 | 47. |[Explain how does Node.js work?](#q-explain-how-does-nodejs-work)|
 | 48. |[Is Node.js entirely based on a single-thread?](#q-is-nodejs-entirely-based-on-a-single-thread)|
 | 49. |[How to make post request in Node.js?](#q-how-to-make-post-request-in-nodejs)|
-| 50. |[Can you create http server in Node.js, explain the code used for it?](#q-can-you-create-http-server-in-nodejs--explain-the-code-used-for-it)|
+| 50. |[Can you create http server in Node.js, explain the code used for it?](#q-can-you-create-http-server-in-nodejs-explain-the-code-used-for-it)|
 | 51. |[How to load html in Node.js?](#q-how-to-load-html-in-nodejs)|
 | 52. |[How can you listen on port 80 with Node?](#q-how-can-you-listen-on-port-80-with-node)|
 | 53. |[What is the difference between operational and programmer errors?](#q-what-is-the-difference-between-operational-and-programmer-errors)|
@@ -69,8 +69,8 @@
 | 59. |[Mention the steps by which you can async in Node.js?](#q-mention-the-steps-by-which-you-can-async-in-nodejs)|
 | 60. |[What are the timing features of Node.js?](#q-what-are-the-timing-features-of-nodejs)|
 | 61. |[What is LTS releases of Node.js why should you care?](#q-what-is-lts-releases-of-nodejs-why-should-you-care)|
-| 62. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express--app--and--server)|
-| 63. |[What is the difference between process.nextTick() and setImmediate()?](#q-what-is-the-difference-between-processnexttick---and-setimmediate)|
+| 62. |[Why should you separate Express 'app' and 'server'?](#q-why-should-you-separate-express-app-and-server)|
+| 63. |[What is the difference between process.nextTick() and setImmediate()?](#q-what-is-the-difference-between-processnexttick--and-setimmediate)|
 | 64. |[What is difference between JavaScript and Node.js?](#q-what-is-difference-between-javascript-and-nodejs)|
 | 65. |[What are the difference between Events and Callbacks?](#q-what-are-the-difference-between-events-and-callbacks)|
 | 66. |[Explain RESTful Web Services in Node.js?](#q-explain-restful-web-services-in-nodejs)|
