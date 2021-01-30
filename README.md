@@ -84,8 +84,8 @@
 | 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js)|
 | 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
-| 77. |[Explain Error Handling in node js?](#q-explain-error-handling-in-node-js)|
-| 78. |[How to generate and verify checksum of the given string in Node.js](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-node-js)|
+| 77. |[Explain Error Handling in Nodejs?](#q-explain-error-handling-in-nodejs)|
+| 78. |[How to generate and verify checksum of the given string in Nodejs](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-nodejs)|
 
 <br/>
 
@@ -3312,7 +3312,7 @@ var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***How to generate and verify checksum of the given string in Node.js***
+## Q. ***How to generate and verify checksum of the given string in Nodejs***
 
 The **checksum** (aka **hash sum**) calculation is a one-way process of mapping an extensive data set of variable length (e.g., message, file), to a smaller data set of a fixed length (hash). The length depends on a hashing algorithm.
 
@@ -3342,8 +3342,8 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### 77Q. ***Explain error handling in Node.js?***
-#### 78Q. ***How to use locale (i18n) in Node.js?***
+#### Q. ***Explain Error Handling in Nodejs?***
+#### Q. ***How to use locale (i18n) in Node.js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
