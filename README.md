@@ -30,7 +30,7 @@
 | 20. |[What are some of the most popular modules of Node.js?](#q-what-are-some-of-the-most-popular-modules-of-nodejs)|
 | 21. |[What is EventEmitter in Node.js?](#q-what-is-eventemitter-in-nodejs)|
 | 22. |[How many types of streams are present in node.js?](#q-how-many-types-of-streams-are-present-in-nodejs)|
-| 23. |[What is crypto in Node.js? How do you cipher the secure information in Node.js?](#q-what-is-crypto-in-nodejs--how-do-you-cipher-the-secure-information-in-nodejs)|
+| 23. |[What is crypto in Node.js? How do you cipher the secure information in Node.js?](#q-what-is-crypto-in-nodejs-how-do-you-cipher-the-secure-information-in-nodejs)|
 | 24. |[What is the use of DNS module in Node.js?](#q-what-is-the-use-of-dns-module-in-nodejs)|
 | 25. |[What are the security mechanisms available in Node.js?](#q-what-are-the-security-mechanisms-available-in-nodejs)|
 | 26. |[Name the types of API functions in Node.js.](#q-name-the-types-of-api-functions-in-nodejs)
