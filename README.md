@@ -3344,6 +3344,7 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
 
 #### Q. ***Explain Error Handling in Nodejs?***
 #### Q. ***How to use locale (i18n) in Node.js?***
+#### Q. ***What are the types of memory leaks in node.js***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
