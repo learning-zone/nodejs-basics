@@ -3348,6 +3348,7 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
 #### Q. ***How to implement a Sleep function?***
 #### Q. ***How does the cluster load balance work in node.js?***
 #### Q. ***What is daemon process? how to implement it in node.js?*** 
+#### Q. ***How to synchronize data between multiple clients on node.js server?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
