@@ -23,11 +23,11 @@
 | 13. |[What is a test pyramid? How can you implement it when talking about HTTP APIs?](#q-what-is-a-test-pyramid-how-can-you-implement-it-when-talking-about-http-apis)|
 | 14. |[How can you secure your HTTP cookies against XSS attacks?](#q-how-can-you-secure-your-http-cookies-against-xss-attacks)|
 | 15. |[How can you make sure your dependencies are safe?](#q-how-can-you-make-sure-your-dependencies-are-safe)|
-| 16. |[What is Event loop in Node.js? And How does it work?](#q-what-is-event-loop-in-nodejs-and-how-does-it-work)|
+| 16. |[What is Event loop in Node.js? How does it work?](#q-what-is-event-loop-in-nodejs-how-does-it-work)|
 | 17. |[What is REPL? What purpose it is used for?](#q-what-is-repl-what-purpose-it-is-used-for)|
 | 18. |[What is the difference between Asynchronous and Non-blocking?](#q-what-is-the-difference-between-asynchronous-and-non-blocking)|
 | 19. |[How to debug an application in Node.js?](#q-how-to-debug-an-application-in-nodejs)|
-| 20. |[What are some of the most popular modules of Node.js?](#q-what-are-some-of-the-most-popular-modules-of-nodejs)|
+| 20. |[What are some of the most popular packages of Node.js?](#q-what-are-some-of-the-most-popular-packages-of-nodejs)|
 | 21. |[What is EventEmitter in Node.js?](#q-what-is-eventemitter-in-nodejs)|
 | 22. |[How many types of streams are present in node.js?](#q-how-many-types-of-streams-are-present-in-nodejs)|
 | 23. |[What is crypto in Node.js? How do you cipher the secure information in Node.js?](#q-what-is-crypto-in-nodejs-how-do-you-cipher-the-secure-information-in-nodejs)|
@@ -84,7 +84,7 @@
 | 74. |[How to use Q promise in node js?](#q-how-to-use-q-promise-in-node-js)|
 | 75. |[How to use locale (i18n) in node js?](#q-how-to-use-locale-i18n-in-node-js)|
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
-| 77. |[Explain Error Handling in Nodejs?](#q-explain-error-handling-in-nodejs)|
+| 77. |[Explain Error Handling approaches in Nodejs?](#q-explain-error-handling-approaches-in-nodejs)|
 | 78. |[How to generate and verify checksum of the given string in Nodejs](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-nodejs)|
 
 <br/>
@@ -93,6 +93,14 @@
 ## Q. ***What is Node.js?***
 
 Node.js is an open-source server side runtime environment built on Chrome\'s V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are the benefits of using Node.js?***
+
+*ToDo*
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -181,6 +189,22 @@ node app.js
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***How to make an HTTP POST request using Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to execute an external program from within Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 ## Q. ***What does the runtime environment mean in Node.js?***
 
 The Node.js runtime is the software stack responsible for installing your web service\'s code and its dependencies and running your service.
@@ -192,6 +216,14 @@ runtime: nodejs10
 ```
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Explain usage of NODE_ENV?***
+
+*ToDo*
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -227,6 +259,38 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
         * Picks up one Thread and assign this Client Request to that thread.
         * That Thread is responsible for taking that request, process it, perform Blocking IO operations, prepare response and send it back to the Event Loop
         * Event Loop in turn, sends that Response to the respective Client.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is the difference between Node.js, AJAX, and JQuery?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are the core modules of Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is callback function in Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is EventEmitter in Node.js?***
+
+*ToDo*
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -561,7 +625,7 @@ The only option is to automate the update / security audit of your dependencies.
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What is Event loop in Node.js? And How does it work?***
+## Q. ***What is Event loop in Node.js? How does it work?***
 
 The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.
 
@@ -616,6 +680,14 @@ console.log("Program Ended.");
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***If Node.js is single threaded then how it handles concurrency?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 ## Q. ***What is REPL? What purpose it is used for?***
 
 REPL (READ, EVAL, PRINT, LOOP) is a computer environment similar to Shell (Unix/Linux) and command prompt. Node comes with the REPL environment when it is installed. System interacts with the user through outputs of commands/expressions used. It is useful in writing and debugging the codes. The work of REPL can be understood from its full form:
@@ -640,7 +712,7 @@ $ node
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What is asynchronous programming in node js?***
+## Q. ***What is asynchronous programming in Node.js?***
 
 *ToDo*
 
@@ -715,16 +787,14 @@ Libraries that enhance stack trace information
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What are some of the most popular modules of Node.js?***
+## Q. ***What are some of the most popular packages of Node.js?***
 
 * **Async**: Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript.
-* **Browserify**: Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single <script> tag.
+* **Browserify**: Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single `<script>` tag.
 * **Bower**: Bower is a package manager for the web. It works by fetching and installing packages from all over, taking care of hunting, finding, downloading, and saving the stuff you’re looking for.
-* **Backbone**: Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface.
 * **Csv**: csv module has four sub modules which provides CSV generation, parsing, transformation and serialization for Node.js.
 * **Debug**: Debug is a tiny node.js debugging utility modelled after node core\'s debugging technique.
 * **Express**: Express is a fast, un-opinionated, minimalist web framework. It provides small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs.
-* **Forever**: A simple CLI tool for ensuring that a given node script runs continuously (i.e. forever).
 * **Grunt**: is a JavaScript Task Runner that facilitates creating new projects and makes performing repetitive but necessary tasks such as linting, unit testing, concatenating and minifying files (among other things) trivial.
 * **Gulp**: is a streaming build system that helps you automate painful or time-consuming tasks in your development workflow.
 * **Hapi**: is a streaming build system that helps you automate painful or time-consuming tasks in your development workflow.
@@ -1297,6 +1367,46 @@ The `V8` was first designed to increase the performance of the JavaScript execut
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***What is chrome v8 engine?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is the purpose of using hidden classes in V8?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How V8 compiles JavaScript code?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is V8 Templates?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Why is LIBUV needed in Node JS?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 ## Q. ***What is difference between put and patch?***
 
 PUT and PATCH are HTTP verbs and they both relate to updating a resource. The main difference between PUT and PATCH requests are in the way the server processes the enclosed entity to modify the resource identified by the Request-URI.
@@ -1801,7 +1911,7 @@ It is an approach to connect the output of one stream to the input of another st
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What is a control flow function? what are the steps does it execute?***
+## Q. ***What is a control flow function? What are the steps does it execute?***
 
 It is a generic piece of code which runs in between several asynchronous function calls is known as control flow function.
 
@@ -2114,6 +2224,14 @@ Node.js uses an event loop for this. An event loop is “an entity that handles 
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***What are async functions in Node?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 ## Q. ***Mention the steps by which you can async in Node.js?***
 
 ES 2017 introduced Asynchronous functions. Async functions are essentially a cleaner way to work with asynchronous code in JavaScript. 
@@ -2172,38 +2290,7 @@ addAsync(10).then((sum) => {
 
 ## Q. ***What are the timing features of Node.js?***
 
-The Performance Timing API provides an implementation of the W3C Performance Timeline specification. The purpose of the API is to support collection of high resolution performance metrics. This is the same Performance API as implemented in modern Web browsers.
-
-```javascript
-const { PerformanceObserver, performance } = require('perf_hooks');
-
-const obs = new PerformanceObserver((items) => {
-  console.log(items.getEntries()[0].duration);
-  performance.clearMarks();
-});
-obs.observe({ entryTypes: ['measure'] });
-
-performance.mark('A');
-doSomeLongRunningProcess(() => {
-  performance.mark('B');
-  performance.measure('A to B', 'A', 'B');
-});
-``` 
-
-**`request` module**  
-The popular request module has a built-in method to measure HTTP timings. You can enable it with the time property.
-
-```javascript
-const request = require('request')
-
-request({
-  uri: 'https://nodejs.org',
-  method: 'GET',
-  time: true
-}, (err, resp) => {
-  console.log(err || resp.timings)
-})
-```
+*ToDo*
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -3351,13 +3438,24 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### Q. ***Explain Error Handling in Nodejs?***
+#### Q. ***Is it possible to use "Class" in Node.js?***
+#### Q. ***Explain Error Handling approaches in Node.js?***
+#### Q. ***How would you handle errors for async code in Node.js?***
+#### Q. ***What are the use cases for the Node.js "vm" core module?***
+#### Q. ***Explain the concept of Domain in Node.js?***
+#### Q. ***What is Node-API (N-API)?***
+#### Q. ***Why Node.js is a single threaded language?***
 #### Q. ***How to use locale (i18n) in Node.js?***
 #### Q. ***What are the types of memory leaks in node.js***
 #### Q. ***How to implement a Sleep function?***
 #### Q. ***How does the cluster load balance work in node.js?***
 #### Q. ***What is daemon process? how to implement it in node.js?*** 
 #### Q. ***How to synchronize data between multiple clients on node.js server?***
+#### Q. ***How do you convert an existing callback API to promises?***
+#### Q. ***How would you scale Node application?***
+#### Q. ***How to solve "Process out of Memory Exception" in Node.js?***
+#### Q. ***How does the cluster module work? What is the difference between it and a load balancer?***
+#### Q. ***Why do we need C++ Addons in Node.js?***
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
