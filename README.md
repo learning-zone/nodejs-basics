@@ -190,6 +190,15 @@ node app.js
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***Explain the concept of URL module in Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+
 ## Q. ***How to make an HTTP POST request using Node.js?***
 
 *ToDo*
@@ -290,6 +299,14 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 </div>
 
 ## Q. ***What is EventEmitter in Node.js?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How assert works in Node.js?***
 
 *ToDo*
 
