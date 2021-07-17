@@ -227,6 +227,7 @@ runtime: nodejs10
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
 
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
@@ -1387,7 +1388,9 @@ The `V8` was first designed to increase the performance of the JavaScript execut
 
 ## Q. ***What is chrome v8 engine?***
 
-*ToDo*
+V8 is the name of the JavaScript engine that powers Google Chrome. It's the thing that takes our JavaScript and executes it while browsing with Chrome. V8 provides the runtime environment in which JavaScript executes. The DOM, and the other Web Platform APIs are provided by the browser.
+
+V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly, and runs on Windows 7 or later, macOS 10.12+, and Linux systems that use x64, IA-32, ARM, or MIPS processors. V8 can run standalone, or can be embedded into any C++ application.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
