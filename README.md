@@ -2436,9 +2436,9 @@ It is an architectural style as well as an approach for communications purposes 
 **HTTP methods**
 
 * `GET` − Provides read-only access to a resource.
-* `PUT` − Creates a new resource.
+* `PUT` − Updates an existing resource or creates a new resource.
 * `DELETE` − Removes a resource.
-* `POST` − Updates an existing resource or creates a new resource.
+* `POST` − Creates a new resource.
 * `PATCH`− Update/modify a resource
 
 **Principles of REST**
