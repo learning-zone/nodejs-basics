@@ -2601,6 +2601,14 @@ var server = app.listen(3000, function () {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***What is the difference between req.params and req.query?***
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 ## Q. ***How to handle file upload in Node.js?***
 
 * **express**: Popular web framework built on top of Node.js, used for creating REST-API.
@@ -3210,7 +3218,7 @@ async function logFetch(url) {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-#### 72Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
+## Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
 
 JSON Web Token (JWT) is an open standard that defines a compact and self-contained way of securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
 
