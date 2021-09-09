@@ -323,7 +323,12 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 ## Q. ***What are the core modules of Node.js?***
 
-*ToDo*
+
+They are defined within the Node.js source and are located in the lib/ folder, and Node.js has several modules compiled into the binary. 
+
+Core modules are always preferentially loaded if their identifier is passed to ```require()```. For instance, ```require('http')``` will always return the built in HTTP module, even if there is a file by that name.
+
+Core modules can also be identified using the ```node:``` prefix, in which case it bypasses the require cache. For instance, ```require('node:http')``` will always return the built in HTTP module, even if there is ```require.cache``` entry by that name.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
