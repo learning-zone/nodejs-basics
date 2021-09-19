@@ -207,7 +207,25 @@ node app.js
 
 ## Q. ***Explain the concept of URL module in Node.js?***
 
-*ToDo*
+The URL module in Node.js splits up a web address into readable parts. Use ```require()``` to include the module:
+
+```javascript
+var url = require('url');
+```
+Then parse an address with the ```url.parse()``` method, and it will return a URL object with each part of the address as properties.
+
+```javascript
+var url = require('url');
+var adr = 'http://localhost:8080/default.htm?year=2021&month=september';
+var q = url.parse(adr, true);
+
+console.log(q.host); //returns 'localhost:8080'
+console.log(q.pathname); //returns '/default.htm'
+console.log(q.search); //returns '?year=2021&month=september'
+
+var qdata = q.query; //returns an object: { year: 2021, month: 'september' }
+console.log(qdata.month); //returns 'september'
+```
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -338,7 +356,12 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 ## Q. ***What are the core modules of Node.js?***
 
-*ToDo*
+
+They are defined within the Node.js source and are located in the lib/ folder, and Node.js has several modules compiled into the binary. 
+
+Core modules are always preferentially loaded if their identifier is passed to ```require()```. For instance, ```require('http')``` will always return the built in HTTP module, even if there is a file by that name.
+
+Core modules can also be identified using the ```node:``` prefix, in which case it bypasses the require cache. For instance, ```require('node:http')``` will always return the built in HTTP module, even if there is ```require.cache``` entry by that name.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
