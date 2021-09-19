@@ -3328,7 +3328,9 @@ module.exports = {
 
 The `jwt.sign()` method takes a payload and the secret key defined in `config.js` as parameters. It creates a unique string of characters representing the payload. In our case, the payload is an object containing only the id of the user.
 
-* **[[Reference](https://www.npmjs.com/package/jsonwebtoken)]**
+**Reference:**
+
+* **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -3468,7 +3470,9 @@ Q.fcall(promisedStep1)
 .done();
 ```
 
-* **[[Reference](https://www.npmjs.com/package/q)]**
+**Reference:**
+
+* **[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)**
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -3507,7 +3511,9 @@ var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:
 
 <br/>
 
-**[[Reference](https://www.npmjs.com/package/memcached)]**
+**Reference:**
+
+* **[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)**
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
