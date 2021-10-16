@@ -305,7 +305,7 @@ The runtime environment is literally just the environment your application is ru
 
 ## Q. ***Explain usage of NODE_ENV?***
 
-*ToDo*
+NODE_ENV is an environment variable made popular by the express web server framework. When a node application is run, it can check the value of the environment variable and do different things based on the value.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
