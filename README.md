@@ -305,7 +305,20 @@ The runtime environment is literally just the environment your application is ru
 
 ## Q. ***Explain usage of NODE_ENV?***
 
-*ToDo*
+NODE_ENV is an environment variable made popular by the express web server framework. When a node application is run, it can check the value of the environment variable and do different things based on the value.
+
+For example, when we work on a project and there are production and development environments. We don't need to use caching in the development env. So we set
+ ```bash 
+ $ NODE_ENV=development
+ ``` 
+
+and use the code below 
+```js
+if (process.env.NODE_ENV === 'development')
+    useCaching = false;
+```
+Upon that, if the project runs on production it will use caching.
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
