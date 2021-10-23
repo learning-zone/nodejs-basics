@@ -361,7 +361,11 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 ## Q. ***What is the difference between Node.js, AJAX, and JQuery?***
 
-*ToDo*
+Node.js is a javascript runtime that makes it possible for us to write back-end of applications.
+
+Asynchronous JavaScript and XML(AJAX) refers to group of technologies that we use to send requests to web servers and retrieve data from them without reloading the page.
+
+Jquery is a simple javascript library that helps us with front-end development.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
