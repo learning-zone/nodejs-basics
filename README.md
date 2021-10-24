@@ -361,7 +361,11 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 ## Q. ***What is the difference between Node.js, AJAX, and JQuery?***
 
-*ToDo*
+Node.js is a javascript runtime that makes it possible for us to write back-end of applications.
+
+Asynchronous JavaScript and XML(AJAX) refers to group of technologies that we use to send requests to web servers and retrieve data from them without reloading the page.
+
+Jquery is a simple javascript library that helps us with front-end development.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -1511,7 +1515,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 
 ## Q. ***Why is LIBUV needed in Node JS?***
 
-*ToDo*
+LIBUV is a library written in C++ and it's focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -2654,7 +2658,12 @@ var server = app.listen(3000, function () {
 
 ## Q. ***What is the difference between req.params and req.query?***
 
-*ToDo*
+params are a part of a path in URL and they're also known as URL variables. for example, if you have the route /books/:id, then the “id” property will be available as req.params.id. req.params default value is an empty object {}.
+
+A query string is a part of a URL that assigns values to specified parameters. A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML form. A query is the last part of URL
+
+
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
