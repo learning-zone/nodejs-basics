@@ -87,8 +87,8 @@
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
 | 77. |[Explain Error Handling approaches in Nodejs?](#q-explain-error-handling-approaches-in-nodejs)|
 | 78. |[How to generate and verify checksum of the given string in Nodejs](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-nodejs)|
-| 79. |[What is Callback function in node.js?](#q-what-is-callback-function-in-node.js) |
-| 80. |[What is asynchronous programming in node.js?](#q-what-is-asynchronous-programming-in-node.js)
+| 79. |[What is Callback function in node.js?](nodejs-interview-questions#q-what-is-callback-function-in-node.js) |
+| 80. |[What is asynchronous programming in node.js?](nodejs-interview-questions#q-what-is-asynchronous-programming-in-node.js)
 
 <br/>
 
