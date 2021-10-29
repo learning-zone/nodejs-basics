@@ -87,6 +87,8 @@
 | 76. |[How to Implement Memcached in Nodejs?](#q-how-to-implement-memcached-in-nodejs)|
 | 77. |[Explain Error Handling approaches in Nodejs?](#q-explain-error-handling-approaches-in-nodejs)|
 | 78. |[How to generate and verify checksum of the given string in Nodejs](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-nodejs)|
+| 79. |[What is Callback function in node.js?](#q-what-is-callback-function-in-nodejs)|
+| 80. |[What is asynchronous programming in node.js?](#q-what-is-asynchronous-programming-in-nodejs)|
 
 <br/>
 
@@ -386,7 +388,19 @@ Core modules can also be identified using the ```node:``` prefix, in which case 
 
 ## Q. ***What is callback function in Node.js?***
 
-*ToDo*
+In node.js, we basically use callbacks for handling asynchronous operations like — making any I/O request, database operations or calling an API to fetch some data. Callback allows our code to not get blocked when a process is taking a long time.
+
+```javascript
+function myNew(next){
+    console.log("Im the one who initates callback");
+    next("nope", "success");
+}
+
+myNew(function(err, res){
+    console.log("I got back from callback",err, res);
+});
+```
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -826,7 +840,7 @@ $ node
 
 ## Q. ***What is asynchronous programming in Node.js?***
 
-*ToDo*
+Asynchronous programming is a form of parallel programming that allows a unit of work to run separately from the primary application thread. When the work is complete, it notifies the main thread (as well as whether the work was completed or failed). There are numerous benefits to using it, such as improved application performance and enhanced responsiveness.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
