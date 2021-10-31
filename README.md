@@ -105,7 +105,7 @@ Node.js is an open-source server side runtime environment built on Chrome\'s V8 
 
 From a web server development perspective Node has a number of benefits:
 
-  * Great performance! Node was designed to optimize througput and scalability in web applications and is a good solution for many common web-development problems (e.g. real-time web applications).
+  * Great performance! Node was designed to optimize throughput and scalability in web applications and is a good solution for many common web-development problems (e.g. real-time web applications).
 
   * Code is written in "plain old JavaScript", which means that less time is spent dealing with "context shift" between languages when you're writing both client-side and server-side code. 
 
