@@ -406,10 +406,6 @@ myNew(function(err, res){
     <b><a href="#">↥ back to top</a></b>
 </div>
 
-## Q. ***What is EventEmitter in Node.js?***
-
-*ToDo*
-
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
