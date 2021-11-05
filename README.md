@@ -412,7 +412,16 @@ myNew(function(err, res){
 
 ## Q. ***How assert works in Node.js?***
 
-*ToDo*
+The assert module provides a way of testing expressions. If the expression evaluates to 0, or false, an assertion failure is being caused, and the program is terminated.
+
+This module was built to be used internally by Node.js.
+
+```
+// Sample usage
+
+const assert = require('assert');
+assert(50 > 70, "50 is less than 70.");
+```
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
