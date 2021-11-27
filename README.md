@@ -134,16 +134,30 @@ Node.js runs in a single process and the application code runs in a single threa
 
 ## Q. ***What are the data types in Node.js?***
 
-*Primitive Types*
+Just like JS, there are two categories of data types in Node: Primitives and Objects.
+
+*Primitives*
 
 * String
 * Number
+* Bigint
 * Boolean
 * Undefined
 * Null
-* RegExp
+* Symbol
 
-* `Buffer`: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+*Objects* 
+
+* Function
+
+* Array
+
+* `Buffer`: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network. `Buffer` is a class.
+
+
+* other regular objects
+
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
