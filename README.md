@@ -361,7 +361,7 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 * Node JS Web Server receives those requests and places them into a Queue. It is known as “Event Queue”.
 * Node JS Web Server internally has a Component, known as “Event Loop”. Why it got this name is that it uses indefinite loop to receive requests and process them. 
 * Event Loop uses Single Thread only. It is main heart of Node JS Platform Processing Model.
-* Even Loop checks any Client Request is placed in Event Queue. If no, then wait for incoming requests for indefinitely.
+* Event Loop checks any Client Request is placed in Event Queue. If no, then wait for incoming requests for indefinitely.
 * If yes, then pick up one Client Request from Event Queue
     * Starts process that Client Request
     * If that Client Request Does Not requires any Blocking IO Operations, then process everything, prepare response and send it back to client.
