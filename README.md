@@ -1,6 +1,6 @@
 # Node.js Interview Questions
 
-*Click <img src="assets/star.png" width="18" height="18" align="absmiddle" title="Star" /> if you like the project. Pull Request are highly appreciated.*
+*Click <img src="assets/star.png" width="18" height="18" align="absmiddle" title="Star" /> if you like the project. Pull Requests are highly appreciated.*
 
 ## Table of Contents
 
@@ -417,11 +417,6 @@ myNew(function(err, res){
     console.log("I got back from callback",err, res);
 });
 ```
-
-
-<div align="right">
-    <b><a href="#">↥ back to top</a></b>
-</div>
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
