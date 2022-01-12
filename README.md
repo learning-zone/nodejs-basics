@@ -1546,7 +1546,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 
 ## Q. ***Why is LIBUV needed in Node JS?***
 
-LIBUV is a library written in C++ and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
+LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
