@@ -1,5 +1,6 @@
 # Express and JSON Web Token Authentication
 
+
 ## Generate Random Access Token
 
 ```bash
@@ -12,4 +13,5 @@ node > require('crypto').randomBytes(64).toString('hex');
 
 ## Reference
 
-- _[https://github.com/auth0/node-jsonwebtoken#readme](https://github.com/auth0/node-jsonwebtoken#readme)_
+
+_[https://github.com/auth0/node-jsonwebtoken#readme](https://github.com/auth0/node-jsonwebtoken#readme)_
