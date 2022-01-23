@@ -1,28 +1,15 @@
-# Express and JSON Web Token Authentication Using Asymetric Encryption Algorithm (RSA256)
+# Express and JSON Web Token Authentication
 
-When creating jsonwebtoken rather than signing and verifying tokens with a secret key use Asymetric encryption instead using pubic and private key pairs
-
-<br>
-
-- `cd` into jwt-authentication folder in your terminal run `mkdir certs`, then type `cd certs`.
-- Generate a public and private key for both access and refresh tokens:
+## Generate Random Access Token
 
 ```bash
-/** To generate a public and private key for access tokens */
+node > require('crypto').randomBytes(64).toString('hex');
 
-// Private Key
->> openssl genrsa -out accessTokenPrivatekey.pem 4096
+// Output
 
-// Public Key
->> openssl rsa -pubout -in accessTokenPrivatekey.pem -out accessTokenPublickey.pem
+'e366bb13beebb0b9c8611dca7dc13d4badf7f303c374151cab5dfbb21196dede06224b3a210fdbd6f9392ac906b0f0662ff3480ea62c6374078928af177db161'
 ```
 
-```bash
-/** To generate a public and private key for refresh tokens */
+## Reference
 
-// Private Key
->> openssl genrsa -out refreshTokenPrivatekey.pem 4096
-
-// Public Key
->> openssl rsa -pubout -in refreshTokenPrivatekey.pem -out refreshTokenPublickey.pem
-```
+- _[https://github.com/auth0/node-jsonwebtoken#readme](https://github.com/auth0/node-jsonwebtoken#readme)_
