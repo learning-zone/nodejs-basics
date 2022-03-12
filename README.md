@@ -3728,6 +3728,55 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***How to Validate Data using joi Module in Node.js?***
+
+Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like `optional(), required(), min(), max(), etc which make it easy to use and a user-friendly module for validating the data.
+
+```js
+const Joi = require("joi");
+
+//User-defined function to validate the user
+function validateUser(user) {
+
+  const JoiSchema = Joi.object({
+
+    username: Joi.string().min(5).max(30).required(),
+
+    email: Joi.string().email().min(5).max(50).optional(),
+
+    date_of_birth: Joi.date().optional(),
+
+    account_status: Joi.string()
+      .valid("activated")
+      .valid("unactivated")
+      .optional(),
+  }).options({ abortEarly: false });
+
+  return JoiSchema.validate(user);
+}
+
+const user = {
+  username: "Deepak Lucky",
+  email: "deepak.lucky@gmail.com",
+  date_of_birth: "2000-07-07",
+  account_status: "activated",
+};
+
+let response = validateUser(user);
+
+if (response.error) {
+  console.log(response.error.details);
+} else {
+  console.log("Validated Data");
+}
+```
+
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***Is it possible to use "Class" in Node.js?***
 #### Q. ***Explain Error Handling approaches in Node.js?***
 #### Q. ***How would you handle errors for async code in Node.js?***
