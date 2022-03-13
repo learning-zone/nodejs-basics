@@ -3777,6 +3777,67 @@ if (response.error) {
     <b><a href="#">↥ back to top</a></b>
 </div>
 
+## Q. ***What are the middleware functions in Node.js?***
+
+Middleware functions are functions that have access to the **request object (req)**, the **response object (res)**, and the `next` function in the application\'s request-response cycle.
+
+The `next` function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
+
+Middleware functions can perform the following tasks:
+
+* Execute any code.
+* Make changes to the request and the response objects.
+* End the request-response cycle.
+* Call the next middleware in the stack.
+
+If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+The following figure shows the elements of a middleware function call:
+
+<p align="center">
+  <img src="assets/express-mw.png" alt="Middleware functions" width="800px" />
+</p>
+
+Middleware functions that return a Promise will call `next(value)` when they reject or throw an error. `next` will be called with either the rejected value or the thrown Error.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Explain the use of next in node.js with example?***
+
+The next function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
+
+**Example:** Middleware function myLogger
+
+To load the middleware function, call `app.use()`, specifying the middleware function. For example, the following code loads the **myLogger** middleware function before the route to the root path (/).
+
+```js
+const express = require("express");
+const app = express();
+
+const myLogger = function (req, res, next) {
+  console.log("LOGGED");
+  next();
+};
+
+app.use(myLogger);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(3000);
+```
+
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/next-function-nq042s)**
+
+*Note: The `next()` function is not a part of the Node.js or Express API, but is the third argument that is passed to the middleware function. The `next()` function could be named anything, but by convention it is always named “next”. To avoid confusion, always use this convention.*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
 #### Q. ***Is it possible to use "Class" in Node.js?***
 #### Q. ***Explain Error Handling approaches in Node.js?***
 #### Q. ***How would you handle errors for async code in Node.js?***
