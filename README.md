@@ -3517,9 +3517,7 @@ The `jwt.sign()` method takes a payload, private key defined in `./certs/accessT
 
 ## Q. ***How to build a microservices architecture with Node.js?***
 
-**Microservices**
-
-Microservices are a style of **service-oriented architecture** (SOA) where the app is structured on an assembly of interconnected services. With microservices, the application architecture is built with lightweight protocols. The services are finely seeded in the architecture. Microservices disintegrate the app into smaller services and enable improved modularity.
+Microservices are a style of **Service Oriented Architecture (SOA)** where the app is structured on an assembly of interconnected services. With microservices, the application architecture is built with lightweight protocols. The services are finely seeded in the architecture. Microservices disintegrate the app into smaller services and enable improved modularity.
 
 <p align="center">
   <img src="assets/monolithic-and-microservices-architecture.jpg" alt="Microservices" width="400px" />
@@ -3527,17 +3525,17 @@ Microservices are a style of **service-oriented architecture** (SOA) where the a
 
 There are few things worth emphasizing about the superiority of microservices, and distributed systems generally, over monolithic architecture:
 
-* Modularity — responsibility for specific operations is assigned to separate pieces of the application
-* Uniformity — microservices interfaces (API endpoints) consist of a base URI identifying a data object and standard HTTP methods (GET, POST, PUT, PATCH and DELETE) used to manipulate the object
-* Robustness — component failures cause only the absence or reduction of a specific unit of functionality
-* Maintainability — system components can be modified and deployed independently
-* Scalability — instances of a service can be added or removed to respond to changes in demand.
-* Availability — new features can be added to the system while maintaining 100% availability.
-* Testability — new solutions can be tested directly in the production environment by implementing them for  restricted segments of users to see how they behave in real life.
+* **Modularity** — responsibility for specific operations is assigned to separate pieces of the application
+* **Uniformity** — microservices interfaces (API endpoints) consist of a base URI identifying a data object and standard HTTP methods (GET, POST, PUT, PATCH and DELETE) used to manipulate the object
+* **Robustness** — component failures cause only the absence or reduction of a specific unit of functionality
+* **Maintainability** — system components can be modified and deployed independently
+* **Scalability** — instances of a service can be added or removed to respond to changes in demand.
+* **Availability** — new features can be added to the system while maintaining 100% availability.
+* **Testability** — new solutions can be tested directly in the production environment by implementing them for  restricted segments of users to see how they behave in real life.
 
-**Creating Microservices with Node.js**
+**Example:** Creating Microservices with Node.js
 
-**Step 01: Creating a Server to Accept Requests**
+**Step 01:** Creating a Server to Accept Requests
 
 This file is creating our server and assigns routes to process all requests.
 
@@ -3555,7 +3553,7 @@ app.listen(port, function() {
 });
 ```
 
-**Step 02: Defining the routes**
+**Step 02:** Defining the routes
 
 The next step is to define the routes for the microservices and then assign each to a target in the controller. We have two endpoints. One endpoint called "about" that returns information about the application. And a "distance" endpoint that includes two path parameters, both Zip Codes of the Lego store. This endpoint returns the distance, in miles, between these two Zip Codes.
 
@@ -3570,7 +3568,7 @@ module.exports = function(app) {
 };
 ```
 
-**Step 03: Adding Controller Logic**
+**Step 03:** Adding Controller Logic
 
 Within the controller file, we are going to create a controller object with two properties. Those properties are the functions to handle the requests we defined in the routes module.
 
