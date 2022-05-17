@@ -988,41 +988,40 @@ When the EventEmitter object emits an event, all of the functions attached to th
 *Example*:
 
 ```javascript
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
 
 // listener #1
-var listner1 = function listner1() {
-   console.log('listner1 executed.');
+const listener1 = function listener1() {
+   console.log('listener1 executed.');
 }
 
 // listener #2
-var listner2 = function listner2() {
-   console.log('listner2 executed.');
+const listener2 = function listener2() {
+   console.log('listener2 executed.');
 }
 
-// Bind the connection event with the listner1 function
-eventEmitter.addListener('connection', listner1);
+// Bind the connection event with the listener1 function
+eventEmitter.addListener('connection', listener1);
 
-// Bind the connection event with the listner2 function
-eventEmitter.on('connection', listner2);
+// Bind the connection event with the listener2 function
+eventEmitter.on('connection', listener2);
 
-var eventListeners = require('events').EventEmitter.listenerCount
-   (eventEmitter,'connection');
-console.log(eventListeners + " Listner(s) listening to connection event");
-
-// Fire the connection event 
-eventEmitter.emit('connection');
-
-// Remove the binding of listner1 function
-eventEmitter.removeListener('connection', listner1);
-console.log("Listner1 will not listen now.");
+let eventListeners = eventEmitter.listenerCount('connection')
+console.log(eventListeners + " Listener(s) listening to connection event");
 
 // Fire the connection event 
 eventEmitter.emit('connection');
 
-eventListeners = require('events').EventEmitter.listenerCount(eventEmitter,'connection');
-console.log(eventListeners + " Listner(s) listening to connection event");
+// Remove the binding of listener1 function
+eventEmitter.removeListener('connection', listener1);
+console.log("Listener1 will not listen now.");
+
+// Fire the connection event 
+eventEmitter.emit('connection');
+
+eventListeners = eventEmitter.listenerCount('connection')
+console.log(eventListeners + " Listener(s) listening to connection event");
 
 console.log("Program Ended.");
 ```
@@ -1036,12 +1035,12 @@ $ node main.js
 Output
 
 ```bash
-2 Listner(s) listening to connection event
-listner1 executed.
-listner2 executed.
-Listner1 will not listen now.
-listner2 executed.
-1 Listner(s) listening to connection event
+2 Listener(s) listening to connection event
+listener1 executed.
+listener2 executed.
+Listener1 will not listen now.
+listener2 executed.
+1 Listener(s) listening to connection event
 Program Ended.
 ```
 
