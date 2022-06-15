@@ -832,6 +832,8 @@ console.log("Program Ended.");
 
 Node.js handles concurrency via its  asynchronous nature, making it possible to perform multiple I/O operations at the same time. The event loop allows Node to maintain concurrency and perform non-blocking I/O operations. The event loops works on a queue and performs tasks on a FIFO basis, executing a task only when there is no current ongoing task in the call stack, which works on a LIFO basis. The event loop continuously checks the call stack to check if there is any task that needs to be run. Now whenever the event loop finds any function, it adds it to the stack and runs in order.
 
+<img src="assets/event-loop.png" alt="Event Loop" width="800px"/>
+
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
