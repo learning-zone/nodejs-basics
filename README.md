@@ -830,7 +830,7 @@ console.log("Program Ended.");
 
 ## Q. ***If Node.js is single threaded then how it handles concurrency?***
 
-*ToDo*
+Node.js handles concurrency via its  asynchronous nature, making it possible to perform multiple I/O operations at the same time. The event loop allows Node to maintain concurrency and perform non-blocking I/O operations. The event loops works on a queue and performs tasks on a FIFO basis, executing a task only when there is no current ongoing task in the call stack, which works on a LIFO basis. The event loop continuously checks the call stack to check if there is any task that needs to be run. Now whenever the event loop finds any function, it adds it to the stack and runs in order.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -1525,8 +1525,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 </div>
 
 ## Q. ***What is the purpose of using hidden classes in V8?***
-
-*ToDo*
+The purpose of hidden classes is to optimize the access time when retrieving a property on an object. This is achieved by sharing hidden classes among objects created in a similar fashion.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
