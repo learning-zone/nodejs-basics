@@ -513,8 +513,8 @@ async.waterfall([
             The 1st parameter passed in callback.
             @null or @undefined or @false control moves to the next function
             in the array
-            if @true or @string the control is immedeatly moved
-            to the final callback fucntion
+            if @true or @string the control is immediately moved
+            to the final callback function
             rest of the functions in the array
             would not be executed
         */
@@ -554,7 +554,7 @@ async.series([
             @null or @undefined or @false control moves to the next function
             in the array
             if @true or @string the control is immedeatly moved
-            to the final callback fucntion with the value of err same as
+            to the final callback function with the value of err same as
             passed over here and
             rest of the functions in the array
             would not be executed
