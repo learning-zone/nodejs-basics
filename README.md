@@ -300,11 +300,13 @@ req.end()
 
 ## Q. ***How to execute an external program from within Node.js?***
 
+```js
 const { exec } = require('child_process');
 
 exec('"/path/to/test file/test.sh" arg1 arg2');
 
 exec('echo "The \\$HOME variable is $HOME"');
+```
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
