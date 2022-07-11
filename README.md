@@ -27,7 +27,7 @@
 | 13. |[What is a test pyramid? How can you implement it when talking about HTTP APIs?](#q-what-is-a-test-pyramid-how-can-you-implement-it-when-talking-about-http-apis)|
 | 14. |[How can you secure your HTTP cookies against XSS attacks?](#q-how-can-you-secure-your-http-cookies-against-xss-attacks)|
 | 15. |[How can you make sure your dependencies are safe?](#q-how-can-you-make-sure-your-dependencies-are-safe)|
-| 16. |[What is Event loop in Node.js? How does it work?](#q-what-is-event-loop-in-nodejs-how-does-it-work)|
+| 16. |[What is Event loop in Node.js? How does it work?](#q-what-is-event-loop-in-nodejs-how-does-it-work)| 
 | 17. |[What is REPL? What purpose it is used for?](#q-what-is-repl-what-purpose-it-is-used-for)|
 | 18. |[What is the difference between Asynchronous and Non-blocking?](#q-what-is-the-difference-between-asynchronous-and-non-blocking)|
 | 19. |[How to debug an application in Node.js?](#q-how-to-debug-an-application-in-nodejs)|
@@ -832,7 +832,25 @@ console.log("Program Ended.");
 
 ## Q. ***If Node.js is single threaded then how it handles concurrency?***
 
-*ToDo*
+Node js despite being single-threaded is the asynchronous nature that makes it possible to handle concurrency and perform multiple I/O operations at the same time. Node js uses an event loop to maintain concurrency and perform non-blocking I/O operations.
+
+As soon as Node js starts, it initializes an event loop. The event loop works on a queue (which is called an event queue) and performs tasks in FIFO(First In First Out) order. It executes a task only when there is no ongoing task in the call stack. The call stack works in LIFO(Last In First Out) order. The event loop continuously checks the call stack to check if there is any task that needs to be run. Now whenever the event loop finds any function, it adds it to the stack and runs in order.  
+
+```javascript
+function add(a,b){
+   return a+b;
+}
+function print(n){
+   console.log(`Two times the number ${n} is `+add(n,n));
+}
+  
+print(5);
+```
+
+ Here, when the code executes, the function print(5) will be invoked and will push into the call stack. When the function is called, it starts consoling the statement inside it but before consoling the whole statement it encounters another function add(n,n) and suspends its current execution, and pushes the add function into the top of the call stack. Now the function will return the addition a+b and then popped out from the stack and now the previously suspended function will start running and will log the output to console and then this function too will get pop from the stack and now the stack is empty. So this is how a call stack works. 
+
+ Source :- GeeksForGeeks
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
