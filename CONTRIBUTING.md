@@ -34,7 +34,7 @@ Where:
   - Bug: For changes fixing a bug, typo or anything that leads to correctness of the system being worked on
   - Buggy: Should be avoided as much as possible but could be needed. It is used when changes have been partially implemented and execution of the current state of the project would lead to evil bugs and sinister errors. An example refers to unclosed tags and a hurried commit since you might not get access to your PC for a while. Projects with this commit type as the latest one should perhaps not be pulled or cloned except such implementation is to be continued by you.
 
-- Message: refers to a message describing the changes made. It is important that each commit should only reflect one feature or implementation change. You should not cram two functionalities into one commit except they depend closely on one another. For example, implmentation of auth and adding views for a user profile are closely related but do not inter-depend on one another and should be separated into different commits. This is just to ensure a dev could work with states that are narrowed down to specific implementations and features.
+- Message: refers to a message describing the changes made. It is important that each commit should only reflect one feature or implementation change. You should not cram two functionalities into one commit except they depend closely on one another. For example, implementation of auth and adding views for a user profile are closely related but do not inter-depend on one another and should be separated into different commits. This is just to ensure a dev could work with states that are narrowed down to specific implementations and features.
 
 ## FAQ
 
