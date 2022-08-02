@@ -1555,7 +1555,21 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 
 ## Q. ***How V8 compiles JavaScript code?***
 
-*ToDo*
+The process can be described in 3 main steps:
+
+**1. Interpretation**
+
+To compile the code, V8 needs first to parse it in an Abstract Syntax Tree (AST), while analyzing the code syntax. This is a very traditional step in the compiling process to create the structure of the program.
+
+**2. Compilation**
+
+The AST is then interpreted by the [Ignition](https://v8.dev/docs/ignition) interpreter, which will output bytecodes (instructions) to be processed by the runtime. You can find the list of all bytecodes here.
+
+**3. Optimization**
+
+In parallel to the previous step, V8 will try to optimize the most frequently used set of instructions by transforming the bytecodes into machine codes, which are CPU-level instructions. Therefore it can execute the machine code directly the next time. For this task, V8 addresses the [Turbofan](https://v8.dev/docs/turbofan) compiler.
+
+<img src="assets/v8_compile.png" alt="V8 Compile Diagram" width="800px" />
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
