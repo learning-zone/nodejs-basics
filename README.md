@@ -1569,7 +1569,9 @@ The AST is then interpreted by the [Ignition](https://v8.dev/docs/ignition) inte
 
 In parallel to the previous step, V8 will try to optimize the most frequently used set of instructions by transforming the bytecodes into machine codes, which are CPU-level instructions. Therefore it can execute the machine code directly the next time. For this task, V8 addresses the [Turbofan](https://v8.dev/docs/turbofan) compiler.
 
-<img src="assets/v8_compile.png" alt="V8 Compile Diagram" width="800px" />
+<p align="center">
+  <img src="assets/v8_compile.png" alt="V8 Compile Diagram" width="800px" />
+</p>
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
