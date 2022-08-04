@@ -1582,7 +1582,7 @@ This is the example of some bytecode instructions generated from a `index.js` fi
 
 **3.1. Execution**
 
-All the bytecodes generated before are by the interpreter in this final step, hence obtaining the result.
+All the bytecodes generated before are executed by the interpreter in this final step, hence obtaining the result.
 
 **3.2. Optimization**
 
