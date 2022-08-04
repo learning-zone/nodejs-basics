@@ -1555,17 +1555,36 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 
 ## Q. ***How V8 compiles JavaScript code?***
 
-The process can be described in 3 main steps:
+The process can be described in 4 main steps:
 
 **1. Interpretation**
 
-To compile the code, V8 needs first to parse it in an Abstract Syntax Tree (AST), while analyzing the code syntax. This is a very traditional step in the compiling process to create the structure of the program.
+To compile the code, V8 needs to parse it in an Abstract Syntax Tree (AST) while analyzing the code syntax. It is a necessary step since V8 does not deal with the JS language directly, needing it in an AST structured shape.
+
+It will also generate the scopes in this step, which are Global, Function, or Block, as best described in this [article](https://cabulous.medium.com/javascript-execution-context-lexical-environment-and-block-scope-part-3-fc2551c92ce0).
 
 **2. Compilation**
 
-The AST is then interpreted by the [Ignition](https://v8.dev/docs/ignition) interpreter, which will output bytecodes (instructions) to be processed by the runtime. You can find the list of all bytecodes here.
+In this step, the [Ignition ](https://v8.dev/docs/ignition) interprets the AST, outputting bytecodes (instructions) to be processed by the runtime. You can find the list of all bytecodes [here](https://github.com/v8/v8/blob/master/src/interpreter/bytecodes.h).
+This is the example of some bytecode instructions generated from a `index.js` file the containing `console.log(1)` instruction:
 
-**3. Optimization**
+```
+0x1884001d36c8 @    0 : 21 00 00          LdaGlobal [0], [0]
+0x1884001d36cb @    3 : c2                Star2 
+0x1884001d36cc @    4 : 2d f8 01 02       GetNamedProperty r2, [1], [2]
+0x1884001d36d0 @    8 : c3                Star1 
+0x1884001d36d1 @    9 : 0d 01             LdaSmi [1]
+0x1884001d36d3 @   11 : c1                Star3 
+0x1884001d36d4 @   12 : 5e f9 f8 f7 04    CallProperty1 r1, r2, r3, [4]
+0x1884001d36d9 @   17 : c4                Star0 
+0x1884001d36da @   18 : a9                Return
+```
+
+**3.1. Execution**
+
+All the bytecodes generated before are by the interpreter in this final step, hence obtaining the result.
+
+**3.2. Optimization**
 
 In parallel to the previous step, V8 will try to optimize the most frequently used set of instructions by transforming the bytecodes into machine codes, which are CPU-level instructions. Therefore it can execute the machine code directly the next time. For this task, V8 addresses the [Turbofan](https://v8.dev/docs/turbofan) compiler.
 
