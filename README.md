@@ -39,7 +39,7 @@
 Node.js is an open-source server side runtime environment built on Chrome\'s V8 JavaScript engine. It provides an event driven, non-blocking (asynchronous) I/O and cross-platform runtime environment for building highly scalable server-side applications using JavaScript.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the benefits of using Node.js?***
@@ -62,7 +62,7 @@ From a web server development perspective Node has a number of benefits:
 
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is Node.js Process Model?***
@@ -70,7 +70,7 @@ From a web server development perspective Node has a number of benefits:
 Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms. All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn't have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the data types in Node.js?***
@@ -99,7 +99,7 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
 * other regular objects
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## # 2. NODEJS SETUP
@@ -161,7 +161,7 @@ node app.js
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain the concept of URL module in Node.js?***
@@ -187,7 +187,7 @@ console.log(qdata.month); //returns 'september'
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## # 3. NODEJS EVENTS
@@ -235,7 +235,7 @@ req.end()
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to execute an external program from within Node.js?***
@@ -249,7 +249,7 @@ exec('echo "The \\$HOME variable is $HOME"');
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What does the runtime environment mean in Node.js?***
@@ -266,7 +266,7 @@ The runtime environment is literally just the environment your application is ru
 
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain usage of NODE_ENV?***
@@ -287,7 +287,7 @@ Upon that, if the project runs on production it will use caching.
 
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How do Node.js works?***
@@ -322,7 +322,7 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
         * Event Loop in turn, sends that Response to the respective Client.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the difference between Node.js, AJAX, and JQuery?***
@@ -334,7 +334,7 @@ Asynchronous JavaScript and XML(AJAX) refers to group of technologies that we us
 Jquery is a simple javascript library that helps us with front-end development.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the core modules of Node.js?***
@@ -347,7 +347,7 @@ Core modules are always preferentially loaded if their identifier is passed to `
 Core modules can also be identified using the ```node:``` prefix, in which case it bypasses the require cache. For instance, ```require('node:http')``` will always return the built in HTTP module, even if there is ```require.cache``` entry by that name.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is callback function in Node.js?***
@@ -366,7 +366,7 @@ myNew(function(err, res){
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How assert works in Node.js?***
@@ -383,7 +383,7 @@ assert(50 > 70, "50 is less than 70.");
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is an error-first callback?***
@@ -404,7 +404,7 @@ Any asynchronous method expects one of the arguments to be a callback. The full 
 In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is callback hell in Node.js?***
@@ -547,7 +547,7 @@ addRandomNumber();
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are Promises in Node.js?***
@@ -572,7 +572,7 @@ var myPromise = new Promise(function(resolve, reject){
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What tools can be used to assure consistent style?***
@@ -581,7 +581,7 @@ var myPromise = new Promise(function(resolve, reject){
 * Standard
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***When should you npm and when yarn?***
@@ -616,7 +616,7 @@ npm install yarn --global
 * Flat Mode: Resolve mismatching versions of dependencies to a single version to avoid creating duplicates.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is a stub?***
@@ -646,7 +646,7 @@ readFileStub.restore();
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is a test pyramid? How can you implement it when talking about HTTP APIs?***
@@ -664,7 +664,7 @@ Mike Cohn\'s original test pyramid consists of three layers that your test suite
 1. User Interface Tests
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How can you secure your HTTP cookies against XSS attacks?***
@@ -696,7 +696,7 @@ Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How can you make sure your dependencies are safe?***
@@ -712,7 +712,7 @@ The only option is to automate the update / security audit of your dependencies.
 7. npm audit fix
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is Event loop in Node.js? How does it work?***
@@ -767,7 +767,7 @@ console.log("Program Ended.");
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***If Node.js is single threaded then how it handles concurrency?***
@@ -793,7 +793,7 @@ print(5);
 
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is REPL? What purpose it is used for?***
@@ -817,7 +817,7 @@ $ node
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is asynchronous programming in Node.js?***
@@ -825,7 +825,7 @@ $ node
 Asynchronous programming is a form of parallel programming that allows a unit of work to run separately from the primary application thread. When the work is complete, it notifies the main thread (as well as whether the work was completed or failed). There are numerous benefits to using it, such as improved application performance and enhanced responsiveness.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the difference between Asynchronous and Non-blocking?***
@@ -845,7 +845,7 @@ Nonblocking immediately responses with whatever data available. Moreover, it doe
 3) Asynchronous is the opposite of synchronous while nonblocking I/O is the opposite of blocking. They both are fairly similar but they are also different as asynchronous is used with a broader range of operations while nonblocking is mostly used with I/O.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to debug an application in Node.js?***
@@ -892,7 +892,7 @@ Libraries that enhance stack trace information
 * Longjohn
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are some of the most popular packages of Node.js?***
@@ -936,7 +936,7 @@ Libraries that enhance stack trace information
 * **Zmq**: Bindings for node.js and io.js to ZeroMQ .It is a high-performance asynchronous messaging library, aimed at use in distributed or concurrent applications.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is EventEmitter in Node.js?***
@@ -1005,7 +1005,7 @@ Program Ended.
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How many types of streams are present in node.js?***
@@ -1119,7 +1119,7 @@ console.log("File Compressed.");
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is crypto in Node.js? How do you cipher the secure information in Node.js?***
@@ -1162,7 +1162,7 @@ console.log(decrypted);
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the use of DNS module in Node.js?***
@@ -1212,7 +1212,7 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the security mechanisms available in Node.js?***
@@ -1298,7 +1298,7 @@ app.get('/security.txt', securityTxt({
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Name the types of API functions in Node.js?***
@@ -1341,7 +1341,7 @@ fs.readFile('/file.md', (err, data) => {
 Since `fs.readFile()` is non-blocking, moreWork() does not have to wait for the file read to complete before being called. This allows for higher throughput.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How does Node.js handle child threads?***
@@ -1357,7 +1357,7 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 * We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the preferred method of resolving unhandled exceptions in Node.js?***
@@ -1380,7 +1380,7 @@ Few events are :
 1. rejectionHandled
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?***
@@ -1395,7 +1395,7 @@ Cluster supports two types of load distribution:
 * The main process assigns the port to a child process and child process itself listen the port.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is typically the first argument passed to a Node.js callback handler?***
@@ -1413,7 +1413,7 @@ function callback(err, results) {
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How Node.js read the content of a file?***
@@ -1461,7 +1461,7 @@ node read_file.js
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is JIT and how is it related to Node.js?***
@@ -1471,7 +1471,7 @@ Node.js has depended on the V8 JavaScript engine to provide code execution in th
 The `V8` was first designed to increase the performance of the JavaScript execution inside web browsers. In order to obtain speed, V8 translates JavaScript code into more efficient machine code instead of using an interpreter. It compiles JavaScript code into machine code at execution by implementing a JIT (Just-In-Time) compiler like a lot of modern JavaScript engines such as SpiderMonkey or Rhino (Mozilla) are doing. The main difference with V8 is that it doesn’t produce bytecode or any intermediate code.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is chrome v8 engine?***
@@ -1481,7 +1481,7 @@ V8 is the name of the JavaScript engine that powers Google Chrome. It\'s the thi
 V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly, and runs on Windows 7 or later, macOS 10.12+, and Linux systems that use x64, IA-32, ARM, or MIPS processors. V8 can run standalone, or can be embedded into any C++ application.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the purpose of using hidden classes in V8?***
@@ -1489,7 +1489,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 *ToDo*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How V8 compiles JavaScript code?***
@@ -1497,7 +1497,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 *ToDo*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is V8 Templates?***
@@ -1505,7 +1505,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 *ToDo*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Why is LIBUV needed in Node JS?***
@@ -1513,7 +1513,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is difference between put and patch?***
@@ -1536,7 +1536,7 @@ The most commonly used HTTP verbs POST, GET, PUT, DELETE are similar to CRUD (Cr
 **PATCH**: Submits a partial modification to a resource. If you only need to update one field for the resource, you may want to use the PATCH method.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***List types of Http requests supported by Node.js?***
@@ -1693,7 +1693,7 @@ request(options, function(err, res, body) {
 Using the options object, this request uses the GET method to retrieve JSON data directly from Reddit, which is returned as a string in the body field. From here, you can use `JSON.parse` and use the data as a normal JavaScript object.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Why to use Express.js?***
@@ -1723,7 +1723,7 @@ var server=app.listen(3000,function() {});
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Write the steps for setting up an Express JS application?***
@@ -1784,7 +1784,7 @@ Node Console
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Since node is a single threaded process, how to make use of all CPUs?***
@@ -1846,7 +1846,7 @@ The first one (and the default one on all platforms except Windows), is the roun
 The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What does emitter do and what is dispatcher?***
@@ -1884,7 +1884,7 @@ The Dispatcher has functionality not provided nor expected in EventEmitter, the 
 Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API that you might object-assign onto multiple stores.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to kill child processes that spawn their own child processes in Node.js?***
@@ -1914,7 +1914,7 @@ process.kill(-child.pid);
 Please note - before pid. This converts a pid to a group of pids for process kill() method.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What do you understand by Reactor Pattern in Node.js?***
@@ -1939,7 +1939,7 @@ When all the items in the Event Queue are processed and there are no pending ope
 6. When all the items in the Event Queue are processed, the loop will block again on the Event Demultiplexer which will then trigger another cycle.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the key features of Node.js?***
@@ -1952,7 +1952,7 @@ When all the items in the Event Queue are processed and there are no pending ope
 * **No Buffering** – Node.js applications never buffer any data. They simply output the data in chunks.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are globals in Node.js?***
@@ -2009,7 +2009,7 @@ buffer.write(string)
 This class also offers other methods like `readInt8` and `writeUInt8` that allows read/write from various types of data to the buffer.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is chaining process in Node.js?***
@@ -2017,7 +2017,7 @@ This class also offers other methods like `readInt8` and `writeUInt8` that allow
 It is an approach to connect the output of one stream to the input of another stream, thus creating a chain of multiple stream operations.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is a control flow function? What are the steps does it execute?***
@@ -2032,7 +2032,7 @@ It executes the following steps.
 * Call the next step in the program.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is npm in Node.js?***
@@ -2060,7 +2060,7 @@ npm install express
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***When to use Node.js and when not to use it?***
@@ -2087,7 +2087,7 @@ Last but not the least, since Node.js uses JavaScript internally, so it fits bes
 However, we can use Node.js for a variety of applications. But it is a single threaded framework, so we should not use it for cases where the application requires long processing time. If the server is doing some calculation, it won’t be able to process any other requests. Hence, Node.js is best when processing needs less dedicated CPU time.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain how does Node.js work?***
@@ -2099,7 +2099,7 @@ Node.js works asynchronously by using the event loop and callback functions, to 
 While processing a request, Node.js attaches a callback function to it and moves it to the back-end. Now, whenever its response is ready, an event is called which triggers the associated callback function to send this response.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Is Node.js entirely based on a single-thread?***
@@ -2111,7 +2111,7 @@ Moreover, Node.js has an optimized design which utilizes both JavaScript and C++
 To explain it practically, let’s assume there are 100s of requests lined up in Node.js queue. As per design, the main thread of Node.js event loop will receive all of them and forwards to background workers for execution. Once the workers finish processing requests, the registered callbacks get notified on event loop thread to pass the result back to the user.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to make post request in Node.js?***
@@ -2129,7 +2129,7 @@ var request = require('request');
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Can you create http server in Node.js, explain the code used for it?***
@@ -2149,7 +2149,7 @@ server.listen(4200); // The port where you want to start with.
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to load html in Node.js?***
@@ -2189,7 +2189,7 @@ response.end();
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How can you listen on port 80 with Node?***
@@ -2201,7 +2201,7 @@ iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the difference between operational and programmer errors?***
@@ -2209,7 +2209,7 @@ iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 Operation errors are not bugs, but problems with the system, like request timeout or hardware failure. On the other hand programmer errors are actual bugs.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Why npm shrinkwrap is useful?***
@@ -2223,7 +2223,7 @@ npm shrinkwrap
 It should create new npm-shrinkwrap.json file with information about all packages you use.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is your favourite HTTP framework and why?***
@@ -2273,7 +2273,7 @@ Template engines allow developer to embed backend variables into HTML files, and
 As a minimal framework, Express does not consider database integration as a required aspect within its package, thus it leans toward no specific database usage whatsoever. While adopting a particular data storage technology, be it MySQL, MongoDB, PostgreSQL, Redis, ElasticSearch or something else, it’s just a matter of installing the particular npm package as database driver. These third party database drivers do not conform to unified syntax when doing CRUD instructions, which makes switching databases a big hassle and error prone.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the Challenges with Node.js?***
@@ -2320,7 +2320,7 @@ It is required for those web applications where traffic rate is very high. Node.
 The runtime environment of Node.js interprets JavaScript, which is very easy and simple to understand and code. Due to this reason, even the developers find it easy going which keeps them happy and relaxed. It is pertinent for real-time collaborative apps.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How Node.js overcomes the problem of blocking of I/O operations?***
@@ -2330,7 +2330,7 @@ Node.js solves this problem by putting the event based model at its core, using 
 Node.js uses an event loop for this. An event loop is “an entity that handles and processes external events and converts them into callback invocations”. Whenever data is needed nodejs registers a callback and sends the operation to this event loop. Whenever the data is available the callback is called.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are async functions in Node?***
@@ -2338,7 +2338,7 @@ Node.js uses an event loop for this. An event loop is “an entity that handles 
 *ToDo*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Mention the steps by which you can async in Node.js?***
@@ -2394,7 +2394,7 @@ addAsync(10).then((sum) => {
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the timing features of Node.js?***
@@ -2402,7 +2402,7 @@ addAsync(10).then((sum) => {
 *ToDo*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is LTS releases of Node.js why should you care?***
@@ -2412,7 +2412,7 @@ An LTS(Long Term Support) version of Node.js receives all the critical bug fixes
 LTS versions of Node.js are supported for at least 18 months and are indicated by even version numbers (e.g. 4, 6, 8). They’re best for production since the LTS release line is focussed on stability and security, whereas the Current release line has a shorter lifespan and more frequent updates to the code. Changes to LTS versions are limited to bug fixes for stability, security updates, possible npm updates, documentation updates and certain performance improvements that can be demonstrated to not break existing applications.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Why should you separate Express 'app' and 'server'?***
@@ -2449,7 +2449,7 @@ var server = http.createServer(app);
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the difference between process.nextTick() and setImmediate()?***
@@ -2457,7 +2457,7 @@ var server = http.createServer(app);
 The difference between `process.nextTick()` and `setImmediate()` is that `process.nextTick()` defers the execution of an action till the next pass around the event loop or it simply calls the callback function once the ongoing execution of the event loop is finished whereas `setImmediate()` executes a callback on the next cycle of the event loop and it gives back to the event loop for executing any I/O operations.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is difference between JavaScript and Node.js?***
@@ -2469,7 +2469,7 @@ The difference between `process.nextTick()` and `setImmediate()` is that `proces
 |Running Engine| JavaScript running any engine like Spider monkey (FireFox), JavaScript Core (Safari), V8 (Google Chrome).|	Node JS only run in a V8 engine which mainly used by google chrome. And javascript program which will be written under this Node JS will be always run in V8 Engine.|
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the difference between Events and Callbacks?***
@@ -2513,7 +2513,7 @@ eventEmitter.emit('Sum', '10', '20');
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain RESTful Web Services in Node.js?***
@@ -2648,7 +2648,7 @@ var server = app.listen(3000, function () {
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is the difference between req.params and req.query?***
@@ -2661,7 +2661,7 @@ A query string is a part of a URL that assigns values to specified parameters. A
 
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to handle file upload in Node.js?***
@@ -2759,7 +2759,7 @@ app.listen(3000, function(){
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?***
@@ -3069,7 +3069,7 @@ moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How does routing work in Node.js?***
@@ -3190,7 +3190,7 @@ module.exports = router
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How node.js prevents blocking code?***
@@ -3220,7 +3220,7 @@ moreWork(); // will run before console.log
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What is difference between promises and async-await in Node.js?***
@@ -3270,7 +3270,7 @@ async function logFetch(url) {
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to use JSON Web Token (JWT) for authentication in Node.js?***
@@ -3350,7 +3350,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
 * **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. **_How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?_**
@@ -3471,7 +3471,7 @@ The `jwt.sign()` method takes a payload, private key defined in `./certs/accessT
 - **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to build a microservices architecture with Node.js?***
@@ -3556,7 +3556,7 @@ module.exports = controllers;
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to use Q promise in Node.js?***
@@ -3611,7 +3611,7 @@ Q.fcall(promisedStep1)
 * **[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)**
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to implement Memcached in Node.js?***
@@ -3652,7 +3652,7 @@ var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:
 * **[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)**
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to generate and verify checksum of the given string in Nodejs***
@@ -3682,7 +3682,7 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
 ```
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***How to Validate Data using joi Module in Node.js?***
@@ -3731,7 +3731,7 @@ if (response.error) {
 **&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***What are the middleware functions in Node.js?***
@@ -3756,7 +3756,7 @@ The following figure shows the elements of a middleware function call:
 Middleware functions that return a Promise will call `next(value)` when they reject or throw an error. `next` will be called with either the rejected value or the thrown Error.
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. ***Explain the use of next in node.js with example?***
@@ -3790,7 +3790,7 @@ app.listen(3000);
 *Note: The `next()` function is not a part of the Node.js or Express API, but is the third argument that is passed to the middleware function. The `next()` function could be named anything, but by convention it is always named “next”. To avoid confusion, always use this convention.*
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 #### Q. ***Is it possible to use "Class" in Node.js?***
@@ -3813,5 +3813,5 @@ app.listen(3000);
 #### Q. ***Why do we need C++ Addons in Node.js?***
 
 <div align="right">
-    <b><a href="#">↥ back to top</a></b>
+    <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
