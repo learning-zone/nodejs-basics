@@ -102,7 +102,7 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 2. NODEJS SETUP
+## # 2. NODE.JS SETUP
 
 <br/>
 
@@ -190,7 +190,7 @@ console.log(qdata.month); //returns 'september'
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 3. NODEJS EVENTS
+## # 3. NODE.JS EVENTS
 
 ## Q. ***How to make an HTTP POST request using Node.js?***
 
