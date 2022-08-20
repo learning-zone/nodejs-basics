@@ -1,15 +1,37 @@
 /**
- * Global Objects
+ *  ------------------
+ *    Global Objects
+ *  ------------------
  * 
- */
+ *    __dirname()
+ *    __filename()
+ *    clearTimeout(timeoutObject)
+ *    console()
+ *    exports()
+ *    global()
+ *    module()
+ *    Process()
+ *    require()
+ *    setTimeout(callback, delay[, ...args])
+ *    TextDecoder()
+ *    TextEncoder()
+ *    URL()
+ * 
+ * */
 
-// Displays current directory
-console.log(__dirname); 
+//----------------------
+//   reqiure() Object
+//----------------------
+ var path = require("path");
+ console.log(`Rock on world from ${path.basename(__filename)}`);  // Rock on world from global-objects.js
 
-// Displays filename with path
-console.log(__filename); 
- 
+ const jsonData = require('./assets/file.json');
+ console.log(jsonData);
 
-// Displays filename 
-var path = require("path");
-console.log(path.basename(__filename)); 
+
+//-------------------------
+//  dirname() & filename()
+//-------------------------
+console.log(`Current directory: ${__dirname}`);
+console.log(`Current directory: ${path.dirname(__filename)}`);
+console.log(`Current file: ${__filename}`);
