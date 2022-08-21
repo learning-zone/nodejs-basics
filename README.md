@@ -153,24 +153,21 @@ node app.js
 
 ## Q. Explain the concept of URL module in Node.js?
 
-The URL module in Node.js splits up a web address into readable parts. Use ```require()``` to include the module:
+The URL module in Node.js splits up a web address into readable parts. Use `require()` to include the module. Then parse an address with the `url.parse()` method, and it will return a URL object with each part of the address as properties.
+
+**Example:**
 
 ```js
-var url = require('url');
-```
-Then parse an address with the ```url.parse()``` method, and it will return a URL object with each part of the address as properties.
+const url = require('url');
+const adr = 'http://localhost:8080/default.htm?year=2021&month=september';
+const q = url.parse(adr, true);
 
-```js
-var url = require('url');
-var adr = 'http://localhost:8080/default.htm?year=2021&month=september';
-var q = url.parse(adr, true);
+console.log(q.host); // localhost:8080
+console.log(q.pathname); // "/default.htm"
+console.log(q.search); // "?year=2022&month=september"
 
-console.log(q.host); //returns 'localhost:8080'
-console.log(q.pathname); //returns '/default.htm'
-console.log(q.search); //returns '?year=2021&month=september'
-
-var qdata = q.query; //returns an object: { year: 2021, month: 'september' }
-console.log(qdata.month); //returns 'september'
+const qdata = q.query; // { year: 2022, month: 'september' }
+console.log(qdata.month); // "september"
 ```
 
 <div align="right">
