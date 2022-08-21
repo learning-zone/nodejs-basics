@@ -341,6 +341,22 @@ This class also offers other methods like `readInt8` and `writeUInt8` that allow
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. ***Why is LIBUV needed in Node JS?***
+
+LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***What is the purpose of using hidden classes in V8?***
+## Q. ***How V8 compiles JavaScript code?***
+## Q. ***What is V8 Templates?***
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 4. NODE.JS EVENTS
 
 <br/>
@@ -3559,38 +3575,6 @@ The `V8` was first designed to increase the performance of the JavaScript execut
 V8 is the name of the JavaScript engine that powers Google Chrome. It\'s the thing that takes our JavaScript and executes it while browsing with Chrome. V8 provides the runtime environment in which JavaScript executes. The DOM, and the other Web Platform APIs are provided by the browser.
 
 V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly, and runs on Windows 7 or later, macOS 10.12+, and Linux systems that use x64, IA-32, ARM, or MIPS processors. V8 can run standalone, or can be embedded into any C++ application.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***What is the purpose of using hidden classes in V8?***
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***How V8 compiles JavaScript code?***
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***What is V8 Templates?***
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***Why is LIBUV needed in Node JS?***
-
-LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
