@@ -19,20 +19,21 @@
 
 * [Introduction](#-1-introduction)
 * [Node.js Setup](#-2-nodejs-setup)
-* [Node.js Architecture](#-3-nodejs-architecture)
-* [Node.js Events](#-4-nodejs-events)
-* [Node.js File System](#-5-nodejs-file-system)
-* [Node.js Streams](#-6-nodejs-streams)
-* [Node.js Multithreading](#-7-nodejs-multithreading)
-* [Node.js Web Module](#-8-nodejs-web-module)
-* [Node.js Middleware](#-9-nodejs-middleware)
-* [Node.js RESTFul API](#-10-nodejs-restful-api)
-* [Node.js Routing](#-11-nodejs-routing)
-* [Node.js Error Handling](#-12-nodejs-error-handling)
-* [Node.js Logging](#-13-nodejs-logging)
-* [Node.js Internationalization](#-14-nodejs-internationalization)
-* [Node.js Testing](#-15-nodejs-testing)
-* [Node.js Miscellaneous](#-16-nodejs-miscellaneous)
+* [Node.js Data Types](#-3-nodejs-data-types)
+* [Node.js Architecture](#-4-nodejs-architecture)
+* [Node.js Events](#-5-nodejs-events)
+* [Node.js File System](#-6-nodejs-file-system)
+* [Node.js Streams](#-7-nodejs-streams)
+* [Node.js Multithreading](#-8-nodejs-multithreading)
+* [Node.js Web Module](#-9-nodejs-web-module)
+* [Node.js Middleware](#-10-nodejs-middleware)
+* [Node.js RESTFul API](#-11-nodejs-restful-api)
+* [Node.js Routing](#-12-nodejs-routing)
+* [Node.js Error Handling](#-13-nodejs-error-handling)
+* [Node.js Logging](#-14-nodejs-logging)
+* [Node.js Internationalization](#-15-nodejs-internationalization)
+* [Node.js Testing](#-16-nodejs-testing)
+* [Node.js Miscellaneous](#-17-nodejs-miscellaneous)
 
 <br/>
 
@@ -53,60 +54,6 @@ Node.js is an open-source server side runtime environment built on Chrome\'s V8 
 Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms.
 
 All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn\'t have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What are the data types in Node.js?
-
-Just like JS, there are two categories of data types in Node: Primitives and Objects.
-
-**1. Primitives:**
-
-* String
-* Number
-* Bigint
-* Boolean
-* Undefined
-* Null
-* Symbol
-
-**2. Objects:**
-
-* Function
-* Array
-* Buffer
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. Explain string data type in Node.js?
-
-Strings in Node.js are sequences of unicode characters. Strings can be wrapped in a single or double quotation marks.
-Javascript provide many functions to operate on string, like indexOf(), split(), substr(), length.
-
-**String functions:**
-
-|Function   | Description               |
-|-----------|---------------------------|
-|charAt()   |It is useful to find a specific character present in a string.|
-|Concat()   |It is useful to concat more than one string.|
-|indexOf()  |It is useful to get the index of a specified character or a part of the string.|
-|Match()    |It is useful to match multiple strings.|
-|Split()    |It is useful to split the string and return an array of string.|
-|Join()     |It is useful to join the array of strings and those are separated by comma (,) operator.|
-
-**Example:**
-
-```js
-const str1 = "Hello";
-const str2 = 'World';
-
-console.log("Concat Using (+) :" , (str1 + ' ' + str2));
-console.log("Concat Using Function :" , (str1.concat(str2)));
-```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -230,7 +177,65 @@ console.log(qdata.month); //returns 'september'
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 3. NODE.JS ARCHITECTURE
+## # 3. NODE.JS DATA TYPES
+
+<br/>
+
+## Q. What are the data types in Node.js?
+
+Just like JS, there are two categories of data types in Node: Primitives and Objects.
+
+**1. Primitives:**
+
+* String
+* Number
+* Bigint
+* Boolean
+* Undefined
+* Null
+* Symbol
+
+**2. Objects:**
+
+* Function
+* Array
+* Buffer
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain string data type in Node.js?
+
+Strings in Node.js are sequences of unicode characters. Strings can be wrapped in a single or double quotation marks.
+Javascript provide many functions to operate on string, like indexOf(), split(), substr(), length.
+
+**String functions:**
+
+|Function   | Description               |
+|-----------|---------------------------|
+|charAt()   |It is useful to find a specific character present in a string.|
+|Concat()   |It is useful to concat more than one string.|
+|indexOf()  |It is useful to get the index of a specified character or a part of the string.|
+|Match()    |It is useful to match multiple strings.|
+|Split()    |It is useful to split the string and return an array of string.|
+|Join()     |It is useful to join the array of strings and those are separated by comma (,) operator.|
+
+**Example:**
+
+```js
+const str1 = "Hello";
+const str2 = 'World';
+
+console.log("Concat Using (+) :" , (str1 + ' ' + str2));
+console.log("Concat Using Function :" , (str1.concat(str2)));
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 4. NODE.JS ARCHITECTURE
 
 <br/>
 
@@ -390,7 +395,7 @@ LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js 
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 4. NODE.JS EVENTS
+## # 5. NODE.JS EVENTS
 
 <br/>
 
@@ -626,7 +631,7 @@ eventEmitter.emit('Sum', '10', '20');
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 5. NODE.JS FILE SYSTEM
+## # 6. NODE.JS FILE SYSTEM
 
 <br/>
 
@@ -678,7 +683,7 @@ node read_file.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 6. NODE.JS STREAMS
+## # 7. NODE.JS STREAMS
 
 <br/>
 
@@ -796,7 +801,7 @@ console.log("File Compressed.");
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 7. NODE.JS MULTITHREADING
+## # 8. NODE.JS MULTITHREADING
 
 <br/>
 
@@ -961,7 +966,7 @@ Please note - before pid. This converts a pid to a group of pids for process kil
 #### Q. Why Node.js is a single threaded language?
 #### Q. How to synchronize data between multiple clients on node.js server?
 
-## # 8. NODE.JS WEB MODULE
+## # 9. NODE.JS WEB MODULE
 
 <br/>
 
@@ -1323,7 +1328,7 @@ module.exports = controllers;
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 9. NODE.JS MIDDLEWARE
+## # 10. NODE.JS MIDDLEWARE
 
 <br/>
 
@@ -2163,7 +2168,7 @@ moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 10. NODE.JS RESTFUL API
+## # 11. NODE.JS RESTFUL API
 
 <br/>
 
@@ -3069,7 +3074,7 @@ Q.fcall(promisedStep1)
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 11. NODE.JS ROUTING
+## # 12. NODE.JS ROUTING
 
 <br/>
 
@@ -3194,7 +3199,7 @@ module.exports = router
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 12. NODE.JS ERROR HANDLING
+## # 13. NODE.JS ERROR HANDLING
 
 <br/>
 
@@ -3230,7 +3235,7 @@ Few events are :
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 13. NODE.JS LOGGING
+## # 14. NODE.JS LOGGING
 
 <br/>
 
@@ -3287,7 +3292,7 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 14. NODE.JS INTERNATIONALIZATION
+## # 15. NODE.JS INTERNATIONALIZATION
 
 <br/>
 
@@ -3297,7 +3302,7 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 15. NODE.JS TESTING
+## # 16. NODE.JS TESTING
 
 <br/>
 
@@ -3401,7 +3406,7 @@ if (response.error) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 16. NODE.JS MISCELLANEOUS
+## # 17. NODE.JS MISCELLANEOUS
 
 <br/>
 
