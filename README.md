@@ -349,6 +349,43 @@ person[NAME] // 'Ritika Bhavsar'
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. Explain function in Node.js?
+
+Functions are first class citizens in Node's JavaScript, similar to the browser's JavaScript. A function can have attributes and properties also. It can be treated like a class in JavaScript.
+
+**Example:**
+
+```js
+function Messsage(name) {
+ console.log("Hello "+name);
+}
+
+Messsage("World"); // Hello World
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain Buffer data type in Node.js?
+
+Node.js includes an additional data type called Buffer ( not available in browser\'s JavaScript ). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+
+**Example:**
+
+```js
+let b = new Buffer(10000);
+let str = "                         ";
+
+b.write(str); 
+console.log( str.length ); // 25
+console.log( b.length ); // 10000
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 4. NODE.JS ARCHITECTURE
 
 <br/>
