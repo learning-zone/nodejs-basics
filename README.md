@@ -235,6 +235,38 @@ console.log("Concat Using Function :" , (str1.concat(str2)));
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. Explain Number data type in Node.js?
+
+The number data type in Node.js is 64 bits floating point number both positive and negative. The parseInt() and parseFloat() functions are used to convert to number, if it fails to convert into a number then it returns `NaN`.
+
+**Example:**
+
+```js
+// Example 01:
+const num1 = 10;
+const num2 = 20;
+
+console.log(`sum: ${num1 + num2}`); 
+
+// Example 02:
+console.log(parseInt("32"));  // 32
+console.log(parseFloat("8.24")); // 8.24
+console.log(parseInt("234.12345")); // 234
+console.log(parseFloat("10")); // 10
+
+// Example 03:
+console.log(isFinite(10/5)); // true
+console.log(isFinite(10/0)); // false
+
+// Example 04:
+console.log(5 / 0); // Infinity
+console.log(-5 / 0); // -Infinity
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 4. NODE.JS ARCHITECTURE
 
 <br/>
