@@ -464,13 +464,13 @@ The following table lists some of the important core modules in Node.js.
 
 **Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a demultiplexer, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
 
-There are two ways in which I/O operations are performed:
+**There are two ways in which I/O operations are performed:**
 
 **1. Blocking I/O:** Application will make a function call and pause its execution at a point until the data is received. It is called as "Synchronous".
 
 **2. Non-Blocking I/O:** Application will make a function call, and, without waiting for the results it continues its execution. It is called as "Asynchronous".
 
-Reactor Pattern comprises of:
+**Reactor Pattern comprises of:**
 
 **1. Resources:** They are shared by multiple applications for I/O operations, generally slower in executions.
 
