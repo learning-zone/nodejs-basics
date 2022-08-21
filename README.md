@@ -159,7 +159,7 @@ The URL module in Node.js splits up a web address into readable parts. Use `requ
 
 ```js
 const url = require('url');
-const adr = 'http://localhost:8080/default.htm?year=2021&month=september';
+const adr = 'http://localhost:8080/default.htm?year=2022&month=september';
 const q = url.parse(adr, true);
 
 console.log(q.host); // localhost:8080
