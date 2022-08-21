@@ -189,7 +189,7 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
 
 * String
 * Number
-* Bigint
+* BigInt
 * Boolean
 * Undefined
 * Null
@@ -205,7 +205,7 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain string data type in Node.js?
+## Q. Explain String data type in Node.js?
 
 Strings in Node.js are sequences of unicode characters. Strings can be wrapped in a single or double quotation marks.
 Javascript provide many functions to operate on string, like indexOf(), split(), substr(), length.
@@ -261,6 +261,88 @@ console.log(isFinite(10/0)); // false
 // Example 04:
 console.log(5 / 0); // Infinity
 console.log(-5 / 0); // -Infinity
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain BigInt data type in Node.js?
+
+A BigInt value, also sometimes just called a BigInt, is a bigint primitive, created by appending n to the end of an integer literal, or by calling the BigInt() function ( without the new operator ) and giving it an integer value or string value.
+
+**Example:**
+
+```js
+const maxSafeInteger = 99n; // This is a BigInt
+const num2 = BigInt('99'); // This is equivalent
+const num3 = BigInt(99); // Also works
+
+typeof 1n === 'bigint'           // true
+typeof BigInt('1') === 'bigint'  // true
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain Boolean data type in Node.js?
+
+Boolean data type is a data type that has one of two possible values, either true or false. In programming, it is used in logical representation or to control program structure.
+
+The boolean() function is used to convert any data type to a boolean value. According to the rules, false, 0, NaN, null, undefined, empty string evaluate to false and other values evaluates to true.
+
+**Example:**
+
+```js
+// Example 01:
+const isValid = true; 
+console.log(isValid); // true 
+
+// Example 02:
+console.log(true && true); // true 
+console.log(true && false); // false 
+console.log(true || false); // true 
+console.log(false || false); // false 
+console.log(!true); // false 
+console.log(!false); // true 
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain Undefined and Null data type in Node.js?
+
+In node.js, if a variable is defined without assigning any value, then that will take undefined as value. If we assign a null value to the variable, then the value of the variable becomes null.
+
+**Example:**
+
+```js
+let x;
+console.log(x); // undefined
+
+let y = null;
+console.log(y); // null
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain Symbol data type in Node.js?
+
+Symbol is an immutable primitive value that is unique. It\'s a very peculiar data type. Once you create a symbol, its value is kept private and for internal use.
+
+**Example:**
+
+```js
+const NAME = Symbol()
+const person = {
+  [NAME]: 'Ritika Bhavsar'
+}
+
+person[NAME] // 'Ritika Bhavsar'
 ```
 
 <div align="right">
