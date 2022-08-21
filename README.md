@@ -86,10 +86,15 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
 ## Q. What are the key features of Node.js?
 
 * **Asynchronous event driven IO helps concurrent request handling** – All APIs of Node.js are asynchronous. This feature means that if a Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. Thus it will not wait for the response from the previous requests.
+
 * **Fast in Code execution** – Node.js uses the V8 JavaScript Runtime engine, the one which is used by Google Chrome. Node has a wrapper over the JavaScript engine which makes the runtime engine much faster and hence processing of requests within Node.js also become faster.
+
 * **Single Threaded but Highly Scalable** – Node.js uses a single thread model for event looping. The response from these events may or may not reach the server immediately. However, this does not block other operations. Thus making Node.js highly scalable. Traditional servers create limited threads to handle requests while Node.js creates a single thread that provides service to much larger numbers of such requests.
+
 * **Node.js library uses JavaScript** – This is another important aspect of Node.js from the developer’s point of view. The majority of developers are already well-versed in JavaScript. Hence, development in Node.js becomes easier for a developer who knows JavaScript.
+
 * **There is an Active and vibrant community for the Node.js framework** – The active community always keeps the framework updated with the latest trends in the web development.
+
 * **No Buffering** – Node.js applications never buffer any data. They simply output the data in chunks.
 
 <div align="right">
@@ -366,7 +371,7 @@ All objects that emit events are members of EventEmitter class. These objects ex
 
 When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
 
-*Example*:
+**Example:**
 
 ```js
 const events = require('events');
@@ -449,7 +454,7 @@ var events = require('events');
 var eventEmitter = new events.EventEmitter();
 ```
 
-*Example*:
+**Example:**
 
 ```js
 // Import events module
@@ -548,7 +553,7 @@ callback functions are called when an asynchronous function returns its result, 
 
 **1. Callback**: A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
 
-*Example*: synchronous callback
+**Example:** synchronous callback
 
 ```js
 function greeting(name) {
@@ -565,7 +570,7 @@ processUserInput(greeting);
 
 **2. Events**: Every action on a computer is an event. Node.js allows us to create and handle custom events easily by using events module. Event module includes `EventEmitter` class which can be used to raise and handle custom events.
 
-*Example*:
+**Example:**
 
 ```js
 var event = require('events');  
@@ -660,7 +665,7 @@ There are four types of streams
 
 Each type of Stream is an EventEmitter instance and throws several events at different instance of times.  
 
-*Example*:
+**Example:**
 
 * **data** − This event is fired when there is data is available to read.
 * **end** − This event is fired when there is no more data to read.
@@ -1825,7 +1830,7 @@ app.listen(3000, function(){
 
 `body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. This body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 
-*Example*:
+**Example:**
 
 ```bash
 npm install express ejs body-parser
@@ -1868,7 +1873,7 @@ The `cookie-parser` middleware\'s cookieParser function takes a `secret` string 
 npm install cookie-parser
 ```
 
-*Example*:
+**Example:**
 
 ```js
 var express = require('express')
@@ -1898,7 +1903,7 @@ HTTP request logger middleware for node.js.
 npm install morgan
 ```
 
-*Example*: write logs to a file
+**Example:** write logs to a file
 
 ```js
 var express = require('express')
@@ -1929,7 +1934,7 @@ Nodemon is a utility that will monitor for any changes in source and automatical
 npm install -g nodemon
 ```
 
-*Example*:
+**Example:**
 
 ```js
 {
@@ -1969,7 +1974,7 @@ Node.js middleware for serving a favicon. The `serve-favicon` module lets us exc
 npm install serve-favicon
 ```
 
-*Example*:
+**Example:**
 
 ```js
 var express = require('express')
@@ -1994,7 +1999,7 @@ app.listen(3000)
 npm install cors
 ```
 
-**Example: Enable All CORS Requests**
+**Example:** Enable All CORS Requests
 
 ```js
 var express = require('express')
@@ -2012,7 +2017,7 @@ app.listen(8080, function () {
 })
 ```
 
-**Example: Enable CORS for a Single Route**
+**Example:** Enable CORS for a Single Route
 
 ```js
 var express = require('express')
@@ -2653,7 +2658,7 @@ There are two types of API functions in Node.js:
 
 In a blocking operation, all other code is blocked from executing until an I/O event that is being waited on occurs. Blocking functions execute synchronously.
 
-*Example*:
+**Example:**
 
 ```js
 const fs = require('fs');
@@ -2668,7 +2673,7 @@ The second line of code blocks the execution of additional JavaScript until the 
 
 In a non-blocking operation, multiple I/O calls can be performed without the execution of the program being halted. Non-blocking functions execute asynchronously.
 
-*Example*:
+**Example:**
 
 ```js
 const fs = require('fs');
@@ -2943,7 +2948,7 @@ async function add(x,y){
 
 Async functions can make use of the await expression. This will pause the async function and wait for the Promise to resolve prior to moving on.  
 
-*Example*:
+**Example:**
 
 ```js
 function doubleAfter2Seconds(x) {
@@ -3084,7 +3089,7 @@ Route paths, in combination with a request method, define the endpoints at which
 
 The characters `?`, `+`, `*`, and `()` are subsets of their regular expression counterparts. The hyphen `(-)` and the dot `(.)` are interpreted literally by string-based paths.
 
-*Example*:
+**Example:**
 
 ```js
 // This route path will match requests to /about.
@@ -3109,7 +3114,7 @@ app.get(/.*fly$/, function (req, res) {
 
 Route parameters are named URL segments that are used to capture the values specified at their position in the URL. The captured values are populated in the `req.params` object, with the name of the route parameter specified in the path as their respective keys.
 
-*Example*:
+**Example:**
 
 ```js
 app.get('/users/:userId', function (req, res) {
@@ -3550,7 +3555,7 @@ DNS is a node module used to do name resolution facility which is provided by th
 const dns = require('dns');
 ```
 
-*Example*: `dns.lookup()` function  
+**Example:** `dns.lookup()` function  
 
 ```js
 const dns = require('dns');  
@@ -3560,7 +3565,7 @@ dns.lookup('www.google.com', (err, addresses, family) => {
 });  
 ```
 
-*Example*: `resolve4()` and `reverse()` functions
+**Example:** `resolve4()` and `reverse()` functions
 
 ```js
 const dns = require('dns');  
@@ -3578,7 +3583,7 @@ dns.resolve4('www.google.com', (err, addresses) => {
 });
 ```
 
-*Example*: print the localhost name using `lookupService()` function
+**Example:** print the localhost name using `lookupService()` function
 
 ```js
 const dns = require('dns');  
