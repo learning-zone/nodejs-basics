@@ -312,7 +312,7 @@ console.log(!false); // true
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain Undefined and Null data type in Node.js?
+## Q. Explain `Undefined` and `Null` data type in Node.js?
 
 In node.js, if a variable is defined without assigning any value, then that will take undefined as value. If we assign a null value to the variable, then the value of the variable becomes null.
 
