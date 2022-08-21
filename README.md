@@ -470,6 +470,10 @@ The following table lists some of the important core modules in Node.js.
 
 **2. Non-Blocking I/O:** Application will make a function call, and, without waiting for the results it continues its execution. It is called as "Asynchronous".
 
+<p align="center">
+  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
+</p>
+
 **Reactor Pattern comprises of:**
 
 **1. Resources:** They are shared by multiple applications for I/O operations, generally slower in executions.
@@ -479,22 +483,6 @@ The following table lists some of the important core modules in Node.js.
 **3. Event Loop and Event Queue:** Event Queue queues up the new events that occurred along with its event-handler, pair.
 
 **4. Request Handler/Application:** This is, generally, the application that provides the handler to be executed for registered events on resources.
-
-<p align="center">
-  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
-</p>
-
-1. The application generates a new I/O operation by submitting a request to the Event Demultiplexer. The application also specifies a handler, which will be invoked when the operation completes. Submitting a new request to the Event Demultiplexer is a non-blocking call and it immediately returns the control back to the application.
-
-2. When a set of I/O operations completes, the Event Demultiplexer pushes the new events into the Event Queue.
-
-3. At this point, the Event Loop iterates over the items of the Event Queue.
-
-4. For each event, the associated handler is invoked.
-
-5. The handler, which is part of the application code, will give back the control to the Event Loop when its execution completes (5a). However, new asynchronous operations might be requested during the execution of the handler (5b), causing new operations to be inserted in the Event Demultiplexer (1), before the control is given back to the Event Loop.
-
-6. When all the items in the Event Queue are processed, the loop will block again on the Event Demultiplexer which will then trigger another cycle.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
