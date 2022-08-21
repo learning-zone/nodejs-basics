@@ -60,7 +60,7 @@ All the user requests to your web application will be handled by a single thread
 
 Just like JS, there are two categories of data types in Node: Primitives and Objects.
 
-*Primitives*
+**1. Primitives:**
 
 * String
 * Number
@@ -70,16 +70,41 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
 * Null
 * Symbol
 
-*Objects* 
+**2. Objects:**
 
 * Function
-
 * Array
+* Buffer
 
-* `Buffer`: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network. `Buffer` is a class.
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
+## Q. Explain string data type in Node.js?
 
-* other regular objects
+Strings in Node.js are sequences of unicode characters. Strings can be wrapped in a single or double quotation marks.
+Javascript provide many functions to operate on string, like indexOf(), split(), substr(), length.
+
+**String functions:**
+
+|Function   | Description               |
+|-----------|---------------------------|
+|charAt()   |It is useful to find a specific character present in a string.|
+|Concat()   |It is useful to concat more than one string.|
+|indexOf()  |It is useful to get the index of a specified character or a part of the string.|
+|Match()    |It is useful to match multiple strings.|
+|Split()    |It is useful to split the string and return an array of string.|
+|Join()     |It is useful to join the array of strings and those are separated by comma (,) operator.|
+
+**Example:**
+
+```js
+const str1 = "Hello";
+const str2 = 'World';
+
+console.log("Concat Using (+) :" , (str1 + ' ' + str2));
+console.log("Concat Using Function :" , (str1.concat(str2)));
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
