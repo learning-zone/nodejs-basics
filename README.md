@@ -422,12 +422,39 @@ Node.js Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 ## Q. What are the core modules of Node.js?
 
+Node.js has a set of core modules that are part of the platform and come with the Node.js installation. These modules can be loaded into the program by using the require function.
 
-They are defined within the Node.js source and are located in the lib/ folder, and Node.js has several modules compiled into the binary. 
+**Syntax:**
 
-Core modules are always preferentially loaded if their identifier is passed to ```require()```. For instance, ```require('http')``` will always return the built in HTTP module, even if there is a file by that name.
+```js
+const module = require('module_name');
+```
 
-Core modules can also be identified using the ```node:``` prefix, in which case it bypasses the require cache. For instance, ```require('node:http')``` will always return the built in HTTP module, even if there is ```require.cache``` entry by that name.
+**Example:**
+
+```js
+const http = require('http');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write('Welcome to Node.js!');
+  res.end();
+}).listen(3000);
+```
+
+The following table lists some of the important core modules in Node.js.
+
+|Core Module  |Description
+|-------------|---------------------------------------------------------------------------------
+|assert       |provides a set of assertion functions useful for testing
+|console      |provides a simple debugging console
+|crypto       |provides cryptographic functionality
+|http         |http module includes classes, methods and events to create Node.js http server.
+|url          |url module includes methods for URL resolution and parsing.
+|querystring  |querystring module includes methods to deal with query string.
+|path         |path module includes methods to deal with file paths.
+|fs           |fs module includes classes, methods, and events to work with file I/O.
+|util         |util module includes utility functions useful for programmers.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
