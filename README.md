@@ -462,23 +462,38 @@ The following table lists some of the important core modules in Node.js.
 
 ## Q. What do you understand by Reactor Pattern in Node.js?
 
-Reactor Pattern is an idea of non-blocking I/O operations in Node.js. This pattern provides a handler(in case of Node.js, a callback function) that is associated with each I/O operation. When an I/O request is generated, it is submitted to a demultiplexer.
+**Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a demultiplexer, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
 
-This demultiplexer is a notification interface that is used to handle concurrency in non-blocking I/O mode and collects every request in form of an event and queues each event in a queue. Thus, the demultiplexer provides the Event Queue, which we often hear about. When a request is collected by the demultiplexer, it returns the control back to the system and does not blocks the I/O. At the same time, there is an Event Loop which iterates over the items in the Event Queue. Every event has a callback function associated with it, and that callback function is invoked when the Event Loop iterates.
+There are two ways in which I/O operations are performed:
 
-The callback function further mostly have other callbacks associated within representing some asynchronous operations. These operations are inserted in the Event Queue by the demultiplexer and are ready to be processed once the Event Loop iterates over them. That is why calls to other operations must be asynchronous.
+**1. Blocking I/O:** Application will make a function call and pause its execution at a point until the data is received. It is called as "Synchronous".
 
-When all the items in the Event Queue are processed and there are no pending operations left, Node.js terminates the application automatically.
+**2. Non-Blocking I/O:** Application will make a function call, and, without waiting for the results it continues its execution. It is called as "Asynchronous".
+
+Reactor Pattern comprises of:
+
+**1. Resources:** They are shared by multiple applications for I/O operations, generally slower in executions.
+
+**2. Synchronous Event De-multiplexer/Event Notifier:** This uses Event Loop for blocking on all resources. When a set of I/O operations completes, the Event De-multiplexer pushes the new events into the Event Queue.
+
+**3. Event Loop and Event Queue:** Event Queue queues up the new events that occurred along with its event-handler, pair.
+
+**4. Request Handler/Application:** This is, generally, the application that provides the handler to be executed for registered events on resources.
 
 <p align="center">
-  <img src="assets/reactor-pattern.jpg" alt="Test Pyramid" width="800px" />
+  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
 </p>
 
 1. The application generates a new I/O operation by submitting a request to the Event Demultiplexer. The application also specifies a handler, which will be invoked when the operation completes. Submitting a new request to the Event Demultiplexer is a non-blocking call and it immediately returns the control back to the application.
+
 2. When a set of I/O operations completes, the Event Demultiplexer pushes the new events into the Event Queue.
+
 3. At this point, the Event Loop iterates over the items of the Event Queue.
+
 4. For each event, the associated handler is invoked.
+
 5. The handler, which is part of the application code, will give back the control to the Event Loop when its execution completes (5a). However, new asynchronous operations might be requested during the execution of the handler (5b), causing new operations to be inserted in the Event Demultiplexer (1), before the control is given back to the Event Loop.
+
 6. When all the items in the Event Queue are processed, the loop will block again on the Event Demultiplexer which will then trigger another cycle.
 
 <div align="right">
