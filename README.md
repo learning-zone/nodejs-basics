@@ -21,14 +21,15 @@
 * [Node.js Events](#-4-nodejs-events)
 * [Node.js File System](#-5-nodejs-file-system)
 * [Node.js Streams](#-6-nodejs-streams)
-* [Node.js Web Module](#-7-nodejs-web-module)
-* [Node.js Middleware](#-8-nodejs-middleware)
-* [Node.js RESTFul API](#-9-nodejs-restful-api)
-* [Node.js Routing](#-10-nodejs-routing)
-* [Node.js Error Handling](#-11-nodejs-error-handling)
-* [Node.js Logging](#-12-nodejs-logging)
-* [Node.js Testing](#-13-nodejs-testing)
-* [Node.js Miscellaneous](#-14-nodejs-miscellaneous)
+* [Node.js Multithreading](#-7-nodejs-multithreading)
+* [Node.js Web Module](#-8-nodejs-web-module)
+* [Node.js Middleware](#-9-nodejs-middleware)
+* [Node.js RESTFul API](#-10-nodejs-restful-api)
+* [Node.js Routing](#-11-nodejs-routing)
+* [Node.js Error Handling](#-12-nodejs-error-handling)
+* [Node.js Logging](#-13-nodejs-logging)
+* [Node.js Testing](#-14-nodejs-testing)
+* [Node.js Miscellaneous](#-15-nodejs-miscellaneous)
 
 <br/>
 
@@ -759,7 +760,137 @@ console.log("File Compressed.");
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 7. NODE.JS WEB MODULE
+## # 7. NODE.JS MULTITHREADING
+
+<br/>
+
+## Q. ***How does Node.js handle child threads?***
+
+Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
+Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
+
+* Nodejs Primary application runs in an event loop, which is in a single thread.
+* Background I/O is running in a thread pool that is only accessible to C/C++ or other compiled/native modules and mostly transparent to the JS.
+* Node v11/12 now has experimental worker_threads, which is another option.
+* Node.js does support forking multiple processes ( which are executed on different cores ).
+* It is important to know that state is not shared between master and forked process.
+* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?***
+
+Since Node.js is by default a single thread application, it will run on a single processor core and will not take full advantage of multiple core resources. However, Node.js provides support for deployment on multiple-core systems, to take greater advantage of the hardware. The Cluster module is one of the core Node.js modules and it allows running multiple Node.js worker processes that will share the same port.
+
+The cluster module helps to spawn new processes on the operating system. Each process works independently, so you cannot use shared state between child processes. Each process communicates with the main process by IPC and pass server handles back and forth.
+
+Cluster supports two types of load distribution:
+
+* The main process listens on a port, accepts new connection and assigns it to a child process in a round robin fashion.
+* The main process assigns the port to a child process and child process itself listen the port.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***Since node is a single threaded process, how to make use of all CPUs?***
+
+Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
+Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
+
+* Node.js does support forking multiple processes ( which are executed on different cores ).
+* It is important to know that state is not shared between master and forked process.
+* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+
+A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
+
+```js
+const cluster = require('cluster');
+const http = require('http');
+const numCPUs = require('os').cpus().length;
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  // Workers can share any TCP connection
+  // In this case it is an HTTP server
+  http.createServer((req, res) => {
+    res.writeHead(200);
+    res.end('hello world\n');
+  }).listen(8000);
+
+  console.log(`Worker ${process.pid} started`);
+}
+```
+
+Running Node.js will now share port 8000 between the workers:
+
+```bash
+$ node server.js
+Master 3596 is running
+Worker 4324 started
+Worker 4520 started
+Worker 6056 started
+Worker 5644 started
+```
+
+The worker processes are spawned using the `child_process.fork()` method, so that they can communicate with the parent via IPC and pass server handles back and forth.
+
+The cluster module supports two methods of distributing incoming connections.
+
+The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
+
+The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***How to kill child processes that spawn their own child processes in Node.js?***
+
+If a child process in Node.js spawn their own child processes, kill() method will not kill the child process’s own child processes. For example, if I start a process that starts it’s own child processes via child_process module, killing that child process will not make my program to quit.
+
+```js
+var spawn = require('child_process').spawn;
+var child = spawn('my-command');
+
+child.kill();
+```
+
+The program above will not quit if `my-command` spins up some more processes.
+
+**PID range hack:**
+
+We can start child processes with {detached: true} option so those processes will not be attached to main process but they will go to a new group of processes. Then using process.kill(-pid) method on main process we can kill all processes that are in the same group of a child process with the same pid group. In my case, I only have one processes in this group.
+
+```js
+var spawn = require('child_process').spawn;
+var child = spawn('my-command', {detached: true});
+
+process.kill(-child.pid);
+```
+
+Please note - before pid. This converts a pid to a group of pids for process kill() method.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+#### Q. ***Why Node.js is a single threaded language?***
+#### Q. ***How to synchronize data between multiple clients on node.js server?***
+
+## # 8. NODE.JS WEB MODULE
 
 <br/>
 
@@ -1121,9 +1252,68 @@ module.exports = controllers;
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 8. NODE.JS MIDDLEWARE
+## # 9. NODE.JS MIDDLEWARE
 
 <br/>
+
+## Q. ***What are the middleware functions in Node.js?***
+
+Middleware functions are functions that have access to the **request object (req)**, the **response object (res)**, and the `next` function in the application\'s request-response cycle.
+
+Middleware functions can perform the following tasks:
+
+* Execute any code.
+* Make changes to the request and the response objects.
+* End the request-response cycle.
+* Call the next middleware in the stack.
+
+If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+The following figure shows the elements of a middleware function call:
+
+<p align="center">
+  <img src="assets/express-mw.png" alt="Middleware functions" width="800px" />
+</p>
+
+Middleware functions that return a Promise will call `next(value)` when they reject or throw an error. `next` will be called with either the rejected value or the thrown Error.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***Explain the use of next in node.js with example?***
+
+The next function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
+
+**Example:** Middleware function myLogger
+
+To load the middleware function, call `app.use()`, specifying the middleware function. For example, the following code loads the **myLogger** middleware function before the route to the root path (/).
+
+```js
+const express = require("express");
+const app = express();
+
+const myLogger = function (req, res, next) {
+  console.log("LOGGED");
+  next();
+};
+
+app.use(myLogger);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(3000);
+```
+
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/next-function-nq042s)**
+
+*Note: The `next()` function is not a part of the Node.js or Express API, but is the third argument that is passed to the middleware function. The `next()` function could be named anything, but by convention it is always named “next”. To avoid confusion, always use this convention.*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
 ## Q. ***Why to use Express.js?***
 
@@ -1345,6 +1535,150 @@ var server = http.createServer(app);
 |Xml2js| A Simple XML to JavaScript object converter|
 |Yo| A CLI tool for running Yeoman generators|
 |Zmq| Bindings for node.js and io.js to ZeroMQ. It is a high-performance asynchronous messaging library, aimed at use in distributed or concurrent applications|
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***How can you make sure your dependencies are safe?***
+
+The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
+
+1. npm outdated
+2. Trace by RisingStack
+3. NSP
+4. GreenKeeper
+5. Snyk
+6. npm audit
+7. npm audit fix
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***What are the security mechanisms available in Node.js?***
+
+**1. Using the Helmet module:**
+
+Helmet helps to secure your Express applications by setting various HTTP headers, like:
+
+* X-Frame-Options to mitigates clickjacking attacks,
+* Strict-Transport-Security to keep your users on HTTPS,
+* X-XSS-Protection to prevent reflected XSS attacks,
+* X-DNS-Prefetch-Control to disable browsers DNS prefetching.
+
+```js
+const express = require('express')
+const helmet = require('helmet')
+const app = express()
+
+app.use(helmet())
+```
+
+**2. Validating user input:**
+
+Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
+
+To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
+
+```js
+const Joi = require('joi');
+
+const schema = Joi.object().keys({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    access_token: [Joi.string(), Joi.number()],
+    birthyear: Joi.number().integer().min(1900).max(2013),
+    email: Joi.string().email()
+}).with('username', 'birthyear').without('password', 'access_token')
+
+// Return result
+const result = Joi.validate({
+    username: 'abc',
+    birthyear: 1994
+}, schema)
+// result.error === null -> valid
+```
+
+**3. Securing your Regular Expressions:**
+
+Regular Expressions are a great way to manipulate texts and get the parts that you need from them. However, there is an attack vector called Regular Expression Denial of Service attack, which exposes the fact that most Regular Expression implementations may reach extreme situations for specially crafted input, that cause them to work extremely slowly.
+
+The Regular Expressions that can do such a thing are commonly referred as Evil Regexes. These expressions contain:
+*grouping with repetition,
+*inside the repeated group:
+    *repetition, or
+    *alternation with overlapping  
+
+Examples of Evil Regular Expressions patterns:
+
+```bash
+(a+)+
+([a-zA-Z]+)*
+(a|aa)+
+```
+
+**4. Security.txt:**
+
+Security.txt defines a standard to help organizations define the process for security researchers to securely disclose security vulnerabilities.
+
+```js
+const express = require('express')
+const securityTxt = require('express-security.txt')
+
+const app = express()
+
+app.get('/security.txt', securityTxt({
+  // your security address
+  contact: 'email@example.com',
+  // your pgp key
+  encryption: 'encryption',
+  // if you have a hall of fame for securty resourcers, include the link here
+  acknowledgements: 'http://acknowledgements.example.com'
+}))
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***What is npm in Node.js?***
+
+NPM stands for Node Package Manager. It provides following two main functionalities.
+
+* It works as an Online repository for node.js packages/modules which are present at <nodejs.org>.
+* It works as Command line utility to install packages, do version management and dependency management of Node.js packages.
+NPM comes bundled along with Node.js installable. We can verify its version using the following command-
+
+```bash
+npm --version
+```
+
+NPM helps to install any Node.js module using the following command.
+
+```bash
+npm install <Module Name>
+```
+
+For example, following is the command to install a famous Node.js web framework module called express-
+
+```bash
+npm install express
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. ***Why npm shrinkwrap is useful?***
+
+NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed. Having same versions of packages on all environments can help you test systems and deploy with confidence. If all tests pass on one machine, you can be sure that it will pass on all other because you know that you use same code!
+
+```bash
+npm shrinkwrap
+```
+
+It should create new npm-shrinkwrap.json file with information about all packages you use.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1758,7 +2092,7 @@ moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 9. NODE.JS RESTFUL API
+## # 10. NODE.JS RESTFUL API
 
 <br/>
 
@@ -2663,7 +2997,7 @@ Q.fcall(promisedStep1)
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 10. NODE.JS ROUTING
+## # 11. NODE.JS ROUTING
 
 <br/>
 
@@ -2788,7 +3122,7 @@ module.exports = router
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 11. NODE.JS ERROR HANDLING
+## # 12. NODE.JS ERROR HANDLING
 
 <br/>
 
@@ -2815,7 +3149,16 @@ Few events are :
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 12. NODE.JS LOGGING
+#### Q. ***Explain Error Handling approaches in Node.js?***
+#### Q. ***How would you handle errors for async code in Node.js?***
+#### Q. ***How to solve "Process out of Memory Exception" in Node.js?***
+#### Q. ***What are the types of memory leaks in node.js***
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 13. NODE.JS LOGGING
 
 <br/>
 
@@ -2872,7 +3215,7 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 13. NODE.JS TESTING
+## # 14. NODE.JS TESTING
 
 <br/>
 
@@ -2906,7 +3249,7 @@ readFileStub.restore();
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. ***What is a test pyramid? How can you implement it when talking about HTTP APIs?***
+## Q. ***What is a test pyramid?***
 
 The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
 
@@ -2924,7 +3267,59 @@ Mike Cohn\'s original test pyramid consists of three layers that your test suite
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 14. NODE.JS MISCELLANEOUS
+## Q. ***How to Validate Data using joi Module in Node.js?***
+
+Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like optional(), required(), min(), max(), etc which make it easy to use and a user-friendly module for validating the data.
+
+**Example:**
+
+```js
+const Joi = require("joi");
+
+// User-defined function to validate the user
+
+function validateUser(user) {
+
+  const JoiSchema = Joi.object({
+
+    username: Joi.string().min(5).max(30).required(),
+
+    email: Joi.string().email().min(5).max(50).optional(),
+
+    date_of_birth: Joi.date().optional(),
+
+    account_status: Joi.string()
+      .valid("activated")
+      .valid("unactivated")
+      .optional(),
+  }).options({ abortEarly: false });
+
+  return JoiSchema.validate(user);
+}
+
+const user = {
+  username: "Deepak Lucky",
+  email: "deepak.lucky@gmail.com",
+  date_of_birth: "2000-07-07",
+  account_status: "activated",
+};
+
+let response = validateUser(user);
+
+if (response.error) {
+  console.log(response.error.details);
+} else {
+  console.log("Validated Data");
+}
+```
+
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 15. NODE.JS MISCELLANEOUS
 
 <br/>
 
@@ -2966,22 +3361,6 @@ var decrypted = decipher.update(encrypted, 'hex', 'utf8');
 decrypted += decipher.final('utf8');  
 console.log(decrypted);  
 ```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***How can you make sure your dependencies are safe?***
-
-The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
-
-1. npm outdated
-2. Trace by RisingStack
-3. NSP
-4. GreenKeeper
-5. Snyk
-6. npm audit
-7. npm audit fix
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3165,123 +3544,6 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. ***What are the security mechanisms available in Node.js?***
-
-**Using the Helmet module**
-
-Helmet helps to secure your Express applications by setting various HTTP headers, like:
-
-* X-Frame-Options to mitigates clickjacking attacks,
-* Strict-Transport-Security to keep your users on HTTPS,
-* X-XSS-Protection to prevent reflected XSS attacks,
-* X-DNS-Prefetch-Control to disable browsers DNS prefetching.
-
-```js
-const express = require('express')
-const helmet = require('helmet')
-const app = express()
-
-app.use(helmet())
-```
-
-**Validating user input**
-
-Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
-
-To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
-
-```js
-const Joi = require('joi');
-
-const schema = Joi.object().keys({
-    username: Joi.string().alphanum().min(3).max(30).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-    access_token: [Joi.string(), Joi.number()],
-    birthyear: Joi.number().integer().min(1900).max(2013),
-    email: Joi.string().email()
-}).with('username', 'birthyear').without('password', 'access_token')
-
-// Return result
-const result = Joi.validate({
-    username: 'abc',
-    birthyear: 1994
-}, schema)
-// result.error === null -> valid
-```
-
-**Securing your Regular Expressions**
-
-Regular Expressions are a great way to manipulate texts and get the parts that you need from them. However, there is an attack vector called Regular Expression Denial of Service attack, which exposes the fact that most Regular Expression implementations may reach extreme situations for specially crafted input, that cause them to work extremely slowly.
-
-The Regular Expressions that can do such a thing are commonly referred as Evil Regexes. These expressions contain:
-*grouping with repetition,
-*inside the repeated group:
-    *repetition, or
-    *alternation with overlapping  
-
-Examples of Evil Regular Expressions patterns:
-
-```bash
-(a+)+
-([a-zA-Z]+)*
-(a|aa)+
-```
-
-**Security.txt**
-
-Security.txt defines a standard to help organizations define the process for security researchers to securely disclose security vulnerabilities.
-
-```js
-const express = require('express')
-const securityTxt = require('express-security.txt')
-
-const app = express()
-
-app.get('/security.txt', securityTxt({
-  // your security address
-  contact: 'email@example.com',
-  // your pgp key
-  encryption: 'encryption',
-  // if you have a hall of fame for securty resourcers, include the link here
-  acknowledgements: 'http://acknowledgements.example.com'
-}))
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***How does Node.js handle child threads?***
-
-Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
-Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
-
-* Nodejs Primary application runs in an event loop, which is in a single thread.
-* Background I/O is running in a thread pool that is only accessible to C/C++ or other compiled/native modules and mostly transparent to the JS.
-* Node v11/12 now has experimental worker_threads, which is another option.
-* Node.js does support forking multiple processes ( which are executed on different cores ).
-* It is important to know that state is not shared between master and forked process.
-* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?***
-
-Since Node.js is by default a single thread application, it will run on a single processor core and will not take full advantage of multiple core resources. However, Node.js provides support for deployment on multiple-core systems, to take greater advantage of the hardware. The Cluster module is one of the core Node.js modules and it allows running multiple Node.js worker processes that will share the same port.
-
-The cluster module helps to spawn new processes on the operating system. Each process works independently, so you cannot use shared state between child processes. Each process communicates with the main process by IPC and pass server handles back and forth.
-
-Cluster supports two types of load distribution:
-
-* The main process listens on a port, accepts new connection and assigns it to a child process in a round robin fashion.
-* The main process assigns the port to a child process and child process itself listen the port.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. ***What is JIT and how is it related to Node.js?***
  
 Node.js has depended on the V8 JavaScript engine to provide code execution in the language. The V8 is a JavaScript engine built at the google development center, in Germany. It is open source and written in C++. It is used for both client side (Google Chrome) and server side (node.js) JavaScript applications. A central piece of the V8 engine that allows it to execute JavaScript at high speed is the JIT (Just In Time) compiler. This is a dynamic compiler that can optimize code during runtime. When V8 was first built the JIT Compiler was dubbed FullCodegen. Then, the V8 team implemented Crankshaft, which included many performance optimizations that FullCodegen did not implement.
@@ -3334,143 +3596,9 @@ LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js 
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. ***Since node is a single threaded process, how to make use of all CPUs?***
-
-Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
-Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
-
-* Node.js does support forking multiple processes ( which are executed on different cores ).
-* It is important to know that state is not shared between master and forked process.
-* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
-
-A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
-
-```js
-const cluster = require('cluster');
-const http = require('http');
-const numCPUs = require('os').cpus().length;
-
-if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
-
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-} else {
-  // Workers can share any TCP connection
-  // In this case it is an HTTP server
-  http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('hello world\n');
-  }).listen(8000);
-
-  console.log(`Worker ${process.pid} started`);
-}
-```
-
-Running Node.js will now share port 8000 between the workers:
-
-```bash
-$ node server.js
-Master 3596 is running
-Worker 4324 started
-Worker 4520 started
-Worker 6056 started
-Worker 5644 started
-```
-
-The worker processes are spawned using the `child_process.fork()` method, so that they can communicate with the parent via IPC and pass server handles back and forth.
-
-The cluster module supports two methods of distributing incoming connections.
-
-The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
-
-The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***How to kill child processes that spawn their own child processes in Node.js?***
-
-If a child process in Node.js spawn their own child processes, kill() method will not kill the child process’s own child processes. For example, if I start a process that starts it’s own child processes via child_process module, killing that child process will not make my program to quit.
-
-```js
-var spawn = require('child_process').spawn;
-var child = spawn('my-command');
-
-child.kill();
-```
-
-The program above will not quit if `my-command` spins up some more processes.
-
-**PID range hack**
-
-We can start child processes with {detached: true} option so those processes will not be attached to main process but they will go to a new group of processes. Then using process.kill(-pid) method on main process we can kill all processes that are in the same group of a child process with the same pid group. In my case, I only have one processes in this group.
-
-```js
-var spawn = require('child_process').spawn;
-var child = spawn('my-command', {detached: true});
-
-process.kill(-child.pid);
-```
-
-Please note - before pid. This converts a pid to a group of pids for process kill() method.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***What is npm in Node.js?***
-
-NPM stands for Node Package Manager. It provides following two main functionalities.
-
-* It works as an Online repository for node.js packages/modules which are present at <nodejs.org>.
-* It works as Command line utility to install packages, do version management and dependency management of Node.js packages.
-NPM comes bundled along with Node.js installable. We can verify its version using the following command-
-
-```bash
-npm --version
-```
-
-NPM helps to install any Node.js module using the following command.
-
-```bash
-npm install <Module Name>
-```
-
-For example, following is the command to install a famous Node.js web framework module called express-
-
-```bash
-npm install express
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***Why npm shrinkwrap is useful?***
-
-NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed. Having same versions of packages on all environments can help you test systems and deploy with confidence. If all tests pass on one machine, you can be sure that it will pass on all other because you know that you use same code!
-
-```bash
-npm shrinkwrap
-```
-
-It should create new npm-shrinkwrap.json file with information about all packages you use.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. ***How Node.js overcomes the problem of blocking of I/O operations?***
 
-Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads. 
+Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads.
 
 Node.js uses an event loop for this. An event loop is “an entity that handles and processes external events and converts them into callback invocations”. Whenever data is needed nodejs registers a callback and sends the operation to this event loop. Whenever the data is available the callback is called.
 
@@ -3480,17 +3608,19 @@ Node.js uses an event loop for this. An event loop is “an entity that handles 
 
 ## Q. ***How to implement Memcached in Node.js?***
 
-**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
+**Memcached:** 
+
+is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
 
 We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install memcached
 ```
 
-**Setting up the client**
+**Setting up the client:**
 
 The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
 
@@ -3499,14 +3629,14 @@ var Memcached = require('memcached');
 var memcached = new Memcached(Server locations, options);
 ```
 
-**Example usage**:
+**Example:**
 
 ```js
-var Memcached = require('memcached');
+const Memcached = require('memcached');
 // all global configurations should be applied to the .config object of the Client.
 Memcached.config.poolSize = 25;
 
-var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:true,failOverServers:['192.168.0.103:11211']});
+const memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:true,failOverServers:['192.168.0.103:11211']});
 ```
 
 <br/>
@@ -3549,130 +3679,15 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. ***How to Validate Data using joi Module in Node.js?***
-
-Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like `optional(), required(), min(), max(), etc which make it easy to use and a user-friendly module for validating the data.
-
-```js
-const Joi = require("joi");
-
-//User-defined function to validate the user
-function validateUser(user) {
-
-  const JoiSchema = Joi.object({
-
-    username: Joi.string().min(5).max(30).required(),
-
-    email: Joi.string().email().min(5).max(50).optional(),
-
-    date_of_birth: Joi.date().optional(),
-
-    account_status: Joi.string()
-      .valid("activated")
-      .valid("unactivated")
-      .optional(),
-  }).options({ abortEarly: false });
-
-  return JoiSchema.validate(user);
-}
-
-const user = {
-  username: "Deepak Lucky",
-  email: "deepak.lucky@gmail.com",
-  date_of_birth: "2000-07-07",
-  account_status: "activated",
-};
-
-let response = validateUser(user);
-
-if (response.error) {
-  console.log(response.error.details);
-} else {
-  console.log("Validated Data");
-}
-```
-
-**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***What are the middleware functions in Node.js?***
-
-Middleware functions are functions that have access to the **request object (req)**, the **response object (res)**, and the `next` function in the application\'s request-response cycle.
-
-Middleware functions can perform the following tasks:
-
-* Execute any code.
-* Make changes to the request and the response objects.
-* End the request-response cycle.
-* Call the next middleware in the stack.
-
-If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
-
-The following figure shows the elements of a middleware function call:
-
-<p align="center">
-  <img src="assets/express-mw.png" alt="Middleware functions" width="800px" />
-</p>
-
-Middleware functions that return a Promise will call `next(value)` when they reject or throw an error. `next` will be called with either the rejected value or the thrown Error.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. ***Explain the use of next in node.js with example?***
-
-The next function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
-
-**Example:** Middleware function myLogger
-
-To load the middleware function, call `app.use()`, specifying the middleware function. For example, the following code loads the **myLogger** middleware function before the route to the root path (/).
-
-```js
-const express = require("express");
-const app = express();
-
-const myLogger = function (req, res, next) {
-  console.log("LOGGED");
-  next();
-};
-
-app.use(myLogger);
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(3000);
-```
-
-**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/next-function-nq042s)**
-
-*Note: The `next()` function is not a part of the Node.js or Express API, but is the third argument that is passed to the middleware function. The `next()` function could be named anything, but by convention it is always named “next”. To avoid confusion, always use this convention.*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-#### Q. ***Is it possible to use "Class" in Node.js?***
-#### Q. ***Explain Error Handling approaches in Node.js?***
-#### Q. ***How would you handle errors for async code in Node.js?***
 #### Q. ***What are the use cases for the Node.js "vm" core module?***
 #### Q. ***Explain the concept of Domain in Node.js?***
 #### Q. ***What is Node-API (N-API)?***
-#### Q. ***Why Node.js is a single threaded language?***
 #### Q. ***How to use locale (i18n) in Node.js?***
-#### Q. ***What are the types of memory leaks in node.js***
 #### Q. ***How to implement a Sleep function?***
 #### Q. ***How does the cluster load balance work in node.js?***
 #### Q. ***What is daemon process? how to implement it in node.js?*** 
-#### Q. ***How to synchronize data between multiple clients on node.js server?***
 #### Q. ***How do you convert an existing callback API to promises?***
 #### Q. ***How would you scale Node application?***
-#### Q. ***How to solve "Process out of Memory Exception" in Node.js?***
 #### Q. ***How does the cluster module work? What is the difference between it and a load balancer?***
 #### Q. ***Why do we need C++ Addons in Node.js?***
 
