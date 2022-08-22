@@ -561,7 +561,12 @@ V8 is known to be a JavaScript engine because it takes JavaScript code and execu
 
 ## Q. Why is LIBUV needed in Node JS?
 
-LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
+**libuv** is a C library originally written for Node.js to abstract non-blocking I/O operations. It provide the below features
+
+* It allows the CPU and other resources to be used simultaneously while still performing I/O operations, thereby resulting in efficient use of resources and network.
+* It facilitates an event-driven approach wherein I/O and other activities are performed using callback-based notifications.
+* It provides mechanisms to handle file system, DNS, network, child processes, pipes, signal handling, polling and streaming
+* It also includes a thread pool for offloading work for some things that can\'t be done asynchronously at the operating system level.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
