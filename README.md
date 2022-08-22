@@ -488,58 +488,60 @@ The following table lists some of the important core modules in Node.js.
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What are globals in Node.js?
+## Q. what are the global objects of node.js?
 
-There are three keywords in Node.js which constitute as Globals. These are Global, Process, and Buffer.
+Node.js Global Objects are the objects that are available in all modules. Global Objects are built-in objects that are part of the JavaScript and can be used directly in the application without importing any particular module.
 
-**1. Global:**
+These objects are modules, functions, strings and object itself as explained below.
 
-The Global keyword represents the global namespace object. It acts as a container for all other `global` objects. If we type `console.log(global)`, it will print out all of them.
+**1. global:**
 
-An important point to note about the global objects is that not all of them are in the global scope, some of them fall in the module scope. So, it is wise to declare them without using the var keyword or add them to Global object.
-
-Variables declared using the var keyword become local to the module whereas those declared without it get subscribed to the global object.
-
-**2. Process:**
-
-It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
-
-It primarily gives back the information about the application or the environment.
-
-* `<process.execPath>` – to get the execution path of the Node app.
-* `<process.Version>` – to get the Node version currently running.
-* `<process.platform>` – to get the server platform.
-
-Some of the other useful Process methods are as follows.
-
-* `<process.memoryUsage>` – To know the memory used by Node application.
-* `<process.NextTick>` – To attach a callback function that will get called during the next loop. It can cause a delay in executing a function.
-
-**3. Buffer:**
-
-The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
-
-We can convert JavaScript string objects into Buffers. But it requires mentioning the encoding type explicitly.
-
-* `<ascii>` – Specifies 7-bit ASCII data.
-* `<utf8>` – Represents multibyte encoded Unicode char set.
-* `<utf16le>` – Indicates 2 or 4 bytes, little endian encoded Unicode chars.
-* `<base64>` – Used for Base64 string encoding.
-* `<hex>` – Encodes each byte as two hexadecimal chars.
-
-Here is the syntax to use the Buffer class.
+It is a global namespace. Defining a variable within this namespace makes it globally accessible.
 
 ```js
-var buffer = new Buffer(string, [encoding]);
+var myvar;
 ```
 
-The above command will allocate a new buffer holding the string with `utf8` as the default encoding. However, if you like to write a `string` to an existing buffer object, then use the following line of code.
+**2. process:**
+
+It is an inbuilt global object that is an instance of EventEmitter used to get information on current process. It can also be accessed using require() explicitly.
+
+**3. console:**
+
+It is an inbuilt global object used to print to stdout and stderr.
 
 ```js
-buffer.write(string)
+console.log("Hello World"); // Hello World
 ```
 
-This class also offers other methods like `readInt8` and `writeUInt8` that allows read/write from various types of data to the buffer.
+**4. setTimeout(), clearTimeout(), setInterval(), clearInterval():**
+
+The built-in timer functions are globals
+
+```js
+function printHello() {
+   console.log( "Hello, World!");
+}
+
+// Now call above function after 2 seconds
+var timeoutObj = setTimeout(printHello, 2000);
+```
+
+**5. __dirname:**
+
+It is a string. It specifies the name of the directory that currently contains the code.
+
+```js
+console.log(__dirname);
+```
+
+**6. __filename:**
+
+It specifies the filename of the code being executed. This is the resolved absolute path of this code file. The value inside a module is the path to that module file.
+
+```js
+console.log(__filename);
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
