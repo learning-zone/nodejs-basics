@@ -591,9 +591,12 @@ The V8 engine uses both a compiler and an interpreter and follows **just-in-time
 
 ## Q. What is EventEmitter in Node.js?
 
-All objects that emit events are members of EventEmitter class. These objects expose an `eventEmitter.on()` function that allows one or more functions to be attached to named events emitted by the object.
+The EventEmitter is a class that facilitates communication/interaction between objects in Node.js. The EventEmitter class can be used to create and handle custom events.
 
-When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
+EventEmitter is at the core of Node asynchronous event-driven architecture. Many of Node\'s built-in modules inherit from EventEmitter including prominent frameworks like Express.js. An emitter object basically has two main features:
+
+* Emitting name events.
+* Registering and unregistering listener functions.
 
 **Example:**
 
