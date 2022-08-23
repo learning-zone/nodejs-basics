@@ -572,9 +572,14 @@ V8 is known to be a JavaScript engine because it takes JavaScript code and execu
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What is the purpose of using hidden classes in V8?
 ## Q. How V8 compiles JavaScript code?
-## Q. What is V8 Templates?
+
+Compilation is the process of converting human-readable code to machine code. There are two ways to compile the code
+
+* **Using an Interpreter**: The interpreter scans the code line by line and converts it into byte code.
+* **Using a Compiler**: The Compiler scans the entire document and compiles it into highly optimized byte code.
+
+The V8 engine uses both a compiler and an interpreter and follows **just-in-time (JIT)** compilation to speed up the execution. JIT compiling works by compiling small portions of code that are just about to be executed. This prevents long compilation time and the code being compiles is only that which is highly likely to run.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
