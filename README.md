@@ -633,11 +633,28 @@ function listenerOnce() {
    console.log('listenerOnce fired once');
 }
 
-eventEmitter.once('listenerOne', listenerOnce); 
+eventEmitter.once('listenerOne', listenerOnce); // Register listenerOnce
 eventEmitter.emit('listenerOne');
 
 // Output
 listenerOnce fired once
+```
+
+**Example 03:** Registering for the event with callback parameters
+
+```js
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+
+function listener(code, msg) {
+   console.log(`status ${code} and ${msg}`);
+}
+
+eventEmitter.on('status', listener); // Register listener
+eventEmitter.emit('status', 200, 'ok');
+
+// Output
+status 200 and ok
 ```
 
 **Example:**
