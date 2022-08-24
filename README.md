@@ -598,6 +598,31 @@ EventEmitter is at the core of Node asynchronous event-driven architecture. Many
 * Emitting name events.
 * Registering and unregistering listener functions.
 
+**Example 01:** Create an event emitter instance and register a couple of callbacks
+
+```js
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+
+function listenerOne() {
+   console.log('First Listener Executed');
+}
+
+function listenerTwo() {
+   console.log('Second Listener Executed');
+}
+
+eventEmitter.on('listenerOne', listenerOne); // Register for listenerOne
+eventEmitter.on('listenerOne', listenerTwo); // Register for listenerOne
+
+// When the event "listenerOne" is emitted, both the above callbacks should be invoked.
+eventEmitter.emit('listenerOne');
+
+// Output
+First Listener Executed
+Second Listener Executed
+```
+
 **Example:**
 
 ```js
