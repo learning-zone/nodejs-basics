@@ -623,6 +623,23 @@ First Listener Executed
 Second Listener Executed
 ```
 
+**Example 02:** Registering for the event to be fired only one time using **once**.
+
+```js
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+
+function listenerOnce() {
+   console.log('listenerOnce fired once');
+}
+
+eventEmitter.once('listenerOne', listenerOnce); 
+eventEmitter.emit('listenerOne');
+
+// Output
+listenerOnce fired once
+```
+
 **Example:**
 
 ```js
