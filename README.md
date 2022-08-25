@@ -755,47 +755,48 @@ Program Ended.
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What does emitter do and what is dispatcher?
-
-Node.js core API is based on asynchronous event-driven architecture in which certain kind of objects called emitters periodically emit events that cause listener objects to be called.
-
-All objects that emit events are members of EventEmitter class. These objects expose an eventEmitter.on() function that allows one or more functions to be attached to named events emitted by the object.
-
-When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. All values returned by the called listeners are ignored and will be discarded.
-
-```js
-const EventEmitter = require('events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', function(a, b) {
-  console.log(a, b, this);
-  // Prints:
-  //   Technoetics Club MyEmitter {
-  //     domain: null,
-  //     _events: { event: [Function] },
-  //     _eventsCount: 1,
-  //     _maxListeners: undefined }
-});
-myEmitter.emit('event','Technoetics', 'Club');
-```
-
-Here we create a myEmitter object and emit event at the end which triggers the callback function and we are able to get the desired output.
-
-By default, all listeners attached to a particular event object are called by the EventListener object synchronously in the order in which they are registered or attached to the event object.
-
-**Dispatcher:**
-
-The Dispatcher has functionality not provided nor expected in EventEmitter, the most notable being waitFor, which allows a store to ensure that another store has been updated in response to an action before it proceeds.
-
-Pattern-wise, the Dispatcher is also a singleton, whereas EventEmitter is an API that you might object-assign onto multiple stores.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. What is the difference between process.nextTick() and setImmediate()?
 
-The difference between `process.nextTick()` and `setImmediate()` is that `process.nextTick()` defers the execution of an action till the next pass around the event loop or it simply calls the callback function once the ongoing execution of the event loop is finished whereas `setImmediate()` executes a callback on the next cycle of the event loop and it gives back to the event loop for executing any I/O operations.
+**1. process.nextTick():**
+
+The process.nextTick() method adds the callback function to the start of the next event queue. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
+
+**2. setImmdeiate():**
+
+The setImmediate() method is used to execute a function right after the current event loop finishes. It is callback function is placed in the check phase of the next event queue.
+
+**Example:**
+
+```js
+/**
+ * setImmediate() and process.nextTick()
+ */
+setImmediate(() => {
+  console.log("1st Immediate");
+});
+
+setImmediate(() => {
+  console.log("2nd Immediate");
+});
+
+process.nextTick(() => {
+  console.log("1st Process");
+});
+
+process.nextTick(() => {
+  console.log("2nd Process");
+});
+
+// First event queue ends here
+console.log("Program Started");
+
+// Output
+Program Started
+1st Process
+2nd Process
+1st Immediate
+2nd Immediate
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
