@@ -804,17 +804,32 @@ Program Started
 
 ## Q. What is callback function in Node.js?
 
-In node.js, we basically use callbacks for handling asynchronous operations like — making any I/O request, database operations or calling an API to fetch some data. Callback allows our code to not get blocked when a process is taking a long time.
+A callback is a function which is called when a task is completed, thus helps in preventing any kind of blocking and a callback function allows other code to run in the meantime.
+
+Callback is called when task get completed and is asynchronous equivalent for a function. Using Callback concept, Node.js can process a large number of requests without waiting for any function to return the result which makes Node.js highly scalable.
+
+**Example:**
 
 ```js
-function myNew(next){
-    console.log("Im the one who initates callback");
-    next("nope", "success");
+/**
+ * Callback Function
+ */
+function myAsync(a, b, callback) {
+  setTimeout(function () {
+    callback(a + b);
+  }, 100);
 }
+console.log("Before Asynchronous Call");
 
-myNew(function(err, res){
-    console.log("I got back from callback",err, res);
+myAsync(10, 20, function (result) {
+  console.log("Sum: " + result);
 });
+console.log("After Asynchronous Call");
+
+// Output
+Before Asynchronous Call
+After Asynchronous Call
+Sum: 30
 ```
 
 <div align="right">
