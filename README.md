@@ -130,14 +130,18 @@ npm install express --save
 **Step 04**: app.js
 
 ```js
-var express = require('express');
-var app = express();
+/**
+ * Express.js
+ */
+const express = require('express');
+const app = express();
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('App listening on port 3000!');
 });
 ```
 
@@ -158,6 +162,9 @@ The URL module in Node.js splits up a web address into readable parts. Use `requ
 **Example:**
 
 ```js
+/**
+ * URL Module in Node.js
+ */
 const url = require('url');
 const adr = 'http://localhost:8080/default.htm?year=2022&month=september';
 const q = url.parse(adr, true);
@@ -221,6 +228,9 @@ Javascript provide many functions to operate on string, like indexOf(), split(),
 **Example:**
 
 ```js
+/** 
+ * String Data Type
+ */
 const str1 = "Hello";
 const str2 = 'World';
 
@@ -239,6 +249,9 @@ The number data type in Node.js is 64 bits floating point number both positive a
 **Example:**
 
 ```js
+/**
+ * Number Data Type
+ */
 // Example 01:
 const num1 = 10;
 const num2 = 20;
@@ -271,6 +284,9 @@ A BigInt value, also sometimes just called a BigInt, is a bigint primitive, crea
 **Example:**
 
 ```js
+/**
+ * BigInt Data Type
+ */
 const maxSafeInteger = 99n; // This is a BigInt
 const num2 = BigInt('99'); // This is equivalent
 const num3 = BigInt(99); // Also works
@@ -292,6 +308,9 @@ The boolean() function is used to convert any data type to a boolean value. Acco
 **Example:**
 
 ```js
+/**
+ * Boolean Data Type
+ */
 // Example 01:
 const isValid = true; 
 console.log(isValid); // true 
@@ -316,6 +335,9 @@ In node.js, if a variable is defined without assigning any value, then that will
 **Example:**
 
 ```js
+/**
+ * NULL and UNDEFINED Data Type
+ */
 let x;
 console.log(x); // undefined
 
@@ -334,6 +356,9 @@ Symbol is an immutable primitive value that is unique. It\'s a very peculiar dat
 **Example:**
 
 ```js
+/**
+ * Symbol Data Type
+ */
 const NAME = Symbol()
 const person = {
   [NAME]: 'Ritika Bhavsar'
@@ -353,6 +378,9 @@ Functions are first class citizens in Node's JavaScript, similar to the browser'
 **Example:**
 
 ```js
+/**
+ * Function in Node.js
+ */
 function Messsage(name) {
  console.log("Hello "+name);
 }
@@ -371,6 +399,9 @@ Node.js includes an additional data type called Buffer ( not available in browse
 **Example:**
 
 ```js
+/**
+ * Buffer Data Type
+ */
 let b = new Buffer(10000);
 let str = "                         ";
 
@@ -601,6 +632,9 @@ EventEmitter is at the core of Node asynchronous event-driven architecture. Many
 **Example 01:** Create an event emitter instance and register a couple of callbacks
 
 ```js
+/**
+ * Callbacks Events
+ */
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
@@ -626,6 +660,9 @@ Second Listener Executed
 **Example 02:** Registering for the event to be fired only one time using **once**.
 
 ```js
+/**
+ * Emit Events Once
+ */
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
@@ -643,6 +680,9 @@ listenerOnce fired once
 **Example 03:** Registering for the event with callback parameters
 
 ```js
+/**
+ * Callback Events with Parameters
+ */
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
