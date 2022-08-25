@@ -755,16 +755,6 @@ Program Ended.
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How Node.js overcomes the problem of blocking of I/O operations?
-
-Node.js solves this problem by putting the event based model at its core, using an event loop instead of threads.
-
-Node.js uses an event loop for this. An event loop is “an entity that handles and processes external events and converts them into callback invocations”. Whenever data is needed nodejs registers a callback and sends the operation to this event loop. Whenever the data is available the callback is called.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. What does emitter do and what is dispatcher?
 
 Node.js core API is based on asynchronous event-driven architecture in which certain kind of objects called emitters periodically emit events that cause listener objects to be called.
