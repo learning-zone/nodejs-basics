@@ -802,6 +802,25 @@ Program Started
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. What is callback function in Node.js?
+
+In node.js, we basically use callbacks for handling asynchronous operations like — making any I/O request, database operations or calling an API to fetch some data. Callback allows our code to not get blocked when a process is taking a long time.
+
+```js
+function myNew(next){
+    console.log("Im the one who initates callback");
+    next("nope", "success");
+}
+
+myNew(function(err, res){
+    console.log("I got back from callback",err, res);
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## Q. What are the difference between Events and Callbacks?
 
 Node.js is a single-threaded application, but it support concurrency via the concept of **event** and **callbacks**. Every API of Node.js is asynchronous and being single-threaded, they use async function calls to maintain concurrency. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
@@ -840,6 +859,188 @@ eventEmitter.on('Sum', function(num1, num2) {
 
 //  Call Event.  
 eventEmitter.emit('Sum', '10', '20');
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is an error-first callback?
+
+The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
+
+```js
+fs.readFile( "file.json", function ( err, data ) {
+  if ( err ) {
+    console.error( err );
+  }
+  console.log( data );
+});
+```
+
+Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block. 
+
+In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is callback hell in Node.js?
+
+`Callback hell` is a phenomenon that afflicts a JavaScript developer when he tries to execute multiple asynchronous operations one after the other.
+
+An asynchronous function is one where some external activity must complete before a result can be processed; it is “asynchronous” in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
+
+```js
+getData(function(a){
+    getMoreData(a, function(b){
+        getMoreData(b, function(c){ 
+            getMoreData(c, function(d){ 
+	            getMoreData(d, function(e){ 
+		            ...
+		        });
+	        });
+        });
+    });
+});
+```
+
+**Techniques for avoiding callback hell:**
+
+1. Using Async.js
+1. Using Promises
+1. Using Async-Await
+
+* **Managing callbacks using Async.js**  
+
+`Async` is a really powerful npm module for managing asynchronous nature of JavaScript. Along with Node.js, it also works for JavaScript written for browsers.
+
+Async provides lots of powerful utilities to work with asynchronous processes under different scenarios.
+
+```bash
+npm install --save async
+```
+
+* **ASYNC WATERFALL**  
+
+```js
+var async = require('async');
+async.waterfall([
+    function(callback) {
+        //doSomething
+        callback(null, paramx); //paramx will be availaible as the first parameter to the next function
+        /**
+            The 1st parameter passed in callback.
+            @null or @undefined or @false control moves to the next function
+            in the array
+            if @true or @string the control is immediately moved
+            to the final callback function
+            rest of the functions in the array
+            would not be executed
+        */
+    },
+    function(arg1, callback) {
+        //doSomething else
+      // arg1 now equals paramx
+        callback(null, result);
+    },
+    function(arg1, callback) {
+        //do More
+        // arg1 now equals result
+        callback(null, 'done');
+    },
+    function(arg1, callback) {
+        //even more
+        // arg1 now equals 'done'
+        callback(null, 'done');
+    }
+], function (err, result) {
+    //final callback function
+    //finally do something when all function are done.
+    // result now equals 'done'
+});
+```
+
+* **ASYNC SERIES**  
+
+```js
+var async = require('async');
+async.series([
+    function(callback){
+        // do some stuff ...
+        callback(null, 'one');
+        /**
+            The 1st parameter passed in callback.
+            @null or @undefined or @false control moves to the next function
+            in the array
+            if @true or @string the control is immedeatly moved
+            to the final callback function with the value of err same as
+            passed over here and
+            rest of the functions in the array
+            would not be executed
+        */
+    },
+    function(callback){
+        // do some more stuff ...
+        callback(null, 'two');
+    }
+],
+// optional callback
+function(err, results){
+    // results is now equal to ['one', 'two']
+});
+```
+
+* **Managing callbacks hell using promises**  
+
+Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned. The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
+
+```js
+var outputPromise = getInputPromise().then(function (input) {
+    //handle success
+}, function (error) {
+    //handle error
+});
+```
+
+* **Using Async Await**  
+
+Async await makes asynchronous code look like it\’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
+
+```js
+const getrandomnumber = function(){
+    return new Promise((resolve, reject)=>{
+        setTimeout(() => {
+            resolve(Math.floor(Math.random() * 20));
+        }, 1000);
+    });
+}
+
+const addRandomNumber = async function(){
+    const sum = await getrandomnumber() + await getrandomnumber();
+    console.log(sum);
+}
+
+addRandomNumber();
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is typically the first argument passed to a Node.js callback handler?
+
+The first argument to any callback handler is an optional error object
+
+```js
+function callback(err, results) {
+    // usually we'll check for the error before handling results
+    if(err) {
+        // handle error somehow and return
+    }
+    // no error, perform standard callback handling
+}
 ```
 
 <div align="right">
@@ -2542,207 +2743,6 @@ var request = require('request');
             console.log(body)
         }
     });
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is callback function in Node.js?
-
-In node.js, we basically use callbacks for handling asynchronous operations like — making any I/O request, database operations or calling an API to fetch some data. Callback allows our code to not get blocked when a process is taking a long time.
-
-```js
-function myNew(next){
-    console.log("Im the one who initates callback");
-    next("nope", "success");
-}
-
-myNew(function(err, res){
-    console.log("I got back from callback",err, res);
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is an error-first callback?
-
-The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
-
-```js
-fs.readFile( "file.json", function ( err, data ) {
-  if ( err ) {
-    console.error( err );
-  }
-  console.log( data );
-});
-```
-
-Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block. 
-
-In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is callback hell in Node.js?
-
-`Callback hell` is a phenomenon that afflicts a JavaScript developer when he tries to execute multiple asynchronous operations one after the other.
-
-An asynchronous function is one where some external activity must complete before a result can be processed; it is “asynchronous” in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
-
-```js
-getData(function(a){
-    getMoreData(a, function(b){
-        getMoreData(b, function(c){ 
-            getMoreData(c, function(d){ 
-	            getMoreData(d, function(e){ 
-		            ...
-		        });
-	        });
-        });
-    });
-});
-```
-
-**Techniques for avoiding callback hell:**
-
-1. Using Async.js
-1. Using Promises
-1. Using Async-Await
-
-* **Managing callbacks using Async.js**  
-
-`Async` is a really powerful npm module for managing asynchronous nature of JavaScript. Along with Node.js, it also works for JavaScript written for browsers.
-
-Async provides lots of powerful utilities to work with asynchronous processes under different scenarios.
-
-```bash
-npm install --save async
-```
-
-* **ASYNC WATERFALL**  
-
-```js
-var async = require('async');
-async.waterfall([
-    function(callback) {
-        //doSomething
-        callback(null, paramx); //paramx will be availaible as the first parameter to the next function
-        /**
-            The 1st parameter passed in callback.
-            @null or @undefined or @false control moves to the next function
-            in the array
-            if @true or @string the control is immediately moved
-            to the final callback function
-            rest of the functions in the array
-            would not be executed
-        */
-    },
-    function(arg1, callback) {
-        //doSomething else
-      // arg1 now equals paramx
-        callback(null, result);
-    },
-    function(arg1, callback) {
-        //do More
-        // arg1 now equals result
-        callback(null, 'done');
-    },
-    function(arg1, callback) {
-        //even more
-        // arg1 now equals 'done'
-        callback(null, 'done');
-    }
-], function (err, result) {
-    //final callback function
-    //finally do something when all function are done.
-    // result now equals 'done'
-});
-```
-
-* **ASYNC SERIES**  
-
-```js
-var async = require('async');
-async.series([
-    function(callback){
-        // do some stuff ...
-        callback(null, 'one');
-        /**
-            The 1st parameter passed in callback.
-            @null or @undefined or @false control moves to the next function
-            in the array
-            if @true or @string the control is immedeatly moved
-            to the final callback function with the value of err same as
-            passed over here and
-            rest of the functions in the array
-            would not be executed
-        */
-    },
-    function(callback){
-        // do some more stuff ...
-        callback(null, 'two');
-    }
-],
-// optional callback
-function(err, results){
-    // results is now equal to ['one', 'two']
-});
-```
-
-* **Managing callbacks hell using promises**  
-
-Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned. The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
-
-```js
-var outputPromise = getInputPromise().then(function (input) {
-    //handle success
-}, function (error) {
-    //handle error
-});
-```
-
-* **Using Async Await**  
-
-Async await makes asynchronous code look like it\’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
-
-```js
-const getrandomnumber = function(){
-    return new Promise((resolve, reject)=>{
-        setTimeout(() => {
-            resolve(Math.floor(Math.random() * 20));
-        }, 1000);
-    });
-}
-
-const addRandomNumber = async function(){
-    const sum = await getrandomnumber() + await getrandomnumber();
-    console.log(sum);
-}
-
-addRandomNumber();
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is typically the first argument passed to a Node.js callback handler?
-
-The first argument to any callback handler is an optional error object
-
-```js
-function callback(err, results) {
-    // usually we'll check for the error before handling results
-    if(err) {
-        // handle error somehow and return
-    }
-    // no error, perform standard callback handling
-}
 ```
 
 <div align="right">
