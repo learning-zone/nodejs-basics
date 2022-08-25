@@ -657,65 +657,6 @@ eventEmitter.emit('status', 200, 'ok');
 status 200 and ok
 ```
 
-**Example:**
-
-```js
-const events = require('events');
-const eventEmitter = new events.EventEmitter();
-
-// listener #1
-const listener1 = function listener1() {
-   console.log('listener1 executed.');
-}
-
-// listener #2
-const listener2 = function listener2() {
-   console.log('listener2 executed.');
-}
-
-// Bind the connection event with the listener1 function
-eventEmitter.addListener('connection', listener1);
-
-// Bind the connection event with the listener2 function
-eventEmitter.on('connection', listener2);
-
-let eventListeners = eventEmitter.listenerCount('connection')
-console.log(eventListeners + " Listener(s) listening to connection event");
-
-// Fire the connection event 
-eventEmitter.emit('connection');
-
-// Remove the binding of listener1 function
-eventEmitter.removeListener('connection', listener1);
-console.log("Listener1 will not listen now.");
-
-// Fire the connection event 
-eventEmitter.emit('connection');
-
-eventListeners = eventEmitter.listenerCount('connection')
-console.log(eventListeners + " Listener(s) listening to connection event");
-
-console.log("Program Ended.");
-```
-
-Now run the main.js
-
-```bash
-$ node main.js
-```
-
-Output
-
-```bash
-2 Listener(s) listening to connection event
-listener1 executed.
-listener2 executed.
-Listener1 will not listen now.
-listener2 executed.
-1 Listener(s) listening to connection event
-Program Ended.
-```
-
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
