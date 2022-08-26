@@ -151,6 +151,8 @@ app.listen(3000, function () {
 node app.js
 ```
 
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/hello-world-in-nodejs-ue3cs3)**
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
