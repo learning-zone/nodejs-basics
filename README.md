@@ -842,7 +842,7 @@ Sum: 30
 
 **1. Events:**
 
-Node.js **events** module which emits named events that can cause corresponding functions or callbacks to be called. Functions ( Callbacks ) listen or subscribe to a particular event to occur and when that event triggers, all the callbacks subscribed to that event are fired one by one in order to which they were registered.
+Node.js **events** module which emits named events that can cause corresponding functions or callbacks to be called. Functions ( callbacks ) listen or subscribe to a particular event to occur and when that event triggers, all the callbacks subscribed to that event are fired one by one in order to which they were registered.
 
 All objects that emit events are instances of the **EventEmitter** class. The event can be emitted or listen to an event with the help of EventEmitter
 
@@ -871,7 +871,7 @@ Total: 30
 
 A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
 
-**Example:** synchronous callback
+**Example:**
 
 ```js
 /**
