@@ -840,11 +840,9 @@ Sum: 30
 
 ## Q. What are the difference between Events and Callbacks?
 
-Node.js is a single-threaded application, but it support concurrency via the concept of **event** and **callbacks**. Every API of Node.js is asynchronous and being single-threaded, they use async function calls to maintain concurrency. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
+**1. Callbacks:**
 
-callback functions are called when an asynchronous function returns its result, whereas event handling works on the **observer pattern**. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners
-
-**1. Callback**: A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
+A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
 
 **Example:** synchronous callback
 
@@ -854,14 +852,18 @@ function greeting(name) {
 }
 
 function processUserInput(callback) {
-  var name = prompt('Please enter your name.');
+  var name = prompt('Please enter your name: ');
   callback(name);
 }
 
 processUserInput(greeting);
 ```
 
-**2. Events**: Every action on a computer is an event. Node.js allows us to create and handle custom events easily by using events module. Event module includes `EventEmitter` class which can be used to raise and handle custom events.
+**2. Events:**
+
+Node.js **events** module which emits named events that can cause corresponding functions or callbacks to be called. Functions ( Callbacks ) listen or subscribe to a particular event to occur and when that event triggers, all the callbacks subscribed to that event are fired one by one in order to which they were registered.
+
+All objects that emit events are instances of the **EventEmitter** class. The event can be emitted or listen to an event with the help of EventEmitter
 
 **Example:**
 
@@ -877,6 +879,8 @@ eventEmitter.on('Sum', function(num1, num2) {
 //  Call Event.  
 eventEmitter.emit('Sum', '10', '20');
 ```
+
+Callback functions are called when an asynchronous function returns its result, whereas event handling works on the **observer pattern**. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
