@@ -962,21 +962,33 @@ npm install --save async
 
 **2. Managing callbacks hell using promises:**  
 
-Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned. The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
+Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned.
+
+The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
+
+**Example:**
 
 ```js
-var outputPromise = getInputPromise().then(function (input) {
-    //handle success
-}, function (error) {
-    //handle error
+/**
+ * Promises
+ */
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Successful!");
+  }, 300);
 });
 ```
 
 **3. Using Async Await:**  
 
-Async await makes asynchronous code look like it\’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
+Async await makes asynchronous code look like it\'s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
+
+**Example:**
 
 ```js
+/**
+ * Async Await
+ */
 const getrandomnumber = function(){
     return new Promise((resolve, reject)=>{
         setTimeout(() => {
