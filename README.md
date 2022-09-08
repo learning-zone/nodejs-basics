@@ -925,6 +925,8 @@ The callback hell contains complex nested callbacks. Here, every callback takes 
 
 An asynchronous function is one where some external activity must complete before a result can be processed; it is "asynchronous" in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
 
+**Example:**
+
 ```js
 /**
  * Callback Hell
