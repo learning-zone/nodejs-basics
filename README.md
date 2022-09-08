@@ -921,11 +921,14 @@ In the preceding example, if any exception is thrown during the reading of the f
 
 ## Q. What is callback hell in Node.js?
 
-`Callback hell` is a phenomenon that afflicts a JavaScript developer when he tries to execute multiple asynchronous operations one after the other.
+The callback hell contains complex nested callbacks. Here, every callback takes an argument that is a result of the previous callbacks. In this way, the code structure looks like a pyramid, making it difficult to read and maintain. Also, if there is an error in one function, then all other functions get affected.
 
-An asynchronous function is one where some external activity must complete before a result can be processed; it is “asynchronous” in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
+An asynchronous function is one where some external activity must complete before a result can be processed; it is "asynchronous" in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
 
 ```js
+/**
+ * Callback Hell
+ */
 getData(function(a){
     getMoreData(a, function(b){
         getMoreData(b, function(c){ 
