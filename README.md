@@ -1009,18 +1009,31 @@ addRandomNumber();
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What is typically the first argument passed to a Node.js callback handler?
+## Q. What is typically the first argument passed to a callback handler?
 
-The first argument to any callback handler is an optional error object
+The first parameter of the callback is the **error** value. If the function hits an error, then they typically call the **callback** with the first parameter being an Error object.
+
+**Example:**
 
 ```js
-function callback(err, results) {
-    // usually we'll check for the error before handling results
-    if(err) {
-        // handle error somehow and return
+/**
+ * Callback Handler
+ */
+const Division = (numerator, denominator, callback) => {
+    if (denominator === 0) {
+      callback(new Error('Divide by zero error!'));
+    } else {
+      callback(null, numerator / denominator);
     }
-    // no error, perform standard callback handling
-}
+};
+
+// Function Call
+Division(5, 0, (err, result) => {
+  if (err) {
+    return console.log(err.message);
+  }
+  console.log(`Result: ${result}`);
+});
 ```
 
 <div align="right">
