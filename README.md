@@ -939,13 +939,13 @@ getData(function(a){
 });
 ```
 
-**Techniques for avoiding callback hell:**
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
-1. Using Async.js
-1. Using Promises
-1. Using Async-Await
+## Q. How to avoid callback hell in Node.js?
 
-* **Managing callbacks using Async.js**  
+**1. Managing callbacks using Async.js:**  
 
 `Async` is a really powerful npm module for managing asynchronous nature of JavaScript. Along with Node.js, it also works for JavaScript written for browsers.
 
@@ -955,77 +955,7 @@ Async provides lots of powerful utilities to work with asynchronous processes un
 npm install --save async
 ```
 
-* **ASYNC WATERFALL**  
-
-```js
-var async = require('async');
-async.waterfall([
-    function(callback) {
-        //doSomething
-        callback(null, paramx); //paramx will be availaible as the first parameter to the next function
-        /**
-            The 1st parameter passed in callback.
-            @null or @undefined or @false control moves to the next function
-            in the array
-            if @true or @string the control is immediately moved
-            to the final callback function
-            rest of the functions in the array
-            would not be executed
-        */
-    },
-    function(arg1, callback) {
-        //doSomething else
-      // arg1 now equals paramx
-        callback(null, result);
-    },
-    function(arg1, callback) {
-        //do More
-        // arg1 now equals result
-        callback(null, 'done');
-    },
-    function(arg1, callback) {
-        //even more
-        // arg1 now equals 'done'
-        callback(null, 'done');
-    }
-], function (err, result) {
-    //final callback function
-    //finally do something when all function are done.
-    // result now equals 'done'
-});
-```
-
-* **ASYNC SERIES**  
-
-```js
-var async = require('async');
-async.series([
-    function(callback){
-        // do some stuff ...
-        callback(null, 'one');
-        /**
-            The 1st parameter passed in callback.
-            @null or @undefined or @false control moves to the next function
-            in the array
-            if @true or @string the control is immedeatly moved
-            to the final callback function with the value of err same as
-            passed over here and
-            rest of the functions in the array
-            would not be executed
-        */
-    },
-    function(callback){
-        // do some more stuff ...
-        callback(null, 'two');
-    }
-],
-// optional callback
-function(err, results){
-    // results is now equal to ['one', 'two']
-});
-```
-
-* **Managing callbacks hell using promises**  
+**2. Managing callbacks hell using promises:**  
 
 Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned. The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
 
@@ -1037,7 +967,7 @@ var outputPromise = getInputPromise().then(function (input) {
 });
 ```
 
-* **Using Async Await**  
+**3. Using Async Await:**  
 
 Async await makes asynchronous code look like it\’s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
 
