@@ -3857,6 +3857,22 @@ The `V8` was first designed to increase the performance of the JavaScript execut
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to access cache data in Node.js ?
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement caching in Node.js using Redis?
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## Q. How to implement Memcached in Node.js?
 
 **Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
