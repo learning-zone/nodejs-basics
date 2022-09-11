@@ -1613,13 +1613,16 @@ Middleware functions that return a Promise will call `next(value)` when they rej
 
 ## Q. Explain the use of next in Node.js?
 
-The next function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
+The **next** is a function in the Express router which executes the middleware succeeding the current middleware.
 
-**Example:** Middleware function myLogger
+**Example:**
 
 To load the middleware function, call `app.use()`, specifying the middleware function. For example, the following code loads the **myLogger** middleware function before the route to the root path (/).
 
 ```js
+/**
+ * myLogger
+ */
 const express = require("express");
 const app = express();
 
