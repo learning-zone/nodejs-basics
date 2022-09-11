@@ -2152,7 +2152,7 @@ pm2 start app.js
 
 **6. serve-favicon:**
 
-Node.js middleware for serving a favicon. The `serve-favicon` module lets us exclude requests for the favicon in our logger middleware. It also caches the icon in memory to improve performance by reducing disk access. In addition, it provides an `ETag` based on the contents of the icon, rather than file system properties.
+Node.js middleware for serving a favicon. It create new middleware to serve a favicon from the given path to a favicon file. **path** may also be a Buffer of the icon to serve.
 
 **Installation:**
 
@@ -2180,7 +2180,7 @@ app.listen(3000)
 
 **7. cors:**
 
-**C**ross-**O**rigin **R**esource **S**haring (CORS) headers allow apps running in the browser to make requests to servers on different domains (also known as origins). CORS headers are set on the server side - the HTTP server is responsible for indicating that a given HTTP request can be cross-origin. CORS defines a way in which a browser and server can interact and determine whether or not it is safe to allow a cross-origin request.
+**C**ross-**O**rigin **R**esource **S**haring (CORS) headers allow apps running in the browser to make requests to servers on different domains (also known as origins). CORS headers are set on the server side - the HTTP server is responsible for indicating that a given HTTP request can be cross-origin.
 
 **Installation:**
 
@@ -2188,11 +2188,11 @@ app.listen(3000)
 npm install cors
 ```
 
-**Example:** Enable CORS for a Single Route
+**Example:**
 
 ```js
 /**
- * cors
+ * Enable CORS for a Single Route
  */
 const express = require('express')
 const cors = require('cors')
@@ -2231,7 +2231,6 @@ DB_PASS=root
 /**
  * config.js
  */
-
 const db = require('db')
 
 db.connect({
@@ -2254,8 +2253,10 @@ npm install fs-extra
 **Usage:**
 
 ```js
+/**
+ * fs-extra
+ */
 const fs = require('fs-extra')
-
 
 // Async with callbacks:
 fs.copy('/tmp/myfile', '/tmp/mynewfile', err => {
@@ -2281,9 +2282,9 @@ npm install moment --save
 ```js
 const moment = require('moment');
 
-moment().format('MMMM Do YYYY, h:mm:ss a'); // October 24th 2020, 3:15:22 pm
+moment().format('MMMM Do YYYY, h:mm:ss a'); // October 24th 2022, 3:15:22 pm
 moment().format('dddd');                    // Saturday
-moment().format("MMM Do YY");               // Oct 24th 20
+moment().format("MMM Do YY");               // Oct 24th 22
 ```
 
 * Relative Time
@@ -2301,7 +2302,7 @@ moment().startOf('day').fromNow();        // 15 hours ago
 ```js
 const moment = require('moment');
 
-moment().subtract(10, 'days').calendar(); // 10/14/2020
+moment().subtract(10, 'days').calendar(); // 10/14/2022
 moment().subtract(6, 'days').calendar();  // Last Sunday at 3:18 PM
 moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
 ```
