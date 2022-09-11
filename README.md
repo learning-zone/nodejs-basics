@@ -1500,7 +1500,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. **_How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?_**
+## Q. How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?
 
 JSON Web Token (JWT) is an open standard that defines a compact and self-contained way of securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
 
