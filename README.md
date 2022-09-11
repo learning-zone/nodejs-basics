@@ -3859,9 +3859,7 @@ The `V8` was first designed to increase the performance of the JavaScript execut
 
 ## Q. How to implement Memcached in Node.js?
 
-**Memcached:** 
-
-is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
+**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
 
 We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
 
@@ -3883,11 +3881,14 @@ var memcached = new Memcached(Server locations, options);
 **Example:**
 
 ```js
+/**
+ * Memcached
+ */
 const Memcached = require('memcached');
 // all global configurations should be applied to the .config object of the Client.
 Memcached.config.poolSize = 25;
 
-const memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:true,failOverServers:['192.168.0.103:11211']});
+const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, remove:true, failOverServers:['192.168.0.103:11211']});
 ```
 
 <br/>
