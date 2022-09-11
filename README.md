@@ -29,11 +29,12 @@
 * [Node.js Middleware](#-10-nodejs-middleware)
 * [Node.js RESTFul API](#-11-nodejs-restful-api)
 * [Node.js Routing](#-12-nodejs-routing)
-* [Node.js Error Handling](#-13-nodejs-error-handling)
-* [Node.js Logging](#-14-nodejs-logging)
-* [Node.js Internationalization](#-15-nodejs-internationalization)
-* [Node.js Testing](#-16-nodejs-testing)
-* [Node.js Miscellaneous](#-17-nodejs-miscellaneous)
+* [Node.js Caching](#-13-nodejs-caching)
+* [Node.js Error Handling](#-14-nodejs-error-handling)
+* [Node.js Logging](#-15-nodejs-logging)
+* [Node.js Internationalization](#-16-nodejs-internationalization)
+* [Node.js Testing](#-17-nodejs-testing)
+* [Node.js Miscellaneous](#-18-nodejs-miscellaneous)
 
 <br/>
 
@@ -3415,7 +3416,11 @@ module.exports = router
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 13. NODE.JS ERROR HANDLING
+## # 13. NODE.JS CACHING
+
+<br/>
+
+## # 14. NODE.JS ERROR HANDLING
 
 <br/>
 
@@ -3451,7 +3456,7 @@ Few events are :
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 14. NODE.JS LOGGING
+## # 15. NODE.JS LOGGING
 
 <br/>
 
@@ -3508,7 +3513,7 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 15. NODE.JS INTERNATIONALIZATION
+## # 16. NODE.JS INTERNATIONALIZATION
 
 <br/>
 
@@ -3518,7 +3523,7 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 16. NODE.JS TESTING
+## # 17. NODE.JS TESTING
 
 <br/>
 
@@ -3622,7 +3627,7 @@ if (response.error) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 17. NODE.JS MISCELLANEOUS
+## # 18. NODE.JS MISCELLANEOUS
 
 <br/>
 
