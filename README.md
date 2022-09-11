@@ -2001,21 +2001,21 @@ app.listen(3000, function () {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?
+## Q. Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express.js?
 
 **1. body-parser:**
 
-`body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. This body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
+`body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. The body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 
 **Example:**
 
 ```js
-npm install express ejs body-parser
+npm install body-parser
 ```
 
 ```js
 /**
- * Server.js
+ * body-parser
  */
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -2054,6 +2054,9 @@ npm install cookie-parser
 **Example:**
 
 ```js
+/**
+ * cookie-parser
+ */
 const express = require('express')
 const cookieParser = require('cookie-parser')
 
@@ -2084,6 +2087,9 @@ npm install morgan
 **Example:** write logs to a file
 
 ```js
+/**
+ * morgan
+ */
 const express = require('express')
 const fs = require('fs')
 const morgan = require('morgan')
@@ -2155,6 +2161,9 @@ npm install serve-favicon
 **Example:**
 
 ```js
+/**
+ * serve-favicon
+ */
 const express = require('express')
 const favicon = require('serve-favicon')
 const path = require('path')
@@ -2177,27 +2186,12 @@ app.listen(3000)
 npm install cors
 ```
 
-**Example:** Enable All CORS Requests
-
-```js
-const express = require('express')
-const cors = require('cors')
-const app = express()
-
-app.use(cors())
-
-app.get('/products/:id', function (req, res, next) {
-  res.json({msg: 'This is CORS-enabled for all origins!'})
-})
-
-app.listen(8080, function () {
-  console.log('CORS-enabled web server listening on port 80')
-})
-```
-
 **Example:** Enable CORS for a Single Route
 
 ```js
+/**
+ * cors
+ */
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -2232,7 +2226,9 @@ DB_PASS=root
 ```
 
 ```js
-// config.js
+/**
+ * config.js
+ */
 
 const db = require('db')
 
