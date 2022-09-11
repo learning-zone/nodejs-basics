@@ -1932,27 +1932,12 @@ It should create new **npm-shrinkwrap.json** file with information about all pac
 npm install express body-parser multer --save
 ```
 
-**2. Package.json:**
-
-```json
-{
-  "name": "file_upload",
-  "version": "0.0.1",
-  "dependencies": {
-    "express": "4.13.3",
-    "multer": "1.1.0"
-  },
-  "devDependencies": {
-    "should": "~7.1.0",
-    "mocha": "~2.3.3",
-    "supertest": "~1.1.0"
-  }
-}
-```
-
-**3. Server.js:**
+**2. server.js:**
 
 ```js
+/**
+ * File Upload in Node.js
+ */
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -1991,7 +1976,7 @@ app.listen(3000, function () {
 });
 ```
 
-**4. index.html:**
+**3. index.html:**
 
 ```html
 <!DOCTYPE html>
@@ -2020,7 +2005,7 @@ app.listen(3000, function () {
 
 ## Q. Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express JS?
 
-**a) body-parser**
+**1. body-parser:**
 
 `body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. This body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 
@@ -2056,7 +2041,7 @@ app.post("/api/users", jsonParser, function (req, res) {
 });
 ```
 
-**b) cookie-parser:**
+**2. cookie-parser:**
 
 A cookie is a piece of data that is sent to the client-side with a request and is stored on the client-side itself by the Web Browser the user is currently using.
 
@@ -2088,11 +2073,11 @@ app.get('/', function (req, res) {
 app.listen(3000)
 ```
 
-**c) morgan**
+**3. morgan:**
 
 HTTP request logger middleware for node.js.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install morgan
@@ -2119,11 +2104,11 @@ app.get('/', function (req, res) {
 })
 ```
 
-**d) nodemon**
+**4. nodemon:**
 
 Nodemon is a utility that will monitor for any changes in source and automatically restart your server.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install -g nodemon
@@ -2141,17 +2126,17 @@ npm install -g nodemon
 }
 ```
 
-**e) pm2**
+**5. pm2:**
 
 **P**(rocess) **M**(anager) **2** (pm2) is a production process manager for Node.js applications with a built-in load balancer. It allows to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install pm2 -g
 ```
 
-**Start an application**
+**Start an application:**
 
 ```bash
 pm2 start app.js
@@ -2159,7 +2144,7 @@ pm2 start app.js
 
 **[[Read More](https://pm2.keymetrics.io/docs/usage/quick-start/)]**
 
-**f) serve-favicon**
+**6. serve-favicon:**
 
 Node.js middleware for serving a favicon. The `serve-favicon` module lets us exclude requests for the favicon in our logger middleware. It also caches the icon in memory to improve performance by reducing disk access. In addition, it provides an `ETag` based on the contents of the icon, rather than file system properties.
 
@@ -2184,7 +2169,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.listen(3000)
 ```
 
-**g) cors**
+**7. cors:**
 
 **C**ross-**O**rigin **R**esource **S**haring (CORS) headers allow apps running in the browser to make requests to servers on different domains (also known as origins). CORS headers are set on the server side - the HTTP server is responsible for indicating that a given HTTP request can be cross-origin. CORS defines a way in which a browser and server can interact and determine whether or not it is safe to allow a cross-origin request.
 
@@ -2228,17 +2213,17 @@ app.listen(8080, function () {
 })
 ```
 
-**h) dotenv**
+**8. dotenv:**
 
 When a NodeJs application runs, it injects a global variable called `process.env` which contains information about the state of environment in which the application is running. The `dotenv` loads environment variables stored in the `.env` file into `process.env`.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install dotenv
 ```
 
-**Usage**
+**Usage:**
 
 ```js
 // .env
@@ -2260,17 +2245,17 @@ db.connect({
 })
 ```
 
-**i) fs-extra**
+**9. fs-extra:**
 
 `fs-extra` contains methods that aren\'t included in the vanilla Node.js fs package. Such as recursive `mkdir`, `copy`, and `remove`. It also uses graceful-fs to prevent `EMFILE` errors.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install fs-extra
 ```
 
-**Usage**
+**Usage:**
 
 ```js
 const fs = require('fs-extra')
@@ -2283,7 +2268,7 @@ fs.copy('/tmp/myfile', '/tmp/mynewfile', err => {
 })
 ```
 
-**j) moment**
+**10. moment:**
 
 A JavaScript date library for parsing, validating, manipulating, and formatting dates.
 
