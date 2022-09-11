@@ -1391,8 +1391,13 @@ Please note - before pid. This converts a pid to a group of pids for process kil
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. Why Node.js is a single threaded language?
-#### Q. How to synchronize data between multiple clients on node.js server?
+## Q. How to synchronize data between multiple clients on node.js server?
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
 ## # 9. NODE.JS WEB MODULE
 
