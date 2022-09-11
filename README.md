@@ -333,7 +333,7 @@ console.log(!false); // true
 
 ## Q. Explain `Undefined` and `Null` data type in Node.js?
 
-In node.js, if a variable is defined without assigning any value, then that will take undefined as value. If we assign a null value to the variable, then the value of the variable becomes null.
+In node.js, if a variable is defined without assigning any value, then that will take **undefined** as value. If we assign a null value to the variable, then the value of the variable becomes **null**.
 
 **Example:**
 
