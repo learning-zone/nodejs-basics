@@ -1884,19 +1884,19 @@ NPM stands for Node Package Manager. It provides following two main functionalit
 * It works as Command line utility to install packages, do version management and dependency management of Node.js packages.
 NPM comes bundled along with Node.js installable. We can verify its version using the following command-
 
-```bash
+```js
 npm --version
 ```
 
 NPM helps to install any Node.js module using the following command.
 
-```bash
+```js
 npm install <Module Name>
 ```
 
 For example, following is the command to install a famous Node.js web framework module called express-
 
-```bash
+```js
 npm install express
 ```
 
@@ -1906,13 +1906,15 @@ npm install express
 
 ## Q. Why npm shrinkwrap is useful?
 
-NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed. Having same versions of packages on all environments can help you test systems and deploy with confidence. If all tests pass on one machine, you can be sure that it will pass on all other because you know that you use same code!
+NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed.
 
-```bash
+After installing packages using npm install or npm install `<package-name>` and updating your **node_modules** folder, you should run
+
+```js
 npm shrinkwrap
 ```
 
-It should create new npm-shrinkwrap.json file with information about all packages you use.
+It should create new **npm-shrinkwrap.json** file with information about all packages you use. Next time, when someone calls **npm install**, it will install packages from **npm-shrinkwrap.json** and you will have the same environment on all machines.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1924,13 +1926,13 @@ It should create new npm-shrinkwrap.json file with information about all package
 * **body-parser**: Parse incoming request bodies in a middleware
 * **multer**: Middleware for handling multipart/form-data — file uploads
 
-**1. Installing the dependencies**
+**1. Installing the dependencies:**
 
 ```bash
 npm install express body-parser multer --save
 ```
 
-**2. Package.json**
+**2. Package.json:**
 
 ```json
 {
