@@ -1786,7 +1786,7 @@ The only option is to automate the update / security audit of your dependencies.
 
 ## Q. What are the security mechanisms available in Node.js?
 
-**1. Using the Helmet module:**
+**1. Helmet module:**
 
 Helmet helps to secure your Express applications by setting various HTTP headers, like:
 
@@ -1803,7 +1803,7 @@ const app = express()
 app.use(helmet())
 ```
 
-**2. Validating user input:**
+**2. JOI module:**
 
 Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
 
@@ -1828,7 +1828,7 @@ const result = Joi.validate({
 // result.error === null -> valid
 ```
 
-**3. Securing your Regular Expressions:**
+**3. Regular Expressions:**
 
 Regular Expressions are a great way to manipulate texts and get the parts that you need from them. However, there is an attack vector called Regular Expression Denial of Service attack, which exposes the fact that most Regular Expression implementations may reach extreme situations for specially crafted input, that cause them to work extremely slowly.
 
