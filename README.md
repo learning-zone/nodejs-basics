@@ -98,33 +98,33 @@ While processing a request, Node.js attaches a callback function to it and moves
 
 **Step 01**: Create a project directory
 
-```bash
+```js
 mkdir myapp
 cd myapp
 ```
 
 **Step 02**: Initialize project and link it to npm
 
-```bash
+```js
 npm init
 ```
 
 This creates a `package.json` file in your myapp folder. The file contains references for all npm packages you have downloaded to your project. The command will prompt you to enter a number of things.
 You can enter your way through all of them EXCEPT this one:
 
-```bash
+```js
 entry point: (index.js)
 ```
 
 Rename this to:
 
-```bash
+```js
 app.js
 ```
 
 **Step 03**: Install Express in the myapp directory
 
-```bash
+```js
 npm install express --save
 ```
 
@@ -959,7 +959,7 @@ getData(function(a){
 
 Async provides lots of powerful utilities to work with asynchronous processes under different scenarios.
 
-```bash
+```js
 npm install --save async
 ```
 
@@ -1096,7 +1096,7 @@ http.createServer(function (req, res) {
 
 Initiate read_file.js:
 
-```bash
+```js
 node read_file.js
 ```
 
@@ -1310,7 +1310,7 @@ if (cluster.isMaster) {
 
 Running Node.js will now share port 8000 between the workers:
 
-```bash
+```js
 $ node server.js
 Master 3596 is running
 Worker 4324 started
@@ -1425,7 +1425,7 @@ jwt.sign(payload, secretOrPrivateKey, [options, callback])
 
 **Installation:**
 
-```bash
+```js
 npm install jsonwebtoken bcryptjs --save
 ```
 
@@ -1846,7 +1846,7 @@ The Regular Expressions that can do such a thing are commonly referred as Evil R
 
 Examples of Evil Regular Expressions patterns:
 
-```bash
+```js
 (a+)+
 ([a-zA-Z]+)*
 (a|aa)+
@@ -1922,13 +1922,11 @@ It should create new **npm-shrinkwrap.json** file with information about all pac
 
 ## Q. How to handle file upload in Node.js?
 
-* **express**: Popular web framework built on top of Node.js, used for creating REST-API.
-* **body-parser**: Parse incoming request bodies in a middleware
-* **multer**: Middleware for handling multipart/form-data — file uploads
+File can be uploaded to the server using Multer module. Multer is a Node.js middleware which is used for handling multipart/form-data, which is mostly used library for uploading files.
 
 **1. Installing the dependencies:**
 
-```bash
+```js
 npm install express body-parser multer --save
 ```
 
@@ -2011,7 +2009,7 @@ app.listen(3000, function () {
 
 **Example:**
 
-```bash
+```js
 npm install express ejs body-parser
 ```
 
@@ -2049,7 +2047,7 @@ The `cookie-parser` middleware\'s cookieParser function takes a `secret` string 
 
 **Installation:**
 
-```bash
+```js
 npm install cookie-parser
 ```
 
@@ -2079,7 +2077,7 @@ HTTP request logger middleware for node.js.
 
 **Installation:**
 
-```bash
+```js
 npm install morgan
 ```
 
@@ -2110,7 +2108,7 @@ Nodemon is a utility that will monitor for any changes in source and automatical
 
 **Installation:**
 
-```bash
+```js
 npm install -g nodemon
 ```
 
@@ -2132,13 +2130,13 @@ npm install -g nodemon
 
 **Installation:**
 
-```bash
+```js
 npm install pm2 -g
 ```
 
 **Start an application:**
 
-```bash
+```js
 pm2 start app.js
 ```
 
@@ -2150,7 +2148,7 @@ Node.js middleware for serving a favicon. The `serve-favicon` module lets us exc
 
 **Installation:**
 
-```bash
+```js
 npm install serve-favicon
 ```
 
@@ -2175,7 +2173,7 @@ app.listen(3000)
 
 **Installation:**
 
-```bash
+```js
 npm install cors
 ```
 
@@ -2219,7 +2217,7 @@ When a NodeJs application runs, it injects a global variable called `process.env
 
 **Installation:**
 
-```bash
+```js
 npm install dotenv
 ```
 
@@ -2251,7 +2249,7 @@ db.connect({
 
 **Installation:**
 
-```bash
+```js
 npm install fs-extra
 ```
 
@@ -2274,7 +2272,7 @@ A JavaScript date library for parsing, validating, manipulating, and formatting 
 
 **Installation:**
 
-```bash
+```js
 npm install moment --save
 ```
 
@@ -2598,13 +2596,13 @@ Nonblocking immediately responses with whatever data available. Moreover, it doe
 
 ## Q. How node.js prevents blocking code?
 
-**Blocking vs Non-blocking**
+**Blocking vs Non-blocking:**
 
 **Blocking** is when the execution of additional JavaScript in the Node.js process must wait until a non-JavaScript operation completes. This happens because the event loop is unable to continue running JavaScript while a **blocking** operation is occurring.
 
 Synchronous methods in the Node.js standard library that use **libuv** are the most commonly used blocking operations. Native modules may also have blocking methods. Blocking methods execute `synchronously` and non-blocking methods execute `asynchronously`.
 
-*Example:*
+**Example:**
 
 ```js
 // Blocking
@@ -2861,7 +2859,7 @@ A promise is used to handle the asynchronous result of an operation. JavaScript 
 * `Resolved`: Completed Promise
 * `Rejected`: Failed Promise, throw an error
 
-*Example:*
+**Example:**
 
 ```js
 function logFetch(url) {
@@ -2881,7 +2879,7 @@ function logFetch(url) {
 
 Putting the keyword `async` before a function tells the function to return a Promise. If the code returns something that is not a `Promise`, then JavaScript automatically wraps it into a resolved promise with that value. The `await` keyword simply makes JavaScript wait until that `Promise` settles and then returns its result.
 
-*Example:*
+**Example:**
 
 ```js
 async function logFetch(url) {
@@ -3192,13 +3190,13 @@ Few events are :
 
 **1. node-inspector:**
 
-```bash
+```js
 npm install -g node-inspector
 ```
 
 Run
 
-```bash
+```js
 node-debug app.js
 ```
 
@@ -3212,7 +3210,7 @@ node-debug app.js
 
 **3. Profiling:**
 
-```bash
+```js
 1. node --prof ./app.js
 2. node --prof-process ./the-generated-log-file
 ```
@@ -3465,18 +3463,20 @@ The runtime environment is literally just the environment your application is ru
 
 NODE_ENV is an environment variable made popular by the express web server framework. When a node application is run, it can check the value of the environment variable and do different things based on the value.
 
-For example, when we work on a project and there are production and development environments. We don't need to use caching in the development env. So we set
- ```bash 
- $ NODE_ENV=development
- ``` 
+For example, when we work on a project and there are production and development environments. We don\'t need to use caching in the development env. So we set
 
-and use the code below 
+ ```js
+ NODE_ENV=development
+ ```
+
+and use the code below
+
 ```js
 if (process.env.NODE_ENV === 'development')
     useCaching = false;
 ```
-Upon that, if the project runs on production it will use caching.
 
+Upon that, if the project runs on production it will use caching.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3505,7 +3505,7 @@ assert(50 > 70, "50 is less than 70.");
 
 It is the default method for managing packages in the Node.js runtime environment. It relies upon a command line client and a database made up of public and premium packages known as the the npm registry. Users can access the registry via the client and browse the many packages available through the npm website. Both npm and its registry are managed by npm, Inc.
 
-```bash
+```js
 node -v
 npm -v
 ```
@@ -3514,7 +3514,7 @@ npm -v
 
 Yarn was developed by Facebook in attempt to resolve some of npm\'s shortcomings. Yarn isn\'t technically a replacement for npm since it relies on modules from the npm registry. Think of Yarn as a new installer that still relies upon the same npm structure. The registry itself hasn\'t changed, but the installation method is different. Since Yarn gives you access to the same packages as npm, moving from npm to Yarn doesn\'t require you to make any changes to your workflow.
 
-```bash
+```js
 npm install yarn --global
 ```
 
@@ -3570,7 +3570,7 @@ dns.resolve4('www.google.com', (err, addresses) => {
 });
 ```
 
-**Example:** print the localhost name using `lookupService()` function
+**Example:** Print the localhost name using `lookupService()` function
 
 ```js
 const dns = require('dns');  
@@ -3618,7 +3618,7 @@ We can store data to memcached server in key pair format. So whenever any reques
 
 **Installation:**
 
-```bash
+```js
 npm install memcached
 ```
 
