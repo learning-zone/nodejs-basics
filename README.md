@@ -376,7 +376,7 @@ person[NAME] // 'Ritika Bhavsar'
 
 ## Q. Explain function in Node.js?
 
-Functions are first class citizens in Node's JavaScript, similar to the browser's JavaScript. A function can have attributes and properties also. It can be treated like a class in JavaScript.
+Functions are first class citizens in Node\'s JavaScript, similar to the browser\'s JavaScript. A function can have attributes and properties also. It can be treated like a class in JavaScript.
 
 **Example:**
 
@@ -406,12 +406,14 @@ Node.js includes an additional data type called Buffer ( not available in browse
  * Buffer Data Type
  */
 let b = new Buffer(10000);
-let str = "                         ";
+let str = "----------";
 
 b.write(str); 
-console.log( str.length ); // 25
+console.log( str.length ); // 10
 console.log( b.length ); // 10000
 ```
+
+*Note: Buffer() is deprecated due to security and usability issues.*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
