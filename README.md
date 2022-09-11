@@ -1650,22 +1650,24 @@ app.listen(3000);
 
 ## Q. Why to use Express.js?
 
-ExpressJS is a prebuilt NodeJS framework that can help you in creating server-side web applications faster and smarter. Simplicity, minimalism, flexibility, scalability are some of its characteristics and since it is made in NodeJS itself, it inherited its performance as well.
+Express.js is a Node.js web application framework that provides broad features for building web and mobile applications. It is used to build a single page, multipage, and hybrid web application.
 
-Express 3.x is a light-weight web application framework to help organize your web application into an MVC architecture on the server side. You can then use a database like `MongoDB` with `Mongoose` (for modeling) to provide a backend for your Node.js application. Express.js basically helps you manage everything, from routes, to handling requests and views.
+**Features of Express.js:**
 
-It has become the standard server framework for node.js. Express is the backend part of something known as the MEAN stack. The MEAN is a free and open-source JavaScript software stack for building dynamic web sites and web applications which has the following components;
-
-1. **MongoDB** - The standard NoSQL database
-2. **Express.js** - The default web applications framework
-3. **Angular.js** - The JavaScript MVC framework used for web applications
-4. **Node.js** - Framework used for scalable server-side and networking applications.
+* **Fast Server-Side Development:** The features of node js help express saving a lot of time.
+* **Middleware:** Middleware is a request handler that has access to the application\'s request-response cycle.
+* **Routing:** It refers to how an application\'s endpoint\'s URLs respond to client requests.
+* **Templating:** It provides templating engines to build dynamic content on the web pages by creating HTML templates on the server.
+* **Debugging:** Express makes it easier as it identifies the exact part where bugs are.
 
 The Express.js framework makes it very easy to develop an application which can be used to handle multiple types of requests like the GET, PUT, and POST and DELETE requests.
 
-**using Express:**
+**Example:**
 
 ```js
+/**
+ * Simple server using Express.js
+ */
 const express = require("express");
 const app = express();
 
