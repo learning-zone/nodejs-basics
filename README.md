@@ -1779,7 +1779,6 @@ The only option is to automate the update / security audit of your dependencies.
 5. Snyk
 6. npm audit
 7. npm audit fix
-8. [npm check](https://www.npmjs.com/package/npm-check)
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
