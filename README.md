@@ -1403,66 +1403,6 @@ Please note - before pid. This converts a pid to a group of pids for process kil
 
 <br/>
 
-## Q. Can you create http server in Node.js, explain the code used for it?
-
-Yes, we can create HTTP Server in Node.js. We can use the `<http-server>` command to do so.
-
-Following is the sample code.
-
-```js
-var http = require('http');
-var requestListener = function (request, response) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end('Welcome Viewers\n');
-}
-var server = http.createServer(requestListener);
-server.listen(4200); // The port where you want to start with.
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to load html in Node.js?
-
-To load HTML in Node.js we have to change the “Content-type” in the HTML code from text/plain to text/html.
-
-```js
-fs.readFile(filename, "binary", function(err, file) {
-    if(err) { 
-        response.writeHead(500, {"Content-Type": "text/plain"});
-        response.write(err + "\n");
-        response.end();
-        return;
-    }
-
-response.writeHead(200);
-response.write(file, "binary");
-response.end();
-});
-```
-
-Now we will modify this code to load an HTML page instead of plain text.
-
-```js
-fs.readFile(filename, "binary", function(err, file) {
-    if(err) { 
-        response.writeHead(500, {"Content-Type": "text/html"});
-        response.write(err + "\n");
-        response.end();
-        return;
-    }
-
-response.writeHead(200, {"Content-Type": "text/html"});
-response.write(file);
-response.end();
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. How can you listen on port 80 with Node?
 
 Instead of running on port 80 we can redirect port 80 to your application\'s port (>1024) using
@@ -1494,15 +1434,18 @@ jwt.sign(payload, secretOrPrivateKey, [options, callback])
 * **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
 * **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install jsonwebtoken bcryptjs --save
 ```
 
-**Example**: AuthController.js
+**Example**:
 
 ```js
+/**
+ * AuthController.js
+ */
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -1536,10 +1479,12 @@ router.post('/register', function(req, res) {
 });
 ```
 
-**config.js**
+**config.js:**
 
 ```js
-// config.js
+/**
+ * config.js
+ */
 module.exports = {
   'secret': 'supersecret'
 };
