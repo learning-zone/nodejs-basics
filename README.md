@@ -1080,10 +1080,11 @@ index.html
 ```
 
 ```js
-// read_file.js
-
-var http = require('http');
-var fs = require('fs');
+/**
+ * read_file.js
+ */
+const http = require('http');
+const fs = require('fs');
 http.createServer(function (req, res) {
   fs.readFile('index.html', function(err, data) {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -1129,11 +1130,11 @@ Each type of Stream is an EventEmitter instance and throws several events at dif
 **Reading from a Stream:**
 
 ```js
-var fs = require("fs");
-var data = '';
+const fs = require("fs");
+const data = '';
 
 // Create a readable stream
-var readerStream = fs.createReadStream('input.txt');
+const readerStream = fs.createReadStream('input.txt');
 
 // Set the encoding to be utf8. 
 readerStream.setEncoding('UTF8');
@@ -1157,11 +1158,11 @@ console.log("Program Ended");
 **Writing to a Stream:**
 
 ```js
-var fs = require("fs");
-var data = 'Simply Easy Learning';
+const fs = require("fs");
+const data = 'Simply Easy Learning';
 
 // Create a writable stream
-var writerStream = fs.createWriteStream('output.txt');
+const writerStream = fs.createWriteStream('output.txt');
 
 // Write the data to stream with encoding to be utf8
 writerStream.write(data,'UTF8');
@@ -1186,13 +1187,13 @@ console.log("Program Ended");
 Piping is a mechanism where we provide the output of one stream as the input to another stream. It is normally used to get data from one stream and to pass the output of that stream to another stream. There is no limit on piping operations.
 
 ```js
-var fs = require("fs");
+const fs = require("fs");
 
 // Create a readable stream
-var readerStream = fs.createReadStream('input.txt');
+const readerStream = fs.createReadStream('input.txt');
 
 // Create a writable stream
-var writerStream = fs.createWriteStream('output.txt');
+const writerStream = fs.createWriteStream('output.txt');
 
 // Pipe the read and write operations
 // read input.txt and write data to output.txt
@@ -1206,8 +1207,8 @@ console.log("Program Ended");
 Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations.  
 
 ```js
-var fs = require("fs");
-var zlib = require('zlib');
+const fs = require("fs");
+const zlib = require('zlib');
 
 // Compress the file input.txt to input.txt.gz
 fs.createReadStream('input.txt')
@@ -1366,8 +1367,8 @@ Now the function will return the addition **a+b** and then popped out from the s
 If a child process in Node.js spawn their own child processes, kill() method will not kill the child process\'s own child processes. For example, if I start a process that starts it\'s own child processes via child_process module, killing that child process will not make my program to quit.
 
 ```js
-var spawn = require('child_process').spawn;
-var child = spawn('my-command');
+const spawn = require('child_process').spawn;
+const child = spawn('my-command');
 
 child.kill();
 ```
@@ -1379,8 +1380,8 @@ The program above will not quit if `my-command` spins up some more processes.
 We can start child processes with {detached: true} option so those processes will not be attached to main process but they will go to a new group of processes. Then using process.kill(-pid) method on main process we can kill all processes that are in the same group of a child process with the same pid group. In my case, I only have one processes in this group.
 
 ```js
-var spawn = require('child_process').spawn;
-var child = spawn('my-command', {detached: true});
+const spawn = require('child_process').spawn;
+const child = spawn('my-command', {detached: true});
 
 process.kill(-child.pid);
 ```
@@ -1446,14 +1447,14 @@ npm install jsonwebtoken bcryptjs --save
 /**
  * AuthController.js
  */
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var User = require('../user/User');
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser');
+const User = require('../user/User');
 
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
-var config = require('../config');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const config = require('../config');
 
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -1461,7 +1462,7 @@ router.use(bodyParser.json());
 
 router.post('/register', function(req, res) {
   
-  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  let hashedPassword = bcrypt.hashSync(req.body.password, 8);
   
   User.create({
     name : req.body.name,
@@ -1471,7 +1472,7 @@ router.post('/register', function(req, res) {
   function (err, user) {
     if (err) return res.status(500).send("There was a problem registering the user.")
     // create a token
-    var token = jwt.sign({ id: user._id }, config.secret, {
+    let token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
     res.status(200).send({ auth: true, token: token });
@@ -1519,17 +1520,17 @@ jwt.sign(payload, secretOrPrivateKey, [options, callback]);
 - **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
 - **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install jsonwebtoken bcryptjs --save
 ```
 
-**Ussage**
+**Ussage:**
 
 1. `mkdir certs` then run `cd certs`
 
-**Inside the certs folder generate public and private key pairs**
+**Inside the certs folder generate public and private key pairs:**
 
 ```bash
 // Private Key
@@ -1542,9 +1543,12 @@ npm install jsonwebtoken bcryptjs --save
 
 ```
 
-**Example**: AuthController.js
+**Example**:
 
 ```js
+/**
+ * AuthController.js
+ */
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
@@ -1679,12 +1683,12 @@ module.exports = function(app) {
 Within the controller file, we are going to create a controller object with two properties. Those properties are the functions to handle the requests we defined in the routes module.
 
 ```js
-var properties = require('../package.json')
-var distance = require('../service/distance');
+const properties = require('../package.json')
+const distance = require('../service/distance');
 
-var controllers = {
+const controllers = {
    about: function(req, res) {
-       var aboutInfo = {
+       let aboutInfo = {
            name: properties.name,
            version: properties.version
        }
@@ -1787,12 +1791,14 @@ The Express.js framework makes it very easy to develop an application which can 
 **using Express:**
 
 ```js
-var express=require('express');
-var app=express();
-app.get('/',function(req,res) {
-  res.send('Hello World!');
+const express = require("express");
+const app = express();
+
+app.get("/", function (req, res) {
+  res.send("Hello World!");
 });
-var server=app.listen(3000,function() {});
+
+const server = app.listen(3000, function () {});
 ```
 
 <div align="right">
@@ -1883,7 +1889,7 @@ express helloapp
 Middleware are basically just functions that have full access to both request and response objects.
 
 ```js
-var app = express();
+const app = express();
 
 app.use(cookieParser());
 app.use(bodyParser());
@@ -1918,7 +1924,7 @@ Keeping the API declaration separated from the network related configuration (po
 API declaration, should reside in app.js:
 
 ```js
-var app = express();
+const app = express();
 app.use(bodyParser.json());
 app.use("/api/events", events.API);
 app.use("/api/forms", forms);
@@ -1927,21 +1933,21 @@ app.use("/api/forms", forms);
 Server network declaration, should reside in /bin/www:
 
 ```js
-var app = require('../app');
-var http = require('http');
+const app = require('../app');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 ```
 
 <div align="right">
@@ -2168,48 +2174,48 @@ npm install express body-parser multer --save
 }
 ```
 
-**3. Server.js**
+**3. Server.js:**
 
 ```js
-var express = require("express");
-var bodyParser = require('body-parser');
-var multer  = require('multer');
-var app = express();
+const express = require("express");
+const bodyParser = require("body-parser");
+const multer = require("multer");
+const app = express();
 
 // for text/number data transfer between clientg and server
 app.use(bodyParser());
 
-var storage =   multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, './uploads');
+    callback(null, "./uploads");
   },
   filename: function (req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now());
-  }
+    callback(null, file.fieldname + "-" + Date.now());
+  },
 });
 
-var upload = multer({ storage : storage}).single('userPhoto');
+const upload = multer({ storage: storage }).single("userPhoto");
 
-app.get('/', function(req, res) {
-      res.sendFile(__dirname + "/index.html");
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
 // POST: upload for single file upload
-app.post('/api/photo', function(req, res) {
-    upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        res.end("File is uploaded");
-    });
+app.post("/api/photo", function (req, res) {
+  upload(req, res, function (err) {
+    if (err) {
+      return res.end("Error uploading file.");
+    }
+    res.end("File is uploaded");
+  });
 });
 
-app.listen(3000, function(){
-    console.log("Listening on port 3000");
+app.listen(3000, function () {
+  console.log("Listening on port 3000");
 });
 ```
 
-**4. index.html**
+**4. index.html:**
 
 ```html
 <!DOCTYPE html>
@@ -2249,37 +2255,38 @@ npm install express ejs body-parser
 ```
 
 ```js
-// server.js
+/**
+ * Server.js
+ */
+const express = require("express");
+const bodyParser = require("body-parser");
 
-var express = require('express')
-var bodyParser = require('body-parser')
-
-var app = express()
+const app = express();
 
 // create application/json parser
-var jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json();
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // POST /login gets urlencoded bodies
-app.post('/login', urlencodedParser, function (req, res) {
-  res.send('welcome, ' + req.body.username)
-})
+app.post("/login", urlencodedParser, function (req, res) {
+  res.send("welcome, " + req.body.username);
+});
 
 // POST /api/users gets JSON bodies
-app.post('/api/users', jsonParser, function (req, res) {
+app.post("/api/users", jsonParser, function (req, res) {
   // create user in req.body
-})
+});
 ```
 
-**b) cookie-parser**
+**b) cookie-parser:**
 
 A cookie is a piece of data that is sent to the client-side with a request and is stored on the client-side itself by the Web Browser the user is currently using.
 
 The `cookie-parser` middleware\'s cookieParser function takes a `secret` string or array of strings as the first argument and an `options` object as the second argument.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install cookie-parser
@@ -2288,10 +2295,10 @@ npm install cookie-parser
 **Example:**
 
 ```js
-var express = require('express')
-var cookieParser = require('cookie-parser')
+const express = require('express')
+const cookieParser = require('cookie-parser')
 
-var app = express()
+const app = express()
 app.use(cookieParser())
 
 app.get('/', function (req, res) {
@@ -2318,15 +2325,15 @@ npm install morgan
 **Example:** write logs to a file
 
 ```js
-var express = require('express')
-var fs = require('fs')
-var morgan = require('morgan')
-var path = require('path')
+const express = require('express')
+const fs = require('fs')
+const morgan = require('morgan')
+const path = require('path')
 
-var app = express()
+const app = express()
 
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
 
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -2380,7 +2387,7 @@ pm2 start app.js
 
 Node.js middleware for serving a favicon. The `serve-favicon` module lets us exclude requests for the favicon in our logger middleware. It also caches the icon in memory to improve performance by reducing disk access. In addition, it provides an `ETag` based on the contents of the icon, rather than file system properties.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install serve-favicon
@@ -2389,11 +2396,11 @@ npm install serve-favicon
 **Example:**
 
 ```js
-var express = require('express')
-var favicon = require('serve-favicon')
-var path = require('path')
+const express = require('express')
+const favicon = require('serve-favicon')
+const path = require('path')
 
-var app = express()
+const app = express()
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 // Add your routes here, etc.
@@ -2405,7 +2412,7 @@ app.listen(3000)
 
 **C**ross-**O**rigin **R**esource **S**haring (CORS) headers allow apps running in the browser to make requests to servers on different domains (also known as origins). CORS headers are set on the server side - the HTTP server is responsible for indicating that a given HTTP request can be cross-origin. CORS defines a way in which a browser and server can interact and determine whether or not it is safe to allow a cross-origin request.
 
-**Installation**
+**Installation:**
 
 ```bash
 npm install cors
@@ -2414,9 +2421,9 @@ npm install cors
 **Example:** Enable All CORS Requests
 
 ```js
-var express = require('express')
-var cors = require('cors')
-var app = express()
+const express = require('express')
+const cors = require('cors')
+const app = express()
 
 app.use(cors())
 
@@ -2432,9 +2439,9 @@ app.listen(8080, function () {
 **Example:** Enable CORS for a Single Route
 
 ```js
-var express = require('express')
-var cors = require('cors')
-var app = express()
+const express = require('express')
+const cors = require('cors')
+const app = express()
 
 app.get('/products/:id', cors(), function (req, res, next) {
   res.json({msg: 'This is CORS-enabled for a Single Route'})
@@ -2593,9 +2600,9 @@ It is an architectural style as well as an approach for communications purposes 
 Let\'s implement our first RESTful API listUsers using the following code in a server.js file −
 
 ```js
-var express = require('express');
-var app = express();
-var fs = require("fs");
+const express = require('express');
+const app = express();
+const fs = require("fs");
 
 app.get('/listUsers', function (req, res) {
    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
@@ -2604,9 +2611,9 @@ app.get('/listUsers', function (req, res) {
    });
 })
 
-var server = app.listen(3000, function () {
-   var host = server.address().address
-   var port = server.address().port
+const server = app.listen(3000, function () {
+   const host = server.address().address
+   const port = server.address().port
    console.log("App listening at http://%s:%s", host, port)
 });
 ```
@@ -2616,11 +2623,11 @@ var server = app.listen(3000, function () {
 Following API will show you how to add new user in the list. 
 
 ```js
-var express = require('express');
-var app = express();
-var fs = require("fs");
+const express = require('express');
+const app = express();
+const fs = require("fs");
 
-var user = {
+const user = {
    "user4" : {
       "id": 4,
       "name" : "Spencer Amos",
@@ -2638,9 +2645,9 @@ app.post('/addUser', function (req, res) {
    });
 })
 
-var server = app.listen(3000, function () {
-   var host = server.address().address
-   var port = server.address().port
+const server = app.listen(3000, function () {
+   const host = server.address().address
+   const port = server.address().port
    console.log("App listening at http://%s:%s", host, port)
 })
 ```
@@ -2648,11 +2655,11 @@ var server = app.listen(3000, function () {
 **Delete User:**
 
 ```js
-var express = require('express');
-var app = express();
-var fs = require("fs");
+const express = require('express');
+const app = express();
+const fs = require("fs");
 
-var id = 2;
+const id = 2;
 
 app.delete('/deleteUser', function (req, res) {
    // First read existing users.
@@ -2664,9 +2671,9 @@ app.delete('/deleteUser', function (req, res) {
    });
 })
 
-var server = app.listen(3000, function () {
-   var host = server.address().address
-   var port = server.address().port
+const server = app.listen(3000, function () {
+   const host = server.address().address
+   const port = server.address().port
    console.log("App listening at http://%s:%s", host, port)
 })
 ```
@@ -2690,7 +2697,7 @@ A query string is a part of a URL that assigns values to specified parameters. A
 Following code snippet can be used to make a Post Request in Node.js.
 
 ```js
-var request = require('request');
+const request = require('request');
     request.post('http://www.example.com/action', { form: { key: 'value' } },
     function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -2719,7 +2726,7 @@ Once a promise is fulfilled or rejected, it is immutable (i.e. it can never chan
 **Creating a Promise:**
 
 ```js
-var myPromise = new Promise(function(resolve, reject){
+const myPromise = new Promise(function(resolve, reject){
    ....
 })
 ```
@@ -3350,8 +3357,8 @@ app.get('/users/:userId', function (req, res) {
 **d) Router method:**
 
 ```js
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
@@ -3503,9 +3510,9 @@ Stubs are functions/programs that simulate the behaviours of components/modules.
 A use-case can be a file read, when you do not want to read an actual file:
 
 ```js
-var fs = require('fs');
+const fs = require('fs');
 
-var readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {  
+const readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {  
   return cb(null, 'filecontent');
 });
 
@@ -3604,7 +3611,7 @@ The Node.js Crypto module supports cryptography. It provides cryptographic funct
 const crypto = require('crypto');  
 const secret = 'abcdefg';  
 const hash = crypto.createHmac('sha256', secret)  
-                   .update('Welcome to JavaTpoint')  
+                   .update('Welcome to Node.js')  
                    .digest('hex');  
 console.log(hash);  
 ```
@@ -3614,8 +3621,10 @@ console.log(hash);
 ```js
 const crypto = require('crypto');  
 const cipher = crypto.createCipher('aes192', 'a password');  
-var encrypted = cipher.update('Hello JavaTpoint', 'utf8', 'hex');  
+
+const encrypted = cipher.update('Hello Node.js', 'utf8', 'hex');  
 encrypted += cipher.final('hex');  
+
 console.log(encrypted);
 ```
 
@@ -3624,9 +3633,11 @@ console.log(encrypted);
 ```js
 const crypto = require('crypto');  
 const decipher = crypto.createDecipher('aes192', 'a password');  
-var encrypted = '4ce3b761d58398aed30d5af898a0656a3174d9c7d7502e781e83cf6b9fb836d5';  
-var decrypted = decipher.update(encrypted, 'hex', 'utf8');  
+
+const encrypted = '4ce3b761d58398aed30d5af898a0656a3174d9c7d7502e781e83cf6b9fb836d5';  
+const decrypted = decipher.update(encrypted, 'hex', 'utf8');  
 decrypted += decipher.final('utf8');  
+
 console.log(decrypted);  
 ```
 
@@ -3854,9 +3865,9 @@ npm install memcached
 
 The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
 
-```bash
-var Memcached = require('memcached');
-var memcached = new Memcached(Server locations, options);
+```js
+const Memcached = require('memcached');
+const memcached = new Memcached(Server locations, options);
 ```
 
 **Example:**
