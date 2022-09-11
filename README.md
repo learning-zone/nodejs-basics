@@ -1495,7 +1495,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
 
 **Reference:**
 
-* **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
+* *[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3241,7 +3241,7 @@ Q.fcall(promisedStep1)
 
 **Reference:**
 
-* **[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)**
+* *[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3885,7 +3885,7 @@ const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, re
 
 **Reference:**
 
-* **[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)**
+* *[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
