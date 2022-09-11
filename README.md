@@ -2084,11 +2084,11 @@ HTTP request logger middleware for node.js.
 npm install morgan
 ```
 
-**Example:** write logs to a file
+**Example:**
 
 ```js
 /**
- * morgan
+ * Writing logs to a file
  */
 const express = require('express')
 const fs = require('fs')
@@ -2146,7 +2146,9 @@ npm install pm2 -g
 pm2 start app.js
 ```
 
-**[[Read More](https://pm2.keymetrics.io/docs/usage/quick-start/)]**
+**Reference:**
+
+* *[https://pm2.keymetrics.io/docs/usage/quick-start/](https://pm2.keymetrics.io/docs/usage/quick-start/)*
 
 **6. serve-favicon:**
 
