@@ -3577,7 +3577,7 @@ Mike Cohn\'s original test pyramid consists of three layers that your test suite
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to Validate Data using joi Module in Node.js?
+## Q. How to use Joi module for schema validation in Node.js?
 
 Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like optional(), required(), min(), max(), etc which make it easy to use and a user-friendly module for validating the data.
 
