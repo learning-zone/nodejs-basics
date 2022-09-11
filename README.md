@@ -282,7 +282,7 @@ console.log(-5 / 0); // -Infinity
 
 ## Q. Explain BigInt data type in Node.js?
 
-A BigInt value, also sometimes just called a BigInt, is a bigint primitive, created by appending n to the end of an integer literal, or by calling the BigInt() function ( without the new operator ) and giving it an integer value or string value.
+A BigInt value, also sometimes just called a BigInt, is a bigint primitive, created by appending **n** to the end of an integer literal, or by calling the BigInt() function ( without the new operator ) and giving it an integer value or string value.
 
 **Example:**
 
