@@ -1788,7 +1788,7 @@ The only option is to automate the update / security audit of your dependencies.
 
 **1. Helmet module:**
 
-Helmet helps to secure your Express applications by setting various HTTP headers, like:
+[Helmet](https://www.npmjs.com/package/helmet) helps to secure your Express applications by setting various HTTP headers, like:
 
 * X-Frame-Options to mitigates clickjacking attacks,
 * Strict-Transport-Security to keep your users on HTTPS,
@@ -1796,6 +1796,9 @@ Helmet helps to secure your Express applications by setting various HTTP headers
 * X-DNS-Prefetch-Control to disable browsers DNS prefetching.
 
 ```js
+/**
+ * Helmet
+ */
 const express = require('express')
 const helmet = require('helmet')
 const app = express()
@@ -1807,9 +1810,12 @@ app.use(helmet())
 
 Validating user input is one of the most important things to do when it comes to the security of your application. Failing to do it correctly can open up your application and users to a wide range of attacks, including command injection, SQL injection or stored cross-site scripting.
 
-To validate user input, one of the best libraries you can pick is joi. Joi is an object schema description language and validator for JavaScript objects.
+To validate user input, one of the best libraries you can pick is joi. [Joi](https://www.npmjs.com/package/joi) is an object schema description language and validator for JavaScript objects.
 
 ```js
+/**
+ * Joi
+ */
 const Joi = require('joi');
 
 const schema = Joi.object().keys({
