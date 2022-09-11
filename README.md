@@ -1501,7 +1501,7 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?
+## Q. How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in Node.js?
 
 JSON Web Token (JWT) is an open standard that defines a compact and self-contained way of securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
 
@@ -1510,15 +1510,17 @@ There are some advantages of using JWT for authorization:
 - Purely stateless. No additional server or infra required to store session information.
 - It can be easily shared among services.
 
-JSON Web Tokens consist of three parts separated by dots (.), which are:
+**Syntax:**
 
 ```js
 jwt.sign(payload, secretOrPrivateKey, [options, callback]);
 ```
 
-- **Header** - Consists of two parts: the type of token (i.e., JWT) and the signing algorithm (i.e., HS512)
-- **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
-- **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
+**1. Header** - Consists of two parts: the type of token (i.e., JWT) and the signing algorithm (i.e., HS512)
+
+**2. Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
+
+**3. Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
 
 **Installation:**
 
@@ -1526,7 +1528,7 @@ jwt.sign(payload, secretOrPrivateKey, [options, callback]);
 npm install jsonwebtoken bcryptjs --save
 ```
 
-**Ussage:**
+**Usage:**
 
 1. `mkdir certs` then run `cd certs`
 
@@ -1534,13 +1536,10 @@ npm install jsonwebtoken bcryptjs --save
 
 ```bash
 // Private Key
-
 >> openssl genrsa -out accessTokenPrivatekey.pem 4096
 
 // Public Key
-
 >> openssl rsa -pubout -in accessTokenPrivatekey.pem -out accessTokenPublickey.pem
-
 ```
 
 **Example**:
@@ -1572,18 +1571,17 @@ router.post('/register', function (req, res) {
       password: hashedPassword,
     },
     (err, user) => {
-      if (err)
-        return res
-          .status(500)
-          .send('There was a problem registering the user.');
+      if (err) {
+         return res.status(500).send('There was a problem registering the user.');
+      }
 
-      //Using the fs module get the private key of the accesstoken you created.
+      // Using the fs module get the private key of the accesstoken you created.
       const ACCESS_TOKEN_PRIV_KEY = readFileSync(
         './certs/accessTokenPrivateKey.pem',
         'utf8'
       );
 
-      // create an access token using the private key pair, and specify the algorithm you will use.
+      // Create an access token using the private key pair, and specify the algorithm you will use.
       const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_PRIV_KEY, {
         algorithm: 'RS256',
         expiresIn: 86400, // expires in 24 hours
@@ -1594,7 +1592,7 @@ router.post('/register', function (req, res) {
 });
 ```
 
-**To verify a token use the public key**
+**To verify a token use the public key:**
 
 ```js
 const ACCESS_TOKEN_PUB_KEY = readFileSync(
@@ -1615,11 +1613,11 @@ jwt.verify(
 );
 ```
 
-The `jwt.sign()` method takes a payload, private key defined in `./certs/accessTokenPrivateKey.pem` and an object which contains other information about the token, this includes the algorithm `{ algorithm: 'RS256'}`(NB: You can also use `HS256` || `HS384` as algorithm values), that will be used in signing as parameters. It creates a unique string of characters representing the payload. In our case, the payload is an object containing only the id of the user.
+The `jwt.sign()` method takes a payload, private key defined in `./certs/accessTokenPrivateKey.pem` and an object which contains other information about the token, this includes the algorithm `{ algorithm: 'RS256'}`. It creates a unique string of characters representing the payload.
 
 **Reference:**
 
-- **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
+* *[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
