@@ -1574,7 +1574,7 @@ module.exports = controllers;
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How Node.js Microservices Interact with Each Other?
+## Q. How microservices communicate with each other in Node.js?
 
 *ToDo*
 
