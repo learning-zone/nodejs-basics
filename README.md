@@ -1682,148 +1682,39 @@ const server = app.listen(3000, function () {});
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Write the steps for setting up an Express JS application?
-
-**1. Install Express Generator:**
-
-```bash
-C:\node>npm install -g express-generator
-```
-
-**2. Create an Express Project:**
-
-```bash
-C:\node>express --view="ejs" nodetest1
-```
-
-**3. Edit Dependencies:**
-
-MAKE SURE TO CD INTO YOUR nodetest FOLDER. OK, now we have some basic structure in there, but we're not quite done. You'll note that the express-generator routine created a file called package.json in your nodetest1 directory. Open this up in a text editor and it\'ll look like this:
-
-```js
-// package.json
-{
-  "name": "nodetest1",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
-    "ejs": "~2.5.7",
-    "express": "~4.16.0",
-    "http-errors": "~1.6.2",
-    "morgan": "~1.9.0"
-  }
-}
-```
-
-This is a basic JSON file describing our app and its dependencies. We need to add a few things to it. Specifically, calls for MongoDB and Monk.
-
-```bash
-C:\node\nodetest1>npm install --save monk@^6.0.6 mongodb@^3.1.13
-```
-
-**4. Install Dependencies:**
-
-```bash
-C:\node\nodetest1>npm install
-C:\node\nodetest1>npm start
-```
-
-Node Console
-
-```bash
-> nodetest1@0.0.0 start C:\node\nodetest1
-> node ./bin/www
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is your favourite HTTP framework and why?
-
-**1. Express.js:**
-
-Express provides a thin layer on top of Node.js with web application features such as basic routing, middleware, template engine and static files serving, so the drastic I/O performance of Node.js doesn\'t get compromised.
-
-Express is a minimal, un-opinionated framework. it doesn\'t apply any of the prevalent design patterns such as MVC, MVP, MVVM or whatever is trending out of the box. For fans of simplicity, this is a big plus among all other frameworks because you can build your application with your own preference and no unnecessary learning curve. This is especially advantageous when creating a new personal project with no historical burden, but as the project or developing team grows, lack of standardization may lead to extra work for project/code management, and worst case scenario it may lead to the inability to maintain.  
-
-**2. Generator:**
-
-Even though the framework is un-opinionated, it does have the generator that generates specific project folder structure. After installing express-generator npm package and creating application skeleton with generator command, an application folder with clear hierarchy will be created to help you organize images, front-end static JavaScript, stylesheet files and HTML template files.
-
-```bash
-npm install express-generator -g
-express helloapp
-```
-
-**3. Middleware:**  
-
-Middleware are basically just functions that have full access to both request and response objects.
-
-```js
-const app = express();
-
-app.use(cookieParser());
-app.use(bodyParser());
-app.use(logger());
-app.use(authentication());
-
-app.get('/', function (req, res) {
-  // ...
-});
-
-app.listen(3000);
-```
-
-An Express application is essentially Node.js with a host of middleware functions, whether you want to customize your own middleware or take advantage of the built-in middlewares of the framework, Express made the process natural and intuitive.
-
-**4. Template Engine:**
-
-Template engines allow developer to embed backend variables into HTML files, and when requested the template file will be rendered to plain HTML format with the variables interpolated with their actual values. By default, the express-generator uses Pug (originally known as Jade) template engine, but other options like Mustache and EJS also work with Express seamlessly.
-
-**5. Database Integration:**  
-
-As a minimal framework, Express does not consider database integration as a required aspect within its package, thus it leans toward no specific database usage whatsoever. While adopting a particular data storage technology, be it MySQL, MongoDB, PostgreSQL, Redis, ElasticSearch or something else, it\'s just a matter of installing the particular npm package as database driver. These third party database drivers do not conform to unified syntax when doing CRUD instructions, which makes switching databases a big hassle and error prone.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. Why should you separate Express 'app' and 'server'?
 
-Keeping the API declaration separated from the network related configuration (port, protocol, etc) allows testing the API in-process, without performing network calls, with all the benefits that it brings to the table: fast testing execution and getting coverage metrics of the code. It also allows deploying the same API under flexible and different network conditions. Bonus: better separation of concerns and cleaner code.
+Keeping the API declaration separated from the network related configuration (port, protocol, etc) allows testing the API in-process, without performing network calls, with all the benefits that it brings to the table: fast testing execution and getting coverage metrics of the code. It also allows deploying the same API under flexible and different network conditions.
 
 API declaration, should reside in app.js:
 
 ```js
+/**
+ * app.js
+ */
 const app = express();
+
 app.use(bodyParser.json());
 app.use("/api/events", events.API);
 app.use("/api/forms", forms);
 ```
 
-Server network declaration, should reside in /bin/www:
+Server network declaration
 
 ```js
+/**
+ * server.js
+ */
 const app = require('../app');
 const http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
 
+// Get port from environment and store in Express.
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
 
+// Create HTTP server.
 const server = http.createServer(app);
 ```
 
