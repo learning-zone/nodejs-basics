@@ -2446,6 +2446,32 @@ params are a part of a path in URL and they're also known as URL variables. for 
 
 A query string is a part of a URL that assigns values to specified parameters. A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML form. A query is the last part of URL
 
+**Example:**
+
+```js
+/**
+ * req.params and req.query
+ */
+
+// http://www.google.com/hi/there?qs1=Hello
+
+app.get('/hi/there?qs1=you&qs2=tube', (req, res, next) => {
+  const param1 = req.params;    // there
+  const countries = req.query; // qs1: 'Hello',
+});
+
+// Output
+req.query
+{
+  qs1: 'Hello'
+}
+
+req.params
+{
+  param1: 'there'
+}
+```
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
