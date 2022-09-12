@@ -2446,19 +2446,32 @@ The **req.params** are a part of a path in URL and they\'re also known as URL va
 
 A **req.query** is a part of a URL that assigns values to specified parameters. A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML form. A query is the last part of URL
 
-**Example:**
+**Example 01:** req.params
 
 ```js
 /**
- * req.params and req.query
+ * req.params
  */
 
-// http://www.google.com/hi/there?qs1=Hello
+// GET  http://localhost:3000/employees/10
 
-app.get('/hi/there?qs1=you&qs2=tube', (req, res, next) => {
-  const param1 = req.params;    // there
-  const query1 = req.query; // qs1: 'Hello',
-});
+app.get('/employees/:id', (req, res, next) => {
+   console.log(req.params.id); // 10
+})
+```
+
+**Example 02:** req.query
+
+```js
+/**
+ * req.query
+ */
+
+// GET  http://localhost:3000/employees?page=20
+
+app.get('/employees', (req, res, next) => {
+  console.log(req.query.page) // 20
+})
 ```
 
 <div align="right">
