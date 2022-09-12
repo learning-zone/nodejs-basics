@@ -3531,41 +3531,6 @@ assert(50 > 70, "50 is less than 70.");
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. When should you npm and when yarn?
-
-* **npm**  
-
-It is the default method for managing packages in the Node.js runtime environment. It relies upon a command line client and a database made up of public and premium packages known as the the npm registry. Users can access the registry via the client and browse the many packages available through the npm website. Both npm and its registry are managed by npm, Inc.
-
-```js
-node -v
-npm -v
-```
-
-* **Yarn**  
-
-Yarn was developed by Facebook in attempt to resolve some of npm\'s shortcomings. Yarn isn\'t technically a replacement for npm since it relies on modules from the npm registry. Think of Yarn as a new installer that still relies upon the same npm structure. The registry itself hasn\'t changed, but the installation method is different. Since Yarn gives you access to the same packages as npm, moving from npm to Yarn doesn\'t require you to make any changes to your workflow.
-
-```js
-npm install yarn --global
-```
-
-**Comparing Yarn vs npm**
-
-* Fast: Yarn caches every package it downloads so it never needs to again. It also parallelizes operations to maximize resource utilization so install times are faster than ever.
-* Reliable: Using a detailed, but concise, lockfile format, and a deterministic algorithm for installs, Yarn is able to guarantee that an install that worked on one system will work exactly the same way on any other system.
-* Secure: Yarn uses checksums to verify the integrity of every installed package before its code is executed.
-* Offline Mode: If you've installed a package before, you can install it again without any internet connection.
-* Deterministic: The same dependencies will be installed the same exact way across every machine regardless of install order.
-* Network Performance: Yarn efficiently queues up requests and avoids request waterfalls in order to maximize network utilization.
-* Multiple Registries: Install any package from either npm or Bower and keep your package workflow the same.
-* Network Resilience: A single request failing won't cause an install to fail. Requests are retried upon failure.
-* Flat Mode: Resolve mismatching versions of dependencies to a single version to avoid creating duplicates.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. What is the use of DNS module in Node.js?
 
 DNS is a node module used to do name resolution facility which is provided by the operating system as well as used to do an actual DNS lookup. No need for memorising IP addresses – DNS servers provide a nifty solution of converting domain or subdomain names to IP addresses. This module provides an asynchronous network wrapper and can be imported using the following syntax.
