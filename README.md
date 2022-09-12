@@ -2483,13 +2483,18 @@ app.get('/employees', (req, res, next) => {
 Following code snippet can be used to make a Post Request in Node.js.
 
 ```js
-const request = require('request');
-    request.post('http://www.example.com/action', { form: { key: 'value' } },
-    function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body)
-        }
-    });
+/**
+ * POST Request
+ */
+const request = require("request");
+
+request.post("http://localhost:3000/action",  { form: { key: "value" } },
+  function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      console.log(body);
+    }
+  }
+);
 ```
 
 <div align="right">
