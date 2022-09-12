@@ -2442,9 +2442,9 @@ const server = app.listen(3000, function () {
 
 ## Q. What is the difference between req.params and req.query?
 
-params are a part of a path in URL and they're also known as URL variables. for example, if you have the route /books/:id, then the “id” property will be available as req.params.id. req.params default value is an empty object {}.
+The **req.params** are a part of a path in URL and they\'re also known as URL variables. for example, if you have the route **/books/:id**, then the **id** property will be available as **req.params.id**. req.params default value is an empty object {}.
 
-A query string is a part of a URL that assigns values to specified parameters. A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML form. A query is the last part of URL
+A **req.query** is a part of a URL that assigns values to specified parameters. A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML form. A query is the last part of URL
 
 **Example:**
 
@@ -2457,19 +2457,8 @@ A query string is a part of a URL that assigns values to specified parameters. A
 
 app.get('/hi/there?qs1=you&qs2=tube', (req, res, next) => {
   const param1 = req.params;    // there
-  const countries = req.query; // qs1: 'Hello',
+  const query1 = req.query; // qs1: 'Hello',
 });
-
-// Output
-req.query
-{
-  qs1: 'Hello'
-}
-
-req.params
-{
-  param1: 'there'
-}
 ```
 
 <div align="right">
