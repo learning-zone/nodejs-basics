@@ -6,9 +6,9 @@
 
 ## Related Interview Questions
 
-* [HTML5 Interview Questions](https://github.com/learning-zone/html-interview-questions/blob/master/README.md)
-* [CSS Interview Questions](https://github.com/learning-zone/css-interview-questions/blob/master/README.md)
-* [JavaScript Interview Questions](https://github.com/learning-zone/javascript-interview-questions/blob/master/README.md)
+* [HTML5 Interview Questions](https://github.com/learning-zone/html-interview-questions)
+* [CSS Interview Questions](https://github.com/learning-zone/css-interview-questions)
+* [JavaScript Interview Questions](https://github.com/learning-zone/javascript-interview-questions)
 * [Node.js APIs](nodejs-api.md)
 * [Node.js Coding Practice](nodejs-programming.md)
 * [Node.js Commands](nodejs-commands.md)
