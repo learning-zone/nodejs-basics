@@ -3486,7 +3486,6 @@ runtime: nodejs10
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
 
-
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
@@ -3520,7 +3519,7 @@ The assert module provides a way of testing expressions. If the expression evalu
 
 This module was built to be used internally by Node.js.
 
-```
+```js
 // Sample usage
 
 const assert = require('assert');
