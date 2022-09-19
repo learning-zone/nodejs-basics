@@ -1045,7 +1045,79 @@ Division(5, 0, (err, result) => {
 
 ## Q. What are the timing features of Node.js?
 
-*ToDo*
+The Timers module in Node.js contains functions that execute code after a set period of time. Timers do not need to be imported via require(), since all the methods are available globally to emulate the browser JavaScript API.
+
+Some of the functions provided in this module are
+
+**1. setTimeout():**
+
+This function schedules code execution after the assigned amount of time ( in milliseconds ). Only after the timeout has occurred, the code will be executed. This method returns an ID that can be used in **clearTimeout()** method.
+
+**Syntax:**
+
+```js
+setTimeout(callback, delay, args )
+```
+
+**Example:**
+
+```js
+function printMessage(arg) {
+  console.log(`${arg}`);
+}
+
+setTimeout(printMessage, 1000, 'Display this Message after 1 seconds!');
+```
+
+**2. setImmediate():**
+
+The setImmediate() method executes the code at the end of the current event loop cycle. The function passed in the setImmediate() argument is a function that will be executed in the next iteration of the event loop.
+
+**Syntax:**
+
+```js
+setImmediate(callback, args)
+```
+
+**Example:**
+
+```js
+// Setting timeout for the function
+setTimeout(function () {
+    console.log('setTimeout() function running...');
+}, 500);
+
+// Running this function immediately before any other
+setImmediate(function () {
+   console.log('setImmediate() function running...');
+});
+
+// Directly printing the statement
+console.log('Normal statement in the event loop');
+
+// Output
+// Normal statement in the event loop
+// setImmediate() function running...
+// setTimeout() function running...
+```
+
+**3. setInterval():**
+
+The setInterval() method executes the code after the specified interval. The function is executed multiple times after the interval has passed. The function will keep on calling until the process is stopped externally or using code after specified time period. The clearInterval() method can be used to prevent the function from running.
+
+**Syntax:**
+
+```js
+setInterval(callback, delay, args)
+```
+
+**Example:**
+
+```js
+setInterval(function() {
+    console.log('Display this Message intervals of 1 seconds!');
+}, 1000);
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
