@@ -1825,7 +1825,6 @@ const server = http.createServer(app);
 |Optimist| is a node.js library for option parsing with an argv hash|
 |Phantomjs| An NPM installer for PhantomJS, headless webkit with JS API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG|
 |Passport| A simple, unobtrusive authentication middleware for Node.js. Passport uses the strategies to authenticate requests. Strategies can range from verifying username and password credentials or authentication using OAuth or OpenID|
-|Q| Q is a library for promises. A promise is an object that represents the return value or the thrown exception that the function may eventually provide|
 |Request| Request is Simplified HTTP request client make it possible to make http calls. It supports HTTPS and follows redirects by default|
 |Socket.io| Its a node.js realtime framework server|
 |Sails| Sails is a API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)|
@@ -3059,56 +3058,35 @@ addAsync(10).then((sum) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to use Q promise in Node.js?
+## Q. How to use Promises chaining?
 
-A promise is an object that represents the return value or the thrown exception that the function may eventually provide. A promise can also be used as a proxy for a remote object to overcome latency.
-
-Promise is relatively an easy implementation for asynchronous operation. The promise object returned from the function represents an operation which is not completed yet, but it guarantees to the caller of the operation that the operation will be completed in future.
-
-Promise has the following states:
-
-* **Pending** - asynchronous operation is not yet completed.
-* **Fulfilled** - asynchronous operation is completed successfully.
-* **Rejected** - asynchronous operation is terminated with an error.
-* **Settled** - asynchronous operation is either fulfilled or rejected.
-* **Callback** - function is executed if the promise is executed with value.
-* **Errback** - function is executed if the promise is rejected.
-
-**Moving to Promises from Callback**
-
-On the first pass, promises can mitigate the **Pyramid of Doom**: the situation where code marches to the right faster than it marches forward.
+In the old days, doing several asynchronous operations in a row would lead to the classic callback **Pyramid of Doom**::
 
 ```js
-step1(function (value1) {
-    step2(value1, function(value2) {
-        step3(value2, function(value3) {
-            step4(value3, function(value4) {
-                // Do something with value4
-            });
-        });
-    });
-});
+doSomething(function (result) {
+  doSomethingElse(result, function (newResult) {
+    doThirdThing(newResult, function (finalResult) {
+      console.log(`Got the final result: ${finalResult}`);
+    }, failureCallback);
+  }, failureCallback);
+}, failureCallback);
 ```
 
-With a promise library, it can flatten the pyramid.
+With modern functions, we attach our callbacks to the returned promises instead, forming a promise chain:
 
 ```js
-Q.fcall(promisedStep1)
-.then(promisedStep2)
-.then(promisedStep3)
-.then(promisedStep4)
-.then(function (value4) {
-    // Do something with value4
-})
-.catch(function (error) {
-    // Handle any error from all above steps
-})
-.done();
+doSomething()
+  .then(function (result) {
+    return doSomethingElse(result);
+  })
+  .then(function (newResult) {
+    return doThirdThing(newResult);
+  })
+  .then(function (finalResult) {
+    console.log(`Got the final result: ${finalResult}`);
+  })
+  .catch(failureCallback);
 ```
-
-**Reference:**
-
-* *[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
