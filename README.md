@@ -761,11 +761,13 @@ Program Ended.
 
 **1. process.nextTick():**
 
-The process.nextTick() method adds the callback function to the start of the next event queue. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
+The process.nextTick() method adds the callback function to the start of the next event queue and fires immediately on the same phase. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
 
 **2. setImmdeiate():**
 
 The setImmediate() method is used to execute a function right after the current event loop finishes. It is callback function is placed in the check phase of the next event queue.
+
+In essence, the names should be swapped. process.nextTick() fires more immediately than setImmediate(), but this is an artifact of the past which is unlikely to change. Making this switch would break a large percentage of the packages on npm.
 
 **Example:**
 
