@@ -3059,7 +3059,7 @@ addAsync(10).then((sum) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to use Q promise in Node.js?
+## Q. How to use promise in Node.js?
 
 A promise is an object that represents the return value or the thrown exception that the function may eventually provide. A promise can also be used as a proxy for a remote object to overcome latency.
 
@@ -3074,7 +3074,7 @@ Promise has the following states:
 * **Callback** - function is executed if the promise is executed with value.
 * **Errback** - function is executed if the promise is rejected.
 
-**Moving to Promises from Callback**
+**Moving to Promises from Callback:**
 
 On the first pass, promises can mitigate the **Pyramid of Doom**: the situation where code marches to the right faster than it marches forward.
 
@@ -3093,28 +3093,24 @@ step1(function (value1) {
 With a promise library, it can flatten the pyramid.
 
 ```js
-Q.fcall(promisedStep1)
-.then(promisedStep2)
-.then(promisedStep3)
-.then(promisedStep4)
-.then(function (value4) {
-    // Do something with value4
-})
-.catch(function (error) {
-    // Handle any error from all above steps
-})
-.done();
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("successful");
+  }, 100);
+});
+
+myPromise
+  .then(handleFulfilledA)
+  .then(handleFulfilledB)
+  .then(handleFulfilledC)
+  .catch(handleRejectedAny);
 ```
-
-**Reference:**
-
-* *[https://www.npmjs.com/package/q](https://www.npmjs.com/package/q)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What are async functions in Node?
+#### Q. What are async functions in Node?
 #### Q. How do you convert an existing callback API to promises?
 
 *ToDo*
