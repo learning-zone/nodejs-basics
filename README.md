@@ -3110,6 +3110,34 @@ myPromise
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to perform get request using axios in nodejs?
+
+```js
+/**
+ * Get Request using Axios
+ */
+const express = require("express");
+const app = express();
+const axios = require("axios");
+
+app.get("/async", async (req, res) => {
+  try {
+    const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+    res.status(200).json(response.data);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. What are async functions in Node?
 #### Q. How do you convert an existing callback API to promises?
 
