@@ -163,31 +163,31 @@ The setImmediate() method is used to execute a function right after the current 
 /**
  * setImmediate() and process.nextTick()
  */
-setImmediate(() => {
-  console.log("1st Immediate");
-});
-
-setImmediate(() => {
-  console.log("2nd Immediate");
-});
-
-process.nextTick(() => {
-  console.log("1st Process");
-});
-
-process.nextTick(() => {
-  console.log("2nd Process");
-});
-
-// First event queue ends here
 console.log("Program Started");
 
-// Output
+setImmediate(() => {
+  console.log("setImmediate()");
+});
+
+process.nextTick(() => {
+  console.log("process.nextTick()");
+});
+
+setTimeout(()=> {
+  console.log('setTimeout()');
+}, 0);
+
+console.log("Program Ends");
+```
+
+**Output:**
+
+```js
 Program Started
-1st Process
-2nd Process
-1st Immediate
-2nd Immediate
+Program Ends
+process.nextTick()
+setTimeout()
+setImmediate()
 ```
 
 <div align="right">
