@@ -97,8 +97,11 @@ eventEmitter.on('listenerOne', listenerTwo); // Register for listenerOne
 
 // When the event "listenerOne" is emitted, both the above callbacks should be invoked.
 eventEmitter.emit('listenerOne');
+```
 
-// Output
+**Output:**
+
+```js
 First Listener Executed
 Second Listener Executed
 ```
@@ -118,8 +121,11 @@ function listenerOnce() {
 
 eventEmitter.once('listenerOne', listenerOnce); // Register listenerOnce
 eventEmitter.emit('listenerOne');
+```
 
-// Output
+**Output:**
+
+```js
 listenerOnce fired once
 ```
 
@@ -138,8 +144,11 @@ function listener(code, msg) {
 
 eventEmitter.on('status', listener); // Register listener
 eventEmitter.emit('status', 200, 'ok');
+```
 
-// Output
+**Output:**
+
+```js
 status 200 and ok
 ```
 
@@ -211,14 +220,19 @@ function myAsync(a, b, callback) {
     callback(a + b);
   }, 100);
 }
+
 console.log("Before Asynchronous Call");
 
 myAsync(10, 20, function (result) {
   console.log("Sum: " + result);
 });
-console.log("After Asynchronous Call");
 
-// Output
+console.log("After Asynchronous Call");
+```
+
+**Output:**
+
+```js
 Before Asynchronous Call
 After Asynchronous Call
 Sum: 30
