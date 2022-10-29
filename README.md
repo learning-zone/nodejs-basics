@@ -1815,17 +1815,14 @@ const server = http.createServer(app);
 |nodemon   |It is a simple monitor script for use during development of a node.js app, It will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically restart your node application|
 |nodemailer|This module enables e-mail sending from a Node.js applications|
 |passport  |A simple, unobtrusive authentication middleware for Node.js. Passport uses the strategies to authenticate requests. Strategies can range from verifying username and password credentials or authentication using OAuth or OpenID|
-|request   |Request is Simplified HTTP request client make it possible to make http calls. It supports HTTPS and follows redirects by default|
 |socket.io |Its a node.js realtime framework server|
 |sails     |Sails is a API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)|
-|through   |It enables simplified stream construction. It is easy way to create a stream that is both readable and writable|
 |underscore|Underscore.js is a utility-belt library for JavaScript that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core JavaScript objects|
 |validator |A nodejs module for a library of string validators and sanitizers|
 |winston   |A multi-transport async logging library for Node.js|
 |ws        |A simple to use, blazing fast and thoroughly tested websocket client, server and console for node.js|
 |xml2js    |A Simple XML to JavaScript object converter|
 |yo        |A CLI tool for running Yeoman generators|
-|zmq       |Bindings for node.js and io.js to ZeroMQ. It is a high-performance asynchronous messaging library, aimed at use in distributed or concurrent applications|
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
