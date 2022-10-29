@@ -3793,6 +3793,8 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
 #### Q. How would you scale Node application?
 #### Q. How does the cluster module work? What is the difference between it and a load balancer?
 #### Q. Why do we need C++ Addons in Node.js?
+#### Q. How to improve Node.js performance?
+#### Q. How to manage Node.js clusters?
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
