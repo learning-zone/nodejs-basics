@@ -35,7 +35,7 @@ EventEmitter is at the core of Node asynchronous event-driven architecture. Many
 * Emitting name events.
 * Registering and unregistering listener functions.
 
-**Example:** Registering for the event with callback parameters
+**Example:**
 
 ```js
 /**
