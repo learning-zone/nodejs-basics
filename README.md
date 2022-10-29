@@ -2583,12 +2583,28 @@ The core idea behind promises is that a promise represents the result of an asyn
 * rejected - The state of a promise representing a failed operation.
 Once a promise is fulfilled or rejected, it is immutable (i.e. it can never change again).  
 
-**Creating a Promise:**
+**Example:**
 
 ```js
-const myPromise = new Promise(function(resolve, reject){
-   ....
-})
+/**
+ * GET Request using Axios
+ */
+const express = require("express");
+const app = express();
+const axios = require("axios");
+
+app.get("/", async (req, res) => {
+  try {
+    const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+    res.status(200).json(response.data);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
 ```
 
 <div align="right">
