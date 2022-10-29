@@ -68,7 +68,7 @@ status 200 and ok
 
 The process.nextTick() method adds the callback function to the start of the next event queue. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
 
-**2. setImmdeiate():**
+**2. setImmediate():**
 
 The setImmediate() method is used to execute a function right after the current event loop finishes. It is callback function is placed in the check phase of the next event queue.
 
