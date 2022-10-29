@@ -2640,10 +2640,54 @@ Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to make an HTTP POST request using Node.js?
+## Q. How to make an HTTP POST request using axios in Node.js?
 
 ```js
-// ToDo
+/**
+ * POST Request using Axios
+ */
+const express = require("express");
+const app = express();
+const axios = require("axios");
+ 
+app.post("/user", async (req, res) => {
+  try {
+    const payload = { name: 'Aashita Iyer', email: 'aashita.iyer@email.com' };
+
+    const response =await axios.post('http://httpbin.org/post', payload);
+    console.log(response.data);
+    res.status(200).json(response.data);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+});
+ 
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
+
+**Output:**
+
+```js
+{
+  args: {},
+  data: '{"name":"Aashita Iyer","email":"aashita.iyer@email.com"}',
+  files: {},
+  form: {},
+  headers: {
+    Accept: 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Content-Length': '56',
+    'Content-Type': 'application/json',
+    Host: 'httpbin.org',
+    'User-Agent': 'axios/1.1.3',
+    'X-Amzn-Trace-Id': 'Root=1-635cd3d3-1f13ea981467e6371ce3a740'
+  },
+  json: { email: 'aashita.iyer@email.com', name: 'Aashita Iyer' },
+  origin: 'xx.xx.xx.xx',
+  url: 'http://httpbin.org/post'
+}
 ```
 
 <div align="right">
