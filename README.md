@@ -2649,19 +2649,18 @@ Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 const express = require("express");
 const app = express();
 const axios = require("axios");
- 
+
 app.post("/user", async (req, res) => {
   try {
-    const payload = { name: 'Aashita Iyer', email: 'aashita.iyer@email.com' };
-
-    const response =await axios.post('http://httpbin.org/post', payload);
+    const payload = { name: "Aashita Iyer", email: "aashita.iyer@email.com" };
+    const response = await axios.post("http://httpbin.org/post", payload);
     console.log(response.data);
     res.status(200).json(response.data);
   } catch (err) {
     res.status(500).json({ message: err });
   }
 });
- 
+
 app.listen(3000, function () {
   console.log(`App listening at http://localhost:3000/`);
 });
