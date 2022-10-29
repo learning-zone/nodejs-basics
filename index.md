@@ -4,45 +4,13 @@
 
 ## Q. How to create a simple server in Node.js that returns Hello World?
 
-**Step 01**: Create a project directory
-
-```js
-mkdir myapp
-cd myapp
-```
-
-**Step 02**: Initialize project and link it to npm
-
-```js
-npm init
-```
-
-This creates a `package.json` file in your myapp folder. The file contains references for all npm packages you have downloaded to your project. The command will prompt you to enter a number of things.
-You can enter your way through all of them EXCEPT this one:
-
-```js
-entry point: (index.js)
-```
-
-Rename this to:
-
-```js
-app.js
-```
-
-**Step 03**: Install Express in the myapp directory
-
-```js
-npm install express --save
-```
-
-**Step 04**: app.js
-
 ```js
 /**
- * Express.js
+ * Hello World using Express
  */
 const express = require('express');
+
+// create instance of express
 const app = express();
 
 app.get('/', function (req, res) {
@@ -52,12 +20,6 @@ app.get('/', function (req, res) {
 app.listen(3000, function () {
   console.log('App listening on port 3000!');
 });
-```
-
-**Step 05**: Run the app
-
-```bah
-node app.js
 ```
 
 **&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/hello-world-in-nodejs-ue3cs3)**
