@@ -1141,14 +1141,14 @@ Common use for the File System module:
 * Delete files
 * Rename files  
 
-**Read Files**  
-index.html
+**Example:** Read Files
 
 ```html
+<!-- index.html -->
 <html>
 <body>
-  <h1>My Header</h1>
-  <p>My paragraph.</p>
+  <h1>File Header</h1>
+  <p>File Paragraph.</p>
 </body>
 </html>
 ```
@@ -1159,19 +1159,14 @@ index.html
  */
 const http = require('http');
 const fs = require('fs');
+
 http.createServer(function (req, res) {
   fs.readFile('index.html', function(err, data) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
     res.end();
   });
-}).listen(8080);
-```
-
-Initiate read_file.js:
-
-```js
-node read_file.js
+}).listen(3000);
 ```
 
 <div align="right">
