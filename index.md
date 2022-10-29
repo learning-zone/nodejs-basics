@@ -1250,24 +1250,21 @@ Once a promise is fulfilled or rejected, it is immutable (i.e. it can never chan
 
 ```js
 /**
- * GET Request using Axios
+ * Promise
  */
-const express = require("express");
-const app = express();
-const axios = require("axios");
+function getSum(num1, num2) {
+  const myPromise = new Promise((resolve, reject) => {
+    if (!isNaN(num1) && !isNaN(num2)) {
+      resolve(num1 + num2);
+    } else {
+      reject(new Error("Not a valid number"));
+    }
+  });
 
-app.get("/", async (req, res) => {
-  try {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
-    res.status(200).json(response.data);
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+  return myPromise;
+}
 
-app.listen(3000, function () {
-  console.log(`App listening at http://localhost:3000/`);
-});
+console.log(getSum(10, 20)); // Promise { 30 }
 ```
 
 <div align="right">
@@ -1309,43 +1306,7 @@ Content-Security-Policy: default-src 'self' *.http://sometrustedwebsite.com
 ## Q. How to make an HTTP POST request using Node.js?
 
 ```js
-const https = require('https')
-
-
-const obj = {
-    "userId":1,
-    "id":1,
-    "title":"whatever",
-    "completed":false
-}
-
-const data = JSON.stringify(obj)
-
-const options = {
-  hostname: 'jsonplaceholder.typicode.com',
-  port: 443,
-  path: '/todos',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Content-Length': data.length
-  }
-}
-
-const req = https.request(options, res => {
-  console.log(`statusCode: ${res.statusCode}`)
-
-  res.on('data', d => {
-    process.stdout.write(d)
-  })
-})
-
-req.on('error', error => {
-  console.error(error)
-})
-
-req.write(data)
-req.end()
+// ToDo
 ```
 
 <div align="right">
