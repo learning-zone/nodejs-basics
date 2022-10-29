@@ -1258,9 +1258,7 @@ const axios = require("axios");
 
 app.get("/", async (req, res) => {
   try {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/todos/1"
-    );
+    const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
     res.status(200).json(response.data);
   } catch (err) {
     res.status(500).json({ message: err });
