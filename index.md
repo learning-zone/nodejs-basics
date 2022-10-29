@@ -9,8 +9,6 @@
  * Hello World using Express
  */
 const express = require('express');
-
-// create instance of express
 const app = express();
 
 app.get('/', function (req, res) {
