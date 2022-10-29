@@ -232,7 +232,7 @@ Each type of Stream is an EventEmitter instance and throws several events at dif
 * **error** − This event is fired when there is any error receiving or writing data.
 * **finish** − This event is fired when all the data has been flushed to underlying system. 
 
-**Reading from a Stream:**
+**1. Reading from a Stream:**
 
 ```js
 const fs = require("fs");
@@ -260,7 +260,7 @@ readerStream.on('error', function(err) {
 console.log("Program Ended");
 ```
 
-**Writing to a Stream:**
+**2. Writing to a Stream:**
 
 ```js
 const fs = require("fs");
@@ -287,7 +287,7 @@ writerStream.on('error', function(err) {
 console.log("Program Ended");
 ```
 
-**Piping the Streams:**
+**3. Piping the Streams:**
 
 Piping is a mechanism where we provide the output of one stream as the input to another stream. It is normally used to get data from one stream and to pass the output of that stream to another stream. There is no limit on piping operations.
 
@@ -307,7 +307,7 @@ readerStream.pipe(writerStream);
 console.log("Program Ended");
 ```
 
-**Chaining the Streams:**
+**4. Chaining the Streams:**
 
 Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations.  
 
