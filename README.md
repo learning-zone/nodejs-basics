@@ -1559,7 +1559,24 @@ Please note - before pid. This converts a pid to a group of pids for process kil
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. What is load balancer and how it works?
+## Q. What is load balancer and how it works?
+
+**1. Load Balancer:**
+
+A load balancer is a process that takes in HTTP requests and forwards these HTTP requests to one of a collection of servers. Load balancers are usually used for performance purposes: if a server needs to do a lot of work for each request, one server might not be enough, but 2 servers alternating handling incoming requests might.
+
+**2. Cluster Module:**
+
+NodeJS has a built-in module called Cluster Module to take the advantage of a multi-core system. Using this module you can launch NodeJS instances to each core of your system. Master process listening on a port to accept client requests and distribute across the worker using some intelligent fashion. So, using this module you can utilize the working ability of your system.
+
+<p align="center">
+  <img src="assets/nodejs_cluster.jpg" alt="Load Balancer" width="400px" />
+</p>
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. How to improve Node.js performance?
 #### Q. How to manage Node.js clusters?
 #### Q. How does the cluster load balance work in node.js?
@@ -1899,7 +1916,8 @@ const server = http.createServer(app);
 | Package  | Description                                      |
 |----------|--------------------------------------------------|
 |async     | Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript|
-|axios     |Axios is a promise-based HTTP Client for node.js and the browser.     |
+|axios     |Axios is a promise-based HTTP Client for node.js and the browser.|
+|autocannon|AutoCannon is a tool for performance testing and a tool for benchmarking.|
 |browserify|Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single `<script>` tag|
 |bower     |Bower is a package manager for the web It works by fetching and installing packages from all over, taking care of hunting, finding, downloading, and saving the stuff you\'re looking for|
 |csv       |csv module has four sub modules which provides CSV generation, parsing, transformation and serialization for Node.js|
