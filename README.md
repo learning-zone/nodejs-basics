@@ -1570,7 +1570,7 @@ A load balancer is a process that takes in HTTP requests and forwards these HTTP
 NodeJS has a built-in module called Cluster Module to take the advantage of a multi-core system. Using this module you can launch NodeJS instances to each core of your system. Master process listening on a port to accept client requests and distribute across the worker using some intelligent fashion. So, using this module you can utilize the working ability of your system.
 
 <p align="center">
-  <img src="assets/nodejs_cluster.jpg" alt="Load Balancer" width="400px" />
+  <img src="assets/nodejs_cluster.png" alt="Load Balancer" width="400px" />
 </p>
 
 <div align="right">
