@@ -636,7 +636,53 @@ EventEmitter is at the core of Node asynchronous event-driven architecture. Many
 * Emitting name events.
 * Registering and unregistering listener functions.
 
-**Example 01:** Create an event emitter instance and register a couple of callbacks
+**Example:**
+
+```js
+/**
+ * Callback Events with Parameters
+ */
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+
+function listener(code, msg) {
+   console.log(`status ${code} and ${msg}`);
+}
+
+eventEmitter.on('status', listener); // Register listener
+eventEmitter.emit('status', 200, 'ok');
+
+// Output
+status 200 and ok
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How does the EventEmitter works in Node.js?
+
+* Event Emitter emits the data in an event called message
+* A Listened is registered on the event message
+* when the message event emits some data, the listener will get the data
+
+<p align="center">
+  <img src="assets/eventEmitter_works.png" alt="EventEmitter" width="400px" />
+</p>
+
+**Building Blocks:**
+
+* **.emit()** - this method in event emitter is to emit an event in module
+* **.on()** - this method is to listen to data on a registered event in node.js
+* **.once()** - it listen to data on a registered event only once.
+* **.addListener()** - it checks if the listener is registered for an event.
+* **.removeListener()** - it removes the listener for an event.
+
+<p align="center">
+  <img src="assets/eventemiitter.png" alt="Building Blocks" width="400px" />
+</p>
+
+**Example 01:**
 
 ```js
 /**
@@ -664,7 +710,7 @@ First Listener Executed
 Second Listener Executed
 ```
 
-**Example 02:** Registering for the event to be fired only one time using **once**.
+**Example 02:**
 
 ```js
 /**
@@ -684,25 +730,24 @@ eventEmitter.emit('listenerOne');
 listenerOnce fired once
 ```
 
-**Example 03:** Registering for the event with callback parameters
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
-```js
-/**
- * Callback Events with Parameters
- */
-const events = require('events');
-const eventEmitter = new events.EventEmitter();
+## Q. What are the EventEmitter methods available in Node.js?
 
-function listener(code, msg) {
-   console.log(`status ${code} and ${msg}`);
-}
-
-eventEmitter.on('status', listener); // Register listener
-eventEmitter.emit('status', 200, 'ok');
-
-// Output
-status 200 and ok
-```
+|EventEmitter Methods | Description         |
+|---------------------|---------------------|
+|.addListener(event, listener) |Adds a listener to the end of the listeners array for the specified event.|
+|.on(event, listener) |Adds a listener to the end of the listeners array for the specified event. It can also be called as an alias of emitter.addListener()|
+|.once(event, listener)|This listener is invoked only the next time the event is fired, after which it is removed.|
+|.removeListener(event, listener)|Removes a listener from the listener array for the specified event.|
+|.removeAllListeners([event])|Removes all listeners, or those of the specified event.|
+|.setMaxListeners(n)  |By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.|
+|.getMaxListeners()   |Returns the current maximum listener value for the emitter which is either set by emitter.setMaxListeners(n) or defaults to EventEmitter.defaultMaxListeners.|
+|.listeners(event)    |Returns a copy of the array of listeners for the specified event.|
+|.emit(event[, arg1][, arg2][, ...]) |Raise the specified events with the supplied arguments.|
+|.listenerCount(type) |Returns the number of listeners listening to the type of event.|
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
