@@ -1457,7 +1457,7 @@ The cluster module supports two methods of distributing incoming connections.
 
 ```js
 /**
- * Load Balancing Server in NodeJS
+ * Server Load Balancing in Node.js
  */
 const cluster = require("cluster");
 const express = require("express");
