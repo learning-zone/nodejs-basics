@@ -1506,6 +1506,46 @@ Please note - before pid. This converts a pid to a group of pids for process kil
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How does the cluster module work in Node.js?
+
+The cluster module provides a way of creating child processes that runs simultaneously and share the same server port.
+
+Node.js runs single threaded programming, which is very memory efficient, but to take advantage of computers multi-core systems, the Cluster module allows you to easily create child processes that each runs on their own single thread, to handle the load.
+
+**Example:**
+
+```js
+/**
+ * Cluster Module
+ */
+const cluster = require('cluster');
+
+if (cluster.isWorker) {
+  console.log('I am a worker');
+} else {
+  console.log('I am a master');
+  cluster.fork();
+  cluster.fork();
+}
+```
+
+**Output:**
+
+```js
+I am a master
+I am a worker
+I am a worker
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+#### Q. What is load balancer and how it works?
+#### Q. How to improve Node.js performance?
+#### Q. How to manage Node.js clusters?
+#### Q. How does the cluster load balance work in node.js?
+#### Q. What is daemon process? how to implement it in node.js? 
 ## Q. How to synchronize data between multiple clients on node.js server?
 
 *ToDo*
@@ -3829,15 +3869,10 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How does the cluster module work? What is the difference between it and a load balancer?
-#### Q. How to improve Node.js performance?
-#### Q. How to manage Node.js clusters?
 #### Q. What are the use cases for the Node.js "vm" core module?
 #### Q. Explain the concept of Domain in Node.js?
 #### Q. What is Node-API (N-API)?
 #### Q. How to implement a Sleep function?
-#### Q. How does the cluster load balance work in node.js?
-#### Q. What is daemon process? how to implement it in node.js? 
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
 
