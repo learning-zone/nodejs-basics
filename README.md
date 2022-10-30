@@ -1383,20 +1383,21 @@ Cluster supports two types of load distribution:
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Since node is a single threaded process, how to make use of all CPUs?
+## Q. How to make use of all CPUs in Node.JS?
 
-Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
-Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
+A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a **cluster** of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
 
-* Node.js does support forking multiple processes ( which are executed on different cores ).
-* It is important to know that state is not shared between master and forked process.
-* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+The cluster module supports two methods of distributing incoming connections.
 
-A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
+* The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
+
+* The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
+
+**Example:**
 
 ```js
 /**
- * Load Balancing Server
+ * Load Balancing Server in NodeJS
  */
 const cluster = require("cluster");
 const express = require("express");
@@ -1434,14 +1435,6 @@ server running at port 3000
 Worker process 20936 started running
 server running at port 3000
 ```
-
-The worker processes are spawned using the `child_process.fork()` method, so that they can communicate with the parent via IPC and pass server handles back and forth.
-
-The cluster module supports two methods of distributing incoming connections.
-
-The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
-
-The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
