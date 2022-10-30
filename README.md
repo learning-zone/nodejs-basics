@@ -1578,7 +1578,6 @@ NodeJS has a built-in module called Cluster Module to take the advantage of a mu
 </div>
 
 #### Q. How to improve Node.js performance?
-#### Q. How to manage Node.js clusters?
 #### Q. How does the cluster load balance work in node.js?
 #### Q. What is daemon process? how to implement it in node.js? 
 ## Q. How to synchronize data between multiple clients on node.js server?
