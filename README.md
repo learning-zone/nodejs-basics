@@ -1395,42 +1395,44 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
 
 ```js
-const cluster = require('cluster');
-const http = require('http');
-const numCPUs = require('os').cpus().length;
+/**
+ * Load Balancing Server
+ */
+const cluster = require("cluster");
+const express = require("express");
+const app = express();
+const total_cpus = require("os").cpus().length;
 
 if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
+  console.log(`Master process ${process.pid} is running`);
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
+  // Fork child processes (workers)
+  for (let i = 0; i < total_cpus; i++) { // total_cpus = 4
     cluster.fork();
   }
-
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
 } else {
-  // Workers can share any TCP connection
-  // In this case it is an HTTP server
-  http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('hello world\n');
-  }).listen(8000);
+  console.log(`Worker process ${process.pid} started running`);
 
-  console.log(`Worker ${process.pid} started`);
+  app.listen(3000, (req, res) => {
+    console.log(`server running at port 3000`);
+  });
 }
 ```
 
 Running Node.js will now share port 8000 between the workers:
 
+**Output:**
+
 ```js
-$ node server.js
-Master 3596 is running
-Worker 4324 started
-Worker 4520 started
-Worker 6056 started
-Worker 5644 started
+Master process 18748 is running
+Worker process 18304 started running
+Worker process 19764 started running
+server running at port 3000
+server running at port 3000
+Worker process 18028 started running
+server running at port 3000
+Worker process 20936 started running
+server running at port 3000
 ```
 
 The worker processes are spawned using the `child_process.fork()` method, so that they can communicate with the parent via IPC and pass server handles back and forth.
