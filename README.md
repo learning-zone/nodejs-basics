@@ -1395,23 +1395,23 @@ Node.js runs single threaded programming, which is very memory efficient, but to
 /**
  * Cluster Module
  */
-const cluster = require('cluster');
+const cluster = require("cluster");
 
-if (cluster.isWorker) {
-  console.log('I am a worker');
+if (cluster.isMaster) {
+  console.log(`Master process is running...`);
+  cluster.fork();
+  cluster.fork();
 } else {
-  console.log('I am a master');
-  cluster.fork();
-  cluster.fork();
+  console.log(`Worker process started running`);
 }
 ```
 
 **Output:**
 
 ```js
-I am a master
-I am a worker
-I am a worker
+Master process is running...
+Worker process started running
+Worker process started running
 ```
 
 <div align="right">
