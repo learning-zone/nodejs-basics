@@ -1383,6 +1383,66 @@ Cluster supports two types of load distribution:
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How does the cluster module work in Node.js?
+
+The cluster module provides a way of creating child processes that runs simultaneously and share the same server port.
+
+Node.js runs single threaded programming, which is very memory efficient, but to take advantage of computers multi-core systems, the Cluster module allows you to easily create child processes that each runs on their own single thread, to handle the load.
+
+**Example:**
+
+```js
+/**
+ * Cluster Module
+ */
+const cluster = require('cluster');
+
+if (cluster.isWorker) {
+  console.log('I am a worker');
+} else {
+  console.log('I am a master');
+  cluster.fork();
+  cluster.fork();
+}
+```
+
+**Output:**
+
+```js
+I am a master
+I am a worker
+I am a worker
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain cluster methods supported by Node.JS?
+
+|Method         |Description            |
+|---------------|-----------------------|
+|disconnect()   |Disconnects all workers|
+|exitedAfterDisconnect |Returns true if a worker was exited after disconnect, or the kill method|
+|fork()         |Creates a new worker, from a master|
+|id             |A unique id for a worker|
+|isConnected    |Returns true if the worker is connected to its master, otherwise false|
+|isDead         |Returns true if the worker\'s process is dead, otherwise false|
+|isMaster       |Returns true if the current process is master, otherwise false|
+|isWorker       |Returns true if the current process is worker, otherwise false|
+|kill()         |Kills the current worker|
+|process        |Returns the global Child Process|
+|schedulingPolicy|Sets or gets the schedulingPolicy|
+|send()         |sends a message to a master or a worker|
+|settings       |Returns an object containing the cluster\'s settings|
+|setupMaster()  |Changes the settings of a cluster|
+|worker         |Returns the current worker object|
+|workers        |Returns all workers of a master|
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## Q. How to make use of all CPUs in Node.JS?
 
 A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a **cluster** of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
@@ -1496,41 +1556,6 @@ process.kill(-child.pid);
 ```
 
 Please note - before pid. This converts a pid to a group of pids for process kill() method.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How does the cluster module work in Node.js?
-
-The cluster module provides a way of creating child processes that runs simultaneously and share the same server port.
-
-Node.js runs single threaded programming, which is very memory efficient, but to take advantage of computers multi-core systems, the Cluster module allows you to easily create child processes that each runs on their own single thread, to handle the load.
-
-**Example:**
-
-```js
-/**
- * Cluster Module
- */
-const cluster = require('cluster');
-
-if (cluster.isWorker) {
-  console.log('I am a worker');
-} else {
-  console.log('I am a master');
-  cluster.fork();
-  cluster.fork();
-}
-```
-
-**Output:**
-
-```js
-I am a master
-I am a worker
-I am a worker
-```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
