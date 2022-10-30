@@ -1418,7 +1418,7 @@ I am a worker
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain cluster methods supported by Node.JS?
+## Q. Explain cluster methods supported by Node.js?
 
 |Method         |Description            |
 |---------------|-----------------------|
@@ -1443,7 +1443,7 @@ I am a worker
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to make use of all CPUs in Node.JS?
+## Q. How to make use of all CPUs in Node.js?
 
 A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a **cluster** of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
 
