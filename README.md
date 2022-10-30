@@ -3829,6 +3829,9 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+#### Q. How does the cluster module work? What is the difference between it and a load balancer?
+#### Q. How to improve Node.js performance?
+#### Q. How to manage Node.js clusters?
 #### Q. What are the use cases for the Node.js "vm" core module?
 #### Q. Explain the concept of Domain in Node.js?
 #### Q. What is Node-API (N-API)?
@@ -3836,10 +3839,8 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
 #### Q. How does the cluster load balance work in node.js?
 #### Q. What is daemon process? how to implement it in node.js? 
 #### Q. How would you scale Node application?
-#### Q. How does the cluster module work? What is the difference between it and a load balancer?
 #### Q. Why do we need C++ Addons in Node.js?
-#### Q. How to improve Node.js performance?
-#### Q. How to manage Node.js clusters?
+
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
