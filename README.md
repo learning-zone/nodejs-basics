@@ -3686,7 +3686,7 @@ Basic tips to improve your database performance/optimization overview
 -- query1
 SELECT * FROM Customers
 
--- query2
+-- query2 (optimized)
 SELECT FirstName, LastName, Address, City, State, Zip FROM Customers
 ```
 
@@ -3696,7 +3696,7 @@ SELECT FirstName, LastName, Address, City, State, Zip FROM Customers
 SELECT FirstName, LastName, Address, City, State, Zip FROM Customers LIMIT 100
 ```
 
-* **wildcard (%)** - Use wildcard (%) character appropriately
+* **Wildcard (%)** - Use wildcard (%) character appropriately
 
 ```sql
 -- SELECT customers whose first names start with "Avi"
@@ -3704,7 +3704,7 @@ SELECT FirstName, LastName, Address, City, State, Zip FROM Customers LIMIT 100
 -- query1
 SELECT FirstName from Customers where FirstName like '%avi%'
 
--- query2
+-- query2 (optimized)
 SELECT FirstName from Customers where FirstName like 'avi%'
 ```
 
@@ -3781,9 +3781,10 @@ Gzip compresses HTTP requests and responses. Gzip compresses responses before se
 const compression = require("compression");
 const express = require("express");
 const app = express();
+
 // compress all responses
 app.use(compression());
-// add all routes
+// ...
 ```
 
 <div align="right">
