@@ -3771,6 +3771,27 @@ Commonly used methods for logging in Node.js are
 
 * **Morgan** - Morgan is an HTTP request logger middleware for Node.js applications. Morgan gives insight on how your app is being used and alerts you on potential errors and issues that could be threats to your application.
 
+**Example:**
+
+```js
+const express = require('express')
+const fs = require('fs')
+const morgan = require('morgan')
+const path = require('path')
+ 
+const app = express()
+ 
+// create a write stream (in append mode)
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+ 
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
+ 
+app.get('/', function (req, res) {
+  res.send('hello, world!')
+})
+```
+
 **10. Gzip Compression:**
 
 Gzip compresses HTTP requests and responses. Gzip compresses responses before sending them to the browser, thus, the browser takes a shorter time to fetch them. Gzip also compresses the request to the remote server, which significantly increases web performance.
