@@ -599,7 +599,7 @@ V8 is known to be a JavaScript engine because it takes JavaScript code and execu
 
 ## Q. Why is LIBUV needed in Node JS?
 
-**libuv** is a C library originally written for Node.js to abstract non-blocking I/O operations. It provide the below features
+**libuv** is a C library originally written for Node.js to abstract non-blocking I/O operations. It provides the following features:
 
 * It allows the CPU and other resources to be used simultaneously while still performing I/O operations, thereby resulting in efficient use of resources and network.
 * It facilitates an event-driven approach wherein I/O and other activities are performed using callback-based notifications.
