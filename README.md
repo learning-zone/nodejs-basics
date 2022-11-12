@@ -6,11 +6,11 @@
 
 ## Related Topics
 
-* [HTML5 Interview Questions](https://github.com/learning-zone/html-interview-questions)
-* [CSS Interview Questions](https://github.com/learning-zone/css-interview-questions)
-* [JavaScript Interview Questions](https://github.com/learning-zone/javascript-interview-questions)
-* [SQL Interview Questions](https://github.com/learning-zone/sql-interview-questions)
-* [MongoDB Interview Questions](https://github.com/learning-zone/mongodb-interview-questions)
+* [HTML5 Basics](https://github.com/learning-zone/html-basics)
+* [CSS Basics](https://github.com/learning-zone/css-basics)
+* [JavaScript Basics](https://github.com/learning-zone/javascript-basics)
+* [SQL Basics](https://github.com/learning-zone/sql-basics)
+* [MongoDB Basics](https://github.com/learning-zone/mongodb-basics)
 * [Node.js APIs](nodejs-api.md)
 * [Node.js Coding Practice](nodejs-programming.md)
 * [Node.js Commands](nodejs-commands.md)
