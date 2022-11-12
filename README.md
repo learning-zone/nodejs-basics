@@ -4228,6 +4228,65 @@ process.on("SIGTERM", function onSigterm() {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. What kind of web application should never be built by using Node.js?
+
+Node.js development has many benefits, but it won\'t provide the best performance for some application\'s needs or processes. Here are the points for which developers or businesses must avoid Node.js:
+
+**1. A CPU-Heavy Application:**
+
+Node.js uses an event-based, non-blocking I/O architecture and only has one CPU – all of that intensive CPU processing would block incoming requests. As a result of the high-end number crunching, the thread might get stuck.
+
+**2. A Relational Database-Backed Server-Side App:**
+
+You can also develop a standard web application on the server using Node.js and express.js. However, the responsiveness of Node.js will be hampered if these web applications consume a lot of CPU power. Because Node.js Relational DB tool is still in beta, it\'s best to use other environments to conduct relational operations.
+
+**3. Developing simple CRUD application:**
+
+You can use Node.js for such applications, but the performance and power for which Node.js is known would remain useless. Hence, it is strongly recommended to go for other frameworks or environments for developing simple HTML application instead of Node.js.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are the types of applications you can build with Node.js?
+
+Node.js is a JavaScript runtime environment built upon event-driven programming that enables non-blocking I/O (Input/Output) capable of serving multiple concurrent events in a single thread. Non-blocking I/O makes Node.js very fast, lightweight, scalable, and efficient in handling data-heavy and I/O-heavy workloads characteristic of several types of web applications.
+
+Types of applications you can build with Node.js
+
+* IoT (Internet of Things)
+* Real-Time Chat Application
+* Single-Page Application
+* Social Media Platform
+* Streaming App
+* Online Payment Processor
+* Remote Collaboration Tool
+* CRM Tool
+* Advanced Fintech App
+* Content Management System
+* E-Learning Platform
+* E-Commerce Platform
+* Ridesharing App
+* Project Management Tools
+* Location-Based App
+* Online Publishing Platforms
+* ERP Tool
+* Websites With Server-Side Rendering
+* FastCGI Servers
+* Command Line Tools
+* API Servers
+* Desktop Apps
+* Backend for Mobile Apps
+* Server Management Services
+* Notification Centre
+* Custom DNS Server
+* Static Site Generator
+* Game Servers, Game Clients
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. What are the use cases for the Node.js "vm" core module?
 #### Q. Explain the concept of Domain in Node.js?
 #### Q. What is Node-API (N-API)?
