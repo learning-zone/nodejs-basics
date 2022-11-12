@@ -4189,6 +4189,45 @@ console.log(hashPwd); //ef5225a03e4f9cc953ab3c4dd41f5c4db7dc2e5b
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to gracefully shutdown Node.js Server?
+
+The graceful shutdown of our application indicates when all of the resources it used and all of the traffic and/or data processing what it handled are closed and released properly. It means that no database connection remains open and no ongoing request fails because we stop our application.
+
+Possible scenarios for a graceful web server shutdown:
+
+* Handle process kill signal
+* Stop new requests from client
+* Close all data process
+* Exit from process
+
+**Example:**
+
+```js
+function shutdown() {
+  server.close(function onServerClosed(err) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    closeMyResources(function onResourcesClosed(err) {
+      // error handling
+      process.exit();
+    });
+  });
+}
+
+process.on("SIGTERM", function onSigterm() {
+  console.info("Got SIGTERM. Graceful shutdown start",  new Date().toISOString());
+  // start graceul shutdown here
+  shutdown();
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. What are the use cases for the Node.js "vm" core module?
 #### Q. Explain the concept of Domain in Node.js?
 #### Q. What is Node-API (N-API)?
