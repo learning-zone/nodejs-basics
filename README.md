@@ -1234,7 +1234,7 @@ There are four types of streams
 
 Each type of Stream is an EventEmitter instance and throws several events at different instance of times.  
 
-**Example:**
+**Methods:**
 
 * **data** − This event is fired when there is data is available to read.
 * **end** − This event is fired when there is no more data to read.
@@ -1245,55 +1245,51 @@ Each type of Stream is an EventEmitter instance and throws several events at dif
 
 ```js
 const fs = require("fs");
-const data = '';
+let data = "";
 
 // Create a readable stream
-const readerStream = fs.createReadStream('input.txt');
+const readerStream = fs.createReadStream("file.txt");
 
-// Set the encoding to be utf8. 
-readerStream.setEncoding('UTF8');
+// Set the encoding to be utf8.
+readerStream.setEncoding("UTF8");
 
 // Handle stream events --> data, end, and error
-readerStream.on('data', function(chunk) {
-   data += chunk;
+readerStream.on("data", function (chunk) {
+  data += chunk;
 });
 
-readerStream.on('end',function() {
-   console.log(data);
+readerStream.on("end", function () {
+  console.log(data);
 });
 
-readerStream.on('error', function(err) {
-   console.log(err.stack);
+readerStream.on("error", function (err) {
+  console.log(err.stack);
 });
-
-console.log("Program Ended");
 ```
 
 **2. Writing to a Stream:**
 
 ```js
 const fs = require("fs");
-const data = 'Simply Easy Learning';
+const data = "File writing to a stream example";
 
 // Create a writable stream
-const writerStream = fs.createWriteStream('output.txt');
+const writerStream = fs.createWriteStream("file.txt");
 
 // Write the data to stream with encoding to be utf8
-writerStream.write(data,'UTF8');
+writerStream.write(data, "UTF8");
 
 // Mark the end of file
 writerStream.end();
 
 // Handle stream events --> finish, and error
-writerStream.on('finish', function() {
-   console.log("Write completed.");
+writerStream.on("finish", function () {
+  console.log("Write completed.");
 });
 
-writerStream.on('error', function(err) {
-   console.log(err.stack);
+writerStream.on("error", function (err) {
+  console.log(err.stack);
 });
-
-console.log("Program Ended");
 ```
 
 **3. Piping the Streams:**
@@ -1312,8 +1308,6 @@ const writerStream = fs.createWriteStream('output.txt');
 // Pipe the read and write operations
 // read input.txt and write data to output.txt
 readerStream.pipe(writerStream);
-
-console.log("Program Ended");
 ```
 
 **4. Chaining the Streams:**
@@ -1331,6 +1325,20 @@ fs.createReadStream('input.txt')
   
 console.log("File Compressed.");
 ```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to handle large data in Node.js?
+
+The Node.js stream feature makes it possible to process large data continuously in smaller chunks without keeping it all in memory. One benefit of using streams is that it saves time, since you don\'t have to wait for all the data to load before you start processing. This also makes the process less memory-intensive.
+
+Some of the use cases of Node.js streams include:
+
+* Reading a file that\'s larger than the free memory space, because it\'s broken into smaller chunks and processed by streams. For example, a browser processes videos from streaming platforms like Netflix in small chunks, making it possible to watch videos immediately without having to download them all at once.
+
+* Reading large log files and writing selected parts directly to another file without downloading the source file. For example, you can go through traffic records spanning multiple years to extract the busiest day in a given year and save that data to a new file.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
