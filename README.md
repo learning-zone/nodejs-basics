@@ -1617,9 +1617,95 @@ app2.listen(3001);
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How does the cluster load balance work in node.js?
-#### Q. What is daemon process? how to implement it in node.js? 
-## Q. How to synchronize data between multiple clients on node.js server?
+## Q. What is difference between `spawn()` and `fork()` methods in Node.js?
+
+**1. spawn():**
+
+In Node.js, spawn() launches a new process with the available set of commands. This doesn\'t generate a new V8 instance only a single copy of the node module is active on the processor. It is used when we want the child process to return a large amount of data back to the parent process.
+
+When spawn is called, it creates a **streaming interface** between the parent and child process. Streaming Interface — one-time buffering of data in a binary format.
+
+**Example:**
+
+```js
+/**
+ * The spawn() method
+ */
+const { spawn } = require("child_process");
+const child = spawn("dir", ["D:\\empty"], { shell: true });
+
+child.stdout.on("data", (data) => {
+  console.log(`stdout ${data}`);
+});
+```
+
+Output
+
+```js
+stdout  Volume in drive D is Windows
+ Volume Serial Number is 76EA-3749
+
+stdout
+ Directory of D:\
+```
+
+**2. fork():**
+
+The **fork()** is a particular case of **spawn()** which generates a new V8 engines instance. Through this method, multiple workers run on a single node code base for multiple tasks. It is used to separate computation-intensive tasks from the main event loop.
+
+When fork is called, it creates a **communication channel** between the parent and child process Communication Channel — messaging
+
+**Example:**
+
+```js
+/**
+ * The fork() method
+ */
+const { fork } = require("child_process");
+
+const forked = fork("child.js");
+
+forked.on("message", (msg) => {
+  console.log("Message from child", msg);
+});
+
+forked.send({ message: "fork() method" });
+```
+
+```js
+/**
+ * child.js
+ */
+process.on("message", (msg) => {
+  console.log("Message from parent:", msg);
+});
+
+let counter = 0;
+
+setInterval(() => {
+  process.send({ counter: counter++ });
+}, 1000);
+```
+
+Output:
+
+```js
+Message from parent: { message: 'fork() method' }
+Message from child { counter: 0 }
+Message from child { counter: 1 }
+Message from child { counter: 2 }
+...
+...
+Message from child { counter: n }
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+#### Q. How does the cluster load balance work in Node.js?
+#### Q. What is daemon process? how to implement it in Node.js? 
+## Q. How to synchronize data between multiple clients on Node.js server?
 
 *ToDo*
 
