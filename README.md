@@ -961,7 +961,7 @@ fs.readFile( "file.json", function ( err, data ) {
 });
 ```
 
-Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block. 
+Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block.
 
 In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
 
@@ -1239,7 +1239,7 @@ Each type of Stream is an EventEmitter instance and throws several events at dif
 * **data** − This event is fired when there is data is available to read.
 * **end** − This event is fired when there is no more data to read.
 * **error** − This event is fired when there is any error receiving or writing data.
-* **finish** − This event is fired when all the data has been flushed to underlying system. 
+* **finish** − This event is fired when all the data has been flushed to underlying system.
 
 **1. Reading from a Stream:**
 
@@ -1587,7 +1587,7 @@ PM2 is a production process manager for Node.js applications with a built-in loa
 $ pm2 start app.js -i max --name "Balancer"
 ```
 
-This command will run the app.js file on the cluster mode to the total no of core available on your server. 
+This command will run the app.js file on the cluster mode to the total no of core available on your server.
 
 <p align="center">
   <img src="assets/pm2-load-balancer.png" alt="Load Balancing using PM2" width="500px" />
