@@ -1063,7 +1063,6 @@ It is an architectural style as well as an approach for communications purposes 
 **Example:**
 
 ```json
-// users.json
 {
    "user1" : {
       "id": 1,
