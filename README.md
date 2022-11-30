@@ -1,6 +1,6 @@
 # Node.js Basics
 
-> *Click <img src="assets/star.png" width="18" height="18" align="absmiddle" title="Star" /> if you like the project. Your contributions are heartily ♡ welcome.*
+> *Click &#9733; if you like the project. Your contributions are heartily ♡ welcome.*
 
 <br/>
 
