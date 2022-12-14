@@ -4301,6 +4301,7 @@ Types of applications you can build with Node.js
 #### Q. How to implement a Sleep function?
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
+#### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
 
 
 <div align="right">
