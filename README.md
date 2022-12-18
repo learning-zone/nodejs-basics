@@ -80,13 +80,21 @@ All the user requests to your web application will be handled by a single thread
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain how does Node.js work?
+## Q. How does Node.js work?
 
 A Node.js application creates a single thread on its invocation. Whenever Node.js receives a request, it first completes its processing before moving on to the next request.
 
 Node.js works asynchronously by using the event loop and callback functions, to handle multiple requests coming in parallel. An Event Loop is a functionality which handles and processes all your external events and just converts them to a callback function. It invokes all the event handlers at a proper time. Thus, lots of work is done on the back-end, while processing a single request, so that the new incoming request doesn\'t have to wait if the processing is not complete.
 
 While processing a request, Node.js attaches a callback function to it and moves it to the back-end. Now, whenever its response is ready, an event is called which triggers the associated callback function to send this response.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is difference between process and threads in Node.js?
+
+*ToDo*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -399,7 +407,7 @@ Messsage("World"); // Hello World
 
 ## Q. Explain Buffer data type in Node.js?
 
-Node.js includes an additional data type called Buffer ( not available in browser\'s JavaScript ). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+Node.js includes an additional data type called Buffer ( not available in browser\'s JavaScript ). Buffer is mainly used to store **binary data**, while reading from a file or receiving packets over the network.
 
 **Example:**
 
