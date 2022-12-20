@@ -531,7 +531,7 @@ The following table lists some of the important core modules in Node.js.
 **2. Non-Blocking I/O:** Application will make a function call, and, without waiting for the results it continues its execution. It is called as "Asynchronous".
 
 <p align="center">
-  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
+  <img src="./assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
 </p>
 
 **Reactor Pattern comprises of:**
