@@ -500,17 +500,21 @@ http.createServer(function (req, res) {
 
 The following table lists some of the important core modules in Node.js.
 
-|Core Module  |Description
-|-------------|---------------------------------------------------------------------------------
-|assert       |provides a set of assertion functions useful for testing
-|console      |provides a simple debugging console
-|crypto       |provides cryptographic functionality
-|http         |http module includes classes, methods and events to create Node.js http server.
-|url          |url module includes methods for URL resolution and parsing.
-|querystring  |querystring module includes methods to deal with query string.
-|path         |path module includes methods to deal with file paths.
-|fs           |fs module includes classes, methods, and events to work with file I/O.
-|util         |util module includes utility functions useful for programmers.
+|Name         |Description                                             |
+|-------------|--------------------------------------------------------|
+|Assert       |It is used by Node.js for testing itself. It can be accessed with require('assert').|
+|Buffer       |It is used to perform operations on raw bytes of data which reside in memory. It can be accessed with require('buffer')|
+|Child Process|It is used by node.js for managing child processes. It can be accessed with require('child_process').|
+|Cluster      |This module is used by Node.js to take advantage of multi-core systems, so that it can handle more load. It can be accessed with require('cluster').|
+|Console      |It is used to write data to console. Node.js has a Console object which contains functions to write data to console. It can be accessed with require('console'). |
+|Crypto       |It is used to support cryptography for encryption and decryption. It can be accessed with require('crypto').|
+|HTTP         |http module includes classes, methods and events to create Node.js http server.|
+|URL          |url module includes methods for URL resolution and parsing.|
+|Query String |querystring module includes methods to deal with query string.|
+|Path         |path module includes methods to deal with file paths.|
+|File System  |fs module includes classes, methods, and events to work with file I/O.|
+|Util         |util module includes utility functions useful for programmers.|
+|Zlib         |It is used to compress and decompress data. It can be accessed with require('zlib').|
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
