@@ -825,6 +825,22 @@ Program Ended.
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How are event listeners created in Node.JS?
+
+An array containing all eventListeners is maintained by Node. Each time **.on()** function is executed, a new event listener is added to that array. When the concerned event is emitted, each **eventListener** that is present in the array is called in a sequential or synchronous manner.
+
+The event listeners are called in a synchronous manner to avoid logical errors, race conditions etc. The total number of listeners that can be registered for a particular event, is controlled by **.setMaxListeners(n)**. The default number of listeners is 10.
+
+```js
+emitter.setMaxlisteners(12);
+```
+
+As an event Listener once registered, exists throughout the life cycle of the program. It is important to detach an event Listener once its no longer needed to avoid memory leaks. Functions like **.removeListener()**, **.removeAllListeners()** enable the removal of listeners from the listeners Array.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## Q. What is the difference between process.nextTick() and setImmediate()?
 
 **1. process.nextTick():**
