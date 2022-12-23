@@ -1749,9 +1749,8 @@ Message from child { counter: n }
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How does the cluster load balance work in Node.js?
 #### Q. What is daemon process? how to implement it in Node.js? 
-## Q. How to synchronize data between multiple clients on Node.js server?
+#### Q. How to synchronize data between multiple clients on Node.js server?
 
 *ToDo*
 
