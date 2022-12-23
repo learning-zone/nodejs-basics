@@ -907,7 +907,7 @@ Callback is called when task get completed and is asynchronous equivalent for a 
 function myAsync(a, b, callback) {
   setTimeout(function () {
     callback(a + b);
-  }, 100);
+  }, 0);
 }
 console.log("Before Asynchronous Call");
 
@@ -915,8 +915,11 @@ myAsync(10, 20, function (result) {
   console.log("Sum: " + result);
 });
 console.log("After Asynchronous Call");
+```
 
-// Output
+**Output:**
+
+```js
 Before Asynchronous Call
 After Asynchronous Call
 Sum: 30
