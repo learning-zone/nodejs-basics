@@ -904,25 +904,25 @@ Callback is called when task get completed and is asynchronous equivalent for a 
 /**
  * Callback Function
  */
-function myAsync(a, b, callback) {
-  setTimeout(function () {
-    callback(a + b);
-  }, 0);
+function message(name, callback) {
+  console.log("Hi" + " " + name);
+  callback();
 }
-console.log("Before Asynchronous Call");
 
-myAsync(10, 20, function (result) {
-  console.log("Sum: " + result);
-});
-console.log("After Asynchronous Call");
+// Callback function
+function callMe() {
+  console.log("I am callback function");
+}
+
+// Passing function as an argument
+message("Node.JS", callMe);
 ```
 
 **Output:**
 
 ```js
-Before Asynchronous Call
-After Asynchronous Call
-Sum: 30
+Hi Node.JS
+I am callback function
 ```
 
 <div align="right">
