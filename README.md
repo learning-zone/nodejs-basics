@@ -1022,16 +1022,12 @@ An asynchronous function is one where some external activity must complete befor
 /**
  * Callback Hell
  */
-getData(function(a){
-    getMoreData(a, function(b){
-        getMoreData(b, function(c){ 
-            getMoreData(c, function(d){ 
-	            getMoreData(d, function(e){ 
-		            ...
-		        });
-	        });
-        });
+firstFunction(function (a) {
+  secondFunction(a, function (b) {
+    thirdFunction(b, function (c) {
+      // And so on…
     });
+  });
 });
 ```
 
