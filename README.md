@@ -2709,23 +2709,23 @@ It is an architectural style as well as an approach for communications purposes 
 
 ```json
 {
-	"user1": {
-		"id": 1,
-		"name": "Ehsan Philip",
-		"age": 24
-	},
+   "user1" : {
+      "id": 1,
+      "name" : "Ehsan Philip",
+      "age" : 24
+   },
 
-	"user2": {
-		"id": 2,
-		"name": "Karim Jimenez",
-		"age": 22
-	},
+   "user2" : {
+      "id": 2,
+      "name" : "Karim Jimenez",
+      "age" : 22
+   },
 
-	"user3": {
-		"id": 3,
-		"name": "Giacomo Weir",
-		"age": 18
-	}
+   "user3" : {
+      "id": 3,
+      "name" : "Giacomo Weir",
+      "age" : 18
+   }
 }
 ```
 
