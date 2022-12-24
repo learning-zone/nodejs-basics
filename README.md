@@ -3460,14 +3460,6 @@ app.listen(3000, function () {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How do you convert an existing callback API to promises?
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## # 12. NODE.JS ROUTING
 
 <br/>
