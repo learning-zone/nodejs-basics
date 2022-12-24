@@ -3818,7 +3818,6 @@ app.listen(3000, () => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How would you handle errors for async code in Node.js?
 #### Q. How to solve "Process out of Memory Exception" in Node.js?
 #### Q. What are the types of memory leaks in node.js
 
