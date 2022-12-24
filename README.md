@@ -1748,7 +1748,7 @@ Message from child { counter: n }
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. What is daemon process? how to implement it in Node.js?
+## Q. What is daemon process?
 
 A daemon is a program that runs in background and has no controlling terminal. They are often used to provide background services. For example, a web-server or a database server can run as a daemon.
 
