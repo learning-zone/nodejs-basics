@@ -1785,14 +1785,6 @@ child.start();
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How to synchronize data between multiple clients on Node.js server?
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## # 9. NODE.JS WEB MODULE
 
 <br/>
