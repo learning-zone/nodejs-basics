@@ -3616,7 +3616,208 @@ Few events are :
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. Explain Error Handling approaches in Node.js?
+## Q. What is Error Handling in Node.js?
+
+An error is any problem given out by the program due to a number of factors such as logic, syntax, timeout, etc. An error in Node.js is any instance of the Error object. Common examples include built-in error classes, such as ReferenceError, RangeError, TypeError, URIError, EvalError, and SyntaxError.
+
+User-defined errors can also be created by extending the base Error object, a built-in error class, or another custom error. In general, Node.js errors are divided into two distinct categories: operational errors and programmer errors.
+
+**1. Operational Errors:**
+
+Operational errors represent runtime problems. These errors are expected in the Node.js runtime and should be dealt with in a proper way. Here\'s a list of common operational errors:
+
+* failed to connect to server
+* failed to resolve hostname
+* invalid user input
+* request timeout
+* server returned a 500 response
+* socket hang-up
+* system is out of memory
+
+**2. Programmer Errors:**
+
+Programmer errors are what we call bugs. They represent issues in the code itself. Here\'s a common one for Node.js, when you try reading a property of an undefined object. It\'s a classic case of programmer error. Here are a few more:
+
+* called an asynchronous function without a callback
+* did not resolve a promise
+* did not catch a rejected promise
+* passed a string where an object was expected
+* passed an object where a string was expected
+* passed incorrect parameters in a function
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain Error Handling approaches in Node.js?
+
+**1. Using try-catch block:**
+
+Try-catch declaration is basically used to handle runtime errors in node.js. If the code in the try block throws an exception, the code in the catch block will be executed. It can be extended using finally clause. The finally clause is statements that are executed after the try statement completes.
+
+**Example:**
+
+```js
+function square(num) {
+  if (typeof num !== "number") {
+    throw new TypeError(`Expected number but got: ${typeof num}`);
+  }
+
+  return num * num;
+}
+
+try {
+  square("10");
+} catch (err) {
+  console.log(err.message); // Expected number but got: string
+}
+```
+
+**2. Using promises:**
+
+Promise in Node.js is a contemporary way to handle errors, and it is usually preferred compared to callbacks. In the function, we will return a promise, which is a wrapper to our primary logic. We pass two arguments while defining the Promise object:
+
+* resolve — used to resolve promises and provide results
+* reject — used to report/throw errors
+
+**Example:**
+
+```js
+function square(num) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof num !== "number") {
+        reject(new TypeError(`Expected number but got: ${typeof num}`));
+      }
+
+      const result = num * num;
+      resolve(result);
+    }, 100);
+  });
+}
+
+square("10")
+  .then((result) => console.log(result))
+  .catch((err) => console.error(err));
+```
+
+Output:
+
+```js
+TypeError: Expected number but got: string
+    at Timeout._onTimeout (C:\node\index.js:5:16)
+    at listOnTimeout (internal/timers.js:554:17)
+    at processTimers (internal/timers.js:497:7)
+```
+
+**3. Error-first callbacks:**
+
+Node.js uses an error-first callback convention in most of its asynchronous methods to ensure that errors are checked properly before the results of an operation are used. This callback function is usually the last argument to the function that initiates an asynchronous operation, and it is called once when an error occurs or a result is available from the operation.
+
+**Example:**
+
+```js
+const fs = require('fs');
+
+fs.readFile('/path/to/file.txt', (err, result) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  // Log the file contents if no error
+  console.log(result);
+});
+```
+
+Output
+
+```js
+[Error: ENOENT: no such file or directory, open 'D:\path\to\file.txt'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\path\\to\\file.txt'
+}
+```
+
+**4. Using the async/await approach:**
+
+Async/await is just syntactic sugar that is meant to augment promises. It provides a synchronous structure to asynchronous code.
+The return value of an async function is a Promise. The await waits for the promise to be resolved or rejected.
+
+```js
+const fs = require('fs');
+const util = require('util');
+
+const readFile = util.promisify(fs.readFile);
+
+const read = async () => {
+  try {
+    const result = await readFile('/path/to/file.txt');
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+read();
+```
+
+Output:
+
+```js
+[Error: ENOENT: no such file or directory, open 'D:\path\to\file.txt'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\path\\to\\file.txt'
+}
+```
+
+**5. Use Middleware:**
+
+It is usually a good idea to build a centralized error-handling component in order to avoid possible code duplications when handling errors. The error-handling component is in charge of making the caught errors understandable by, for example, sending notifications to system admins (if necessary), transferring events to a monitoring service like Sentry.io, and logging them.
+
+It is a good decision to employ a customizable logger like winston or morgan. Here is a customized winston logger:
+
+**Example:**
+
+```js
+const winston = require("winston");
+
+const logger = winston.createLogger({
+  level: "debug",
+  format: winston.format.json(),
+  transports: [new winston.transports.Console()],
+});
+
+module.exports = logger;
+```
+
+```js
+const express = require("express");
+const logger = require("./logger");
+const app = express();
+
+app.get("/event", (req, res, next) => {
+  try {
+    throw new Error("Not User!");
+  } catch (error) {
+    logger.error("Events Error: Unauthenticated user");
+    res.status(500).send("Error!");
+  }
+});
+
+app.listen(3000, () => {
+  logger.info("Server Listening On Port 3000");
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. How would you handle errors for async code in Node.js?
 #### Q. How to solve "Process out of Memory Exception" in Node.js?
 #### Q. What are the types of memory leaks in node.js
