@@ -3850,7 +3850,7 @@ node --max-old-space-size=<NEW_SIZE_IN_MB> index.js
 
 ```js
 /**
- * ProcessOutOfMemory Exception
+ * OutOfMemory Exception
  */
 let items = [];
 
