@@ -3684,7 +3684,65 @@ app.listen(3000, function () {
 
 ## Q. How to implement caching using Redis in Node.js?
 
-*ToDo*
+Redis is an open-source (BSD licensed), in-memory data structure store used as a database, cache, and message broker. Redis also supports disk-persistent data storage.
+
+Its key-value data storage system is another plus because it makes storage and retrieval much simpler. Using Redis, we can store and retrieve data in the cache using the SET and GET methods, respectively.
+
+**Installation:**
+
+```js
+npm install -save redis
+```
+
+**Example:**
+
+```js
+const express = require("express");
+const axios = require("axios");
+const redis = require("redis");
+const app = express();
+
+const client = redis.createClient(6379);
+
+client.on("error", (error) => {
+  console.error(error);
+});
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello World" });
+});
+
+const cache = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    client.get(id, (error, result) => {
+      if (error) throw error;
+      if (result !== null) {
+        return res.json(JSON.parse(result));
+      } else {
+        return next();
+      }
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+app.get("/todos/:id", cache, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    client.set(id, JSON.stringify(data), "ex", 15);
+    return res.status(200).json(data);
+  } catch ({ response }) {
+    return res.sendStatus(response.status);
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
