@@ -4882,6 +4882,8 @@ Types of applications you can build with Node.js
 
 The "VM" module enables compiling and running code within V8 Virtual Machine contexts. JavaScript code can be compiled and run immediately or compiled, saved, and run later. It provides a way of executing JavaScript on a virtual machine.
 
+A common use case is to run the code in a different V8 Context. This means invoked code has a different global object than the invoking code.
+
 **Syntax:**
 
 ```js
