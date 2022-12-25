@@ -3834,7 +3834,72 @@ app.listen(3000, () => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How to solve "Process out of Memory Exception" in Node.js?
+## Q. How to solve "Process out of Memory Exception" in Node.js?
+
+Process out of Memory Exception is an exception that occurs when your node.js program gets out of memory. This happens when the default memory allocated to our program gets exceeded by our program while execution. 
+
+This exception can be solved by increasing the default memory allocated to our program to the required memory by using the following command.
+
+**Syntax:**
+
+```js
+node --max-old-space-size=<SPACE_REQD> index.js
+```
+
+**Example:**
+
+```js
+/**
+ * ProcessOutOfMemory Exception
+ */
+let items = [];
+
+for (let i = 0; i < 999999999; i++) {
+  items.push(i);
+}
+
+console.log(items);
+```
+
+Output:
+
+```js
+<--- Last few GCs --->
+
+[11652:000001DA4373BE50]      581 ms: Scavenge 765.9 (799.0) -> 765.9 (799.0) MB, 29.6 / 0.0 ms  (average mu = 1.000, current mu = 1.000) allocation failure    
+[11652:000001DA4373BE50]      844 ms: Scavenge 1148.4 (1181.6) -> 1148.4 (1181.6) MB, 44.7 / 0.0 ms  (average mu = 1.000, current mu = 1.000) allocation failure
+
+[11652:000001DA4373BE50]     1239 ms: Scavenge 1722.2 (1755.4) -> 1722.2 (1755.4) MB, 67.5 / 0.0 ms  (average mu = 1.000, current mu = 1.000) allocation failure
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: invalid array length Allocation failed - JavaScript heap out of memory
+ 1: 00007FF784AA052F napi_wrap+109311
+ 2: 00007FF784A45256 v8::internal::OrderedHashTable<v8::internal::OrderedHashSet,1>::NumberOfElementsOffset+33302
+ 3: 00007FF784A46026 node::OnFatalError+294
+ 4: 00007FF78531163E v8::Isolate::ReportExternalAllocationLimitReached+94
+ 5: 00007FF7852F64BD v8::SharedArrayBuffer::Externalize+781
+ 6: 00007FF7851A094C v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1516
+ 7: 00007FF7851C547F v8::internal::Factory::NewUninitializedFixedArray+111
+ 8: 00007FF78508B3C0 v8::Object::GetIsolate+8128
+ 9: 00007FF784F151F7 v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+169671
+10: 00007FF785399FED v8::internal::SetupIsolateDelegate::SetupHeap+463949
+11: 000003EC8D443246
+```
+
+The default memory allocated to a node.js program is 512MB on 32-bit systems and 1024MB on 64-bit systems. In the below example, we have increased the memory space requirements to 2048MB or 2GB. Use the following command to run the JS file(index.js).
+
+**Example:**
+
+```js
+node --max-old-space-size=2048 index.js
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. What are the types of memory leaks in node.js
 
 <div align="right">
