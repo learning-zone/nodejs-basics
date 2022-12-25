@@ -4925,7 +4925,6 @@ console.log(x); // 10
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. What is Node-API (N-API)?
 #### Q. How to implement a Sleep function?
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
