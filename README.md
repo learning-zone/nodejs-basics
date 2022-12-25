@@ -1966,7 +1966,7 @@ Microservices are an architectural style and comprises of small modules/elements
 The microservices are distributed and communicate with each other by inter-service communication on network level. Each microservice has its own instance and process. Therefore, services must interact using an inter-service communication protocols like HTTP, gRPC or message brokers AMQP protocol.
 
 <p align="center">
-  <img src="assets/microservices-communication.png" alt="Middleware functions" width="500px" />
+  <img src="assets/microservices-communication.png" alt="Microservices Communication" width="500px" />
 </p>
 
 Client and services communicate with each other with many different types of communication. Mainly, those types of communications can be classified in two axes.
