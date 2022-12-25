@@ -3605,6 +3605,135 @@ module.exports = router
 
 <br/>
 
+## Q. How to access cache data in Node.js?
+
+Caching is a technique used in web development to handle performance bottlenecks related to how data is managed, stored, and retrieved. A cache layer or server acts as a secondary storage layer, usually faster and highly performant to temporarily store a subset of data. It is expected that data stored in a cache does not change often. Cache can be stored using various techniques like in-memory cache, file cache or a separate cache database.
+
+**Installation:**
+
+```js
+npm install express node-cache axios
+```
+
+**Node-cache has following major functions:**
+
+* **.set(key, val, [ ttl ]):** Used to set some value corresponding to a particular key in the cache. This same key must be used to retrieve this value.
+* **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
+* **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
+
+**Example:**
+
+**Implement in-memory cache with following approach:**
+
+* On API request, check if the cache has key already set using has(key) function
+* If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
+* If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
+
+```js
+/**
+ * In-Memory Cache 
+ */
+const express = require("express");
+const NodeCache = require("node-cache");
+const axios = require("axios");
+
+const app = express();
+const cache = new NodeCache({ stdTTL: 15 });
+
+/**
+ * GET Cached Data
+ */
+const verifyCache = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (cache.has(id)) {
+      return res.status(200).json(cache.get(id));
+    }
+    return next();
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello World" });
+});
+
+/**
+ * GET ToDo Items
+ */
+app.get("/todos/:id", verifyCache, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    cache.set(id, data);
+    return res.status(200).json(data);
+  } catch ({ response }) {
+    return res.sendStatus(response.status);
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement caching using Redis in Node.js?
+
+*ToDo*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement Memcached in Node.js?
+
+**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
+
+We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
+
+**Installation:**
+
+```js
+npm install memcached
+```
+
+**Setting up the client:**
+
+The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
+
+```js
+const Memcached = require('memcached');
+const memcached = new Memcached(Server locations, options);
+```
+
+**Example:**
+
+```js
+/**
+ * Memcached
+ */
+const Memcached = require('memcached');
+// all global configurations should be applied to the .config object of the Client.
+Memcached.config.poolSize = 25;
+
+const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, remove:true, failOverServers:['192.168.0.103:11211']});
+```
+
+<br/>
+
+**Reference:**
+
+* *[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 14. NODE.JS ERROR HANDLING
 
 <br/>
@@ -4558,135 +4687,6 @@ dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
 Node.js has depended on the V8 JavaScript engine to provide code execution in the language. The V8 is a JavaScript engine built at the google development center, in Germany. It is open source and written in C++. It is used for both client side (Google Chrome) and server side (node.js) JavaScript applications. A central piece of the V8 engine that allows it to execute JavaScript at high speed is the JIT (Just In Time) compiler. This is a dynamic compiler that can optimize code during runtime. When V8 was first built the JIT Compiler was dubbed FullCodegen. Then, the V8 team implemented Crankshaft, which included many performance optimizations that FullCodegen did not implement.
 
 The `V8` was first designed to increase the performance of the JavaScript execution inside web browsers. In order to obtain speed, V8 translates JavaScript code into more efficient machine code instead of using an interpreter. It compiles JavaScript code into machine code at execution by implementing a JIT (Just-In-Time) compiler like a lot of modern JavaScript engines such as SpiderMonkey or Rhino (Mozilla) are doing. The main difference with V8 is that it doesn\'t produce bytecode or any intermediate code.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to access cache data in Node.js?
-
-Caching is a technique used in web development to handle performance bottlenecks related to how data is managed, stored, and retrieved. A cache layer or server acts as a secondary storage layer, usually faster and highly performant to temporarily store a subset of data. It is expected that data stored in a cache does not change often. Cache can be stored using various techniques like in-memory cache, file cache or a separate cache database.
-
-**Installation:**
-
-```js
-npm install express node-cache axios
-```
-
-**Node-cache has following major functions:**
-
-* **.set(key, val, [ ttl ]):** Used to set some value corresponding to a particular key in the cache. This same key must be used to retrieve this value.
-* **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
-* **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
-
-**Example:**
-
-**Implement in-memory cache with following approach:**
-
-* On API request, check if the cache has key already set using has(key) function
-* If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
-* If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
-
-```js
-/**
- * In-Memory Cache 
- */
-const express = require("express");
-const NodeCache = require("node-cache");
-const axios = require("axios");
-
-const app = express();
-const cache = new NodeCache({ stdTTL: 15 });
-
-/**
- * GET Cached Data
- */
-const verifyCache = (req, res, next) => {
-  try {
-    const { id } = req.params;
-    if (cache.has(id)) {
-      return res.status(200).json(cache.get(id));
-    }
-    return next();
-  } catch (err) {
-    throw new Error(err);
-  }
-};
-
-app.get("/", (req, res) => {
-  return res.json({ message: "Hello World" });
-});
-
-/**
- * GET ToDo Items
- */
-app.get("/todos/:id", verifyCache, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
-    cache.set(id, data);
-    return res.status(200).json(data);
-  } catch ({ response }) {
-    return res.sendStatus(response.status);
-  }
-});
-
-app.listen(3000, function () {
-  console.log(`App listening at http://localhost:3000/`);
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to implement caching in Node.js using Redis?
-
-*ToDo*
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to implement Memcached in Node.js?
-
-**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
-
-We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
-
-**Installation:**
-
-```js
-npm install memcached
-```
-
-**Setting up the client:**
-
-The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
-
-```js
-const Memcached = require('memcached');
-const memcached = new Memcached(Server locations, options);
-```
-
-**Example:**
-
-```js
-/**
- * Memcached
- */
-const Memcached = require('memcached');
-// all global configurations should be applied to the .config object of the Client.
-Memcached.config.poolSize = 25;
-
-const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, remove:true, failOverServers:['192.168.0.103:11211']});
-```
-
-<br/>
-
-**Reference:**
-
-* *[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
