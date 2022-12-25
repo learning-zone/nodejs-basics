@@ -3621,13 +3621,13 @@ npm install express node-cache axios
 * **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
 * **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
 
-**Example:**
-
 **Implement in-memory cache with following approach:**
 
 * On API request, check if the cache has key already set using has(key) function
 * If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
 * If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
+
+**Example:**
 
 ```js
 /**
