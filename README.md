@@ -4027,7 +4027,6 @@ In JavaScript, the root is the global object. The garbage collector start from t
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-
 ## # 15. NODE.JS LOGGING
 
 <br/>
@@ -4564,9 +4563,78 @@ The `V8` was first designed to increase the performance of the JavaScript execut
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to access cache data in Node.js ?
+## Q. How to access cache data in Node.js?
 
-*ToDo*
+Caching is a technique used in web development to handle performance bottlenecks related to how data is managed, stored, and retrieved. A cache layer or server acts as a secondary storage layer, usually faster and highly performant to temporarily store a subset of data. It is expected that data stored in a cache does not change often. Cache can be stored using various techniques like in-memory cache, file cache or a separate cache database.
+
+**Installation:**
+
+```js
+npm install express node-cache axios
+```
+
+**Node-cache has following major functions:**
+
+* **.set(key, val, [ ttl ]):** Used to set some value corresponding to a particular key in the cache. This same key must be used to retrieve this value.
+* **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
+* **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
+
+**Example:**
+
+**Implement in-memory cache with following approach:**
+
+* On API request, check if the cache has key already set using has(key) function
+* If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
+* If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
+
+```js
+/**
+ * In-Memory Cache 
+ */
+const express = require("express");
+const NodeCache = require("node-cache");
+const axios = require("axios");
+
+const app = express();
+const cache = new NodeCache({ stdTTL: 15 });
+
+/**
+ * GET Cached Data
+ */
+const verifyCache = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (cache.has(id)) {
+      return res.status(200).json(cache.get(id));
+    }
+    return next();
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello World" });
+});
+
+/**
+ * GET ToDo Items
+ */
+app.get("/todos/:id", verifyCache, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    cache.set(id, data);
+    return res.status(200).json(data);
+  } catch ({ response }) {
+    return res.sendStatus(response.status);
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
