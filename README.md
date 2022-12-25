@@ -4878,14 +4878,57 @@ Types of applications you can build with Node.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. What are the use cases for the Node.js "vm" core module?
+## Q. What are the use cases for the Node.js "vm" core module?
+
+The "VM" module enables compiling and running code within V8 Virtual Machine contexts. JavaScript code can be compiled and run immediately or compiled, saved, and run later. It provides a way of executing JavaScript on a virtual machine.
+
+**Syntax:**
+
+```js
+const vm = require('vm');
+```
+
+**VM Methods:**
+
+|Method            |Description                            |
+|------------------|---------------------------------------|
+|createContext()   |Prepares a virtual machine, or sandbox, where you can execute scripts|
+|isContext()       |Returns true if the specified sandbox has been created by the createContext() method|
+|runInContext()    |Executes JavaScript code in the specified context, and returns the result|
+|runInDebug()      |Executes JavaScript inside the debug context|
+|runInNewContext() |Executes JavaScript code in a new context, and returns the result|
+|runInThisContext()|Executes JavaScript code in the global context, and returns the result|
+
+**Example:**
+
+```js
+const vm = require("vm");
+
+const x = 10;
+const context = { x: 20 };
+
+vm.createContext(context); // Contextify the object.
+
+const code = "x += 10";
+// Initially, x has the value 20 because that is the value of "context.x"
+vm.runInContext(code, context);
+
+console.log(context.x); // 30
+console.log(x); // 10
+```
+
+*Note: The vm module is not a security mechanism. Do not use it to run untrusted code.*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 #### Q. Explain the concept of Domain in Node.js?
 #### Q. What is Node-API (N-API)?
 #### Q. How to implement a Sleep function?
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
 #### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
-
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
