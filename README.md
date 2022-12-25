@@ -3836,14 +3836,14 @@ app.listen(3000, () => {
 
 ## Q. How to solve "Process out of Memory Exception" in Node.js?
 
-Process out of Memory Exception is an exception that occurs when your node.js program gets out of memory. This happens when the default memory allocated to our program gets exceeded by our program while execution. 
+Process out of Memory Exception is an exception that occurs when your node.js program gets out of memory. This happens when the default memory allocated to our program gets exceeded by our program while execution.
 
 This exception can be solved by increasing the default memory allocated to our program to the required memory by using the following command.
 
 **Syntax:**
 
 ```js
-node --max-old-space-size=<SPACE_REQD> index.js
+node --max-old-space-size=<NEW_SIZE_IN_MB> index.js
 ```
 
 **Example:**
