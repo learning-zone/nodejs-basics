@@ -4951,6 +4951,8 @@ console.log(x); // 10
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
 #### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
+#### Q. What are SOLID principles?
+#### Q. How to develop Node.js app using SOLID principles?
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
