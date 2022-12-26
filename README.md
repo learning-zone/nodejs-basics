@@ -1531,39 +1531,47 @@ The cluster module supports two methods of distributing incoming connections.
  */
 const cluster = require("cluster");
 const express = require("express");
-const app = express();
-const total_cpus = require("os").cpus().length;
+const os = require("os");
 
 if (cluster.isMaster) {
-  console.log(`Master process ${process.pid} is running`);
+  console.log(`Master PID ${process.pid} is running`);
 
-  // Fork child processes (workers)
-  for (let i = 0; i < total_cpus; i++) { // total_cpus = 4
+  // Get the number of available cpu cores
+  const nCPUs = os.cpus().length;
+  // Fork worker processes for each available CPU core
+  for (let i = 0; i < nCPUs; i++) {
     cluster.fork();
   }
-} else {
-  console.log(`Worker process ${process.pid} started running`);
 
-  app.listen(3000, (req, res) => {
-    console.log(`server running at port 3000`);
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`Worker PID ${worker.process.pid} died`);
   });
+} else {
+  // Workers can share any TCP connection
+  // In this case it is an Express server
+  const app = express();
+  app.get("/", (req, res) => {
+    res.send("Node is Running...");
+  });
+
+  app.listen(3000, () => {
+    console.log(`App listening at http://localhost:3000/`);
+  });
+
+  console.log(`Worker PID ${process.pid} started`);
 }
 ```
 
-Running Node.js will now share port 8000 between the workers:
+Running Node.js will now share port 3000 between the workers:
 
 **Output:**
 
 ```js
-Master process 18748 is running
-Worker process 18304 started running
-Worker process 19764 started running
-server running at port 3000
-server running at port 3000
-Worker process 18028 started running
-server running at port 3000
-Worker process 20936 started running
-server running at port 3000
+Master PID 13972 is running
+Worker PID 5680 started
+App listening at http://localhost:3000/
+Worker PID 14796 started
+...
 ```
 
 <div align="right">
