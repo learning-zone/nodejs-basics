@@ -1207,6 +1207,29 @@ setInterval(function() {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to implement a sleep function in Node.js?
+
+One way to delay execution of a function in Node.js is to use async/await with promises to delay execution without callbacks function. Just put the code you want to delay in the callback. For example, below is how you can wait 1 second before executing some code.
+
+**Example:**
+
+```js
+function delay(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+async function run() {
+  await delay(1000);
+  console.log("This printed after about 1 second");
+}
+
+run();
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 6. NODE.JS FILE SYSTEM
 
 <br/>
@@ -4925,7 +4948,6 @@ console.log(x); // 10
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-#### Q. How to implement a Sleep function?
 #### Q. How would you scale Node application?
 #### Q. Why do we need C++ Addons in Node.js?
 #### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
