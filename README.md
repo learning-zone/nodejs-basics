@@ -4990,9 +4990,9 @@ You can check the runtime of a function in Node.js by using the `console.time()`
 - Finally, we use `console.log` to print a message indicating the end of the function.
 
 
-Function started
-myFunction: 5431.709ms
-Function ended
+- Function started
+- myFunction: 5431.709ms
+- Function ended
 
 The time in milliseconds (ms) represents the runtime of the function `myFunction`. You can use this approach to measure the runtime of specific parts of your code to identify performance bottlenecks or optimize your code.
 <div align="right">
