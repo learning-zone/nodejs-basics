@@ -4956,6 +4956,48 @@ console.log(x); // 10
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+# Timing Function Execution in Node.js
+
+You can check the runtime of a function in Node.js by using the `console.time()` and `console.timeEnd()` functions. Here's an example with an explanation:
+
+    ```javascript
+    function myFunction() {
+      console.log("Function started");
+      
+      // Start the timer
+      console.time("myFunction");
+    
+      // Simulate some time-consuming task
+      for (let i = 0; i < 1000000000; i++) {
+        // Do some work
+      }
+    
+      // End the timer
+      console.timeEnd("myFunction");
+    
+      console.log("Function ended");
+    }
+    
+    myFunction();
+
+
+## In this example:
+
+- We use `console.log` to print a message indicating the start of the function.
+- We start a timer named "myFunction" using `console.time("myFunction")`.
+- We simulate a time-consuming task by running a loop.
+- After the loop is finished, we end the timer using `console.timeEnd("myFunction")`.
+- Finally, we use `console.log` to print a message indicating the end of the function.
+
+```javaScript 
+    Function started
+    myFunction: 5431.709ms
+    Function ended
+
+The time in milliseconds (ms) represents the runtime of the function `myFunction`. You can use this approach to measure the runtime of specific parts of your code to identify performance bottlenecks or optimize your code.
+
+
+
 #### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
 #### Q. What are SOLID principles?
 #### Q. How to develop Node.js app using SOLID principles?
