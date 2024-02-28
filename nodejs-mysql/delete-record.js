@@ -9,7 +9,7 @@ db_pool.getConnection((err) => {
   
   // execute the SQL QUery
   db_pool.query(sql, [20], (err, result) => {  
-    if (err) throw err; 
+    if (err) throw 
 
     console.log("Number of records deleted: " + result.affectedRows);  
   });  
