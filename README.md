@@ -13,6 +13,7 @@
 * *[MongoDB Basics](https://github.com/learning-zone/mongodb-basics)*
 * *[Node.js APIs](nodejs-api.md)*
 * *[Node.js Commands](nodejs-commands.md)*
+* *[Node.js Multiple Choice Questions](nodejs-mcq.md)*
 * *[Node.js Coding Practice](nodejs-programming.md)*
 
 <br/>
@@ -31,12 +32,17 @@
 * [Node.js Middleware](#-10-nodejs-middleware)
 * [Node.js RESTFul API](#-11-nodejs-restful-api)
 * [Node.js Routing](#-12-nodejs-routing)
+* [Node.js Database Integration](#-12-nodejs-database-integration)
 * [Node.js Caching](#-13-nodejs-caching)
 * [Node.js Error Handling](#-14-nodejs-error-handling)
 * [Node.js Logging](#-15-nodejs-logging)
 * [Node.js Internationalization](#-16-nodejs-internationalization)
 * [Node.js Testing](#-17-nodejs-testing)
 * [Node.js Miscellaneous](#-18-nodejs-miscellaneous)
+* [Node.js Environment & Configuration](#-19-nodejs-environment--configuration)
+* [Node.js Security](#-20-nodejs-security)
+* [Node.js Debugging & Profiling](#-21-nodejs-debugging--profiling)
+* [Node.js Performance & Optimization](#-22-nodejs-performance--optimization)
 
 <br/>
 
@@ -105,6 +111,72 @@ The process can have the following states new, ready, running, waiting, terminat
 Thread is the segment of a process which means a process can have multiple threads and these multiple threads are contained within a process. A thread has three states: Running, Ready, and Blocked.
 
 The thread takes less time to terminate as compared to the process but unlike the process, threads do not isolate.
+
+**Process vs Threads in Node.js**
+
+| | Process | Thread |
+|---|---------|--------|
+| Memory | Isolated — does not share memory | Shared within the same process |
+| Creation cost | Higher (new V8 instance via `fork()`) | Lower (`worker_threads`) |
+| Communication | IPC (message passing) | `SharedArrayBuffer` or `postMessage` |
+| Crash impact | Only that process crashes | Can crash the entire process |
+| Use case | Separate Node.js apps, external commands | CPU-intensive JS tasks |
+
+**Process example — `child_process.fork()`:**
+
+```js
+// parent.js
+const { fork } = require('child_process');
+
+const child = fork('./worker.js');
+
+child.send({ task: 'compute', value: 10 });
+
+child.on('message', (result) => {
+  console.log('Result from child process:', result); // Result from child process: 100
+});
+
+child.on('exit', (code) => {
+  console.log(`Child exited with code ${code}`);
+});
+```
+
+```js
+// worker.js — runs in a completely separate process with its own memory
+process.on('message', ({ task, value }) => {
+  if (task === 'compute') {
+    const result = value * value; // isolated computation
+    process.send(result);
+    process.exit(0);
+  }
+});
+```
+
+**Thread example — `worker_threads`:**
+
+```js
+// main.js
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+
+if (isMainThread) {
+  // Main thread
+  const worker = new Worker(__filename, { workerData: { value: 10 } });
+
+  worker.on('message', (result) => {
+    console.log('Result from worker thread:', result); // Result from worker thread: 100
+  });
+} else {
+  // Worker thread — same process, shares memory via SharedArrayBuffer
+  const result = workerData.value * workerData.value;
+  parentPort.postMessage(result);
+}
+```
+
+**Key rules:**
+
+- Use **`child_process.fork()`** when you need full isolation (separate Node.js scripts, different environments)
+- Use **`worker_threads`** for CPU-heavy JS tasks (image processing, parsing, crypto) where you want low overhead and potential memory sharing
+- Node.js's main event loop runs on a **single thread** — neither approach blocks it when used correctly
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -178,26 +250,177 @@ node app.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain the concept of URL module in Node.js?
+## Q. What is the difference between npm and npx?
 
-The URL module in Node.js splits up a web address into readable parts. Use `require()` to include the module. Then parse an address with the `url.parse()` method, and it will return a URL object with each part of the address as properties.
+**npm (Node Package Manager)** is used to install, share, and manage JavaScript packages. It is bundled with Node.js.
+
+**npx (Node Package Execute)** is an npm package runner (available since npm v5.2) that lets you execute CLI packages without installing them globally.
+
+| Feature | npm | npx |
+|---------|-----|-----|
+| Purpose | Install and manage packages | Execute packages directly |
+| Global install required | Yes, to use a CLI tool globally | No, runs temporarily |
+| Version pinning | Via `npm install` | Specify inline: `npx pkg@version` |
+| Use case | `npm install -g eslint` | `npx eslint index.js` |
 
 **Example:**
 
 ```js
-/**
- * URL Module in Node.js
- */
-const url = require('url');
-const adr = 'http://localhost:8080/default.htm?year=2022&month=september';
-const q = url.parse(adr, true);
+// Install globally with npm, then use
+npm install -g create-react-app
+create-react-app my-app
 
-console.log(q.host); // localhost:8080
-console.log(q.pathname); // "/default.htm"
-console.log(q.search); // "?year=2022&month=september"
+// Use once without installing globally with npx (recommended)
+npx create-react-app my-app
+```
 
-const qdata = q.query; // { year: 2022, month: 'september' }
-console.log(qdata.month); // "september"
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the purpose of package.json in Node.js?
+
+The `package.json` file is the manifest of a Node.js project. It holds metadata about the project and manages its dependencies, scripts, and configuration.
+
+**Example:**
+
+```json
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "A Node.js application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
+```
+
+**Important fields:**
+
+| Field | Description |
+|-------|-------------|
+| `name` | The name of the package |
+| `version` | Current version (follows semver: MAJOR.MINOR.PATCH) |
+| `main` | Entry point for CommonJS modules |
+| `type` | `"module"` for ES Modules, `"commonjs"` (default) for CJS |
+| `scripts` | Shorthand commands runnable via `npm run <script>` |
+| `dependencies` | Packages required in production |
+| `devDependencies` | Packages only needed during development/testing |
+| `engines` | Declares the Node.js version compatibility |
+| `exports` | Controls public API surface of the package |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is package-lock.json and why is it important?
+
+`package-lock.json` is an automatically generated file that **locks the exact version** of every installed package (including transitive dependencies) to guarantee reproducible installs across all environments and team members.
+
+| | `package.json` | `package-lock.json` |
+|--|---------------|---------------------|
+| Written by | Developer | npm (auto-generated) |
+| Contains | Version ranges (`^1.2.3`) | Exact resolved versions |
+| Purpose | Declare intent | Lock the dependency tree |
+| Commit to git? | Yes | Yes |
+
+**Why it matters:**
+
+```json
+// package.json — "^1.2.3" allows 1.2.3 → 1.9.9
+"dependencies": {
+  "express": "^4.18.0"
+}
+
+// package-lock.json — pins exactly what was installed
+"node_modules/express": {
+  "version": "4.18.2",
+  "resolved": "https://registry.npmjs.org/express/-/express-4.18.2.tgz",
+  "integrity": "sha512-..."
+}
+```
+
+**Key npm commands:**
+
+```bash
+npm install          # installs using lock file if it exists (reproducible)
+npm ci               # strict clean install from lock file (best for CI/CD)
+npm install pkg      # adds/updates package and regenerates lock file
+npm update           # updates packages within semver ranges in package.json
+```
+
+`npm ci` vs `npm install`:
+- `npm ci` deletes `node_modules` first, installs exact versions from `package-lock.json`, and fails if the lock file is out of sync — ideal for CI pipelines.
+- `npm install` creates or updates `package-lock.json` as needed.
+
+> Always commit `package-lock.json` to version control so every developer and CI environment installs the identical dependency tree.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is semantic versioning in Node.js?
+
+**Semantic Versioning (SemVer)** is a versioning scheme `MAJOR.MINOR.PATCH` used by npm packages to communicate the nature of changes in a release.
+
+| Part | When to increment | Example |
+|------|------------------|---------|
+| **MAJOR** | Breaking (backward-incompatible) changes | `1.0.0` → `2.0.0` |
+| **MINOR** | New backward-compatible features | `1.0.0` → `1.1.0` |
+| **PATCH** | Backward-compatible bug fixes | `1.0.0` → `1.0.1` |
+
+**Version range specifiers in package.json:**
+
+| Specifier | Meaning | Example resolves to |
+|-----------|---------|---------------------|
+| `1.2.3` | Exact version only | `1.2.3` |
+| `^1.2.3` | Compatible with `1.x.x` (fixes + features, no breaking) | `>=1.2.3 <2.0.0` |
+| `~1.2.3` | Approximately (patch updates only) | `>=1.2.3 <1.3.0` |
+| `*` or `""` | Any version (not recommended in production) | latest |
+| `>=1.0.0` | Greater than or equal | `1.0.0`, `2.5.0`, … |
+| `1.2.x` | Any patch in `1.2` | `1.2.0`, `1.2.9`, … |
+
+**Example:**
+
+```json
+{
+  "dependencies": {
+    "express": "^4.18.0",   // accepts 4.18.x, 4.19.x, … but NOT 5.x
+    "lodash":  "~4.17.0",   // accepts 4.17.x only
+    "uuid":    "9.0.0"      // pinned to exactly 9.0.0
+  }
+}
+```
+
+**Pre-release and build metadata:**
+
+```
+1.0.0-alpha.1   pre-release (lower than 1.0.0)
+1.0.0-beta.2
+1.0.0+build.123 build metadata (ignored in comparisons)
+```
+
+```bash
+# Check installed vs available versions
+npm outdated
+
+# View resolved version
+npm list express
 ```
 
 <div align="right">
@@ -415,25 +638,147 @@ Messsage("World"); // Hello World
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain Buffer data type in Node.js?
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
 
-Node.js includes an additional data type called Buffer ( not available in browser\'s JavaScript ). Buffer is mainly used to store **binary data**, while reading from a file or receiving packets over the network.
+## Q. How to work with Buffers in Node.js?
+
+A **Buffer** is a fixed-size region of memory outside the V8 heap, used to handle binary data such as file contents, network packets, or image data. Use `Buffer.alloc()` or `Buffer.from()` — the old `new Buffer()` constructor is removed in Node.js v22.
 
 **Example:**
 
 ```js
-/**
- * Buffer Data Type
- */
-let b = new Buffer(10000);
-let str = "----------";
+// Allocate a zero-filled buffer of 8 bytes
+const buf1 = Buffer.alloc(8);
+console.log(buf1); // <Buffer 00 00 00 00 00 00 00 00>
 
-b.write(str); 
-console.log( str.length ); // 10
-console.log( b.length ); // 10000
+// Create from a string
+const buf2 = Buffer.from('Hello, Node.js', 'utf8');
+console.log(buf2.toString());          // Hello, Node.js
+console.log(buf2.toString('hex'));     // 48656c6c6f2c204e6f64652e6a73
+console.log(buf2.toString('base64')); // SGVsbG8sIE5vZGUuanM=
+
+// Create from an array of byte values
+const buf3 = Buffer.from([72, 101, 108, 108, 111]);
+console.log(buf3.toString()); // Hello
+
+// Get buffer length and slice
+const buf4 = Buffer.from('Node.js');
+console.log(buf4.length);                  // 7
+console.log(buf4.subarray(0, 4).toString()); // Node
 ```
 
-*Note: Buffer() is deprecated due to security and usability issues.*
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between CommonJS and ES Modules in Node.js?
+
+Node.js supports two module systems: **CommonJS (CJS)** (traditional) and **ES Modules (ESM)** (modern standard, stable since Node.js v12 LTS).
+
+| Feature | CommonJS | ES Modules |
+|---------|----------|------------|
+| Syntax | `require()` / `module.exports` | `import` / `export` |
+| Loading | Synchronous | Asynchronous |
+| File extension | `.js` or `.cjs` | `.mjs` or `.js` with `"type":"module"` |
+| `__dirname` available | Yes | No — use `import.meta` |
+| Top-level `await` | Not supported | Supported |
+| Tree shaking | Not supported | Supported by bundlers |
+| Default in Node.js | Yes | Opt-in via `"type":"module"` |
+
+**CommonJS:**
+
+```js
+// math.js
+function add(a, b) { return a + b; }
+module.exports = { add };
+
+// app.js
+const { add } = require('./math');
+console.log(add(2, 3)); // 5
+```
+
+**ES Modules:**
+
+```js
+// math.mjs
+export function add(a, b) { return a + b; }
+
+// app.mjs
+import { add } from './math.mjs';
+console.log(add(2, 3)); // 5
+```
+
+**Get `__dirname` equivalent in ESM:**
+
+```js
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How does module caching work in Node.js?
+
+When `require()` loads a module for the first time, Node.js **executes** the module file and **caches** the exported object in `require.cache`. Every subsequent `require()` call for the same file path returns the **cached exports directly**, without re-executing the file.
+
+**This means:**
+- Module-level code (e.g., a database connection) runs **only once**.
+- Mutating an exported object in one module is **visible** to all other modules that required it.
+
+**Example — cache in action:**
+
+```js
+// counter.js
+let count = 0;
+module.exports = {
+  increment() { count++; },
+  get()       { return count; },
+};
+```
+
+```js
+// app.js
+const a = require('./counter');
+const b = require('./counter'); // same cached reference
+
+a.increment();
+a.increment();
+
+console.log(a === b);   // true  — exact same object
+console.log(b.get());   // 2     — b sees mutations made via a
+```
+
+**Inspecting the cache:**
+
+```js
+// Print all cached module paths
+console.log(Object.keys(require.cache));
+
+// Delete a module from cache (forces re-execution on next require)
+delete require.cache[require.resolve('./counter')];
+```
+
+**When is caching NOT used?**
+
+- `require()` with **different resolved paths** (e.g., case sensitivity on Linux, symlinks) creates separate cache entries.
+- **ES Modules** (`import`) also cache, but their cache is separate from the CommonJS cache.
+- Explicitly deleting from `require.cache` bypasses it (useful in tests to get a fresh module).
+
+**Practical use — singleton pattern:**
+
+```js
+// db.js — connection is created only once, shared across the app
+const { Pool } = require('pg');
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+module.exports = pool; // cached: every require('./db') returns the same Pool
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -836,7 +1181,7 @@ An array containing all eventListeners is maintained by Node. Each time **.on()*
 The event listeners are called in a synchronous manner to avoid logical errors, race conditions etc. The total number of listeners that can be registered for a particular event, is controlled by **.setMaxListeners(n)**. The default number of listeners is 10.
 
 ```js
-emitter.setMaxlisteners(12);
+emitter.setMaxListeners(12);
 ```
 
 As an event Listener once registered, exists throughout the life cycle of the program. It is important to detach an event Listener once its no longer needed to avoid memory leaks. Functions like **.removeListener()**, **.removeAllListeners()** enable the removal of listeners from the listeners Array.
@@ -886,6 +1231,151 @@ Program Started
 2nd Process
 1st Immediate
 2nd Immediate
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are the phases of the Node.js Event Loop?
+
+The Node.js event loop processes asynchronous callbacks in a specific order across **six phases**. Each phase has a FIFO queue of callbacks to execute.
+
+```
+   ┌───────────────────────────┐
+┌─>│           timers          │  ← setTimeout / setInterval callbacks
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │  ← I/O errors deferred to next loop
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │  ← internal use only
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │           poll            │  ← retrieve new I/O events; execute I/O callbacks
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │           check           │  ← setImmediate callbacks
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │  ← e.g., socket.on('close', ...)
+   └───────────────────────────┘
+```
+
+| Phase | What runs here |
+|-------|----------------|
+| **timers** | `setTimeout` and `setInterval` callbacks whose delay has expired |
+| **pending callbacks** | I/O callbacks deferred from the previous iteration |
+| **idle / prepare** | Internal Node.js use only |
+| **poll** | Retrieves new I/O events; executes I/O-related callbacks (file, network) |
+| **check** | `setImmediate` callbacks |
+| **close callbacks** | `socket.destroy()`, `stream.on('close')` handlers |
+
+Between **every phase** (and between every individual callback in some phases), Node.js drains the **microtask queues**:
+1. `process.nextTick` queue (highest priority)
+2. Promise `.then` / `.catch` / `.finally` queue
+
+**Example — phase execution order:**
+
+```js
+const fs = require('fs');
+
+// Phase: timers
+setTimeout(() => console.log('1. setTimeout'), 0);
+
+// Phase: check
+setImmediate(() => console.log('2. setImmediate'));
+
+// Phase: poll (I/O callback)
+fs.readFile(__filename, () => {
+  console.log('3. fs.readFile callback');
+
+  // Inside I/O callback: setImmediate always before setTimeout
+  setTimeout(() => console.log('4. setTimeout inside I/O'), 0);
+  setImmediate(() => console.log('5. setImmediate inside I/O'));
+});
+
+// Microtask: nextTick (runs before any phase)
+process.nextTick(() => console.log('6. process.nextTick'));
+
+// Microtask: Promise (runs after nextTick queue empties)
+Promise.resolve().then(() => console.log('7. Promise.then'));
+
+console.log('8. Synchronous code');
+
+// Output order:
+// 8. Synchronous code
+// 6. process.nextTick
+// 7. Promise.then
+// 1. setTimeout          (order of 1 & 2 may vary outside I/O)
+// 2. setImmediate
+// 3. fs.readFile callback
+// 5. setImmediate inside I/O   (always before setTimeout inside I/O)
+// 4. setTimeout inside I/O
+```
+
+**Key rules to remember:**
+- `process.nextTick` fires before Promises, before any event loop phase.
+- Inside an I/O callback, `setImmediate` always executes before `setTimeout(fn, 0)`.
+- Outside I/O, the order of `setTimeout(fn, 0)` vs `setImmediate` is non-deterministic.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between microtasks and macrotasks in Node.js?
+
+The JavaScript/Node.js execution model separates asynchronous work into **microtasks** (high-priority, run after every task) and **macrotasks** (lower-priority, run in event loop phases).
+
+| | Microtasks | Macrotasks (Tasks) |
+|--|-----------|-------------------|
+| **Examples** | `process.nextTick`, `Promise.then/catch/finally`, `queueMicrotask` | `setTimeout`, `setInterval`, `setImmediate`, I/O callbacks |
+| **When executed** | After every macrotask / synchronous block, before the next event loop phase | One per event loop phase tick |
+| **Queue draining** | Entire microtask queue drains before the next macrotask | One callback dequeued per iteration |
+| **Priority** | `process.nextTick` > Promises | Depends on event loop phase |
+
+**Example — execution order:**
+
+```js
+console.log('1. Start');
+
+setTimeout(() => console.log('2. setTimeout'), 0);       // macrotask
+setImmediate(() => console.log('3. setImmediate'));       // macrotask
+
+Promise.resolve()
+  .then(() => console.log('4. Promise.then'));            // microtask
+
+process.nextTick(() => console.log('5. nextTick'));       // microtask (highest)
+
+queueMicrotask(() => console.log('6. queueMicrotask'));  // microtask
+
+console.log('7. End');
+
+// Output:
+// 1. Start
+// 7. End
+// 5. nextTick          ← nextTick queue drained first
+// 4. Promise.then      ← Promise microtask queue
+// 6. queueMicrotask
+// 2. setTimeout        ← macrotask (timers phase)
+// 3. setImmediate      ← macrotask (check phase)
+```
+
+**Why it matters — starvation risk:**
+
+Recursively calling `process.nextTick` or resolving promises in a loop can **starve the event loop**, preventing I/O callbacks from ever running:
+
+```js
+// ❌ Dangerous: starves the event loop
+function recursive() {
+  process.nextTick(recursive);
+}
+recursive();
+
+// ✅ Safe: use setImmediate to yield to I/O
+function recursive() {
+  setImmediate(recursive);
+}
 ```
 
 <div align="right">
@@ -1404,6 +1894,49 @@ Some of the use cases of Node.js streams include:
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. What is backpressure in Node.js streams?
+
+**Backpressure** is a flow-control mechanism that prevents a fast-producing readable stream from overwhelming a slow-consuming writable stream. When the writable\'s internal buffer fills up (exceeds `highWaterMark`), `writable.write()` returns `false` and the readable should pause until the `drain` event fires.
+
+**Without backpressure handling, data accumulates in memory and can crash the process.**
+
+**Example — manual backpressure:**
+
+```js
+const fs = require('fs');
+
+const readable = fs.createReadStream('./large-file.txt');
+const writable = fs.createWriteStream('./output.txt');
+
+readable.on('data', (chunk) => {
+  // Returns false when the buffer exceeds highWaterMark
+  const canContinue = writable.write(chunk);
+  if (!canContinue) {
+    readable.pause(); // apply backpressure
+  }
+});
+
+writable.on('drain', () => {
+  readable.resume(); // buffer drained — resume reading
+});
+
+readable.on('end', () => writable.end());
+```
+
+**Recommended: use `pipe()` which handles backpressure automatically:**
+
+```js
+const fs = require('fs');
+
+// pipe() manages backpressure internally
+fs.createReadStream('./large-file.txt')
+  .pipe(fs.createWriteStream('./output.txt'));
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 8. NODE.JS MULTITHREADING
 
 <br/>
@@ -1427,7 +1960,7 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 
 * Nodejs Primary application runs in an event loop, which is in a single thread.
 * Background I/O is running in a thread pool that is only accessible to C/C++ or other compiled/native modules and mostly transparent to the JS.
-* Node v11/12 now has experimental worker_threads, which is another option.
+* Node.js supports `worker_threads` for CPU-intensive tasks (stable since Node.js v12 LTS).
 * Node.js does support forking multiple processes ( which are executed on different cores ).
 * It is important to know that state is not shared between master and forked process.
 * We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
@@ -1469,8 +2002,8 @@ Node.js runs single threaded programming, which is very memory efficient, but to
  */
 const cluster = require("cluster");
 
-if (cluster.isMaster) {
-  console.log(`Master process is running...`);
+if (cluster.isPrimary) {
+  console.log(`Primary process is running...`);
   cluster.fork();
   cluster.fork();
 } else {
@@ -1494,8 +2027,8 @@ Worker process started running
 
 |Method         |Description            |
 |---------------|-----------------------|
-|fork()         |Creates a new worker, from a master|
-|isMaster       |Returns true if the current process is master, otherwise false|
+|fork()         |Creates a new worker, from a primary|
+|isPrimary      |Returns true if the current process is primary, otherwise false|
 |isWorker       |Returns true if the current process is worker, otherwise false|
 |id             |A unique id for a worker|
 |process        |Returns the global Child Process|
@@ -1519,9 +2052,9 @@ A single instance of Node.js runs in a single thread. To take advantage of multi
 
 The cluster module supports two methods of distributing incoming connections.
 
-* The first one (and the default one on all platforms except Windows), is the round-robin approach, where the master process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
+* The first one (and the default one on all platforms except Windows), is the round-robin approach, where the primary process listens on a port, accepts new connections and distributes them across the workers in a round-robin fashion, with some built-in smarts to avoid overloading a worker process.
 
-* The second approach is where the master process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
+* The second approach is where the primary process creates the listen socket and sends it to interested workers. The workers then accept incoming connections directly.
 
 **Example:**
 
@@ -1533,8 +2066,8 @@ const cluster = require("cluster");
 const express = require("express");
 const os = require("os");
 
-if (cluster.isMaster) {
-  console.log(`Master PID ${process.pid} is running`);
+if (cluster.isPrimary) {
+  console.log(`Primary PID ${process.pid} is running`);
 
   // Get the number of available cpu cores
   const nCPUs = os.cpus().length;
@@ -1816,6 +2349,58 @@ child.start();
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. What are Worker Threads in Node.js?
+
+**Worker Threads** (the `worker_threads` module, stable since Node.js v12 LTS) run JavaScript in parallel on separate threads. Unlike `child_process.fork()`, workers share memory via `SharedArrayBuffer` and are best suited for **CPU-intensive** JavaScript tasks (e.g., image processing, cryptography, data parsing) without blocking the main event loop.
+
+**Key APIs:**
+
+| API | Description |
+|-----|-------------|
+| `Worker` | Represents a worker thread |
+| `isMainThread` | `true` if running in the main thread |
+| `parentPort` | `MessagePort` for communicating with the parent |
+| `workerData` | Data passed to the worker on creation |
+| `SharedArrayBuffer` | Shared memory between threads |
+
+**Example:**
+
+```js
+// worker-example.js (works as both main and worker)
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+
+if (isMainThread) {
+  // Main thread: spawn a worker
+  const worker = new Worker(__filename, { workerData: { n: 40 } });
+
+  worker.on('message', (result) => {
+    console.log(`fibonacci(40) = ${result}`);
+  });
+  worker.on('error', (err) => console.error(err));
+  worker.on('exit', (code) => console.log(`Worker exited with code ${code}`));
+} else {
+  // Worker thread: perform the CPU-intensive task
+  function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+  parentPort.postMessage(fibonacci(workerData.n));
+}
+```
+
+**Worker Threads vs Child Processes:**
+
+| | Worker Threads | Child Process |
+|--|---------------|---------------|
+| Memory | Shared (via `SharedArrayBuffer`) | Separate |
+| Communication | `postMessage` / `SharedArrayBuffer` | IPC / stdin/stdout |
+| Best for | CPU-intensive JS tasks | External programs, separate Node processes |
+| Overhead | Low | Higher |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 9. NODE.JS WEB MODULE
 
 <br/>
@@ -2014,6 +2599,57 @@ In Asynchronous communication, the client sends a request but it doesn\'t wait f
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to create an HTTPS server in Node.js?
+
+To create a secure HTTPS server, you need a TLS/SSL certificate and private key. For development, generate a self-signed certificate using OpenSSL. For production, use a certificate from a trusted CA (e.g., Let\'s Encrypt).
+
+**Step 01:** Generate a self-signed certificate (development only)
+
+```bash
+openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 365
+```
+
+**Step 02:** server.js
+
+```js
+const https = require('https');
+const fs = require('fs');
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Secure Hello from Node.js!');
+});
+
+const options = {
+  key:  fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert'),
+};
+
+https.createServer(options, app).listen(443, () => {
+  console.log('HTTPS server running on https://localhost:443');
+});
+```
+
+**Redirect HTTP to HTTPS:**
+
+```js
+const http = require('http');
+
+// Redirect all HTTP traffic to HTTPS
+http.createServer((req, res) => {
+  res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
+  res.end();
+}).listen(80);
+```
+
+**In production**, use a reverse proxy (Nginx, Caddy, or an AWS/GCP load balancer) to handle TLS termination in front of your Node.js app — this is simpler and more performant.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 10. NODE.JS MIDDLEWARE
 
 <br/>
@@ -2161,32 +2797,30 @@ const server = http.createServer(app);
 |async     | Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript|
 |axios     |Axios is a promise-based HTTP Client for node.js and the browser.|
 |autocannon|AutoCannon is a tool for performance testing and a tool for benchmarking.|
-|browserify|Browserify will recursively analyze all the require() calls in your app in order to build a bundle you can serve up to the browser in a single `<script>` tag|
-|bower     |Bower is a package manager for the web It works by fetching and installing packages from all over, taking care of hunting, finding, downloading, and saving the stuff you\'re looking for|
 |csv       |csv module has four sub modules which provides CSV generation, parsing, transformation and serialization for Node.js|
-|debug     |Debug is a tiny node.js debugging utility modelled after node core\'s debugging technique|
+|dayjs     |Day.js is a fast, 2kB alternative to Moment.js for parsing, validating, manipulating, and formatting dates|
+|debug     |Debug is a tiny node.js debugging utility modelled after node core's debugging technique|
+|eslint    |ESLint is a static analysis tool to find and fix problems in JavaScript code, covering errors, best practices and style rules|
 |express   |Express is a fast, un-opinionated, minimalist web framework. It provides small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs|
-|grunt     |is a JavaScript Task Runner that facilitates creating new projects and makes performing repetitive but necessary tasks such as linting, unit testing, concatenating and minifying files (among other things) trivial|
+|fastify   |Fastify is a fast and low overhead web framework for Node.js, focused on performance and developer experience|
 |http-server|is a simple, zero-configuration command-line http server. It is powerful enough for production usage, but it\'s simple and hackable enough to be used for testing, local development, and learning|
 |inquirer  |A collection of common interactive command line user interfaces|
-|jshint    |Static analysis tool to detect errors and potential problems in JavaScript code and to enforce your team\'s coding conventions|
 |koa       |Koa is web app framework. It is an expressive HTTP middleware for node.js to make web applications and APIs more enjoyable to write|
 |lodash    |The lodash library exported as a node module. Lodash is a modern JavaScript utility library delivering modularity, performance, & extras|
-|less      |The less library exported as a node module|
-|moment    |A lightweight JavaScript date library for parsing, validating, manipulating, and formatting dates|
 |mongoose  |It is a MongoDB object modeling tool designed to work in an asynchronous environment|
 |mongoDB   |The official MongoDB driver for Node.js. It provides a high-level API on top of mongodb-core that is meant for end users|
 |nodemon   |It is a simple monitor script for use during development of a node.js app, It will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically restart your node application|
 |nodemailer|This module enables e-mail sending from a Node.js applications|
 |passport  |A simple, unobtrusive authentication middleware for Node.js. Passport uses the strategies to authenticate requests. Strategies can range from verifying username and password credentials or authentication using OAuth or OpenID|
+|pino      |Pino is an extremely fast, low overhead logger for Node.js|
 |socket.io |Its a node.js realtime framework server|
-|sails     |Sails is a API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)|
-|underscore|Underscore.js is a utility-belt library for JavaScript that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core JavaScript objects|
+|undici    |Undici is a fast, reliable and spec-compliant HTTP/1.1 client for Node.js, now powering the built-in fetch()|
 |validator |A nodejs module for a library of string validators and sanitizers|
+|vite      |Vite is a next-generation build tool that offers an extremely fast dev server and optimized production builds|
 |winston   |A multi-transport async logging library for Node.js|
 |ws        |A simple to use, blazing fast and thoroughly tested websocket client, server and console for node.js|
 |xml2js    |A Simple XML to JavaScript object converter|
-|yo        |A CLI tool for running Yeoman generators|
+|zod       |TypeScript-first schema declaration and validation library for Node.js|
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -2197,12 +2831,9 @@ const server = http.createServer(app);
 The only option is to automate the update / security audit of your dependencies. For that there are free and paid options:
 
 1. npm outdated
-2. Trace by RisingStack
-3. NSP
-4. GreenKeeper
-5. Snyk
-6. npm audit
-7. npm audit fix
+2. Snyk
+3. npm audit
+4. npm audit fix
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -2328,22 +2959,6 @@ npm install express
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Why npm shrinkwrap is useful?
-
-NPM shrinkwrap lets you lock down the ver­sions of installed pack­ages and their descen­dant pack­ages. It helps you use same package versions on all environments (development, staging, production) and also improve download and installation speed.
-
-After installing packages using npm install or npm install `<package-name>` and updating your **node_modules** folder, you should run
-
-```js
-npm shrinkwrap
-```
-
-It should create new **npm-shrinkwrap.json** file with information about all packages you use. Next time, when someone calls **npm install**, it will install packages from **npm-shrinkwrap.json** and you will have the same environment on all machines.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. How to handle file upload in Node.js?
 
 File can be uploaded to the server using Multer module. Multer is a Node.js middleware which is used for handling multipart/form-data, which is mostly used library for uploading files.
@@ -2351,7 +2966,7 @@ File can be uploaded to the server using Multer module. Multer is a Node.js midd
 **1. Installing the dependencies:**
 
 ```js
-npm install express body-parser multer --save
+npm install express multer --save
 ```
 
 **2. server.js:**
@@ -2361,12 +2976,12 @@ npm install express body-parser multer --save
  * File Upload in Node.js
  */
 const express = require("express");
-const bodyParser = require("body-parser");
 const multer = require("multer");
 const app = express();
 
-// for text/number data transfer between clientg and server
-app.use(bodyParser());
+// parse JSON and urlencoded bodies (built-in since Express 4.16+)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -2425,40 +3040,33 @@ app.listen(3000, function () {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, moment in Express.js?
+## Q. Explain the terms body-parser, cookie-parser, morgan, nodemon, pm2, serve-favicon, cors, dotenv, fs-extra, dayjs in Express.js?
 
 **1. body-parser:**
 
-`body-parser` extract the entire body portion of an incoming request stream and exposes it on `req.body`. The body-parser module parses the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
-
-**Example:**
-
-```js
-npm install body-parser
-```
+Since **Express 4.16+**, body parsing is built in. Use `express.json()` and `express.urlencoded()` directly — no separate package needed.
 
 ```js
 /**
- * body-parser
+ * Built-in body parsing (Express 4.16+)
  */
 const express = require("express");
-const bodyParser = require("body-parser");
 
 const app = express();
 
-// create application/json parser
-const jsonParser = bodyParser.json();
+// Parse JSON bodies
+app.use(express.json());
 
-// create application/x-www-form-urlencoded parser
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: false }));
 
 // POST /login gets urlencoded bodies
-app.post("/login", urlencodedParser, function (req, res) {
+app.post("/login", function (req, res) {
   res.send("welcome, " + req.body.username);
 });
 
 // POST /api/users gets JSON bodies
-app.post("/api/users", jsonParser, function (req, res) {
+app.post("/api/users", function (req, res) {
   // create user in req.body
 });
 ```
@@ -2689,14 +3297,14 @@ fs.copy('/tmp/myfile', '/tmp/mynewfile', err => {
 })
 ```
 
-**10. moment:**
+**10. dayjs:**
 
-A JavaScript date library for parsing, validating, manipulating, and formatting dates.
+Day.js is a fast, lightweight (2kB) alternative to the deprecated Moment.js for parsing, validating, manipulating, and formatting dates. It has a compatible API with Moment.js.
 
 **Installation:**
 
 ```js
-npm install moment --save
+npm install dayjs
 ```
 
 **Usage:**
@@ -2704,31 +3312,90 @@ npm install moment --save
 * Format Dates
 
 ```js
-const moment = require('moment');
+const dayjs = require('dayjs');
 
-moment().format('MMMM Do YYYY, h:mm:ss a'); // October 24th 2022, 3:15:22 pm
-moment().format('dddd');                    // Saturday
-moment().format("MMM Do YY");               // Oct 24th 22
+dayjs().format('MMMM DD YYYY, h:mm:ss a'); // April 16 2026, 10:30:00 am
+dayjs().format('dddd');                    // Thursday
+dayjs().format("MMM DD YY");               // Apr 16 26
 ```
 
 * Relative Time
 
 ```js
-const moment = require('moment');
+const dayjs = require('dayjs');
+const relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
 
-moment("20111031", "YYYYMMDD").fromNow(); // 9 years ago
-moment("20120620", "YYYYMMDD").fromNow(); // 8 years ago
-moment().startOf('day').fromNow();        // 15 hours ago
+dayjs('2011-10-31').fromNow(); // 14 years ago
+dayjs().startOf('day').fromNow(); // 10 hours ago
 ```
 
-* Calendar Time
+* Date Manipulation
 
 ```js
-const moment = require('moment');
+const dayjs = require('dayjs');
 
-moment().subtract(10, 'days').calendar(); // 10/14/2022
-moment().subtract(6, 'days').calendar();  // Last Sunday at 3:18 PM
-moment().subtract(3, 'days').calendar();  // Last Wednesday at 3:18 PM
+dayjs().subtract(10, 'day').format('YYYY-MM-DD'); // 2026-04-06
+dayjs().add(1, 'month').format('YYYY-MM-DD');     // 2026-05-16
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement rate limiting in Express.js?
+
+Rate limiting restricts the number of requests a client can make within a time window. It protects APIs from abuse, brute-force attacks, and DDoS.
+
+**Installation:**
+
+```js
+npm install express-rate-limit
+```
+
+**Example:**
+
+```js
+const express = require('express');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// Global limiter: 100 requests per 15 minutes per IP
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  standardHeaders: 'draft-7', // Return rate limit info in RateLimit headers
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+app.use(globalLimiter);
+
+// Stricter limiter for auth endpoints: 5 attempts per minute
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { error: 'Too many login attempts. Please wait before trying again.' },
+});
+
+app.post('/api/auth/login', authLimiter, (req, res) => {
+  res.json({ message: 'Login successful' });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**For distributed systems** (multiple Node.js instances), store rate limit counters in Redis using `rate-limit-redis`:
+
+```js
+const RedisStore = require('rate-limit-redis');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  store: new RedisStore({ sendCommand: (...args) => redisClient.sendCommand(args) }),
+});
 ```
 
 <div align="right">
@@ -2901,29 +3568,6 @@ app.get('/employees', (req, res, next) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## Q. How to make post request in Node.js?
-
-Following code snippet can be used to make a Post Request in Node.js.
-
-```js
-/**
- * POST Request
- */
-const request = require("request");
-
-request.post("http://localhost:3000/action",  { form: { key: "value" } },
-  function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      console.log(body);
-    }
-  }
-);
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
 ## Q. What are Promises in Node.js?
 
 It allows to associate handlers to an asynchronous action\'s eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future.
@@ -2957,6 +3601,100 @@ function getSum(num1, num2) {
 
 console.log(getSum(10, 20)); // Promise { 30 }
 ```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between Promise.all, Promise.allSettled, Promise.race, and Promise.any?
+
+All four are static methods that operate on an **iterable of promises** but differ in when they resolve/reject and what they return.
+
+| Method | Resolves when | Rejects when | Returns |
+|--------|--------------|-------------|---------|
+| `Promise.all` | **All** promises fulfill | **Any** promise rejects | Array of fulfilled values |
+| `Promise.allSettled` | **All** promises settle (fulfill or reject) | Never rejects | Array of `{status, value/reason}` objects |
+| `Promise.race` | **First** promise settles (either way) | First settles as rejection | Value/reason of first settled promise |
+| `Promise.any` | **First** promise fulfills | **All** promises reject | Value of first fulfilled promise |
+
+**Promise.all — fail fast:**
+
+```js
+const p1 = Promise.resolve(1);
+const p2 = Promise.resolve(2);
+const p3 = Promise.reject(new Error('p3 failed'));
+
+// Rejects immediately when p3 rejects
+Promise.all([p1, p2, p3])
+  .then(values => console.log(values))
+  .catch(err => console.error(err.message)); // p3 failed
+
+// All succeed
+Promise.all([Promise.resolve('a'), Promise.resolve('b')])
+  .then(values => console.log(values)); // ['a', 'b']
+```
+
+**Promise.allSettled — never short-circuits:**
+
+```js
+const promises = [
+  Promise.resolve('success'),
+  Promise.reject(new Error('failure')),
+  Promise.resolve('another success'),
+];
+
+Promise.allSettled(promises).then(results => {
+  results.forEach(result => {
+    if (result.status === 'fulfilled') {
+      console.log('Value:', result.value);
+    } else {
+      console.log('Reason:', result.reason.message);
+    }
+  });
+});
+// Value: success
+// Reason: failure
+// Value: another success
+```
+
+**Promise.race — first to settle wins:**
+
+```js
+const slow = new Promise(resolve => setTimeout(() => resolve('slow'), 500));
+const fast = new Promise(resolve => setTimeout(() => resolve('fast'), 100));
+
+Promise.race([slow, fast])
+  .then(winner => console.log(winner)); // fast
+
+// Useful for timeouts:
+function withTimeout(promise, ms) {
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Timed out')), ms)
+  );
+  return Promise.race([promise, timeout]);
+}
+```
+
+**Promise.any — first to fulfill (ignores rejections):**
+
+```js
+const p1 = Promise.reject(new Error('error 1'));
+const p2 = new Promise(resolve => setTimeout(() => resolve('p2 resolved'), 200));
+const p3 = new Promise(resolve => setTimeout(() => resolve('p3 resolved'), 100));
+
+Promise.any([p1, p2, p3])
+  .then(first => console.log(first))  // p3 resolved
+  .catch(err => console.error(err));  // AggregateError only if ALL reject
+```
+
+**When to use which:**
+
+| Use case | Method |
+|----------|--------|
+| Parallel fetch where ALL must succeed | `Promise.all` |
+| Run all and inspect every result (e.g., batch job) | `Promise.allSettled` |
+| Race against a timeout | `Promise.race` |
+| Try multiple sources, use the first that works | `Promise.any` |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3282,41 +4020,31 @@ require('http').METHODS
 
 **Making HTTP Requests**
 
-```js
-const request = require('request');
+Since Node.js v18, the built-in `fetch()` API is available globally (stable since v21):
 
-request('https://nodejs.org/', function(err, res, body) {
-    console.log(body);
-});
+```js
+// GET request using built-in fetch (Node.js v18+)
+const res = await fetch('https://nodejs.org/');
+const body = await res.text();
+console.log(body);
 ```
 
-The first argument to request can either be a URL string, or an object of options. Here are some of the more common options you\'ll encounter in your applications:
-
-* **url**: The destination URL of the HTTP request
-* **method**: The HTTP method to be used (GET, POST, DELETE, etc)
-* **headers**: An object of HTTP headers (key-value) to be set in the request
-* **form**: An object containing key-value form data
+For more complex requests with options:
 
 ```js
-const request = require('request');
-
-const options = {
-    url: 'https://nodejs.org/file.json',
+// GET request with headers using built-in fetch
+const response = await fetch('https://nodejs.org/dist/index.json', {
     method: 'GET',
     headers: {
         'Accept': 'application/json',
         'Accept-Charset': 'utf-8',
-        'User-Agent': 'my-reddit-client'
+        'User-Agent': 'my-node-client'
     }
-};
-
-request(options, function(err, res, body) {
-    let json = JSON.parse(body);
-    console.log(json);
 });
-```
 
-Using the options object, this request uses the GET method to retrieve JSON data directly from Reddit, which is returned as a string in the body field. From here, you can use `JSON.parse` and use the data as a normal JavaScript object.
+const json = await response.json();
+console.log(json);
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3507,6 +4235,66 @@ app.listen(3000, function () {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to implement pagination in a Node.js REST API?
+
+Pagination limits the records returned per request to avoid large payloads. There are two common strategies:
+
+**1. Offset-based pagination (simple, good for small datasets):**
+
+```js
+// GET /api/users?page=2&limit=10
+app.get('/api/users', async (req, res) => {
+  const page  = Math.max(1, parseInt(req.query.page)  || 1);
+  const limit = Math.min(100, parseInt(req.query.limit) || 10);
+  const skip  = (page - 1) * limit;
+
+  const [users, total] = await Promise.all([
+    User.find().skip(skip).limit(limit).lean(),
+    User.countDocuments(),
+  ]);
+
+  res.json({
+    data: users,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+      hasNext: page * limit < total,
+    },
+  });
+});
+```
+
+**2. Cursor-based pagination (recommended for large / real-time datasets):**
+
+```js
+// GET /api/users?cursor=<lastId>&limit=10
+app.get('/api/users', async (req, res) => {
+  const limit  = Math.min(100, parseInt(req.query.limit) || 10);
+  const cursor = req.query.cursor;
+
+  const query = cursor ? { _id: { $gt: cursor } } : {};
+  const users = await User.find(query).limit(limit).sort({ _id: 1 }).lean();
+
+  res.json({
+    data: users,
+    nextCursor: users.length === limit ? users[users.length - 1]._id : null,
+  });
+});
+```
+
+| | Offset Pagination | Cursor Pagination |
+|--|-------------------|-------------------|
+| Implementation | Simple | Moderate |
+| Performance at high offsets | Degrades | Consistent |
+| Suitable for | Small datasets | Large / real-time feeds |
+| Supports random page jump | Yes | No |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 12. NODE.JS ROUTING
 
 <br/>
@@ -3627,6 +4415,189 @@ router.get('/about', function (req, res) {
 
 module.exports = router
 ```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 12. NODE.JS DATABASE INTEGRATION
+
+<br/>
+
+## Q. How to connect MSSQL Server database using connection pooling in Node.js?
+
+The `mssql` package is the most widely used Microsoft SQL Server client for Node.js. It has a built-in **connection pool** that reuses TCP connections, so you pay the connection handshake cost only once rather than on every query.
+
+**Installation:**
+
+```bash
+npm install mssql
+```
+
+**`.env`:**
+
+```
+DB_SERVER=localhost
+DB_PORT=1433
+DB_USER=sa
+DB_PASSWORD=YourStrong@Passw0rd
+DB_NAME=myapp
+DB_ENCRYPT=false
+```
+
+**Setting up the pool (`db/mssql.js`):**
+
+```js
+const sql = require('mssql');
+
+const config = {
+  server:   process.env.DB_SERVER || 'localhost',
+  port:     parseInt(process.env.DB_PORT) || 1433,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  options: {
+    encrypt:                process.env.DB_ENCRYPT === 'true', // true for Azure
+    trustServerCertificate: true,                              // dev only
+  },
+  pool: {
+    max:              10,   // maximum connections in the pool
+    min:               0,
+    idleTimeoutMillis: 30000,
+  },
+};
+
+// Create a single shared pool instance (module is cached by require())
+const poolPromise = new sql.ConnectionPool(config)
+  .connect()
+  .then(pool => {
+    console.log('Connected to MSSQL');
+    return pool;
+  })
+  .catch(err => {
+    console.error('MSSQL connection failed:', err);
+    process.exit(1);
+  });
+
+module.exports = { sql, poolPromise };
+```
+
+**CRUD operations using the pool:**
+
+```js
+// repositories/userRepository.js
+const { sql, poolPromise } = require('../db/mssql');
+
+// CREATE
+async function createUser(name, email) {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .input('name',  sql.NVarChar(100), name)   // parameterized — prevents SQL injection
+    .input('email', sql.NVarChar(255), email)
+    .query('INSERT INTO users (name, email) OUTPUT INSERTED.id VALUES (@name, @email)');
+  return result.recordset[0].id;
+}
+
+// READ — single user
+async function getUserById(id) {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .input('id', sql.Int, id)
+    .query('SELECT id, name, email FROM users WHERE id = @id');
+  return result.recordset[0] || null;
+}
+
+// READ — all users
+async function getUsers() {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .query('SELECT id, name, email FROM users');
+  return result.recordset;
+}
+
+// UPDATE
+async function updateUser(id, name) {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .input('id',   sql.Int,          id)
+    .input('name', sql.NVarChar(100), name)
+    .query('UPDATE users SET name = @name WHERE id = @id');
+  return result.rowsAffected[0] > 0;
+}
+
+// DELETE
+async function deleteUser(id) {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .input('id', sql.Int, id)
+    .query('DELETE FROM users WHERE id = @id');
+  return result.rowsAffected[0] > 0;
+}
+
+module.exports = { createUser, getUserById, getUsers, updateUser, deleteUser };
+```
+
+**Using transactions:**
+
+```js
+async function transferFunds(fromId, toId, amount) {
+  const pool = await poolPromise;
+  const transaction = new sql.Transaction(pool);
+  try {
+    await transaction.begin();
+
+    await transaction.request()
+      .input('amount', sql.Decimal(18, 2), amount)
+      .input('id',     sql.Int,            fromId)
+      .query('UPDATE accounts SET balance = balance - @amount WHERE id = @id');
+
+    await transaction.request()
+      .input('amount', sql.Decimal(18, 2), amount)
+      .input('id',     sql.Int,            toId)
+      .query('UPDATE accounts SET balance = balance + @amount WHERE id = @id');
+
+    await transaction.commit();
+  } catch (err) {
+    await transaction.rollback();
+    throw err;
+  }
+}
+```
+
+**Express route example:**
+
+```js
+const express = require('express');
+const { getUserById, createUser } = require('./repositories/userRepository');
+const router = express.Router();
+
+router.get('/users/:id', async (req, res, next) => {
+  try {
+    const user = await getUserById(Number(req.params.id));
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) { next(err); }
+});
+
+router.post('/users', async (req, res, next) => {
+  try {
+    const id = await createUser(req.body.name, req.body.email);
+    res.status(201).json({ id });
+  } catch (err) { next(err); }
+});
+
+module.exports = router;
+```
+
+> Always use **named parameters** (`.input('name', sql.Type, value)`) — never concatenate user values into query strings to prevent SQL injection.
+
+| `mssql` data type | SQL Server type |
+|-------------------|----------------|
+| `sql.Int` | `INT` |
+| `sql.NVarChar(n)` | `NVARCHAR(n)` |
+| `sql.Decimal(p,s)` | `DECIMAL(p,s)` |
+| `sql.Bit` | `BIT` |
+| `sql.DateTime2` | `DATETIME2` |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3878,6 +4849,104 @@ Programmer errors are what we call bugs. They represent issues in the code itsel
 * passed a string where an object was expected
 * passed an object where a string was expected
 * passed incorrect parameters in a function
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to create custom errors in Node.js?
+
+Extending the built-in `Error` class lets you create domain-specific error types with extra properties (HTTP status codes, error codes, etc.) that make error handling precise and expressive.
+
+**Basic custom error:**
+
+```js
+class AppError extends Error {
+  constructor(message, statusCode = 500) {
+    super(message);         // sets this.message
+    this.name = this.constructor.name; // 'AppError' instead of 'Error'
+    this.statusCode = statusCode;
+    Error.captureStackTrace(this, this.constructor); // clean stack trace
+  }
+}
+
+// Usage
+throw new AppError('Something went wrong', 500);
+```
+
+**Hierarchy of custom errors:**
+
+```js
+// Base application error
+class AppError extends Error {
+  constructor(message, statusCode = 500, code = 'INTERNAL_ERROR') {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// Specific error types
+class NotFoundError extends AppError {
+  constructor(resource = 'Resource') {
+    super(`${resource} not found`, 404, 'NOT_FOUND');
+  }
+}
+
+class ValidationError extends AppError {
+  constructor(message, fields = {}) {
+    super(message, 400, 'VALIDATION_ERROR');
+    this.fields = fields; // extra context
+  }
+}
+
+class UnauthorizedError extends AppError {
+  constructor(message = 'Authentication required') {
+    super(message, 401, 'UNAUTHORIZED');
+  }
+}
+```
+
+**Throwing and catching custom errors:**
+
+```js
+function findUser(id) {
+  const user = db.find(u => u.id === id);
+  if (!user) throw new NotFoundError('User');
+  return user;
+}
+
+try {
+  findUser(99);
+} catch (err) {
+  if (err instanceof NotFoundError) {
+    console.log(err.statusCode); // 404
+    console.log(err.code);       // NOT_FOUND
+  }
+  console.error(err.message);    // User not found
+}
+```
+
+**Express centralized error handler using custom errors:**
+
+```js
+// middleware/errorHandler.js
+function errorHandler(err, req, res, next) {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    status: 'error',
+    code: err.code || 'INTERNAL_ERROR',
+    message: err.message,
+    ...(err.fields && { fields: err.fields }),
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+  });
+}
+
+// app.js — must be registered LAST
+app.use(errorHandler);
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -4245,6 +5314,68 @@ In JavaScript, the root is the global object. The garbage collector start from t
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
+## Q. How to handle errors in async/await Express routes?
+
+By default, Express does not catch errors thrown inside `async` route handlers. Unhandled promise rejections need to be forwarded to Express\'s error-handling middleware using `next(err)`.
+
+**1. Manual try/catch (works in all Express versions):**
+
+```js
+app.get('/users/:id', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    next(err); // forward to Express error handler
+  }
+});
+```
+
+**2. Async wrapper utility (Express 4, avoids try/catch boilerplate):**
+
+```js
+// asyncHandler.js
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
+// routes
+app.get('/users/:id', asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json(user);
+}));
+```
+
+**3. Express 5 (stable since 2024) — async errors handled natively:**
+
+```js
+// npm install express@5
+// No try/catch or wrapper needed in Express 5
+app.get('/users/:id', async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json(user);
+});
+```
+
+**Centralized error-handling middleware (required for all approaches):**
+
+```js
+// Must be defined LAST, with exactly 4 parameters
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  const status = err.status || err.statusCode || 500;
+  res.status(status).json({
+    message: err.message || 'Internal Server Error',
+  });
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
 ## # 15. NODE.JS LOGGING
 
 <br/>
@@ -4411,6 +5542,225 @@ if (response.error) {
 ```
 
 **&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to write unit tests using Jest in Node.js?
+
+[Jest](https://jestjs.io/) is the most popular testing framework for Node.js. It includes a test runner, assertion library, and mocking utilities out of the box.
+
+**Installation:**
+
+```js
+npm install --save-dev jest
+```
+
+**package.json:**
+
+```json
+{
+  "scripts": { "test": "jest", "test:coverage": "jest --coverage" }
+}
+```
+
+**Testing a utility function:**
+
+```js
+// math.js
+function add(a, b) { return a + b; }
+function divide(a, b) {
+  if (b === 0) throw new Error('Division by zero');
+  return a / b;
+}
+module.exports = { add, divide };
+```
+
+```js
+// math.test.js
+const { add, divide } = require('./math');
+
+describe('Math utilities', () => {
+  test('adds two numbers correctly', () => {
+    expect(add(2, 3)).toBe(5);
+    expect(add(-1, 1)).toBe(0);
+  });
+
+  test('divides two numbers correctly', () => {
+    expect(divide(10, 2)).toBe(5);
+  });
+
+  test('throws on division by zero', () => {
+    expect(() => divide(10, 0)).toThrow('Division by zero');
+  });
+});
+```
+
+**Mocking a module:**
+
+```js
+// userService.test.js
+jest.mock('./db');
+const db = require('./db');
+
+test('fetches user by id', async () => {
+  db.findUser.mockResolvedValue({ id: 1, name: 'Alice' });
+
+  const user = await db.findUser(1);
+
+  expect(user.name).toBe('Alice');
+  expect(db.findUser).toHaveBeenCalledWith(1);
+});
+```
+
+**Run tests:**
+
+```bash
+npx jest                # run all tests
+npx jest --watch        # watch mode for development
+npx jest --coverage     # generate a coverage report
+npx jest path/to/test   # run a specific test file
+```
+
+**Common Jest matchers:**
+
+| Matcher | Description |
+|---------|-------------|
+| `toBe(value)` | Strict equality (`===`) |
+| `toEqual(obj)` | Deep equality for objects/arrays |
+| `toBeNull()` / `toBeUndefined()` | Check for null/undefined |
+| `toThrow(msg)` | Assert a function throws |
+| `toHaveBeenCalledWith(args)` | Assert mock was called with specific args |
+| `resolves` / `rejects` | Assert promise outcome |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to test Express API routes using Supertest in Node.js?
+
+**Supertest** allows you to make HTTP requests directly against an Express app in tests — no running server required. It integrates seamlessly with Jest or Mocha.
+
+**Installation:**
+
+```bash
+npm install --save-dev supertest jest
+```
+
+**App setup (keep app and server separate for testability):**
+
+```js
+// app.js — export app without listening
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+const users = [{ id: 1, name: 'Alice' }]; // in-memory store for demo
+
+app.get('/users', (req, res) => {
+  res.json(users);
+});
+
+app.get('/users/:id', (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json(user);
+});
+
+app.post('/users', (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ message: 'Name is required' });
+  const user = { id: users.length + 1, name };
+  users.push(user);
+  res.status(201).json(user);
+});
+
+module.exports = app; // export — do NOT call app.listen() here
+```
+
+```js
+// server.js — only entry point calls listen
+const app = require('./app');
+app.listen(3000, () => console.log('Server on port 3000'));
+```
+
+**Integration tests with Supertest + Jest:**
+
+```js
+// tests/users.test.js
+const request = require('supertest');
+const app = require('../app');
+
+describe('GET /users', () => {
+  it('returns an array of users', async () => {
+    const res = await request(app).get('/users');
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
+});
+
+describe('GET /users/:id', () => {
+  it('returns a user by id', async () => {
+    const res = await request(app).get('/users/1');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toMatchObject({ id: 1, name: 'Alice' });
+  });
+
+  it('returns 404 for missing user', async () => {
+    const res = await request(app).get('/users/999');
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toBe('User not found');
+  });
+});
+
+describe('POST /users', () => {
+  it('creates a new user', async () => {
+    const res = await request(app)
+      .post('/users')
+      .send({ name: 'Bob' })
+      .set('Content-Type', 'application/json');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toMatchObject({ name: 'Bob' });
+    expect(res.body.id).toBeDefined();
+  });
+
+  it('returns 400 if name is missing', async () => {
+    const res = await request(app).post('/users').send({});
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe('Name is required');
+  });
+});
+```
+
+**Testing with authentication headers:**
+
+```js
+it('returns 401 without token', async () => {
+  const res = await request(app).get('/protected');
+  expect(res.statusCode).toBe(401);
+});
+
+it('returns 200 with valid token', async () => {
+  const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET);
+  const res = await request(app)
+    .get('/protected')
+    .set('Authorization', `Bearer ${token}`);
+  expect(res.statusCode).toBe(200);
+});
+```
+
+**Unit test vs Integration test with Supertest:**
+
+| | Unit Test | Integration Test (Supertest) |
+|--|-----------|------------------------------|
+| Tests | Individual functions/modules | Full HTTP request-response cycle |
+| Database | Mocked | Real or in-memory (e.g., sqlite) |
+| Speed | Fast | Slower |
+| Confidence | Logic correctness | Route + middleware + logic together |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -4601,11 +5951,13 @@ console.log(hash);
 * Encryption example using Cipher
 
 ```js
-const crypto = require('crypto');  
-const cipher = crypto.createCipher('aes192', 'a password');  
+const crypto = require('crypto');
+const key = crypto.scryptSync('a password', 'salt', 24);
+const iv = crypto.randomBytes(16);
+const cipher = crypto.createCipheriv('aes-192-cbc', key, iv);
 
-const encrypted = cipher.update('Hello Node.js', 'utf8', 'hex');  
-encrypted += cipher.final('hex');  
+let encrypted = cipher.update('Hello Node.js', 'utf8', 'hex');
+encrypted += cipher.final('hex');
 
 console.log(encrypted);
 ```
@@ -4613,14 +5965,17 @@ console.log(encrypted);
 * Decryption example using Decipher
 
 ```js
-const crypto = require('crypto');  
-const decipher = crypto.createDecipher('aes192', 'a password');  
+const crypto = require('crypto');
+const key = crypto.scryptSync('a password', 'salt', 24);
+const iv = crypto.randomBytes(16);
 
-const encrypted = '4ce3b761d58398aed30d5af898a0656a3174d9c7d7502e781e83cf6b9fb836d5';  
-const decrypted = decipher.update(encrypted, 'hex', 'utf8');  
-decrypted += decipher.final('utf8');  
+// encrypted value from the cipher example above
+const decipher = crypto.createDecipheriv('aes-192-cbc', key, iv);
 
-console.log(decrypted);  
+let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+decrypted += decipher.final('utf8');
+
+console.log(decrypted);
 ```
 
 <div align="right">
@@ -4672,7 +6027,7 @@ The Node.js runtime is the software stack responsible for installing your web se
 The Node.js runtime for App Engine in the standard environment is declared in the `app.yaml` file:
 
 ```js
-runtime: nodejs10
+runtime: nodejs22
 ```
 
 The runtime environment is literally just the environment your application is running in. This can be used to describe both the hardware and the software that is running your application. How much RAM, what version of node, what operating system, how much CPU cores, can all be referenced when talking about a runtime environment.
@@ -4699,6 +6054,88 @@ if (process.env.NODE_ENV === 'development')
 ```
 
 Upon that, if the project runs on production it will use caching.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to manage environment variables using dotenv in Node.js?
+
+The `dotenv` package loads environment variables from a `.env` file into `process.env`, keeping secrets and configuration out of source code.
+
+**Installation:**
+
+```bash
+npm install dotenv
+```
+
+**`.env` file (never commit to git):**
+
+```
+PORT=3000
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+JWT_SECRET=supersecretkey123
+NODE_ENV=development
+```
+
+**Loading dotenv — load as early as possible:**
+
+```js
+// app.js
+require('dotenv').config(); // must be called before any process.env usage
+
+const express = require('express');
+const app = express();
+
+const port = process.env.PORT || 3000;
+const dbUrl = process.env.DATABASE_URL;
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
+```
+
+**ES Module syntax (Node.js v20.6+ supports `--env-file` natively):**
+
+```js
+// app.mjs
+import 'dotenv/config';  // side-effect import — loads .env immediately
+import express from 'express';
+```
+
+**Best practices:**
+
+```
+.env              ← local secrets (gitignored)
+.env.example      ← committed template showing required variables (no real values)
+.env.test         ← overrides for test environment
+```
+
+**.gitignore:**
+
+```
+.env
+.env.local
+.env.*.local
+```
+
+**Validating required env variables at startup (fail fast):**
+
+```js
+require('dotenv').config();
+
+const required = ['DATABASE_URL', 'JWT_SECRET', 'PORT'];
+const missing = required.filter(key => !process.env[key]);
+
+if (missing.length > 0) {
+  console.error(`Missing required environment variables: ${missing.join(', ')}`);
+  process.exit(1);
+}
+```
+
+**Node.js v20.6+ built-in (no package needed):**
+
+```bash
+node --env-file=.env app.js
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -4956,53 +6393,1696 @@ console.log(x); // 10
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-# Timing Function Execution in Node.js
+## Q. What is the path module in Node.js?
 
-You can check the runtime of a function in Node.js by using the `console.time()` and `console.timeEnd()` functions. Here's an example with an explanation:
+The `path` module provides utilities for working with file and directory paths. It handles cross-platform differences between Unix (`/`) and Windows (`\`) path separators automatically.
 
-    ```javascript
-    function myFunction() {
-      console.log("Function started");
-      
-      // Start the timer
-      console.time("myFunction");
-    
-      // Simulate some time-consuming task
-      for (let i = 0; i < 1000000000; i++) {
-        // Do some work
-      }
-    
-      // End the timer
-      console.timeEnd("myFunction");
-    
-      console.log("Function ended");
-    }
-    
-    myFunction();
+**Example:**
 
+```js
+const path = require('path');
 
-## In this example:
+// Join path segments (cross-platform)
+console.log(path.join('/users', 'alice', 'docs', 'file.txt'));
+// /users/alice/docs/file.txt
 
-- We use `console.log` to print a message indicating the start of the function.
-- We start a timer named "myFunction" using `console.time("myFunction")`.
-- We simulate a time-consuming task by running a loop.
-- After the loop is finished, we end the timer using `console.timeEnd("myFunction")`.
-- Finally, we use `console.log` to print a message indicating the end of the function.
+// Resolve an absolute path from the current working directory
+console.log(path.resolve('src', 'index.js'));
+// /current/working/dir/src/index.js
 
+// Directory name
+console.log(path.dirname('/users/alice/file.txt')); // /users/alice
 
-- Function started
-- myFunction: 5431.709ms
-- Function ended
+// File name with and without extension
+console.log(path.basename('/users/alice/file.txt'));         // file.txt
+console.log(path.basename('/users/alice/file.txt', '.txt')); // file
 
-The time in milliseconds (ms) represents the runtime of the function `myFunction`. You can use this approach to measure the runtime of specific parts of your code to identify performance bottlenecks or optimize your code.
+// File extension
+console.log(path.extname('index.html')); // .html
+
+// Parse a path into its components
+console.log(path.parse('/users/alice/file.txt'));
+// { root: '/', dir: '/users/alice', base: 'file.txt', ext: '.txt', name: 'file' }
+
+// Normalize a path (resolves . and ..)
+console.log(path.normalize('/users/alice/../bob/./file.txt'));
+// /users/bob/file.txt
+```
+
+**`__dirname` and `__filename` (CommonJS):**
+
+```js
+console.log(__dirname);  // absolute path of the directory containing the file
+console.log(__filename); // absolute path of the current file
+
+// Building safe paths relative to the current file
+const configPath = path.join(__dirname, 'config', 'settings.json');
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the os module in Node.js?
+
+The `os` module provides operating system-level utility functions and properties. It is commonly used to retrieve platform information, CPU count for clustering, memory stats, and system identifiers.
+
+**Example:**
+
+```js
+const os = require('os');
+
+console.log('Platform:     ', os.platform());     // win32 | linux | darwin
+console.log('Architecture: ', os.arch());         // x64 | arm64
+console.log('CPU cores:    ', os.cpus().length);  // e.g., 8
+console.log('Hostname:     ', os.hostname());
+console.log('Home dir:     ', os.homedir());      // /home/user or C:\Users\user
+console.log('Temp dir:     ', os.tmpdir());
+
+console.log(
+  'Total memory: ',
+  (os.totalmem() / 1024 ** 3).toFixed(2), 'GB'
+);
+console.log(
+  'Free memory:  ',
+  (os.freemem() / 1024 ** 3).toFixed(2), 'GB'
+);
+
+console.log('Uptime:       ', os.uptime(), 'seconds');
+console.log('OS type:      ', os.type());  // Linux | Windows_NT | Darwin
+console.log('EOL marker:   ', JSON.stringify(os.EOL)); // "\n" or "\r\n"
+```
+
+**Common use cases:**
+
+```js
+const cluster = require('cluster');
+const os = require('os');
+
+// Fork one worker per CPU core
+if (cluster.isPrimary) {
+  const numCPUs = os.cpus().length;
+  for (let i = 0; i < numCPUs; i++) cluster.fork();
+}
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to measure function execution time in Node.js?
+
+Use `console.time()` / `console.timeEnd()` for quick profiling, or `performance.now()` / `process.hrtime.bigint()` for high-resolution timing in production code.
+
+**1. `console.time()` (development / debugging):**
+
+```js
+console.time('myFunction');
+
+for (let i = 0; i < 1_000_000; i++) {
+  // simulated work
+}
+
+console.timeEnd('myFunction'); // myFunction: 3.456ms
+```
+
+**2. `performance.now()` (Web Performance API, available globally since Node.js v16):**
+
+```js
+const { performance } = require('perf_hooks');
+
+const start = performance.now();
+for (let i = 0; i < 1_000_000; i++) {}
+const end = performance.now();
+
+console.log(`Execution time: ${(end - start).toFixed(3)} ms`);
+```
+
+**3. `process.hrtime.bigint()` (highest resolution, nanoseconds):**
+
+```js
+const start = process.hrtime.bigint();
+for (let i = 0; i < 1_000_000; i++) {}
+const end = process.hrtime.bigint();
+
+console.log(`Execution time: ${(end - start) / 1_000_000n} ms`);
+```
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 
-#### Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
-#### Q. What are SOLID principles?
-#### Q. How to develop Node.js app using SOLID principles?
+## Q. What is Distributed Denial of Service (DDoS) attacks and how to secure NodeJS REST API from it?
+
+A **Distributed Denial of Service (DDoS)** attack attempts to make a server unavailable by flooding it with a massive volume of requests from many different sources simultaneously, exhausting its CPU, memory, bandwidth, or connection limits.
+
+**Common DDoS and abuse attack vectors:**
+
+| Attack Type | Description |
+|-------------|-------------|
+| Volumetric | Flood with high traffic (UDP flood, ICMP flood) |
+| Protocol | Exploit protocol weaknesses (SYN flood) |
+| Application layer (L7) | Target specific endpoints with HTTP requests |
+| Brute force | Repeated login/password guesses |
+| Slowloris | Keep many connections open slowly |
+
+**Securing a Node.js REST API:**
+
+**1. Rate Limiting (express-rate-limit):**
+
+```js
+const rateLimit = require('express-rate-limit');
+
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,                  // max requests per window per IP
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+}));
+```
+
+**2. Slow down repeated requests (express-slow-down):**
+
+```js
+const slowDown = require('express-slow-down');
+
+app.use(slowDown({
+  windowMs: 60 * 1000,
+  delayAfter: 50,       // start slowing after 50 requests
+  delayMs: (hits) => hits * 200, // each extra request adds 200ms delay
+}));
+```
+
+**3. Use Helmet to set secure HTTP headers:**
+
+```js
+const helmet = require('helmet');
+app.use(helmet()); // sets X-Content-Type-Options, X-Frame-Options, HSTS, etc.
+```
+
+**4. Limit request body size:**
+
+```js
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ limit: '10kb', extended: true }));
+```
+
+**5. Use a reverse proxy / CDN with DDoS protection:**
+
+Place your Node.js app behind **Nginx**, **Cloudflare**, **AWS Shield**, or **AWS WAF** which can absorb and filter attack traffic before it reaches your application.
+
+```nginx
+# nginx.conf — connection limiting
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+limit_conn addr 100;
+
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+limit_req zone=api burst=20 nodelay;
+```
+
+**6. Block suspicious IPs and implement allowlists:**
+
+```js
+const blocklist = new Set(['1.2.3.4', '5.6.7.8']);
+
+app.use((req, res, next) => {
+  const ip = req.ip;
+  if (blocklist.has(ip)) {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
+  next();
+});
+```
+
+**7. Monitor and alert:**
+
+Use tools like **Datadog**, **New Relic**, or **Prometheus + Grafana** to detect traffic spikes and trigger automated scaling or blocking rules.
+
+**Defence-in-depth summary:**
+
+| Layer | Tool |
+|-------|------|
+| Network/CDN | Cloudflare, AWS Shield |
+| Reverse proxy | Nginx, HAProxy |
+| Application | express-rate-limit, Helmet |
+| Monitoring | Datadog, Prometheus |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are SOLID principles?
+
+**SOLID** is an acronym for five object-oriented design principles that make software more maintainable, scalable, and testable. They apply equally well to Node.js/JavaScript code.
+
+| Letter | Principle | Short definition |
+|--------|-----------|-----------------|
+| **S** | Single Responsibility Principle | A class/module should have only one reason to change |
+| **O** | Open/Closed Principle | Open for extension, closed for modification |
+| **L** | Liskov Substitution Principle | Subtypes must be substitutable for their base types |
+| **I** | Interface Segregation Principle | No client should depend on methods it does not use |
+| **D** | Dependency Inversion Principle | Depend on abstractions, not concretions |
+
+**S — Single Responsibility Principle:**
+
+```js
+// ❌ Bad: one class does too many things
+class UserService {
+  createUser(data) { /* ... */ }
+  sendWelcomeEmail(user) { /* ... */ } // email logic does not belong here
+  saveToDatabase(user) { /* ... */ }   // DB logic does not belong here
+}
+
+// ✅ Good: each class has one responsibility
+class UserService {
+  constructor(userRepository, emailService) {
+    this.repo = userRepository;
+    this.email = emailService;
+  }
+  async createUser(data) {
+    const user = await this.repo.save(data);
+    await this.email.sendWelcome(user);
+    return user;
+  }
+}
+```
+
+**O — Open/Closed Principle:**
+
+```js
+// ❌ Bad: must modify existing code to add a new discount type
+function getDiscount(type, price) {
+  if (type === 'student') return price * 0.8;
+  if (type === 'senior')  return price * 0.7;
+  // adding new type requires editing this function
+}
+
+// ✅ Good: extend via new classes without modifying existing ones
+class StudentDiscount { apply(price) { return price * 0.8; } }
+class SeniorDiscount  { apply(price) { return price * 0.7; } }
+class VIPDiscount     { apply(price) { return price * 0.6; } } // new type, no edit
+
+function getDiscount(strategy, price) {
+  return strategy.apply(price);
+}
+```
+
+**L — Liskov Substitution Principle:**
+
+```js
+class Shape   { area() { throw new Error('Not implemented'); } }
+class Circle  extends Shape { constructor(r) { super(); this.r = r; } area() { return Math.PI * this.r ** 2; } }
+class Square  extends Shape { constructor(s) { super(); this.s = s; } area() { return this.s ** 2; } }
+
+// Any Shape subtype can be passed here — LSP satisfied
+function printArea(shape) {
+  console.log(`Area: ${shape.area()}`);
+}
+```
+
+**I — Interface Segregation Principle:**
+
+```js
+// ❌ Bad: one fat interface forces unused methods
+class Animal {
+  eat() {}
+  fly() {}   // fish don\'t fly — forced to implement or leave empty
+  swim() {}
+}
+
+// ✅ Good: split into focused interfaces (mixins)
+const Swimmer = (Base) => class extends Base { swim() { console.log('swimming'); } };
+const Flyer   = (Base) => class extends Base { fly()  { console.log('flying');   } };
+
+class Animal  { eat() { console.log('eating'); } }
+class Fish    extends Swimmer(Animal) {}
+class Bird    extends Flyer(Swimmer(Animal)) {}
+```
+
+**D — Dependency Inversion Principle:**
+
+```js
+// ❌ Bad: high-level module depends on a concrete low-level module
+class OrderService {
+  constructor() {
+    // tightly coupled — impossible to swap DB or unit test without a real MSSQL connection
+    this.db = new MSSQLDatabase();
+  }
+}
+
+// ✅ Good: depend on an abstraction injected from outside
+// db/mssqlDatabase.js — concrete MSSQL implementation
+const sql = require('mssql');
+
+class MSSQLDatabase {
+  constructor(pool) {
+    this.pool = pool; // injected mssql pool
+  }
+
+  async save(order) {
+    const result = await this.pool.request()
+      .input('productId', sql.Int,          order.productId)
+      .input('quantity',  sql.Int,          order.quantity)
+      .input('total',     sql.Decimal(10,2), order.total)
+      .query(`
+        INSERT INTO orders (productId, quantity, total)
+        OUTPUT INSERTED.id, INSERTED.productId, INSERTED.quantity, INSERTED.total
+        VALUES (@productId, @quantity, @total)
+      `);
+    return result.recordset[0];
+  }
+}
+
+// services/orderService.js — high-level module depends only on the injected abstraction
+class OrderService {
+  constructor(database) {   // accepts any object with a .save() method
+    this.db = database;
+  }
+
+  async placeOrder(order) {
+    if (!order.productId || !order.quantity) {
+      throw new Error('Invalid order data');
+    }
+    return this.db.save(order);
+  }
+}
+
+// app.js — compose dependencies at the top (composition root)
+const { poolPromise } = require('./db/mssql');
+
+(async () => {
+  const pool = await poolPromise;
+
+  // Production: real MSSQL database
+  const mssqlDb  = new MSSQLDatabase(pool);
+  const service  = new OrderService(mssqlDb);
+
+  // Test: plain mock — no real DB needed
+  const mockDb   = { save: jest.fn().mockResolvedValue({ id: 1 }) };
+  const testSvc  = new OrderService(mockDb);
+})();
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to develop Node.js app using SOLID principles?
+
+A practical Express.js REST API structured around all five SOLID principles:
+
+**Project structure:**
+
+```
+src/
+├── controllers/    userController.js   (S)
+├── services/       userService.js      (S, D)
+├── repositories/   userRepository.js   (S, D)
+├── middlewares/    errorHandler.js     (S)
+├── validators/     userValidator.js    (S, I)
+└── app.js
+```
+
+**1. Repository (Data Access) — S & D:**
+
+```js
+// src/repositories/userRepository.js
+class UserRepository {
+  constructor(db) {
+    this.db = db; // injected — Dependency Inversion
+  }
+  async findById(id) { return this.db.collection('users').findOne({ _id: id }); }
+  async save(data)   { return this.db.collection('users').insertOne(data); }
+}
+module.exports = UserRepository;
+```
+
+**2. Service (Business Logic) — S & O:**
+
+```js
+// src/services/userService.js
+class UserService {
+  constructor(userRepository, emailService) {
+    this.repo  = userRepository;
+    this.email = emailService;
+  }
+
+  async createUser(data) {
+    const existing = await this.repo.findByEmail(data.email);
+    if (existing) throw Object.assign(new Error('Email already exists'), { status: 409 });
+
+    const user = await this.repo.save({ ...data, createdAt: new Date() });
+    await this.email.sendWelcome(user); // Open/Closed: swap email provider without touching service
+    return user;
+  }
+
+  async getUserById(id) {
+    const user = await this.repo.findById(id);
+    if (!user) throw Object.assign(new Error('User not found'), { status: 404 });
+    return user;
+  }
+}
+module.exports = UserService;
+```
+
+**3. Controller (HTTP layer) — S:**
+
+```js
+// src/controllers/userController.js
+class UserController {
+  constructor(userService) {
+    this.service = userService;
+  }
+
+  create = async (req, res, next) => {
+    try {
+      const user = await this.service.createUser(req.body);
+      res.status(201).json(user);
+    } catch (err) { next(err); }
+  };
+
+  getById = async (req, res, next) => {
+    try {
+      const user = await this.service.getUserById(req.params.id);
+      res.json(user);
+    } catch (err) { next(err); }
+  };
+}
+module.exports = UserController;
+```
+
+**4. Validator middleware — I (focused, single concern):**
+
+```js
+// src/validators/userValidator.js
+const Joi = require('joi');
+
+const createUserSchema = Joi.object({
+  name:  Joi.string().min(2).max(50).required(),
+  email: Joi.string().email().required(),
+  age:   Joi.number().integer().min(18).optional(),
+});
+
+const validateCreateUser = (req, res, next) => {
+  const { error } = createUserSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    return res.status(400).json({ errors: error.details.map(d => d.message) });
+  }
+  next();
+};
+module.exports = { validateCreateUser };
+```
+
+**5. Centralized error handler — S:**
+
+```js
+// src/middlewares/errorHandler.js
+const errorHandler = (err, req, res, next) => {
+  const status  = err.status || err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  console.error(`[${status}] ${req.method} ${req.url} — ${message}`);
+  res.status(status).json({ message });
+};
+module.exports = errorHandler;
+```
+
+**6. Wiring everything together — D (composition root):**
+
+```js
+// src/app.js
+const express     = require('express');
+const UserRepository = require('./repositories/userRepository');
+const UserService    = require('./services/userService');
+const UserController = require('./controllers/userController');
+const EmailService   = require('./services/emailService');
+const errorHandler   = require('./middlewares/errorHandler');
+const { validateCreateUser } = require('./validators/userValidator');
+
+function createApp(db) {
+  const app = express();
+  app.use(express.json());
+
+  // Dependency Injection — compose at the top
+  const repo       = new UserRepository(db);
+  const email      = new EmailService();
+  const service    = new UserService(repo, email);
+  const controller = new UserController(service);
+
+  app.post('/api/users',     validateCreateUser, controller.create);
+  app.get('/api/users/:id',  controller.getById);
+
+  app.use(errorHandler);
+  return app;
+}
+module.exports = createApp;
+```
+
+**Benefits of this structure:**
+
+| Principle | Benefit achieved |
+|-----------|-----------------|
+| **S** | Each file has one job — easy to find and change logic |
+| **O** | Swap `EmailService` or `UserRepository` without touching business logic |
+| **L** | Any repository implementing `findById`/`save` works with `UserService` |
+| **I** | Validator only exposes what routes need |
+| **D** | All dependencies injected — fully testable with mocks |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 19. NODE.JS ENVIRONMENT & CONFIGURATION
+
+<br/>
+
+## Q. What are environment variables in Node.js and how to use them?
+
+Environment variables are key-value pairs available to a process at runtime, stored outside the application code. In Node.js they are accessed via `process.env`. They are the standard way to configure application behaviour (ports, credentials, feature flags) across different environments (development, test, production) without changing code.
+
+**Example:**
+
+```js
+// Set via the terminal before running the app:
+// PORT=4000 NODE_ENV=production node app.js
+
+const port = process.env.PORT || 3000;
+const env  = process.env.NODE_ENV || 'development';
+
+console.log(`Running on port ${port} in ${env} mode`);
+```
+
+**Common environment variables in Node.js projects:**
+
+| Variable | Purpose |
+|----------|---------|
+| `NODE_ENV` | Runtime environment (`development`, `test`, `production`) |
+| `PORT` | HTTP server port |
+| `DATABASE_URL` | Database connection string |
+| `JWT_SECRET` | Secret key for signing JSON Web Tokens |
+| `LOG_LEVEL` | Logging verbosity (`debug`, `info`, `error`) |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use the dotenv package in Node.js?
+
+The `dotenv` package loads environment variables from a `.env` file into `process.env`, keeping secrets out of source code and making local configuration easy.
+
+**Installation:**
+
+```bash
+npm install dotenv
+```
+
+**`.env` file** (never commit this to version control):
+
+```env
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+JWT_SECRET=supersecretkey
+```
+
+**app.js:**
+
+```js
+// Load .env as early as possible — before any other require()
+require('dotenv').config();
+
+const express = require('express');
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send(`Environment: ${process.env.NODE_ENV}`);
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+```
+
+**Best practices:**
+
+```bash
+# .gitignore — never commit secrets
+.env
+.env.local
+.env.production
+```
+
+```env
+# .env.example — commit this template with placeholder values
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+JWT_SECRET=
+```
+
+> In production, set environment variables through the hosting platform (AWS Parameter Store, Heroku Config Vars, Kubernetes Secrets) instead of deploying a `.env` file.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the purpose of NODE_ENV in Node.js?
+
+`NODE_ENV` is a convention used by Node.js frameworks and libraries to alter their behaviour based on the runtime environment. It is not set automatically — you must define it explicitly.
+
+**Common values:**
+
+| Value | Usage |
+|-------|-------|
+| `development` | Verbose errors, hot reload, debug logging |
+| `test` | Isolated databases, mocked services |
+| `production` | Minified output, cached templates, suppressed stack traces |
+
+**Example — toggling behaviour:**
+
+```js
+require('dotenv').config();
+
+const express = require('express');
+const app = express();
+
+// Express automatically disables view cache and enables verbose errors
+// when NODE_ENV !== 'production'
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+
+// Custom behaviour based on environment
+if (process.env.NODE_ENV === 'production') {
+  // Use a real database connection
+  app.use(require('./middleware/errorHandler'));   // hides stack traces
+} else {
+  // Use an in-memory SQLite database for development
+  app.use((err, req, res, next) => {
+    console.error(err.stack);   // show full stack in dev
+    res.status(500).json({ error: err.message, stack: err.stack });
+  });
+}
+```
+
+**Setting NODE_ENV:**
+
+```bash
+# Linux / macOS
+NODE_ENV=production node app.js
+
+# Windows PowerShell
+$env:NODE_ENV="production"; node app.js
+
+# Cross-platform via npm script (cross-env package)
+npm install --save-dev cross-env
+# package.json
+"scripts": {
+  "start": "cross-env NODE_ENV=production node app.js",
+  "dev":   "cross-env NODE_ENV=development nodemon app.js"
+}
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to manage configuration for different environments in Node.js?
+
+A common pattern is a dedicated `config` module that reads from environment variables and provides typed, validated configuration to the rest of the application.
+
+**Example — config module:**
+
+```js
+// config/index.js
+require('dotenv').config();
+
+const config = {
+  app: {
+    port: parseInt(process.env.PORT, 10) || 3000,
+    env: process.env.NODE_ENV || 'development',
+  },
+  db: {
+    url: process.env.DATABASE_URL,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+  },
+};
+
+// Validate required variables at startup
+const required = ['DATABASE_URL', 'JWT_SECRET'];
+for (const key of required) {
+  if (!process.env[key]) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+}
+
+module.exports = config;
+```
+
+```js
+// app.js
+const config = require('./config');
+
+console.log(`Starting on port ${config.app.port}`);
+```
+
+**Failing fast** on missing variables at startup prevents hard-to-diagnose runtime errors.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 20. NODE.JS SECURITY
+
+<br/>
+
+## Q. How to secure a Node.js application?
+
+Node.js application security involves protecting against the OWASP Top 10 and other common threats. Key practices include:
+
+| Practice | Tool / Technique |
+|----------|-----------------|
+| Set security HTTP headers | `helmet` middleware |
+| Rate limiting | `express-rate-limit` |
+| Input validation | `joi`, `zod`, `express-validator` |
+| Hash passwords | `bcrypt` |
+| Avoid command injection | `execFile()` instead of `exec()` |
+| Use parameterized queries | Avoid raw SQL string interpolation |
+| Keep dependencies updated | `npm audit`, `npm update` |
+| Store secrets in env vars | `dotenv`, secrets manager |
+
+**Example — applying essential security middleware:**
+
+```js
+const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// 1. Set secure HTTP headers
+app.use(helmet());
+
+// 2. Limit repeated requests
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,                  // max 100 requests per window per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api', limiter);
+
+// 3. Parse JSON bodies with a size limit to prevent payload attacks
+app.use(express.json({ limit: '10kb' }));
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is Helmet.js and how to use it in Node.js?
+
+`helmet` is an Express middleware that sets various HTTP response headers to protect against well-known web vulnerabilities. It is a collection of smaller middleware functions, each setting or removing a specific header.
+
+**Installation:**
+
+```bash
+npm install helmet
+```
+
+**Example:**
+
+```js
+const express = require('express');
+const helmet = require('helmet');
+
+const app = express();
+
+// Apply all default Helmet middleware
+app.use(helmet());
+
+app.get('/', (req, res) => {
+  res.send('Secured with Helmet!');
+});
+
+app.listen(3000);
+```
+
+**Headers set by Helmet (defaults):**
+
+| Header | Protection |
+|--------|-----------|
+| `Content-Security-Policy` | Prevents XSS and data injection attacks |
+| `X-Frame-Options` | Blocks clickjacking via iframes |
+| `X-Content-Type-Options` | Prevents MIME sniffing |
+| `Strict-Transport-Security` | Enforces HTTPS |
+| `Referrer-Policy` | Controls referrer information leakage |
+| `X-Permitted-Cross-Domain-Policies` | Restricts Adobe Flash/PDF access |
+
+**Customising individual policies:**
+
+```js
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc:  ["'self'", "trusted-cdn.com"],
+      },
+    },
+    frameguard: { action: 'deny' },
+  })
+);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to prevent SQL injection in Node.js?
+
+SQL injection occurs when user-supplied input is directly concatenated into an SQL query, allowing attackers to modify the query's logic.
+
+**Vulnerable code:**
+
+```js
+// ❌ DANGEROUS — Never do this
+app.get('/user', async (req, res) => {
+  const name = req.query.name;
+  // Attacker sends: ?name=' OR '1'='1
+  const query = `SELECT * FROM users WHERE name = '${name}'`;
+  const rows = await db.query(query);
+  res.json(rows);
+});
+```
+
+**Fix — use parameterized queries (placeholders):**
+
+```js
+// ✅ Safe — input is treated as data, not SQL code
+const sql = require('mssql');
+const { poolPromise } = require('../db/mssql');
+
+app.get('/user', async (req, res) => {
+  const { name } = req.query;
+
+  // Validate input first
+  if (!name || typeof name !== 'string') {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
+
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('name', sql.NVarChar(100), name)  // named parameter — never concatenated
+      .query('SELECT id, name, email FROM users WHERE name = @name');
+
+    res.json(result.recordset);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+```
+
+**Stored procedure — also injection-safe with `mssql`:**
+
+```js
+app.get('/user/:id', async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('userId', sql.Int, parseInt(req.params.id, 10))
+      .execute('sp_GetUserById');   // all inputs passed as typed parameters
+
+    if (!result.recordset.length) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(result.recordset[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+```
+
+**With an ORM (Sequelize / Prisma) — safe by default:**
+
+```js
+// Sequelize
+const users = await User.findAll({ where: { name: req.query.name } });
+
+// Prisma
+const users = await prisma.user.findMany({ where: { name: req.query.name } });
+```
+
+> Always use `.input('param', sql.Type, value)` named parameters with `mssql` — never interpolate user values into query strings. Named parameters are typed and escaped by the driver, making SQL injection impossible.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement rate limiting in Node.js?
+
+Rate limiting restricts the number of requests a client can make in a given time window, protecting against brute-force attacks, credential stuffing, and denial-of-service attempts.
+
+**Installation:**
+
+```bash
+npm install express-rate-limit
+```
+
+**Example — global and per-route rate limiting:**
+
+```js
+const express = require('express');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// Global limit: 200 requests per 15 minutes per IP
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,  // Return RateLimit-* headers
+  legacyHeaders: false,
+});
+
+// Strict limit on auth endpoints: 10 attempts per 15 minutes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many login attempts, please try again after 15 minutes.' },
+});
+
+app.use(globalLimiter);
+app.use('/api/auth/login', authLimiter);
+
+app.post('/api/auth/login', (req, res) => {
+  res.json({ message: 'Login endpoint' });
+});
+
+app.listen(3000);
+```
+
+**Using Redis for distributed rate limiting** (multiple server instances):
+
+```bash
+npm install rate-limit-redis ioredis
+```
+
+```js
+const RedisStore = require('rate-limit-redis');
+const Redis = require('ioredis');
+
+const client = new Redis(process.env.REDIS_URL);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  store: new RedisStore({ sendCommand: (...args) => client.call(...args) }),
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to hash passwords securely in Node.js?
+
+Passwords must never be stored as plain text. Use `bcrypt`, which applies a slow, salted hashing algorithm designed to resist brute-force attacks.
+
+**Installation:**
+
+```bash
+npm install bcrypt
+```
+
+**Example — registration and login:**
+
+```js
+const bcrypt = require('bcrypt');
+
+const SALT_ROUNDS = 12; // higher = slower hash = more secure
+
+// --- Registration ---
+async function registerUser(plainPassword) {
+  const hash = await bcrypt.hash(plainPassword, SALT_ROUNDS);
+  // Store `hash` in the database — never store plainPassword
+  console.log('Stored hash:', hash);
+  return hash;
+}
+
+// --- Login ---
+async function loginUser(plainPassword, storedHash) {
+  const match = await bcrypt.compare(plainPassword, storedHash);
+  if (!match) {
+    throw new Error('Invalid credentials');
+  }
+  console.log('Password verified successfully');
+  return true;
+}
+
+// Usage
+(async () => {
+  const hash = await registerUser('MyP@ssw0rd!');
+  await loginUser('MyP@ssw0rd!', hash);  // true
+  await loginUser('wrongpassword', hash); // throws Error
+})();
+```
+
+**Why bcrypt?**
+
+- **Salted**: each hash is unique even for identical passwords (prevents rainbow table attacks)
+- **Slow by design**: `SALT_ROUNDS` controls the computational cost — increasing it by 1 doubles hashing time
+- **One-way**: a hash cannot be reversed to the original password
+
+> Never use MD5, SHA-1, or SHA-256 to hash passwords — they are too fast and vulnerable to brute-force attacks.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 21. NODE.JS DEBUGGING & PROFILING
+
+<br/>
+
+## Q. How to debug a Node.js application?
+
+Node.js provides several built-in and third-party debugging tools.
+
+**1. Using Chrome DevTools (`--inspect`):**
+
+```bash
+# Start the app in inspect mode
+node --inspect app.js
+
+# Break on the very first line
+node --inspect-brk app.js
+```
+
+Then open `chrome://inspect` in Chrome, click **Open dedicated DevTools for Node**, and you can:
+- Set breakpoints
+- Inspect variables
+- Step through code
+- Profile CPU and memory
+
+**2. Using VS Code debugger (`launch.json`):**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Node.js App",
+      "program": "${workspaceFolder}/app.js",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+**3. Using the built-in `node inspect` CLI:**
+
+```bash
+node inspect app.js
+```
+
+| Command | Action |
+|---------|--------|
+| `c` | Continue execution |
+| `n` | Step over (next line) |
+| `s` | Step into function |
+| `o` | Step out of function |
+| `repl` | Open interactive REPL at current scope |
+
+**4. `console` methods for quick debugging:**
+
+```js
+console.log('Value:', value);
+console.dir(obj, { depth: null });   // deep inspect objects
+console.time('label');               // start timer
+console.timeEnd('label');            // log elapsed time
+console.trace('Where am I?');        // print call stack
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to detect and fix memory leaks in Node.js?
+
+A memory leak occurs when objects are retained in memory that are no longer needed. Symptoms include steadily increasing memory usage that never drops.
+
+**Common causes:**
+
+| Cause | Example |
+|-------|---------|
+| Event listeners not removed | `emitter.on()` inside a loop without `removeListener` |
+| Closures holding large references | Callbacks capturing big objects |
+| Global variables accumulating data | Arrays/objects appended to indefinitely |
+| Unresolved Promises | Pending Promises that never settle |
+| Cache without eviction policy | In-memory maps that grow forever |
+
+**Example — detecting with `process.memoryUsage()`:**
+
+```js
+function formatMB(bytes) {
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+setInterval(() => {
+  const { heapUsed, heapTotal, rss } = process.memoryUsage();
+  console.log(`Heap Used: ${formatMB(heapUsed)} / ${formatMB(heapTotal)} | RSS: ${formatMB(rss)}`);
+}, 5000);
+```
+
+**Example — common leak: event listener accumulation:**
+
+```js
+const { EventEmitter } = require('events');
+const emitter = new EventEmitter();
+
+// ❌ Leak — new listener added on every request
+function handleRequest(req) {
+  emitter.on('data', (data) => processData(req, data));
+}
+
+// ✅ Fix — remove listener when done, or use .once()
+function handleRequest(req) {
+  const handler = (data) => {
+    processData(req, data);
+    emitter.removeListener('data', handler);
+  };
+  emitter.on('data', handler);
+}
+```
+
+**Heap snapshot with Chrome DevTools:**
+
+```bash
+node --inspect app.js
+# Take heap snapshots before and after suspected leak
+# Compare to find objects accumulating in memory
+```
+
+**clinic.js — automated performance diagnostics:**
+
+```bash
+npm install -g clinic
+clinic doctor -- node app.js   # detects event loop blocking, memory leaks
+clinic heap   -- node app.js   # detailed heap profiling
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to profile CPU performance in Node.js?
+
+CPU profiling identifies which functions consume the most execution time (hot paths), helping you optimise bottlenecks.
+
+**1. Using Chrome DevTools CPU profiler:**
+
+```bash
+node --inspect app.js
+```
+
+In Chrome DevTools → **Profiler** tab → Click **Start** → Run load → Click **Stop**. The flame chart shows which functions consume the most CPU time.
+
+**2. Using `--prof` flag (V8 built-in profiler):**
+
+```bash
+node --prof app.js
+# Generates isolate-XXXXX-v8.log
+
+# Process the log into human-readable output
+node --prof-process isolate-*.log > profile.txt
+```
+
+**3. Using `perf_hooks` module for targeted measurement:**
+
+```js
+const { performance, PerformanceObserver } = require('perf_hooks');
+
+// Measure a specific code section
+performance.mark('start-work');
+
+// Simulate work
+for (let i = 0; i < 1_000_000; i++) { Math.sqrt(i); }
+
+performance.mark('end-work');
+performance.measure('work-duration', 'start-work', 'end-work');
+
+const obs = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    console.log(`${entry.name}: ${entry.duration.toFixed(2)}ms`);
+  }
+});
+obs.observe({ entryTypes: ['measure'] });
+```
+
+**Output:**
+
+```
+work-duration: 12.34ms
+```
+
+**4. `console.time` / `console.timeEnd` for quick measurements:**
+
+```js
+console.time('db-query');
+const result = await db.query('SELECT * FROM users');
+console.timeEnd('db-query'); // db-query: 45.21ms
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use the Node.js built-in `util.debuglog` for conditional debug logging?
+
+`util.debuglog` creates a logging function that only writes output when the `NODE_DEBUG` environment variable includes the section name. This gives zero-overhead debug logging in production.
+
+**Example:**
+
+```js
+const util = require('util');
+
+const debugHttp = util.debuglog('http');
+const debugDb   = util.debuglog('db');
+
+function fetchUser(id) {
+  debugDb('Fetching user with id=%d', id);
+  // ... database call
+}
+
+function handleRequest(req) {
+  debugHttp('Received %s %s', req.method, req.url);
+  fetchUser(42);
+}
+
+handleRequest({ method: 'GET', url: '/users/42' });
+```
+
+**Activate selectively:**
+
+```bash
+# Show only DB debug messages
+NODE_DEBUG=db node app.js
+
+# Show both HTTP and DB messages
+NODE_DEBUG=http,db node app.js
+
+# Show nothing (production)
+node app.js
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 22. NODE.JS PERFORMANCE & OPTIMIZATION
+
+<br/>
+
+## Q. How to improve Node.js application performance through caching?
+
+Caching stores the result of an expensive operation so subsequent requests can be served from memory, reducing latency and database load.
+
+**1. In-memory caching (single instance):**
+
+```js
+const express = require('express');
+const app = express();
+
+// Simple in-memory cache with TTL
+const cache = new Map();
+const CACHE_TTL_MS = 60 * 1000; // 1 minute
+
+function setCache(key, value) {
+  cache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
+function getCache(key) {
+  const entry = cache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    cache.delete(key);
+    return null;
+  }
+  return entry.value;
+}
+
+app.get('/api/products', async (req, res) => {
+  const cacheKey = 'all-products';
+  const cached = getCache(cacheKey);
+
+  if (cached) {
+    return res.json({ source: 'cache', data: cached });
+  }
+
+  const products = await db.query('SELECT * FROM products');
+  setCache(cacheKey, products);
+  res.json({ source: 'database', data: products });
+});
+```
+
+**2. Redis caching (distributed — works across multiple instances):**
+
+```bash
+npm install ioredis
+```
+
+```js
+const Redis = require('ioredis');
+const redis = new Redis(process.env.REDIS_URL);
+
+const CACHE_TTL_SECONDS = 60;
+
+app.get('/api/products', async (req, res) => {
+  const cacheKey = 'all-products';
+  const cached = await redis.get(cacheKey);
+
+  if (cached) {
+    return res.json({ source: 'cache', data: JSON.parse(cached) });
+  }
+
+  const products = await db.query('SELECT * FROM products');
+  await redis.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(products));
+  res.json({ source: 'database', data: products });
+});
+```
+
+**Cache invalidation — clear on update:**
+
+```js
+app.post('/api/products', async (req, res) => {
+  await db.query('INSERT INTO products ...', [...]);
+  await redis.del('all-products'); // invalidate stale cache
+  res.status(201).json({ message: 'Product created' });
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use compression middleware to improve Node.js performance?
+
+HTTP response compression (gzip/Brotli) reduces the size of response payloads, lowering bandwidth consumption and speeding up client-side page load and API consumption.
+
+**Installation:**
+
+```bash
+npm install compression
+```
+
+**Example:**
+
+```js
+const express = require('express');
+const compression = require('compression');
+
+const app = express();
+
+// Apply compression to all responses
+// Only compresses if response is > 1KB (default threshold)
+app.use(compression({
+  level: 6,      // zlib compression level (1–9); 6 is the default balance
+  threshold: 1024, // only compress responses larger than 1KB
+  filter: (req, res) => {
+    // Don't compress responses with this header
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res); // default filter
+  },
+}));
+
+app.get('/api/data', (req, res) => {
+  const largePayload = { items: Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` })) };
+  res.json(largePayload);
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**How it works:**
+
+1. Client sends `Accept-Encoding: gzip, deflate, br`
+2. Compression middleware detects this header
+3. Response body is compressed before being sent
+4. `Content-Encoding: gzip` header is added to the response
+
+> For high-traffic production deployments, offload compression to a reverse proxy (Nginx, Caddy) or a CDN, which is more efficient than per-process Node.js compression.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use connection pooling to improve database performance in Node.js?
+
+Opening a new database connection for every request is expensive. A **connection pool** maintains a set of reusable connections, dramatically reducing connection overhead.
+
+**Why pooling matters:**
+
+| Approach | Connection overhead | Throughput |
+|----------|-------------------|------------|
+| New connection per request | High (TCP handshake + auth each time) | Low |
+| Connection pool | Low (connections reused) | High |
+
+**Example — Microsoft SQL Server with `mssql` pool:**
+
+```bash
+npm install mssql
+```
+
+**`.env`:**
+
+```env
+DB_SERVER=localhost
+DB_PORT=1433
+DB_USER=sa
+DB_PASSWORD=YourStrong@Passw0rd
+DB_NAME=myDatabase
+DB_ENCRYPT=true
+DB_TRUST_CERT=false
+```
+
+**`db/mssql.js` — create pool once, share via module cache:**
+
+```js
+const sql = require('mssql');
+
+const config = {
+  server:   process.env.DB_SERVER,
+  port:     parseInt(process.env.DB_PORT, 10) || 1433,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  options: {
+    encrypt:              process.env.DB_ENCRYPT === 'true',  // required for Azure SQL
+    trustServerCertificate: process.env.DB_TRUST_CERT === 'true', // true for local dev only
+  },
+  pool: {
+    max: 10,              // maximum number of connections in the pool
+    min: 2,               // minimum connections kept alive
+    idleTimeoutMillis: 30000, // close idle connections after 30s
+    acquireTimeoutMillis: 5000, // fail if no connection available within 5s
+  },
+};
+
+// Create the pool once — module cache ensures it's shared across the app
+const poolPromise = sql.connect(config)
+  .then(pool => {
+    console.log('Connected to MSSQL');
+    return pool;
+  })
+  .catch(err => {
+    console.error('MSSQL connection failed:', err.message);
+    process.exit(1);
+  });
+
+module.exports = { sql, poolPromise };
+```
+
+**`routes/users.js` — query using the shared pool:**
+
+```js
+const { sql, poolPromise } = require('../db/mssql');
+
+// GET all users
+async function getUsers(req, res, next) {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .query('SELECT id, name, email FROM users');
+    res.json(result.recordset);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// GET user by id — parameterized query (prevents SQL injection)
+async function getUserById(req, res, next) {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('id', sql.Int, parseInt(req.params.id, 10))
+      .query('SELECT id, name, email FROM users WHERE id = @id');
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(result.recordset[0]);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// POST create user — parameterized inputs
+async function createUser(req, res, next) {
+  try {
+    const { name, email } = req.body;
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('name',  sql.NVarChar(100), name)
+      .input('email', sql.NVarChar(200), email)
+      .query(`
+        INSERT INTO users (name, email)
+        OUTPUT INSERTED.id, INSERTED.name, INSERTED.email
+        VALUES (@name, @email)
+      `);
+    res.status(201).json(result.recordset[0]);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getUsers, getUserById, createUser };
+```
+
+**`app.js` — wire routes:**
+
+```js
+require('dotenv').config();
+const express = require('express');
+const { getUsers, getUserById, createUser } = require('./routes/users');
+
+const app = express();
+app.use(express.json());
+
+app.get('/users',     getUsers);
+app.get('/users/:id', getUserById);
+app.post('/users',    createUser);
+
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**MSSQL pool configuration options:**
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `pool.max` | Maximum connections in the pool | `10` |
+| `pool.min` | Minimum idle connections | `0` |
+| `pool.idleTimeoutMillis` | Milliseconds before closing an idle connection | `30000` |
+| `pool.acquireTimeoutMillis` | Max wait time to acquire a connection | `5000` |
+| `options.encrypt` | Use TLS encryption (required for Azure SQL) | `false` |
+| `options.trustServerCertificate` | Skip certificate validation (dev only) | `false` |
+
+**Using stored procedures:**
+
+```js
+const result = await pool.request()
+  .input('userId', sql.Int, 1)
+  .output('userName', sql.NVarChar(100))
+  .execute('sp_GetUserById');
+
+console.log(result.output.userName);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use PM2 for Node.js process management in production?
+
+PM2 is a production-grade process manager for Node.js that provides automatic restarts, clustering, log management, and monitoring.
+
+**Installation:**
+
+```bash
+npm install -g pm2
+```
+
+**Basic commands:**
+
+```bash
+# Start the application
+pm2 start app.js --name "my-app"
+
+# Start in cluster mode (one process per CPU core)
+pm2 start app.js --name "my-app" -i max
+
+# List running processes
+pm2 list
+
+# Monitor CPU and memory in real time
+pm2 monit
+
+# View logs
+pm2 logs my-app
+
+# Restart / reload (zero-downtime)
+pm2 reload my-app
+
+# Stop and delete
+pm2 delete my-app
+
+# Save process list and auto-start on system reboot
+pm2 save
+pm2 startup
+```
+
+**`ecosystem.config.js` — configuration file:**
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: 'my-app',
+      script: 'app.js',
+      instances: 'max',      // one per CPU core
+      exec_mode: 'cluster',
+      watch: false,
+      env: {
+        NODE_ENV: 'development',
+        PORT: 3000,
+      },
+      env_production: {
+        NODE_ENV: 'production',
+        PORT: 8080,
+      },
+      max_memory_restart: '500M',  // restart if memory exceeds 500MB
+      error_file: 'logs/err.log',
+      out_file: 'logs/out.log',
+    },
+  ],
+};
+```
+
+```bash
+# Start using ecosystem file
+pm2 start ecosystem.config.js --env production
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
