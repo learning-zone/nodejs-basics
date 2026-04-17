@@ -24,14 +24,20 @@ In browsers, the top-level scope is the global scope.
 That means that in browsers if you're in the global scope var something will define a global variable.
 In Node this is different. The top-level scope is not the global scope; var something inside a Node module will be local to that module.
 
+> **Note:** `__filename`, `__dirname`, `module`, and `exports` are available in **CommonJS modules** only. In **ES modules** (`.mjs` or `"type":"module"` in package.json) use `import.meta.filename`, `import.meta.dirname` (Node.js 21.2+), and `import`/`export` syntax instead.
+
 |  API        |  Description |
 |-------------|--------------|
-|__filename;  | The filename of the code being executed. (absolute path)|
-|__dirname;   | The name of the directory that the currently executing script resides in. (absolute path)|
-|module;      | A reference to the current module. In particular module.exports is used for defining what a module exports and makes available through require().
-|exports;     | A reference to the module.exports that is shorter to type.|
+|__filename;  | The filename of the code being executed. (absolute path) – CommonJS only|
+|__dirname;   | The name of the directory that the currently executing script resides in. (absolute path) – CommonJS only|
+|module;      | A reference to the current module. In particular module.exports is used for defining what a module exports and makes available through require(). – CommonJS only|
+|exports;     | A reference to the module.exports that is shorter to type. – CommonJS only|
 |process;     | The process object is a global object and can be accessed from anywhere. It is an instance of EventEmitter.|
 |Buffer;      | The Buffer class is a global type for dealing with binary data directly.|
+|globalThis;  | The standard way to reference the global object in both Node.js and browsers (replaces the Node.js-specific `global`). Available since Node.js 12.|
+|fetch();     | Native Fetch API – available globally since Node.js 18, no third-party package required.|
+|structuredClone(); | Deep-clone an object (global since Node.js 17).|
+|crypto;      | Web Crypto API exposed as a global (since Node.js 19). For the full Node.js crypto module use `require('crypto')` / `import { ... } from 'node:crypto'`.|
 
 ## Console
 
@@ -57,22 +63,35 @@ In Node this is different. The top-level scope is not the global scope; var some
 |clearInterval(t);                            | Stop a timer that was previously created with setInterval().|
 |setImmediate(callback, [arg], [...]);        | To schedule the "immediate" execution of callback after I/O events callbacks and before setTimeout and setInterval.|
 |clearImmediate(immediateObject);             | Stop a timer that was previously created with setImmediate().|
-|unref();  | Allow you to create a timer that is active but if it is the only item left in the event loop, node won't keep the program running.|
+|unref();  | Allow you to create a timer that is active but if it is the only item left in the event loop, node won\'t keep the program running.|
 |ref();    | If you had previously unref()d a timer you can call ref() to explicitly request the timer hold the program open.
 
 ## Modules
 
+**CommonJS (CJS)** — the original Node.js module system, used with `.js` files when `"type"` is not set (or is `"commonjs"`) in `package.json`:
+
 ```javascript
-var module = require('./module.js');    // Loads the module module.js in the same directory.
+const module = require('./module.js');    // Loads the module module.js in the same directory.
 module.require('./another_module.js');  // load another_module as if require() was called from the module itself.
 ```
+
+**ES Modules (ESM)** — the modern standard, used with `.mjs` files or when `"type": "module"` is set in `package.json` (Node.js 12+ stable):
+
+```javascript
+import { something } from './module.js';   // Named import (file extension required in ESM)
+import defaultExport from './module.js';   // Default import
+export const area = (r) => 3.14 * r * r;  // Named export
+export default function(width) { ... }    // Default export
+```
+
+> **Tip:** Prefer the `node:` protocol prefix for built-in modules to distinguish them from npm packages: `import { readFile } from 'node:fs/promises'`.
 
 |  API                                        |  Description                        |
 |---------------------------------------------|-------------------------------------|
 |module.id;       |The identifier for the module. Typically this is the fully resolved filename.|
 |module.filename; |The fully resolved filename to the module.|
 |module.loaded;   |Whether or not the module is done loading, or is in the process of loading.|
-|module.parent;   |The module that required this one.|
+|module.parent;   |**Deprecated since Node.js 14.** The module that required this one. Use `require.main === module` to check if a file was run directly.|
 |module.children; |The module objects required by this one.|
 
 ```javascript
@@ -80,7 +99,7 @@ exports.area = function (r) {
   return 3.14 * r * r;
 };
 
-// If you want the root of your module's export to be a function (such as a constructor)
+// If you want the root of your module\'s export to be a function (such as a constructor)
 // or if you want to export a complete object in one assignment instead of building it one property at a time,
 // assign it to module.exports instead of exports.
 module.exports = function(width) {
@@ -108,10 +127,10 @@ process.on('uncaughtException', function(err) {});  // Emitted when an exception
 |process.env;              |An object containing the user environment.|
 |process.execPath;         |This is the absolute pathname of the executable that started the process.|
 |process.execArgv;         |This is the set of node-specific command line options from the executable that started the process.|
-|process.arch;             |What processor architecture you're running on: 'arm', 'ia32', or 'x64'.|
+|process.arch;             |What processor architecture you're running on: `'arm'`, `'arm64'`, `'ia32'`, `'loong64'`, `'mips'`, `'mipsel'`, `'ppc64'`, `'riscv64'`, `'s390'`, `'s390x'`, `'x64'`.|
 |process.config;           |An Object containing the JavaScript representation of the configure options that were used to compile the current node executable.|
 |process.pid;              |The PID of the process.|
-|process.platform;         |What platform you're running on: 'darwin', 'freebsd', 'linux', 'sunos' or 'win32'.|
+|process.platform;         |What platform you're running on: `'aix'`, `'android'`, `'darwin'`, `'freebsd'`, `'haiku'`, `'linux'`, `'openbsd'`, `'sunos'`, `'win32'`.|
 |process.title;            |Getter/setter to set what is displayed in 'ps'.|
 |process.version;          |A compiled-in property that exposes NODE_VERSION.|
 |process.versions;         |A property exposing version strings of node and its dependencies.|
@@ -129,22 +148,23 @@ process.on('uncaughtException', function(err) {});  // Emitted when an exception
 |process.kill(pid, [signal]);   |Send a signal to a process. pid is the process id and signal is the string describing the signal to send.|
 |process.memoryUsage();       |Returns an object describing the memory usage of the Node process measured in bytes.|
 |process.nextTick(callback);  |On the next loop around the event loop call this callback.|
-|process.maxTickDepth;        |Callbacks passed to process.nextTick will usually be called at the end of the current flow of execution, and are thus approximately as fast as calling a function synchronously.|
-|process.umask([mask]);       |Sets or reads the process's file mode creation mask.|
+|process.umask([mask]);       |Sets or reads the process\'s file mode creation mask.|
 |process.uptime();            |Number of seconds Node has been running.|
-|process.hrtime();            |Returns the current high-resolution real time in a [seconds, nanoseconds] tuple Array.|
+|process.hrtime();            |Returns the current high-resolution real time in a [seconds, nanoseconds] tuple Array. **Prefer `process.hrtime.bigint()`** (added Node.js 10) which returns a single BigInt and avoids tuple arithmetic.|
+|process.hrtime.bigint();     |Returns the current high-resolution real time as a `BigInt` (nanoseconds). Preferred over `process.hrtime()` for new code.|
+|process.report;              |Object whose methods generate Node.js diagnostic reports (added Node.js 11.8). E.g. `process.report.writeReport()`.|
 
 ## Child Process
 
 Node provides a tri-directional popen facility through the child_process module.
-It is possible to stream data through a child's stdin, stdout, and stderr in a fully non-blocking way.
+It is possible to stream data through a child\'s stdin, stdout, and stderr in a fully non-blocking way.
 
 |  API                     |  Description                         |
 |--------------------------|--------------------------------------|
 ChildProcess;              |Class. ChildProcess is an EventEmitter|
-child.stdin;               |A Writable Stream that represents the child process's stdin|
-child.stdout;              |A Readable Stream that represents the child process's stdout|
-child.stderr;              |A Readable Stream that represents the child process's stderr.|
+child.stdin;               |A Writable Stream that represents the child process\'s stdin|
+child.stdout;              |A Readable Stream that represents the child process\'s stdout|
+child.stderr;              |A Readable Stream that represents the child process\'s stderr.|
 child.pid;                 |The PID of the child process|
 child.connected;           |If .connected is false, it is no longer possible to send messages|
 child.kill([signal]);      |Send a signal to the child process|
@@ -157,22 +177,27 @@ child_process.fork(modulePath, [args], [options]);            |This is a special
 
 ## Util
 
-These functions are in the module 'util'. Use require('util') to access them.
+These functions are in the module 'util'. Use `require('util')` / `import { ... } from 'node:util'` to access them.
+
+> **Note:** `util.debug()`, `util.error()`, `util.puts()`, `util.print()` were removed in Node.js 12. Use `console` methods instead.  
+> `util.isArray()`, `util.isRegExp()`, `util.isDate()`, `util.isError()` were deprecated in Node.js 4 and **removed in Node.js 22**. Use `Array.isArray()`, `instanceof`, or `util.types.*` instead.
 
 |  API                        |  Description                         |
 |-----------------------------|--------------------------------------|
-|util.format(format, [...]);  |Returns a formatted string using the first argument as a printf-like format. (%s, %d, %j)|
-|util.debug(string);          |A synchronous output function. Will block the process and output string immediately to stderr|
-|util.error([...]);           |Same as util.debug() except this will output all arguments immediately to stderr.|
-|util.puts([...]);            |A synchronous output function. Will block the process and output all arguments to stdout with newlines after each argument.|
-|util.print([...]);           |A synchronous output function. Will block the process, cast each argument to a string then output to stdout. (no newlines)|
-|util.log(string);              |Output with timestamp on stdout.|
-|util.inspect(object, [opts]);  |Return a string representation of object, which is useful for debugging. (options: showHidden, depth, colors, customInspect)|
-|util.isArray(object);          |Returns true if the given "object" is an Array. false otherwise.|
-|util.isRegExp(object);         |Returns true if the given "object" is a RegExp. false otherwise.|
-|util.isDate(object);           |Returns true if the given "object" is a Date. false otherwise.|
-|util.isError(object);          |Returns true if the given "object" is an Error. false otherwise.|
-|util.inherits(constructor, superConstructor); |Inherit the prototype methods from one constructor into another.|
+|util.format(format, [...]);  |Returns a formatted string using the first argument as a printf-like format. (%s, %d, %i, %f, %j, %o, %O)|
+|util.log(string);              |Output with timestamp on stdout. (**Deprecated** – use a logging library instead.)|
+|util.inspect(object, [opts]);  |Return a string representation of object, useful for debugging. Options: `showHidden`, `depth`, `colors`, `compact`, `breakLength`, `sorted`.|
+|util.promisify(original);      |Takes a function with an error-first callback and returns a Promise-returning version. Added Node.js 8.|
+|util.callbackify(original);    |Takes an `async` function and returns a function that follows the error-first callback convention. Added Node.js 8.|
+|util.inherits(constructor, superConstructor); |Inherit the prototype methods from one constructor into another. (Prefer ES6 `class` / `extends` for new code.)|
+|util.deprecate(fn, msg);       |Wraps `fn` so it emits a deprecation warning when called.|
+|util.isDeepStrictEqual(val1, val2); |Returns `true` if `val1` and `val2` have deep strict equality. Added Node.js 9.|
+|util.parseArgs([config]);      |High-level helper for parsing command-line arguments (replaces manual `process.argv` parsing). Added Node.js 18.3.|
+|util.types.isDate(value);      |Returns `true` if the value is a built-in `Date` instance.|
+|util.types.isRegExp(value);    |Returns `true` if the value is a built-in `RegExp` instance.|
+|util.types.isNativeError(value); |Returns `true` if the value is a built-in `Error` instance.|
+|util.types.isAsyncFunction(value); |Returns `true` if the value is an async function.|
+|util.types.isGeneratorFunction(value); |Returns `true` if the value is a generator function.|
 
 ## Events
 
@@ -185,12 +210,17 @@ All EventEmitters emit the event 'newListener' when new listeners are added and 
 |emitter.addListener(event, listener);  |Adds a listener to the end of the listeners array for the specified event.|
 |emitter.on(event, listener);           |Same as emitter.addListener().|
 |emitter.once(event, listener);         |Adds a one time listener for the event. This listener is invoked only the next time the event is fired, after which it is removed.|
+|emitter.off(event, listener);          |Alias for `emitter.removeListener()`. Added Node.js 10.|
 |emitter.removeListener(event, listener); |Remove a listener from the listener array for the specified event.|
 |emitter.removeAllListeners([event]);     |Removes all listeners, or those of the specified event.|
 |emitter.setMaxListeners(n);              |By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.|
+|emitter.getMaxListeners();               |Returns the current maximum listener value. Added Node.js 1.|
 |emitter.listeners(event);                   |Returns an array of listeners for the specified event.|
+|emitter.rawListeners(event);                |Returns a copy of the array of listeners including any wrappers added by `once()`. Added Node.js 9.4.|
 |emitter.emit(event, [arg1], [arg2], [...]); |Execute each of the listeners in order with the supplied arguments. Returns true if event had listeners, false otherwise.|
-|EventEmitter.listenerCount(emitter, event);  |Return the number of listeners for a given event.|
+|emitter.listenerCount(event);               |Return the number of listeners for a given event. **Prefer this instance method** over the deprecated static `EventEmitter.listenerCount(emitter, event)`.|
+|EventEmitter.listenerCount(emitter, event);  |**Deprecated since Node.js 4.** Use `emitter.listenerCount(event)` instead.|
+|EventEmitter.on(emitter, event, [options]);  |Returns an async iterator that iterates `event` events. Added Node.js 12.|
 
 ## Stream
 
@@ -248,74 +278,87 @@ Examples of Transform streams include: zlib streams, crypto streams.
 
 ## File System
 
-To use this module do require('fs').
+To use this module do `require('fs')` / `import { ... } from 'node:fs'`.
 All the methods have asynchronous and synchronous forms.
+
+> **Recommended:** Use `fs/promises` (or `require('fs').promises`) for Promise-based async operations instead of callbacks. Available since Node.js 10 (stable in Node.js 14):
+> ```javascript
+> const fs = require('node:fs/promises');
+> const data = await fs.readFile('file.txt', 'utf8');
+> ```
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
-|fs.rename(oldPath, newPath, callback);  |Asynchronous rename. No arguments other than a possible exception are given to |the completion callback.Asynchronous ftruncate. No arguments other than a possible exception are given to the completion callback.|
+|fs.rename(oldPath, newPath, callback);  |Asynchronous rename.|
 |fs.renameSync(oldPath, newPath);        | Synchronous rename.|
-|fs.ftruncate(fd, len, callback);        | Asynchronous ftruncate. No arguments other than a possible exception are given to |the completion callback.|
+|fs.ftruncate(fd, len, callback);        | Asynchronous ftruncate.|
 |fs.ftruncateSync(fd, len);              | Synchronous ftruncate.|
-|fs.truncate(path, len, callback);       | Asynchronous truncate. No arguments other than a possible exception are given to the completion callback.|
+|fs.truncate(path, len, callback);       | Asynchronous truncate.|
 |fs.truncateSync(path, len);             | Synchronous truncate.|
-|fs.chown(path, uid, gid, callback);     | Asynchronous chown. No arguments other than a possible exception are given to the |completion callback.|
+|fs.chown(path, uid, gid, callback);     | Asynchronous chown.|
 |fs.chownSync(path, uid, gid);           | Synchronous chown.|
-|fs.fchown(fd, uid, gid, callback);      | Asynchronous fchown. No arguments other than a possible exception are given to the completion callback.|
+|fs.fchown(fd, uid, gid, callback);      | Asynchronous fchown.|
 |fs.fchownSync(fd, uid, gid);            | Synchronous fchown.|
-|fs.lchown(path, uid, gid, callback);    | Asynchronous lchown. No arguments other than a possible exception are given to the completion callback.|
+|fs.lchown(path, uid, gid, callback);    | Asynchronous lchown.|
 |fs.lchownSync(path, uid, gid);          | Synchronous lchown.|
-|fs.chmod(path, mode, callback);         | Asynchronous chmod. No arguments other than a possible exception are given to the completion callback.|
+|fs.chmod(path, mode, callback);         | Asynchronous chmod.|
 |fs.chmodSync(path, mode);               | Synchronous chmod.|
-|fs.fchmod(fd, mode, callback);          | Asynchronous fchmod. No arguments other than a possible exception are given to the completion callback.|
+|fs.fchmod(fd, mode, callback);          | Asynchronous fchmod.|
 |fs.fchmodSync(fd, mode);                | Synchronous fchmod.|
-|fs.lchmod(path, mode, callback);        | Asynchronous lchmod. No arguments other than a possible exception are given to the completion callback.|
-|fs.lchmodSync(path, mode);              | Synchronous lchmod.|
-|fs.stat(path, callback);                | Asynchronous stat. The callback gets two arguments (err, stats) where stats is a fs.Stats object.| 
+|fs.stat(path, callback);                | Asynchronous stat. The callback gets two arguments (err, stats) where stats is a fs.Stats object.|
 |fs.statSync(path);                      | Synchronous stat. Returns an instance of fs.Stats.|
-|fs.lstat(path, callback);               | Asynchronous lstat. The callback gets two arguments (err, stats) where stats is a |fs.Stats object. lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.|
+|fs.lstat(path, callback);               | Asynchronous lstat. Like stat() but if path is a symbolic link, the link itself is stat-ed.|
 |fs.lstatSync(path);                     | Synchronous lstat. Returns an instance of fs.Stats.|
-|fs.fstat(fd, callback);                 | Asynchronous fstat. The callback gets two arguments (err, stats) where stats is a fs.Stats object. fstat() is identical to stat(), except that the file to be stat-ed is specified by the file descriptor fd.|
+|fs.fstat(fd, callback);                 | Asynchronous fstat.|
 |fs.fstatSync(fd);                       | Synchronous fstat. Returns an instance of fs.Stats.|
-|fs.link(srcpath, dstpath, callback);    | Asynchronous link. No arguments other than a possible exception are given to the completion callback.|
+|fs.link(srcpath, dstpath, callback);    | Asynchronous link.|
 |fs.linkSync(srcpath, dstpath);                   | Synchronous link.|
-|fs.symlink(srcpath, dstpath, [type], callback);  | Asynchronous symlink. No arguments other than a possible exception are given to the completion callback. The type argument can be set to 'dir', 'file', or 'junction' (default is 'file') and is only available on Windows (ignored on other platforms)|
+|fs.symlink(srcpath, dstpath, [type], callback);  | Asynchronous symlink.|
 |fs.symlinkSync(srcpath, dstpath, [type]); | Synchronous symlink.|
 |fs.readlink(path, callback);              | Asynchronous readlink. The callback gets two arguments (err, linkString).|
-|fs.readlinkSync(path);                    | Synchronous readlink. Returns the symbolic link's string value.|
-|fs.unlink(path, callback);                | Asynchronous unlink. No arguments other than a possible exception are given to the completion callback.|
+|fs.readlinkSync(path);                    | Synchronous readlink. Returns the symbolic link\'s string value.|
+|fs.unlink(path, callback);                | Asynchronous unlink (delete a file).|
 |fs.unlinkSync(path);                      | Synchronous unlink.|
 |fs.realpath(path, [cache], callback);     | Asynchronous realpath. The callback gets two arguments (err, resolvedPath).|
 |fs.realpathSync(path, [cache]);           | Synchronous realpath. Returns the resolved path.|
-|fs.rmdir(path, callback);                 | Asynchronous rmdir. No arguments other than a possible exception are given to the completion callback.|
+|fs.rmdir(path, callback);                 | Asynchronous rmdir. For removing non-empty directories use `fs.rm(path, { recursive: true })` (Node.js 14.14+).|
 |fs.rmdirSync(path);                       | Synchronous rmdir.|
-|fs.mkdir(path, [mode], callback);         | Asynchronous mkdir. No arguments other than a possible exception are given to the completion callback. mode defaults to 0777.|
-|fs.mkdirSync(path, [mode]);               | Synchronous mkdir.
-|fs.readdir(path, callback);               | Asynchronous readdir. Reads the contents of a directory. The callback gets two arguments (err, files) where files is an array of the names of the files in the directory excluding '.' and '..'.|
-|fs.readdirSync(path);                     | Synchronous readdir. Returns an array of filenames excluding '.' and '..'.|
-|fs.close(fd, callback);                   | Asynchronous close. No arguments other than a possible exception are given to the completion callback.|
+|fs.rm(path, [options], callback);         | Asynchronous remove file or directory. Pass `{ recursive: true, force: true }` to remove a non-empty directory tree. **Added Node.js 14.14 – preferred over `fs.rmdir` with `recursive`.**|
+|fs.rmSync(path, [options]);               | Synchronous version of `fs.rm()`. Added Node.js 14.14.|
+|fs.mkdir(path, [options], callback);      | Asynchronous mkdir. Pass `{ recursive: true }` to create nested directories (like `mkdir -p`). mode defaults to 0o777.|
+|fs.mkdirSync(path, [options]);            | Synchronous mkdir.|
+|fs.readdir(path, [options], callback);    | Asynchronous readdir. The callback gets two arguments (err, files).|
+|fs.readdirSync(path, [options]);          | Synchronous readdir. Returns an array of filenames.|
+|fs.close(fd, callback);                   | Asynchronous close.|
 |fs.closeSync(fd);                         | Synchronous close.|
 |fs.open(path, flags, [mode], callback);   | Asynchronous file open.|
 |fs.openSync(path, flags, [mode]);         | Synchronous version of fs.open().|
-|fs.utimes(path, atime, mtime, callback);  | Change file timestamps of the file referenced by the supplied path.|
+|fs.utimes(path, atime, mtime, callback);  | Change file timestamps.|
 |fs.utimesSync(path, atime, mtime);        | Synchronous version of fs.utimes().|
-|fs.futimes(fd, atime, mtime, callback);   | Change the file timestamps of a file referenced by the supplied file descriptor|
+|fs.futimes(fd, atime, mtime, callback);   | Change file timestamps via file descriptor.|
 |fs.futimesSync(fd, atime, mtime);         | Synchronous version of fs.futimes().|
-|fs.fsync(fd, callback);                   | Asynchronous fsync. No arguments other than a possible exception are given to the completion callback.|
+|fs.fsync(fd, callback);                   | Asynchronous fsync.|
 |fs.fsyncSync(fd);                         |Synchronous fsync.|
 |fs.write(fd, buffer, offset, length, position, callback);  | Write buffer to the file specified by fd.|
-|fs.writeSync(fd, buffer, offset, length, position);        | Synchronous version of fs.write(). Returns the number of bytes written.|
+|fs.writeSync(fd, buffer, offset, length, position);        | Synchronous version of fs.write().|
 |fs.read(fd, buffer, offset, length, position, callback);   | Read data from the file specified by fd.|
-|fs.readSync(fd, buffer, offset, length, position);         | Synchronous version of fs.read. Returns the number of bytesRead.|
-|fs.readFile(filename, [options], callback);         | Asynchronously reads the entire contents of a file.|
-|fs.readFileSync(filename, [options]);               | Synchronous version of fs.readFile. Returns the contents of the filename. If the encoding option is specified then this function returns a string. Otherwise it returns a buffer.|
-|fs.writeFile(filename, data, [options], callback);  |Asynchronously writes data to a file, replacing the file if it already exists. data can be a string or a buffer.|
-|fs.writeFileSync(filename, data, [options]);        | The synchronous version of fs.writeFile.|
-|fs.appendFile(filename, data, [options], callback); | Asynchronously append data to a file, creating the file if it not yet exists. data can be a string or a buffer.|
-|fs.appendFileSync(filename, data, [options]);        | The synchronous version of fs.appendFile.|
-|fs.watch(filename, [options], [listener]);           | Watch for changes on filename, where filename is either a file or a directory. The returned object is a fs.FSWatcher. The listener callback gets two arguments (event, filename). event is either 'rename' or 'change', and filename is the name of the file which triggered the event.|
-|fs.exists(path, callback);  | Test whether or not the given path exists by checking with the file system. Then call the callback argument with either true or false. (should not be used)|
-|fs.existsSync(path);  |Synchronous version of fs.exists. (should not be used)|
+|fs.readSync(fd, buffer, offset, length, position);         | Synchronous version of fs.read().|
+|fs.readFile(path, [options], callback);         | Asynchronously reads the entire contents of a file.|
+|fs.readFileSync(path, [options]);               | Synchronous version of fs.readFile.|
+|fs.writeFile(path, data, [options], callback);  |Asynchronously writes data to a file, replacing the file if it already exists.|
+|fs.writeFileSync(path, data, [options]);        | Synchronous version of fs.writeFile.|
+|fs.appendFile(path, data, [options], callback); | Asynchronously append data to a file, creating the file if it does not yet exist.|
+|fs.appendFileSync(path, data, [options]);        | Synchronous version of fs.appendFile.|
+|fs.watch(filename, [options], [listener]);       | Watch for changes on filename. The listener callback gets two arguments (event, filename). event is either `'rename'` or `'change'`.|
+|fs.watchFile(filename, [options], listener);     | Watch for changes on filename using polling. Prefer `fs.watch()` when possible.|
+|fs.access(path, [mode], callback);  | Tests a user\'s permissions for a file or directory. **Preferred replacement for the deprecated `fs.exists()`.**|
+|fs.accessSync(path, [mode]);        | Synchronous version of fs.access().|
+|fs.exists(path, callback);  | **Deprecated.** Use `fs.access()` or `fs.stat()` instead.|
+|fs.existsSync(path);  | Returns `true` if the path exists. Note: using `fs.access()` is preferred for permission checks.|
+|fs.copyFile(src, dest, [flags], callback); | Asynchronously copies `src` to `dest`. Added Node.js 8.5.|
+|fs.copyFileSync(src, dest, [flags]);       | Synchronous version of fs.copyFile().|
+|fs.cp(src, dest, [options], callback);     | Asynchronously copy an entire directory structure. Added Node.js 16.7.|
+|fs.cpSync(src, dest, [options]);           | Synchronous version of fs.cp(). Added Node.js 16.7.|
 |fs.Stats: |objects returned from fs.stat(), fs.lstat() and fs.fstat() and their synchronous counterparts are of this type.|
 |stats.isFile();|  |
 |stats.isDirectory()|  |
@@ -351,7 +394,9 @@ The file system is not consulted to check whether paths are valid.
 
 ## HTTP
 
-To use the HTTP server and client one must require('http').
+To use the HTTP server and client one must `require('http')` / `import { ... } from 'node:http'`.
+
+> **Node.js 18+:** A built-in `fetch()` global is available for making HTTP requests without any third-party library. For HTTPS requests use `require('node:https')` or the native `fetch()`.
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
@@ -375,22 +420,22 @@ To use the HTTP server and client one must require('http').
 |server.on('clientError', function (exception, socket) { });    |If a client connection emits an 'error' event - it will forwarded here.|
 |request.write(chunk, [encoding]);                              |Sends a chunk of the body.|
 |request.end([data], [encoding]);                               |Finishes sending the request. If any parts of the body are unsent, it will flush them to the stream.|
-|request.abort();                                               |Aborts a request.|
+|request.destroy([error]);                                      |Destroys the request. **`request.abort()` was deprecated in Node.js 14 and removed in Node.js 17 – use `request.destroy()` or `AbortController` instead.**|
 |request.setTimeout(timeout, [callback]);                       |Once a socket is assigned to this request and is connected socket.setTimeout() will be called.|
 |request.setNoDelay([noDelay]);                                 |Once a socket is assigned to this request and is connected socket.setNoDelay() will be called.|
 |request.setSocketKeepAlive([enable], [initialDelay]);          |Once a socket is assigned to this request and is connected socket.setKeepAlive() will be called.|
 |request.on('response', function(response) { });                |Emitted when a response is received to this request. This event is emitted only once.|
 |request.on('socket', function(socket) { });                    |Emitted after a socket is assigned to this request.|
-|request.on('connect', function(response, socket, head) { });   |Emitted each time a server responds to a request with a CONNECT method. If this event isn't being listened for, clients receiving a CONNECT method will have their connections |closed.|
-|request.on('upgrade', function(response, socket, head) { });   |Emitted each time a server responds to a request with an upgrade. If this event isn't being listened for, clients receiving an upgrade header will have their connections closed.|
+|request.on('connect', function(response, socket, head) { });   |Emitted each time a server responds to a request with a CONNECT method. If this event isn\'t being listened for, clients receiving a CONNECT method will have their connections |closed.|
+|request.on('upgrade', function(response, socket, head) { });   |Emitted each time a server responds to a request with an upgrade. If this event isn\'t being listened for, clients receiving an upgrade header will have their connections closed.|
 |request.on('continue', function() { });                        |Emitted when the server sends a '100 Continue' HTTP response, usually because the request contained 'Expect: 100-continue'. This is an instruction that the client should send the request body.|
 |response.write(chunk, [encoding]);                             | This sends a chunk of the response body. If this merthod is called and response.writeHead() has not been called, it will switch to implicit header mode and flush the implicit headers.|
 |response.writeContinue();                                      |Sends a HTTP/1.1 100 Continue message to the client, indicating that the request body should be sent.|
 |response.writeHead(statusCode, [reasonPhrase], [headers]);     |Sends a response header to the request.|
-|response.setTimeout(msecs, callback);                          | Sets the Socket's timeout value to msecs. If a callback is provided, then it is added as a listener on the 'timeout' event on the response object.|
+|response.setTimeout(msecs, callback);                          | Sets the Socket\'s timeout value to msecs. If a callback is provided, then it is added as a listener on the 'timeout' event on the response object.|
 |response.setHeader(name, value);                               | Sets a single header value for implicit headers. If this header already exists in the to-be-sent headers, its value will be replaced. Use an array of strings here if you need to send multiple headers with the same name.|
-|response.getHeader(name);                                      |Reads out a header that's already been queued but not sent to the client. Note that the name is case insensitive.|
-|response.removeHeader(name);                                   |Removes a header that's queued for implicit sending.|
+|response.getHeader(name);                                      |Reads out a header that\'s already been queued but not sent to the client. Note that the name is case insensitive.|
+|response.removeHeader(name);                                   |Removes a header that\'s queued for implicit sending.|
 |response.addTrailers(headers);                                 |This method adds HTTP trailing headers (a header but at the end of the message) to the response.|
 |response.end([data], [encoding]);                              |This method signals to the server that all of the response headers and body have been sent; that server should consider this message complete. The method, response.end(), MUST be called on each response.|
 |response.statusCode;        |When using implicit headers (not calling response.writeHead|() explicitly), this property controls the status code that will be sent to the client when the headers get flushed.|
@@ -409,40 +454,81 @@ To use the HTTP server and client one must require('http').
 
 ## URL
 
-This module has utilities for URL resolution and parsing. Call require('url') to use it.
+This module has utilities for URL resolution and parsing. Call `require('url')` / `import { ... } from 'node:url'` to use it.
+
+> **Recommended:** Use the **WHATWG `URL` class** (globally available since Node.js 10) for new code. The legacy `url.parse()` and `url.resolve()` APIs are **deprecated since Node.js 11** and should be avoided.
+
+**WHATWG URL API (recommended):**
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
-|url.parse(urlStr, [parseQueryString], [slashesDenoteHost]); |Take a URL string, and return an object.|
+|`new URL(input[, base])`                        |Parse `input` relative to `base`. Throws `TypeError` if the URL is invalid. Available as a global since Node.js 10.|
+|`url.href`                                      |The full serialized URL string.|
+|`url.origin`                                    |Read-only origin (protocol + host).|
+|`url.pathname`                                  |The path section of the URL.|
+|`url.searchParams`                              |A `URLSearchParams` object representing the query parameters.|
+|`URL.canParse(input[, base])`                   |Returns `true` if the URL can be parsed without throwing. Added Node.js 19.9.|
+|`new URLSearchParams(string\|object\|iterable)` |Utility to read/write URL query strings. Available globally since Node.js 10.|
+|`urlSearchParams.get(name)`                     |Returns the first value of the given parameter.|
+|`urlSearchParams.set(name, value)`              |Sets the value of a parameter.|
+|`urlSearchParams.toString()`                    |Serializes parameters back to a query string.|
+
+**Legacy API (deprecated – avoid in new code):**
+
+|  API                                           |  Description                         |
+|------------------------------------------------|--------------------------------------|
+|url.parse(urlStr, [parseQueryString], [slashesDenoteHost]); |**Deprecated.** Take a URL string, and return an object. Use `new URL()` instead.|
 |url.format(urlObj);                                         |Take a parsed URL object, and return a formatted URL string.|
-|url.resolve(from, to);                                      |Take a base URL, and a href URL, and resolve them as a browser would for an anchor tag.|
+|url.resolve(from, to);                                      |**Deprecated.** Resolves a URL relative to a base. Use `new URL(path, base).href` instead.|
 
 ## Query String
 
-This module provides utilities for dealing with query strings. Call require('querystring') to use it.
+This module provides utilities for dealing with query strings. Call `require('querystring')` to use it.
+
+> **Note:** The `querystring` module is **legacy**. For new code prefer the globally available `URLSearchParams` or `new URL().searchParams`, which follow the WHATWG URL standard.
 
 |  API                                           |  Description                         |
 |------------------------------------------------|--------------------------------------|
 |querystring.stringify(obj, [sep], [eq]);        | Serialize an object to a query string. Optionally override the default separator ('&') and assignment ('=') characters.|
-|querystring.parse(str, [sep], [eq], [options]); | Deserialize a query string to an object. Optionally override the default |separator ('&') and assignment ('=') characters.|
+|querystring.parse(str, [sep], [eq], [options]); | Deserialize a query string to an object. Optionally override the default separator ('&') and assignment ('=') characters.|
+
+**Modern alternative using `URLSearchParams`:**
+
+```javascript
+// Stringify
+const params = new URLSearchParams({ page: 2, sort: 'asc' });
+console.log(params.toString()); // 'page=2&sort=asc'
+
+// Parse
+const qs = new URLSearchParams('page=2&sort=asc');
+console.log(qs.get('page')); // '2'
+```
 
 ## Assert
 
-This module is used for writing unit tests for your applications, you can access it with require('assert').
+This module is used for writing unit tests for your applications, you can access it with `require('assert')` / `import assert from 'node:assert'`.
+
+> **Note:** Use `require('assert').strict` (or `import { strict as assert } from 'node:assert'`) to enable strict assertion mode by default, where `assert.equal` behaves like `assert.strictEqual`. The `==`-based methods (`assert.equal`, `assert.notEqual`, `assert.deepEqual`, `assert.notDeepEqual`) are soft-deprecated in favour of their strict equivalents.
 
 |  API                                               |  Description                         |
 |----------------------------------------------------|--------------------------------------|
-|assert.fail(actual, expected, message, operator);   |Throws an exception that displays the values for actual and expected separated by the provided operator.|
-|assert(value, message); assert.ok(value, [message]); |Tests if value is truthy, it is equivalent to assert.equal(true, !!value, message);|
-|assert.equal(actual, expected, [message]);         |Tests shallow, coercive equality with the equal comparison operator |( == ).|
-|assert.notEqual(actual, expected, [message]);      |Tests shallow, coercive non-equality with the not equal comparison operator ( != ).|
-|assert.deepEqual(actual, expected, [message]);     |Tests for deep equality.|
-|assert.notDeepEqual(actual, expected, [message]);  |Tests for any deep inequality.|
-|assert.strictEqual(actual, expected, [message]);   |Tests strict equality, as determined by the strict equality operator ( === )|
-|assert.notStrictEqual(actual, expected, [message]); |Tests strict non-equality, as determined by the strict not equal operator ( !== )|
-|assert.throws(block, [error], [message]);           |Expects block to throw an error. error can be constructor, RegExp or validation function.|
-|assert.doesNotThrow(block, [message]);             |Expects block not to throw an error, see assert.throws for details.|
-|assert.ifError(value);                             |Tests if value is not a false value, throws if it is a true value. |Useful when testing the first argument, error in callbacks.|
+|assert.fail([message]);                             |Throws an `AssertionError` with the provided message (or a default message).|
+|assert(value, [message]); assert.ok(value, [message]); |Tests if value is truthy. Equivalent to `assert.equal(true, !!value, message)`.|
+|assert.equal(actual, expected, [message]);         |**Soft-deprecated.** Tests shallow, coercive equality with `==`. Prefer `assert.strictEqual()`.|
+|assert.notEqual(actual, expected, [message]);      |**Soft-deprecated.** Tests shallow, coercive non-equality with `!=`. Prefer `assert.notStrictEqual()`.|
+|assert.strictEqual(actual, expected, [message]);   |Tests strict equality with `===`.|
+|assert.notStrictEqual(actual, expected, [message]); |Tests strict non-equality with `!==`.|
+|assert.deepEqual(actual, expected, [message]);     |**Soft-deprecated.** Tests deep equality (coercive). Prefer `assert.deepStrictEqual()`.|
+|assert.notDeepEqual(actual, expected, [message]);  |**Soft-deprecated.** Tests deep inequality. Prefer `assert.notDeepStrictEqual()`.|
+|assert.deepStrictEqual(actual, expected, [message]);    |Tests deep strict equality (uses `===` for primitives, checks prototype, enumerable own properties). **Preferred** over `assert.deepEqual()`.|
+|assert.notDeepStrictEqual(actual, expected, [message]); |Tests for deep strict inequality.|
+|assert.throws(block, [error], [message]);           |Expects block to throw an error. error can be constructor, RegExp, or validation function.|
+|assert.doesNotThrow(block, [message]);             |Expects block not to throw an error.|
+|assert.rejects(asyncFn, [error], [message]);       |Expects the `Promise` (or async function) to reject. Added Node.js 10.|
+|assert.doesNotReject(asyncFn, [error], [message]); |Expects the `Promise` (or async function) not to reject. Added Node.js 10.|
+|assert.match(string, regexp, [message]);           |Expects `string` to match `regexp`. Added Node.js 13.6.|
+|assert.doesNotMatch(string, regexp, [message]);    |Expects `string` not to match `regexp`. Added Node.js 13.6.|
+|assert.ifError(value);                             |Tests if value is not a falsy value; throws if it is truthy. Useful for checking error arguments in callbacks.|
 
 ## OS
 
@@ -451,7 +537,7 @@ Use require('os') to access this module.
 
 |  API                    | Description                         |
 |-------------------------|--------------------------------------|
-|os.tmpdir();             |Returns the operating system's default directory for temp files.
+|os.tmpdir();             |Returns the operating system\'s default directory for temp files.
 |os.endianness();         |Returns the endianness of the CPU. Possible values are "BE" or "LE".
 |os.hostname();           |Returns the hostname of the operating system.
 |os.type();               |Returns the operating system name.
@@ -468,23 +554,34 @@ Use require('os') to access this module.
 
 ## Buffer
 
-Buffer is used to dealing with binary data. Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap
+Buffer is used to deal with binary data. Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.
+
+> **Breaking change:** `new Buffer(size)`, `new Buffer(array)`, and `new Buffer(str)` were **deprecated in Node.js 6** and **removed in Node.js 10**. Always use the static factory methods below.
 
 |  API                    | Description                          |
 |-------------------------|--------------------------------------|
-|new Buffer(size);               |Allocates a new buffer of size octets.|
-|new Buffer(array);              |Allocates a new buffer using an array of octets.|
-|new Buffer(str, [encoding]);    |Allocates a new buffer containing the given str. encoding defaults to 'utf8'.|
+|Buffer.alloc(size[, fill[, encoding]]); |Allocates a new zero-filled Buffer of `size` bytes. Preferred safe allocation method.|
+|Buffer.allocUnsafe(size);              |Allocates a new Buffer of `size` bytes without zeroing memory. Faster but may contain sensitive old data – use only when you will fill immediately.|
+|Buffer.allocUnsafeSlow(size);          |Like `allocUnsafe` but always allocates outside the pool.|
+|Buffer.from(array);                    |Allocates a new Buffer using an array of bytes in the range 0 – 255.|
+|Buffer.from(str[, encoding]);          |Creates a Buffer from a string. encoding defaults to `'utf8'`.|
+|Buffer.from(buffer);                   |Copies the data of `buffer` into a new Buffer instance.|
+|Buffer.from(arrayBuffer[, byteOffset[, length]]); |Creates a Buffer that shares memory with an `ArrayBuffer`.|
 |Buffer.isEncoding(encoding);    |Returns true if the encoding is a valid encoding argument, or false otherwise.|
-|Buffer.isBuffer(obj);               |Tests if obj is a Buffer|
-|Buffer.concat(list, [totalLength]); |Returns a buffer which is the result of concatenating |all the buffers in the list together.|
-|Buffer.byteLength(string, [encoding]);             |Gives the actual byte length of a string.|
-|buf.write(string, [offset], [length], [encoding]); |Writes string to the buffer at offset using the given encoding|
-|buf.toString([encoding], [start], [end]);          |Decodes and returns a string from buffer data encoded with encoding (defaults to 'utf8') beginning at start (defaults to 0) and ending at end (defaults to buffer.length).|
-|buf.toJSON();                                       |Returns a JSON-representation of the Buffer instance, which is identical to the output for JSON Arrays|
-|buf.copy(targetBuffer, [targetStart], [sourceStart], [sourceEnd]); |Does copy between buffers. The source and target regions can be overlapped|
-|buf.slice([start], [end]);         |Returns a new buffer which references the same memory as the old, but offset and cropped by the start (defaults to 0) and end (defaults to buffer.length) indexes. Negative indexes start from the end of the buffer. |  
-|buf.fill(value, [offset], [end]);   |Fills the buffer with the specified value|
-|buf[index];                         |Get and set the octet at index|
-|buf.length;                         |The size of the buffer in bytes, Note that this is not necessarily the size of the contents|
-|buffer.INSPECT_MAX_BYTES;           |How many bytes will be returned when buffer.inspect() is called. This can be overridden by user modules.|
+|Buffer.isBuffer(obj);               |Tests if obj is a Buffer.|
+|Buffer.concat(list[, totalLength]); |Returns a new Buffer which is the result of concatenating all the Buffers in the list.|
+|Buffer.byteLength(string[, encoding]);             |Gives the actual byte length of a string.|
+|buf.write(string[, offset[, length]][, encoding]); |Writes string to the buffer at offset using the given encoding.|
+|buf.toString([encoding[, start[, end]]]);          |Decodes and returns a string from buffer data encoded with encoding (defaults to 'utf8').|
+|buf.toJSON();                                       |Returns a JSON-representation of the Buffer instance.|
+|buf.copy(targetBuffer[, targetStart[, sourceStart[, sourceEnd]]]); |Copies data from `buf` into `targetBuffer`.|
+|buf.slice([start[, end]]);         |**Deprecated.** Use `buf.subarray([start[, end]])` instead – returns a new Buffer referencing the same memory.|
+|buf.subarray([start[, end]]);      |Returns a new Buffer that references the same memory as the original, offset and cropped by start/end.|
+|buf.fill(value[, offset[, end[, encoding]]]);   |Fills the buffer with the specified value.|
+|buf[index];                         |Get and set the octet at index.|
+|buf.length;                         |The size of the buffer in bytes.|
+|buf.equals(otherBuffer);            |Returns `true` if both Buffers have exactly the same bytes.|
+|buf.compare(target[, ...]);         |Compares `buf` with `target` for sorting purposes.|
+|buf.indexOf(value[, byteOffset[, encoding]]); |Returns index of first occurrence of `value`, or `-1`.|
+|buf.includes(value[, byteOffset[, encoding]]); |Equivalent to `buf.indexOf() !== -1`.|
+|buffer.INSPECT_MAX_BYTES;           |How many bytes will be returned when buffer.inspect() is called.|
