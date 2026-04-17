@@ -1,76 +1,81 @@
 ## NodeJS Commands
 
-|Sl.No.| Commands                   | Description                   |
-|------|----------------------------|-------------------------------|
-| 01. |npm install node@14.8.0      | Install node specific version |
-| 02. |npm init 					| Creates package.json |
-| 03. |npm install                  | Install the dependencies in the local node_modules folder |
-| 04. |bower install                | package manager      |
-| 05. |npm install -g gulp          |                      |
-| 06. |npm install -g bower         |                      |
-| 07. |npm install -g live-server   |                      |
-| 08. |npm install -g grunt-cli     |                      |
-| 09. |live-server					| Start NodeJs Server  |
-| 10. |npm install -S express       |                      |
-| 11. |npm install -S body-parser   |                      |
-| 12. |npm start                    |                      |
-| 13. |gulp develop 				| Server Start      |
-| 14. |gulp help 					| gulp Help            |
-| 15. |gulp build					| Clean and minification into single file |
-| 16. |gulp serve                   |                         |
-| 17. |gulp watch 					|                         |
-| 18. |gulp test:tdd				|	 Unit Testing         |
-| 19. |gem install sass             |                         |
-| 20. |sass -?						| Help                    |
-| 21. |sass --update var_styles.scss|                         |
-| 22. |sass --watch dir:dir         | Watch for changes       |
-| 23. |npm install -g webpack 		| Istall webpack globally |
-| 24. |webpack 						| Run                     |
-| 25. |npm -l 						| Display full usage info |
-| 26. |ruby -v                      |  Ruby Version           |
-| 27. |node -v                      |  Node Version           |
-| 28. |npm -v						|  Node Package Manager Version |
-| 29. |tsc -v 						|  TypeScript Version     |
-| 30. |git version                  |  Git Version            |
-| 31. |webpack -v					|  Webpack Version        |
-| 32. |npm install mongoose         |                         |
-| 33. |npm config rm proxy          |                         |
-| 34. |npm config rm https-proxy    |                         |
-| 35. |npm config list              |                         |
-| 36. |npm install firebase angularfire2 --save               | 
-| 37. |npm install git+https://github.com/angular/angularfire2.git|
-| 38. |npm install firebase angularfire2@next --save              |
-| 39. |npm uninstall -g angular-cli |                             |
-| 40. |npm cache clean              |                             |
-| 41. |npm install -g typescript    |                             |
-| 42. |npm install --save rxjs@5.5.2|   Reactive Extensions Library for JavaScript |
-| 43. |npm install express-session  |                              |
-| 44. |node app                     |    Run app.js file on node server |
-| 45. |npm install -g jshint        |                              |
-| 46. |npm install express --save   |    Install express into local project |
-| 47. |npm install cors --save		|   Cross Origin Resource Sharing --> It allows open api to accessibale by other domains |
-| 48. |npm install body-parser --save |                      |
-| 49. |npm install underscore --save  |                      |
-| 50. |npm remove underscore --save   |                      |
-| 51. |npm install ws --save		  |	   Install WebSocket |
-| 52. |npm install socket.io --save   |  Used for creating websocket when browser doestn't support websocket |
-| 53. |npm install -g mocha			  | JavaScript Unit Testing framework |
-| 54. |mocha						  |	   To run mocha test |
-| 55. |npm install nock --save-dev    |  Use to create mock server for testing |
-| 56. |npm install rewire --save-dev  |  Use for Injecting dependencies |
-| 57. |npm install sinon --save-dev	  | Use to create mock object for test |
-| 58. |npm install -g istanbul		  | JavaScript test coverage tool |
-| 59. |istanbul cover _mocha		  |	   Run istanbul report |
-| 60. |npm install supertest --save-dev|                       |
-| 61. |npm install cheerio --save-dev  |                       |
-| 62. |npm install grunt-contib-jshint --save-dev|
-| 63. |npm install grunt-contrib-less --save-dev|
-| 64. |grunt css 					   | Convert ".less" file into corresponding ".css" files |
-| 65. |npm install grunt-autoprefixer --save-dev|	 Add code for browser dependencies in css |
-| 66. |npm install grunt-browserify --save-dev  | Create bundle.js combining all files together |
-| 67. |npm install grunt-contrib-watch --save-dev|                                              |
-| 68. |grunt watch                               |                                              |
-| 69. |ng add @angular/material                  |                                              |
-| 70. |npm install -g live-server                |                                              | 
-| 71. |npm link                    | create a symlink in the global folder |
-| 72. |npm link redis               | link-install the package |
+> **Notes:**
+> - `npm install --save` (`-S`) and `npm install --save-dev` (`-D`) flags are the default behaviour since **npm v5** — the flags are still valid but optional.
+> - Prefer **`npx <package>`** over global (`-g`) installs for one-off CLI tools to always use the latest version.
+> - Use the **`node:` protocol prefix** for built-in module imports in modern Node.js: `import { readFile } from 'node:fs/promises'`.
+
+|Sl.No.| Commands                                    | Description                   |
+|------|---------------------------------------------|-------------------------------|
+| 01. |`npm install node@22`                         | Install Node.js v22 (current LTS as of 2026). Use [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm) for version management on your machine. |
+| 02. |`npm init`                                    | Creates package.json interactively |
+| 03. |`npm init -y`                                 | Creates package.json with defaults (skip prompts) |
+| 04. |`npm install`                                 | Install all dependencies listed in package.json into node_modules |
+| 05. |`npm ci`                                      | Clean install from package-lock.json (faster, deterministic – use in CI/CD pipelines) |
+| 06. |`npm install -g live-server`                  | Install live-server globally |
+| 07. |`npm install -g grunt-cli`                    | Install Grunt CLI globally |
+| 08. |`live-server`                                 | Start a local dev HTTP server with live reload |
+| 09. |`npm install express`                         | Install express into local project (--save is default since npm v5) |
+| 10. |`npm install cors`                            | Cross Origin Resource Sharing – allows API access from other domains |
+| 11. |`npm install express-session`                 | Install express-session |
+| 12. |`npm install mongoose`                        | Install Mongoose (MongoDB ODM) |
+| 13. |`npm install ws`                              | Install WebSocket library |
+| 14. |`npm install socket.io`                       | WebSocket abstraction with fallbacks |
+| 15. |`npm install underscore`                      | Utility library (consider lodash or native ES2024 alternatives) |
+| 16. |`npm uninstall underscore`                    | Remove a package |
+| 17. |`npm install --save-dev mocha`                | JavaScript unit-testing framework |
+| 18. |`npx mocha`                                   | Run Mocha tests via npx (no global install needed) |
+| 19. |`npm install --save-dev nock`                 | HTTP server mocking for tests |
+| 20. |`npm install --save-dev rewire`               | Dependency injection for tests |
+| 21. |`npm install --save-dev sinon`                | Mocks, stubs and spies for tests |
+| 22. |`npm install --save-dev supertest`            | HTTP assertion library for integration tests |
+| 23. |`npm install --save-dev cheerio`              | Server-side jQuery-like HTML parsing |
+| 24. |`npm install --save-dev c8`                   | Native V8 code-coverage tool (**replaces the deprecated `istanbul`/`nyc`**) |
+| 25. |`npx c8 mocha`                                | Run Mocha with V8 coverage report |
+| 26. |`npm install --save-dev eslint`               | JavaScript/TypeScript linter (**replaces the legacy `jshint`**) |
+| 27. |`npx eslint --init`                           | Interactive ESLint configuration wizard |
+| 28. |`npm install -g typescript`                   | Install TypeScript compiler globally |
+| 29. |`npm install -g webpack-cli`                  | Install Webpack CLI globally |
+| 30. |`npx webpack`                                 | Run Webpack via npx |
+| 31. |`npm install -g sass`                         | Install Dart Sass (the **current implementation** – Ruby Sass is end-of-life) |
+| 32. |`sass --watch src/styles:dist/css`            | Watch and compile Sass to CSS |
+| 33. |`sass --style=compressed input.scss output.css` | Compile and minify a Sass file |
+| 34. |`gulp develop`                                | Start dev server (Gulp task) |
+| 35. |`gulp build`                                  | Clean and minify into a single file |
+| 36. |`gulp watch`                                  | Watch for file changes |
+| 37. |`gulp test:tdd`                               | Run unit tests in TDD mode |
+| 38. |`npm start`                                   | Run the `start` script defined in package.json |
+| 39. |`node app.js`                                 | Run app.js on Node.js |
+| 40. |`node --watch app.js`                         | Run app.js and auto-restart on file changes (**built-in since Node.js 18**, replaces nodemon for basic use) |
+| 41. |`node --inspect app.js`                       | Start Node.js with Chrome DevTools debugger enabled |
+| 42. |`node --inspect-brk app.js`                   | Start with debugger and break on first line |
+| 43. |`node -v`                                     | Print Node.js version |
+| 44. |`npm -v`                                      | Print npm version |
+| 45. |`tsc -v`                                      | Print TypeScript compiler version |
+| 46. |`git version`                                 | Print Git version |
+| 47. |`webpack -v`                                  | Print Webpack version |
+| 48. |`npm -l`                                      | Display full npm usage info |
+| 49. |`npm config list`                             | List npm configuration |
+| 50. |`npm config rm proxy`                         | Remove proxy setting |
+| 51. |`npm config rm https-proxy`                   | Remove HTTPS proxy setting |
+| 52. |`npm cache clean --force`                     | Clear the npm cache (**`--force` required since npm v5**) |
+| 53. |`npm audit`                                   | Scan installed packages for known security vulnerabilities |
+| 54. |`npm audit fix`                               | Automatically fix vulnerabilities where possible |
+| 55. |`npm outdated`                                | List packages that have newer versions available |
+| 56. |`npm update`                                  | Update all packages to their latest compatible versions |
+| 57. |`npm run <script>`                            | Run a script defined in the `scripts` field of package.json |
+| 58. |`npm pack`                                    | Create a tarball of the package (useful before publishing) |
+| 59. |`npm publish`                                 | Publish the package to the npm registry |
+| 60. |`npm link`                                    | Create a symlink in the global folder |
+| 61. |`npm link <package>`                          | Link-install a package from another local directory |
+| 62. |`npx <package>`                               | Execute a package binary without installing it globally |
+| 63. |`corepack enable`                             | Enable Corepack (built-in Node.js 16.9+ tool that manages Yarn and pnpm versions) |
+| 64. |`ng add @angular/material`                    | Add Angular Material to an Angular project |
+| 65. |`npm install rxjs`                            | Reactive Extensions Library for JavaScript (current: v7.x) |
+| 66. |`npm install jsonwebtoken`                    | JSON Web Token implementation |
+| 67. |`npm install dotenv`                          | Load environment variables from a `.env` file |
+| 68. |`npm install helmet`                          | Secure Express apps by setting various HTTP headers |
+| 69. |`npm install --save-dev jest`                 | JavaScript testing framework with built-in coverage |
+| 70. |`npx jest --coverage`                         | Run Jest tests with coverage report |
+| 71. |`npm install --save-dev @types/node`          | TypeScript type definitions for Node.js |
+| 72. |`npm install grunt-contrib-watch --save-dev`  | Grunt plugin to watch files for changes |
