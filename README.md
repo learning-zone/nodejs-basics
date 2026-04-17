@@ -9,12 +9,14 @@
 * *[HTML Basics](https://github.com/learning-zone/html-basics)*
 * *[CSS Basics](https://github.com/learning-zone/css-basics)*
 * *[JavaScript Basics](https://github.com/learning-zone/javascript-basics)*
-* *[SQL Basics](https://github.com/learning-zone/sql-basics)*
+* *[MSSQL Basics](https://github.com/learning-zone/sql-basics)*
 * *[MongoDB Basics](https://github.com/learning-zone/mongodb-basics)*
 * *[Node.js APIs](nodejs-api.md)*
 * *[Node.js Commands](nodejs-commands.md)*
 * *[Node.js Multiple Choice Questions](nodejs-mcq.md)*
 * *[Node.js Coding Practice](nodejs-programming.md)*
+* *[Design Patterns in Node.js](nodejs-dp.md)*
+* *[Data Structures and Algorithms in Node.js](nodejs-ds.md)*
 
 <br/>
 
@@ -2799,7 +2801,7 @@ const server = http.createServer(app);
 |autocannon|AutoCannon is a tool for performance testing and a tool for benchmarking.|
 |csv       |csv module has four sub modules which provides CSV generation, parsing, transformation and serialization for Node.js|
 |dayjs     |Day.js is a fast, 2kB alternative to Moment.js for parsing, validating, manipulating, and formatting dates|
-|debug     |Debug is a tiny node.js debugging utility modelled after node core's debugging technique|
+|debug     |Debug is a tiny node.js debugging utility modelled after node core\'s debugging technique|
 |eslint    |ESLint is a static analysis tool to find and fix problems in JavaScript code, covering errors, best practices and style rules|
 |express   |Express is a fast, un-opinionated, minimalist web framework. It provides small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs|
 |fastify   |Fastify is a fast and low overhead web framework for Node.js, focused on performance and developer experience|
@@ -7264,7 +7266,7 @@ app.use(
 
 ## Q. How to prevent SQL injection in Node.js?
 
-SQL injection occurs when user-supplied input is directly concatenated into an SQL query, allowing attackers to modify the query's logic.
+SQL injection occurs when user-supplied input is directly concatenated into an SQL query, allowing attackers to modify the query\'s logic.
 
 **Vulnerable code:**
 
@@ -7895,7 +7897,7 @@ const config = {
   },
 };
 
-// Create the pool once — module cache ensures it's shared across the app
+// Create the pool once — module cache ensures it\'s shared across the app
 const poolPromise = sql.connect(config)
   .then(pool => {
     console.log('Connected to MSSQL');
