@@ -34,17 +34,18 @@
 * [Node.js Middleware](#-10-nodejs-middleware)
 * [Node.js RESTFul API](#-11-nodejs-restful-api)
 * [Node.js Routing](#-12-nodejs-routing)
-* [Node.js Database Integration](#-12-nodejs-database-integration)
-* [Node.js Caching](#-13-nodejs-caching)
-* [Node.js Error Handling](#-14-nodejs-error-handling)
-* [Node.js Logging](#-15-nodejs-logging)
-* [Node.js Internationalization](#-16-nodejs-internationalization)
-* [Node.js Testing](#-17-nodejs-testing)
-* [Node.js Miscellaneous](#-18-nodejs-miscellaneous)
+* [Node.js Database Integration](#-13-nodejs-database-integration)
+* [Node.js Caching](#-14-nodejs-caching)
+* [Node.js Error Handling](#-15-nodejs-error-handling)
+* [Node.js Logging](#-16-nodejs-logging)
+* [Node.js Internationalization](#-17-nodejs-internationalization)
+* [Node.js Testing](#-18-nodejs-testing)
 * [Node.js Environment & Configuration](#-19-nodejs-environment--configuration)
 * [Node.js Security](#-20-nodejs-security)
 * [Node.js Debugging & Profiling](#-21-nodejs-debugging--profiling)
 * [Node.js Performance & Optimization](#-22-nodejs-performance--optimization)
+* [Node.js Miscellaneous](#-23-nodejs-miscellaneous)
+
 
 <br/>
 
@@ -62,9 +63,24 @@ Node.js is an open-source server side runtime environment built on Chrome\'s V8 
 
 ## Q. What is Node.js Process Model?
 
-Node.js runs in a single process and the application code runs in a single thread and thereby needs less resources than other platforms.
+The **Node.js Process Model** is a single-threaded, event-driven architecture designed to handle many concurrent client requests efficiently. Unlike traditional web servers that create a new thread for every request, Node.js uses a Single-Threaded Event Loop to manage all non-blocking operations
 
-All the user requests to your web application will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. So, this single thread doesn\'t have to wait for the request to complete and is free to handle the next request. When asynchronous I/O work completes then it processes the request further and sends the response.
+**Features**:
+
+- Runs in a **single process** with a **single thread**, requiring fewer resources than multi-threaded platforms
+- All incoming requests are handled by that one thread
+- **Blocking I/O** (file system, database, network) is handed off asynchronously — the thread doesn\'t wait for it to complete
+- When async work finishes, a **callback** is queued and executed, and the response is sent back to the client
+
+**Flow:**
+
+1. Client requests arrive and are placed in the **Event Queue**
+2. The **Event Loop** picks them up one by one
+3. If a request needs blocking I/O → it\'s assigned to a **thread pool** (libuv) in the background
+4. The main thread moves on to the next request immediately
+5. When the I/O completes, the callback fires and the response is returned
+
+This is why Node.js is highly scalable for I/O-bound workloads — it never blocks waiting, unlike traditional thread-per-request servers.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -90,11 +106,40 @@ All the user requests to your web application will be handled by a single thread
 
 ## Q. How does Node.js work?
 
-A Node.js application creates a single thread on its invocation. Whenever Node.js receives a request, it first completes its processing before moving on to the next request.
+Node.js is **completely event-driven** and processes everything on a single thread using a non-blocking I/O model.
 
 Node.js works asynchronously by using the event loop and callback functions, to handle multiple requests coming in parallel. An Event Loop is a functionality which handles and processes all your external events and just converts them to a callback function. It invokes all the event handlers at a proper time. Thus, lots of work is done on the back-end, while processing a single request, so that the new incoming request doesn\'t have to wait if the processing is not complete.
 
 While processing a request, Node.js attaches a callback function to it and moves it to the back-end. Now, whenever its response is ready, an event is called which triggers the associated callback function to send this response.
+
+**Core Components:**
+
+| Component | Role |
+|-----------|------|
+| **V8 Engine** | Executes JavaScript on the server (same engine as Chrome) |
+| **libuv** | C library that handles async I/O, thread pool, event loop |
+| **Event Queue** | Holds incoming requests/events in FIFO order |
+| **Event Loop** | Continuously polls the queue and dispatches callbacks |
+| **Thread Pool** | Background workers (libuv) for blocking operations (file, DNS, crypto) |
+
+**Request Lifecycle:**
+
+1. A request arrives → placed in the **Event Queue**
+2. The **Event Loop** picks it up (call stack must be empty)
+3. **No blocking I/O?** → Process immediately, send response
+4. **Blocking I/O needed?** → Offload to a **thread pool worker**, register a callback, free the main thread
+5. Worker completes → fires an event → callback executes → response sent
+
+**Key Design Principles:**
+
+- **Single-threaded** JS execution — no thread management overhead
+- **Non-blocking by default** — APIs are async with callbacks/promises
+- **Observer pattern** — events trigger registered listeners
+- **Concurrency without threads** — achieved via the event loop + callbacks, not parallel execution
+
+**What it's great at:** High-concurrency I/O-bound workloads (APIs, real-time apps, microservices)
+
+**What it's not ideal for:** CPU-intensive tasks (use `worker_threads` or `child_process` for those)
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -102,83 +147,42 @@ While processing a request, Node.js attaches a callback function to it and moves
 
 ## Q. What is difference between process and threads in Node.js?
 
-**1. Process:**
+In Node.js, the main difference between a **process** (using the `child_process` or cluster modules) and a **thread** (using the `worker_threads` module) lies in how they handle memory and isolation.
 
-Processes are basically the programs that are dispatched from the ready state and are scheduled in the CPU for execution. PCB (Process Control Block) holds the concept of process. A process can create other processes which are known as Child Processes. The process takes more time to terminate and it is isolated means it does not share the memory with any other process.
+**Process**
 
-The process can have the following states new, ready, running, waiting, terminated, and suspended.
+A **process** is an independent program instance with its own memory space.
+- Created via `child_process.fork()` — spawns a new V8 instance
+- **Isolated memory** — no sharing between processes
+- Communicates via **IPC** (message passing)
+- If it crashes, only that process is affected
+- Higher creation overhead
 
-**2. Thread:**
+**Thread**
 
-Thread is the segment of a process which means a process can have multiple threads and these multiple threads are contained within a process. A thread has three states: Running, Ready, and Blocked.
+A **thread** is a unit of execution within a process.
+- Created via `worker_threads` module
+- **Shared memory** within the same process (via `SharedArrayBuffer`)
+- Communicates via `postMessage` or shared memory
+- A crash can affect the entire process
+- Lower creation overhead
 
-The thread takes less time to terminate as compared to the process but unlike the process, threads do not isolate.
-
-**Process vs Threads in Node.js**
+**Comparison Table**
 
 | | Process | Thread |
-|---|---------|--------|
-| Memory | Isolated — does not share memory | Shared within the same process |
-| Creation cost | Higher (new V8 instance via `fork()`) | Lower (`worker_threads`) |
-| Communication | IPC (message passing) | `SharedArrayBuffer` or `postMessage` |
-| Crash impact | Only that process crashes | Can crash the entire process |
+|--|---------|--------|
+| Memory | Isolated | Shared within process |
+| Creation cost | Higher (new V8 instance) | Lower |
+| Communication | IPC (message passing) | `SharedArrayBuffer` / `postMessage` |
+| Crash impact | Only that process | Can crash entire process |
 | Use case | Separate Node.js apps, external commands | CPU-intensive JS tasks |
 
-**Process example — `child_process.fork()`:**
+**When to use which?**
 
-```js
-// parent.js
-const { fork } = require('child_process');
+- Use **`child_process.fork()`** — when you need full isolation (separate scripts, different environments)
+- Use **`worker_threads`** — for CPU-heavy JS tasks (image processing, parsing, crypto) where you want low overhead and optional memory sharing
 
-const child = fork('./worker.js');
-
-child.send({ task: 'compute', value: 10 });
-
-child.on('message', (result) => {
-  console.log('Result from child process:', result); // Result from child process: 100
-});
-
-child.on('exit', (code) => {
-  console.log(`Child exited with code ${code}`);
-});
-```
-
-```js
-// worker.js — runs in a completely separate process with its own memory
-process.on('message', ({ task, value }) => {
-  if (task === 'compute') {
-    const result = value * value; // isolated computation
-    process.send(result);
-    process.exit(0);
-  }
-});
-```
-
-**Thread example — `worker_threads`:**
-
-```js
-// main.js
-const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
-
-if (isMainThread) {
-  // Main thread
-  const worker = new Worker(__filename, { workerData: { value: 10 } });
-
-  worker.on('message', (result) => {
-    console.log('Result from worker thread:', result); // Result from worker thread: 100
-  });
-} else {
-  // Worker thread — same process, shares memory via SharedArrayBuffer
-  const result = workerData.value * workerData.value;
-  parentPort.postMessage(result);
-}
-```
-
-**Key rules:**
-
-- Use **`child_process.fork()`** when you need full isolation (separate Node.js scripts, different environments)
-- Use **`worker_threads`** for CPU-heavy JS tasks (image processing, parsing, crypto) where you want low overhead and potential memory sharing
-- Node.js's main event loop runs on a **single thread** — neither approach blocks it when used correctly
+> Node.js\'s main event loop always runs on a **single thread** — neither approach blocks it when used correctly.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -435,23 +439,32 @@ npm list express
 
 ## Q. What are the data types in Node.js?
 
-Just like JS, there are two categories of data types in Node: Primitives and Objects.
+Node.js uses the same data types as JavaScript, categorized into Primitive and Non-Primitive (Reference) types, but it also introduces specialized classes like **Buffer** to handle server-side needs.
 
 **1. Primitives:**
 
-* String
-* Number
-* BigInt
-* Boolean
-* Undefined
-* Null
-* Symbol
+* **String:** Represents textual data (e.g., "Hello").
+* **Number:** Represents both integers and floating-point values. Node.js numbers are 64-bit double-precision floats.
+* **BigInt:** Used for integers larger than (2⁵³ - 1), which is the limit for the standard Number type.
+* **Boolean:** Represents a logical entity with two values: true or false.
+* **Undefined:** A variable that has been declared but not assigned a value.
+* **Null:** Represents the intentional absence of any object value.
+* **Symbol:** Unique and immutable values often used as private identifiers for object properties. 
 
-**2. Objects:**
 
-* Function
-* Array
-* Buffer
+**2. Non-Primitive (Reference) Data Types:**
+
+* **Object:** The fundamental building block for all complex structures, used to store key-value pairs (e.g., { name: "Node", version: 20 }).
+* **Array:** A specialized type of object used to store ordered lists.
+* **Function:** Reusable blocks of code that are technically objects with callable capabilities.
+* **Others:** Built-in objects like Date, RegExp, Map, and Set
+
+**3. Node.js Specific: The Buffer Class:**
+
+The Buffer class is essential for handling binary data in Node.js, such as reading from files or processing network packets
+
+* **Function:** It represents a fixed-length sequence of bytes allocated outside the V8 heap.
+* **Usage:** Unlike standard JavaScript arrays, buffers are designed specifically for performance in I/O operations
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -459,31 +472,41 @@ Just like JS, there are two categories of data types in Node: Primitives and Obj
 
 ## Q. Explain String data type in Node.js?
 
-Strings in Node.js are sequences of unicode characters. Strings can be wrapped in a single or double quotation marks.
-Javascript provide many functions to operate on string, like indexOf(), split(), substr(), length.
+Strings in Node.js are sequences of unicode characters. Strings can be declared using single quotes, double quotes, or backticks (template literals).
 
-**String functions:**
+**Key characteristics:**
 
-|Function   | Description               |
-|-----------|---------------------------|
-|charAt()   |It is useful to find a specific character present in a string.|
-|concat()   |It is useful to concat more than one string.|
-|indexOf()  |It is useful to get the index of a specified character or a part of the string.|
-|match()    |It is useful to match multiple strings.|
-|split()    |It is useful to split the string and return an array of string.|
-|join()     |It is useful to join the array of strings and those are separated by comma (,) operator.|
+- Immutable — you cannot change individual characters in place
+- Zero-indexed — `str[0]` gives the first character
+- UTF-16 encoded internally
+
+**Common String methods:**
+
+| Method | Description |
+|--------|-------------|
+| `charAt(i)` | Returns the character at index `i` |
+| `concat()` | Joins two or more strings |
+| `indexOf()` | Returns the index of a substring (-1 if not found) |
+| `includes()` | Returns `true` if substring exists |
+| `split()` | Splits a string into an array |
+| `slice(start, end)` | Extracts a portion of the string |
+| `toUpperCase()` / `toLowerCase()` | Changes case |
+| `trim()` | Removes whitespace from both ends |
+| `replace()` | Replaces a substring or regex match |
 
 **Example:**
 
 ```js
-/** 
- * String Data Type
- */
 const str1 = "Hello";
 const str2 = 'World';
+const str3 = `${str1}, ${str2}!`; // template literal
 
-console.log("Concat Using (+) :" , (str1 + ' ' + str2));
-console.log("Concat Using Function :" , (str1.concat(str2)));
+console.log(str3);                    // Hello, World!
+console.log(str1.length);             // 5
+console.log(str1.toUpperCase());      // HELLO
+console.log(str3.includes('World'));  // true
+console.log(str3.split(', '));        // ['Hello', 'World!']
+console.log(str1.concat(' ', str2)); // Hello World
 ```
 
 <div align="right">
@@ -494,32 +517,65 @@ console.log("Concat Using Function :" , (str1.concat(str2)));
 
 The number data type in Node.js is 64 bits floating point number both positive and negative. The parseInt() and parseFloat() functions are used to convert to number, if it fails to convert into a number then it returns `NaN`.
 
+The `Number` data type in Node.js follows the **IEEE 754 double-precision 64-bit floating-point** standard (same as JavaScript). It represents both integers and decimals using the same type.
+
+**Key characteristics:**
+
+- Range: $\pm5 \times 10^{-324}$ to $\pm1.8 \times 10^{308}$
+- Safe integer range: $-(2^{53}-1)$ to $2^{53}-1$ (use `Number.MAX_SAFE_INTEGER`)
+- Special values: `Infinity`, `-Infinity`, `NaN`
+- Both integers and floats are the same type — no `int` vs `float` distinction
+
+**Common utility functions:**
+
+| Function / Property | Description |
+|---------------------|-------------|
+| `parseInt(str, radix)` | Parses string to integer |
+| `parseFloat(str)` | Parses string to float |
+| `Number(value)` | Converts a value to number |
+| `isNaN(value)` | Checks if value is `NaN` |
+| `isFinite(value)` | Checks if value is finite |
+| `Number.isInteger(value)` | Checks if value is an integer |
+| `Number.MAX_SAFE_INTEGER` | `9007199254740991` (2⁵³ - 1) |
+| `.toFixed(n)` | Formats to `n` decimal places (returns string) |
+
 **Example:**
 
 ```js
-/**
- * Number Data Type
- */
-// Example 01:
-const num1 = 10;
-const num2 = 20;
+// Basic numbers
+const int = 42;
+const float = 3.14;
+console.log(typeof int);   // 'number'
+console.log(typeof float); // 'number'
 
-console.log(`sum: ${num1 + num2}`); 
+// Parsing
+console.log(parseInt("32"));       // 32
+console.log(parseInt("0xFF", 16)); // 255 (hex)
+console.log(parseFloat("8.24"));   // 8.24
+console.log(parseInt("abc"));      // NaN
 
-// Example 02:
-console.log(parseInt("32"));  // 32
-console.log(parseFloat("8.24")); // 8.24
-console.log(parseInt("234.12345")); // 234
-console.log(parseFloat("10")); // 10
+// Special values
+console.log(5 / 0);           // Infinity
+console.log(-5 / 0);          // -Infinity
+console.log(0 / 0);           // NaN
+console.log(isNaN(NaN));      // true
+console.log(isFinite(10 / 5)); // true
+console.log(isFinite(10 / 0)); // false
 
-// Example 03:
-console.log(isFinite(10/5)); // true
-console.log(isFinite(10/0)); // false
+// Precision
+console.log((1.1 + 2.2).toFixed(2)); // "3.30" — floating point quirk
+console.log(Number.MAX_SAFE_INTEGER); // 9007199254740991
 
-// Example 04:
-console.log(5 / 0); // Infinity
-console.log(-5 / 0); // -Infinity
+// Type conversion
+console.log(Number("42"));    // 42
+console.log(Number(""));      // 0
+console.log(Number("abc"));   // NaN
+console.log(Number(true));    // 1
+console.log(Number(false));   // 0
+console.log(Number(null));    // 0
 ```
+
+> For integers larger than `Number.MAX_SAFE_INTEGER`, use `BigInt` to avoid precision loss.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -527,20 +583,77 @@ console.log(-5 / 0); // -Infinity
 
 ## Q. Explain BigInt data type in Node.js?
 
-A BigInt value, also sometimes just called a BigInt, is a bigint primitive, created by appending **n** to the end of an integer literal, or by calling the BigInt() function ( without the new operator ) and giving it an integer value or string value.
+`BigInt` is a primitive type for representing integers of **arbitrary precision** — integers larger than $2^{53} - 1$ (`Number.MAX_SAFE_INTEGER`) where the regular `Number` type loses accuracy.
+
+**Two ways to create a BigInt:**
+
+```js
+const a = 9007199254740991n;      // append 'n' to an integer literal
+const b = BigInt(9007199254740991); // BigInt() function
+const c = BigInt('9007199254740991'); // from string
+```
+
+**Why it\'s needed:**
+
+```js
+// Regular Number loses precision beyond MAX_SAFE_INTEGER
+console.log(9007199254740991 + 1);  // 9007199254740992 ✓
+console.log(9007199254740991 + 2);  // 9007199254740992 ✗ (wrong!)
+
+// BigInt stays accurate
+console.log(9007199254740991n + 2n); // 9007199254740993n ✓
+```
 
 **Example:**
 
 ```js
-/**
- * BigInt Data Type
- */
-const maxSafeInteger = 99n; // This is a BigInt
-const num2 = BigInt('99'); // This is equivalent
-const num3 = BigInt(99); // Also works
+const x = 10n;
+const y = 3n;
 
-typeof 1n === 'bigint'           // true
-typeof BigInt('1') === 'bigint'  // true
+console.log(x + y);   // 13n
+console.log(x - y);   // 7n
+console.log(x * y);   // 30n
+console.log(x / y);   // 3n  (integer division — no decimals)
+console.log(x % y);   // 1n
+console.log(x ** y);  // 1000n
+
+typeof 42n;            // 'bigint'
+```
+
+**Important restrictions:**
+
+```js
+// ❌ Cannot mix BigInt and Number directly
+10n + 5;              // TypeError
+
+// ✅ Explicit conversion required
+10n + BigInt(5);      // 15n
+Number(10n) + 5;      // 15
+
+// ❌ No decimal BigInt
+1.5n;                 // SyntaxError
+
+// ✅ Comparison with Number works (loose equality only)
+42n == 42;            // true  (loose)
+42n === 42;           // false (strict — different types)
+
+// ✅ JSON.stringify does NOT support BigInt natively
+JSON.stringify(42n);  // TypeError — use .toString() first
+```
+
+**Common use cases in Node.js:**
+
+- Cryptographic operations with large integers
+- Database IDs (e.g., PostgreSQL `bigint` columns)
+- Financial calculations requiring exact integer arithmetic
+- Timestamps in nanoseconds (`process.hrtime.bigint()`)
+
+```js
+// Node.js built-in that returns BigInt
+const start = process.hrtime.bigint();
+// ... some work ...
+const elapsed = process.hrtime.bigint() - start;
+console.log(`Elapsed: ${elapsed} ns`);
 ```
 
 <div align="right">
@@ -549,9 +662,29 @@ typeof BigInt('1') === 'bigint'  // true
 
 ## Q. Explain Boolean data type in Node.js?
 
-Boolean data type is a data type that has one of two possible values, either true or false. In programming, it is used in logical representation or to control program structure.
+The `Boolean` data type has exactly two possible values: `true` or `false`. It is used for logical conditions, control flow, and flag variables. Node.js (like JavaScript) follows specific **truthy/falsy** rules when coercing other types to Boolean.
 
-The boolean() function is used to convert any data type to a boolean value. According to the rules, false, 0, NaN, null, undefined, empty string evaluate to false and other values evaluates to true.
+**Falsy values** — coerce to `false`:
+
+| Value | Type |
+|-------|------|
+| `false` | Boolean |
+| `0`, `-0`, `0n` | Number / BigInt |
+| `""`, `''`, ` `` ` | Empty string |
+| `null` | Null |
+| `undefined` | Undefined |
+| `NaN` | Number |
+
+Everything else is **truthy** (including `[]`, `{}`, `"0"`, `"false"`).
+
+**Common Boolean operators:**
+
+| Operator | Name | Example | Result |
+|----------|------|---------|--------|
+| `&&` | Logical AND | `true && false` | `false` |
+| `\|\|` | Logical OR | `true \|\| false` | `true` |
+| `!` | Logical NOT | `!true` | `false` |
+| `??` | Nullish coalescing | `null ?? 'default'` | `'default'` |
 
 **Example:**
 
@@ -559,18 +692,42 @@ The boolean() function is used to convert any data type to a boolean value. Acco
 /**
  * Boolean Data Type
  */
-// Example 01:
-const isValid = true; 
-console.log(isValid); // true 
+// Literal boolean values
+const isValid = true;
+const isExpired = false;
+console.log(typeof isValid); // 'boolean'
 
-// Example 02:
-console.log(true && true); // true 
-console.log(true && false); // false 
-console.log(true || false); // true 
-console.log(false || false); // false 
-console.log(!true); // false 
-console.log(!false); // true 
+// Boolean() conversion
+console.log(Boolean(1));         // true
+console.log(Boolean(0));         // false
+console.log(Boolean("hello"));   // true
+console.log(Boolean(""));        // false
+console.log(Boolean(null));      // false
+console.log(Boolean(undefined)); // false
+console.log(Boolean(NaN));       // false
+console.log(Boolean([]));        // true  (empty array is truthy!)
+console.log(Boolean({}));        // true  (empty object is truthy!)
+
+// Logical operators
+console.log(true && true);   // true
+console.log(true && false);  // false
+console.log(true || false);  // true
+console.log(false || false); // false
+console.log(!true);          // false
+console.log(!false);         // true
+
+// Short-circuit evaluation
+const user = null;
+const name = user && user.name; // null  (short-circuits, avoids error)
+const role = user || 'guest';   // 'guest'
+
+// Double negation — convert any value to boolean
+console.log(!!1);    // true
+console.log(!!"");   // false
+console.log(!!null); // false
 ```
+
+> **Avoid `new Boolean()`** — it creates a Boolean object (always truthy) rather than a primitive, which leads to confusing bugs. Always use `Boolean()` (without `new`) or `!!` for type coercion.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -578,20 +735,90 @@ console.log(!false); // true
 
 ## Q. Explain `Undefined` and `Null` data type in Node.js?
 
-In node.js, if a variable is defined without assigning any value, then that will take **undefined** as value. If we assign a null value to the variable, then the value of the variable becomes **null**.
+`undefined` and `null` are two distinct primitive types in Node.js that both represent the absence of a value, but with different semantics.
+
+**`undefined`**
+
+- A variable that has been declared but not yet assigned a value is automatically `undefined`.
+- It is also the return value of a function that has no `return` statement.
+- Accessing a non-existent object property returns `undefined`.
+- `typeof undefined === 'undefined'`
+
+**`null`**
+
+- Represents the **intentional absence** of any object value — you explicitly set it.
+- Often used to reset or clear a variable.
+- `typeof null === 'object'` — this is a long-standing JavaScript quirk.
+- Use strict equality (`===`) to distinguish `null` from `undefined`.
+
+**Key differences:**
+
+| | `undefined` | `null` |
+|--|-------------|--------|
+| Set by | JavaScript engine (automatically) | Developer (intentionally) |
+| Meaning | Variable declared but not assigned | Intentional absence of value |
+| `typeof` | `'undefined'` | `'object'` (quirk) |
+| Loose equality (`==`) | `null == undefined` → `true` | `null == undefined` → `true` |
+| Strict equality (`===`) | `null === undefined` → `false` | `null === undefined` → `false` |
+| JSON serialization | Omitted from JSON output | Serialized as `null` |
 
 **Example:**
 
 ```js
 /**
- * NULL and UNDEFINED Data Type
+ * Undefined and Null Data Types
  */
-let x;
-console.log(x); // undefined
 
+// --- undefined ---
+let x;
+console.log(x);           // undefined
+console.log(typeof x);    // 'undefined'
+
+function noReturn() {}
+console.log(noReturn());  // undefined
+
+const obj = { name: 'Node' };
+console.log(obj.version); // undefined (property doesn't exist)
+
+// Function parameter not passed
+function greet(name) {
+  console.log(name);
+}
+greet(); // undefined
+
+// --- null ---
 let y = null;
-console.log(y); // null
+console.log(y);           // null
+console.log(typeof y);    // 'object' (historical JS quirk)
+
+// Intentionally clearing a reference
+let user = { name: 'Alice' };
+user = null; // release the reference
+
+// --- Equality comparisons ---
+console.log(null == undefined);   // true  (loose — both "empty")
+console.log(null === undefined);  // false (strict — different types)
+
+// --- Nullish coalescing (??) — guards against both null and undefined ---
+const config = null;
+const timeout = config ?? 3000;
+console.log(timeout); // 3000
+
+// --- Optional chaining (?.) — safe property access ---
+const profile = null;
+console.log(profile?.address?.city); // undefined (no error thrown)
+
+// --- Checking for null or undefined ---
+function isNullOrUndefined(val) {
+  return val == null; // true for both null and undefined
+}
+console.log(isNullOrUndefined(null));      // true
+console.log(isNullOrUndefined(undefined)); // true
+console.log(isNullOrUndefined(0));         // false
+console.log(isNullOrUndefined(''));        // false
 ```
+
+> Use `val == null` as a concise guard for both `null` and `undefined`. Use `val === null` or `val === undefined` when you need to distinguish between them.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -599,21 +826,121 @@ console.log(y); // null
 
 ## Q. Explain Symbol data type in Node.js?
 
-Symbol is an immutable primitive value that is unique. It\'s a very peculiar data type. Once you create a symbol, its value is kept private and for internal use.
+`Symbol` is a primitive data type introduced in ES6. Every `Symbol()` call returns a **guaranteed unique** value — no two symbols are ever equal, even if they share the same description. Symbols are commonly used as unique, non-colliding property keys on objects.
 
-**Example:**
+**Key characteristics:**
+
+- Always unique — `Symbol('x') !== Symbol('x')`
+- Immutable and primitive — `typeof Symbol() === 'symbol'`
+- Not auto-converted to strings — explicit `.toString()` or `.description` needed
+- Not enumerable by default — hidden from `for...in`, `Object.keys()`, and `JSON.stringify()`
+- Accessible via `Object.getOwnPropertySymbols()`
+
+**Creating Symbols:**
+
+```js
+const sym1 = Symbol();             // no description
+const sym2 = Symbol('id');         // with description (for debugging)
+const sym3 = Symbol('id');         // different symbol — NOT equal to sym2
+
+console.log(sym2 === sym3);        // false — always unique
+console.log(typeof sym2);          // 'symbol'
+console.log(sym2.description);     // 'id'
+console.log(sym2.toString());      // 'Symbol(id)'
+```
+
+**Use case 1 — unique object property keys (avoid naming collisions):**
 
 ```js
 /**
- * Symbol Data Type
+ * Symbol as object property key
  */
-const NAME = Symbol()
-const person = {
-  [NAME]: 'Ritika Bhavsar'
+const ID = Symbol('id');
+const NAME = Symbol('name');
+
+const user = {
+  [ID]: 101,
+  [NAME]: 'Alice',
+  role: 'admin',
+};
+
+console.log(user[ID]);    // 101
+console.log(user[NAME]);  // 'Alice'
+
+// Symbols are invisible to standard enumeration
+console.log(Object.keys(user));             // ['role']
+console.log(JSON.stringify(user));          // '{"role":"admin"}'
+
+// Access symbol keys explicitly
+console.log(Object.getOwnPropertySymbols(user)); // [ Symbol(id), Symbol(name) ]
+```
+
+**Use case 2 — constants / enum-like values:**
+
+```js
+// Symbols guarantee uniqueness, unlike string constants
+const Direction = {
+  UP:    Symbol('UP'),
+  DOWN:  Symbol('DOWN'),
+  LEFT:  Symbol('LEFT'),
+  RIGHT: Symbol('RIGHT'),
+};
+
+function move(dir) {
+  if (dir === Direction.UP) console.log('Moving up');
 }
 
-person[NAME] // 'Ritika Bhavsar'
+move(Direction.UP);   // Moving up
+move(Symbol('UP'));   // no output — different symbol, even with same description
 ```
+
+**Use case 3 — Symbol.for() and the global symbol registry:**
+
+```js
+// Symbol.for() creates/retrieves a shared symbol from a global registry
+const s1 = Symbol.for('shared');
+const s2 = Symbol.for('shared');
+
+console.log(s1 === s2);          // true — same registry entry
+console.log(Symbol.keyFor(s1));  // 'shared'
+
+// Regular Symbol() is NOT in the registry
+const local = Symbol('shared');
+console.log(local === s1);       // false
+```
+
+**Use case 4 — Well-known Symbols (customize built-in behavior):**
+
+```js
+// Symbol.iterator — make an object iterable
+const range = {
+  from: 1,
+  to: 5,
+  [Symbol.iterator]() {
+    let current = this.from;
+    const last = this.to;
+    return {
+      next() {
+        return current <= last
+          ? { value: current++, done: false }
+          : { value: undefined, done: true };
+      },
+    };
+  },
+};
+
+console.log([...range]); // [1, 2, 3, 4, 5]
+```
+
+**Well-known Symbols overview:**
+
+| Symbol | Purpose |
+|--------|---------|
+| `Symbol.iterator` | Defines the default iterator (`for...of`, spread) |
+| `Symbol.toPrimitive` | Customizes type conversion |
+| `Symbol.hasInstance` | Customizes `instanceof` behavior |
+| `Symbol.toStringTag` | Customizes `Object.prototype.toString` output |
+| `Symbol.asyncIterator` | Defines the async iterator (`for await...of`) |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -621,24 +948,139 @@ person[NAME] // 'Ritika Bhavsar'
 
 ## Q. Explain function in Node.js?
 
-Functions are first class citizens in Node\'s JavaScript, similar to the browser\'s JavaScript. A function can have attributes and properties also. It can be treated like a class in JavaScript.
+Functions are **first-class citizens** in Node.js — they can be assigned to variables, passed as arguments, returned from other functions, and stored in data structures. Node.js supports several function forms, each suited to different use cases.
 
-**Example:**
+**Function types:**
+
+| Type | Syntax | `this` binding | `arguments` object | Hoisted? |
+|------|--------|----------------|-------------------|---------|
+| Function declaration | `function foo() {}` | Dynamic | Yes | Yes |
+| Function expression | `const foo = function() {}` | Dynamic | Yes | No |
+| Arrow function | `const foo = () => {}` | Lexical (inherited) | No | No |
+| Async function | `async function foo() {}` | Dynamic | Yes | Yes |
+| Generator function | `function* foo() {}` | Dynamic | Yes | Yes |
+
+**1. Function declaration (hoisted):**
 
 ```js
-/**
- * Function in Node.js
- */
-function Messsage(name) {
- console.log("Hello "+name);
-}
+// Can be called before the declaration
+greet('World'); // Hello, World!
 
-Messsage("World"); // Hello World
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
 ```
 
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
+**2. Function expression:**
+
+```js
+const square = function(n) {
+  return n * n;
+};
+console.log(square(5)); // 25
+```
+
+**3. Arrow function (no own `this`):**
+
+```js
+const add = (a, b) => a + b;
+console.log(add(3, 4)); // 7
+
+// Useful in callbacks — inherits `this` from enclosing scope
+const timer = {
+  seconds: 0,
+  start() {
+    setInterval(() => {
+      this.seconds++; // `this` refers to `timer`, not the interval
+    }, 1000);
+  },
+};
+```
+
+**4. Default parameters:**
+
+```js
+function createUser(name, role = 'user', active = true) {
+  return { name, role, active };
+}
+console.log(createUser('Alice'));          // { name: 'Alice', role: 'user', active: true }
+console.log(createUser('Bob', 'admin'));   // { name: 'Bob', role: 'admin', active: true }
+```
+
+**5. Rest parameters and spread:**
+
+```js
+function sum(...numbers) {
+  return numbers.reduce((acc, n) => acc + n, 0);
+}
+console.log(sum(1, 2, 3, 4)); // 10
+
+const nums = [1, 2, 3];
+console.log(sum(...nums));    // 6
+```
+
+**6. Functions as first-class citizens (higher-order functions):**
+
+```js
+// Function passed as argument (callback pattern)
+function applyOperation(a, b, operation) {
+  return operation(a, b);
+}
+
+const multiply = (x, y) => x * y;
+console.log(applyOperation(4, 5, multiply)); // 20
+
+// Function returning a function (closure)
+function multiplier(factor) {
+  return (number) => number * factor;
+}
+const double = multiplier(2);
+const triple = multiplier(3);
+console.log(double(7));  // 14
+console.log(triple(7));  // 21
+```
+
+**7. Async function (returns a Promise):**
+
+```js
+async function fetchData(url) {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error('Fetch failed:', err.message);
+  }
+}
+```
+
+**8. IIFE (Immediately Invoked Function Expression):**
+
+```js
+// Creates a private scope — useful for module-like isolation
+const result = (function() {
+  const secret = 42;
+  return { getValue: () => secret };
+})();
+
+console.log(result.getValue()); // 42
+```
+
+**9. Generator function:**
+
+```js
+function* idGenerator() {
+  let id = 1;
+  while (true) {
+    yield id++;
+  }
+}
+
+const gen = idGenerator();
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // 3
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -646,30 +1088,131 @@ Messsage("World"); // Hello World
 
 ## Q. How to work with Buffers in Node.js?
 
-A **Buffer** is a fixed-size region of memory outside the V8 heap, used to handle binary data such as file contents, network packets, or image data. Use `Buffer.alloc()` or `Buffer.from()` — the old `new Buffer()` constructor is removed in Node.js v22.
+A **Buffer** is a fixed-size chunk of memory allocated **outside** the V8 heap, designed to handle raw binary data — file I/O, network packets, cryptographic operations, and image processing. Unlike JavaScript strings (UTF-16), Buffers store raw bytes.
 
-**Example:**
+> **Note:** The old `new Buffer()` constructor was deprecated and removed in Node.js v22. Always use `Buffer.alloc()`, `Buffer.allocUnsafe()`, or `Buffer.from()`.
+
+**Buffer creation methods:**
+
+| Method | Description |
+|--------|-------------|
+| `Buffer.alloc(size)` | Zero-filled buffer of `size` bytes (safe) |
+| `Buffer.allocUnsafe(size)` | Uninitialized buffer — faster but may contain old data |
+| `Buffer.from(string, encoding)` | Buffer from a string |
+| `Buffer.from(array)` | Buffer from an array of byte values |
+| `Buffer.from(buffer)` | Copy of an existing Buffer |
+| `Buffer.concat(list)` | Concatenate multiple Buffers into one |
+
+**1. Allocating Buffers:**
 
 ```js
-// Allocate a zero-filled buffer of 8 bytes
-const buf1 = Buffer.alloc(8);
-console.log(buf1); // <Buffer 00 00 00 00 00 00 00 00>
+// Zero-filled (safe — always use this for sensitive data)
+const safe = Buffer.alloc(8);
+console.log(safe); // <Buffer 00 00 00 00 00 00 00 00>
 
-// Create from a string
-const buf2 = Buffer.from('Hello, Node.js', 'utf8');
-console.log(buf2.toString());          // Hello, Node.js
-console.log(buf2.toString('hex'));     // 48656c6c6f2c204e6f64652e6a73
-console.log(buf2.toString('base64')); // SGVsbG8sIE5vZGUuanM=
-
-// Create from an array of byte values
-const buf3 = Buffer.from([72, 101, 108, 108, 111]);
-console.log(buf3.toString()); // Hello
-
-// Get buffer length and slice
-const buf4 = Buffer.from('Node.js');
-console.log(buf4.length);                  // 7
-console.log(buf4.subarray(0, 4).toString()); // Node
+// Uninitialized (faster, but may contain garbage — never expose without filling)
+const unsafe = Buffer.allocUnsafe(8);
+unsafe.fill(0); // manually zero it out before use
 ```
+
+**2. Creating from strings:**
+
+```js
+const buf = Buffer.from('Hello, Node.js', 'utf8');
+
+console.log(buf.toString());          // Hello, Node.js  (default: utf8)
+console.log(buf.toString('hex'));     // 48656c6c6f2c204e6f64652e6a73
+console.log(buf.toString('base64')); // SGVsbG8sIE5vZGUuanM=
+console.log(buf.length);             // 14 (bytes, not characters)
+```
+
+**Supported encodings:** `'utf8'`, `'ascii'`, `'base64'`, `'base64url'`, `'hex'`, `'latin1'`, `'binary'`, `'ucs2'`
+
+**3. Creating from byte arrays:**
+
+```js
+const buf = Buffer.from([72, 101, 108, 108, 111]); // ASCII codes
+console.log(buf.toString()); // Hello
+```
+
+**4. Reading and writing bytes:**
+
+```js
+const buf = Buffer.alloc(4);
+
+// Write individual bytes
+buf[0] = 0x4e;  // 'N'
+buf[1] = 0x6f;  // 'o'
+buf[2] = 0x64;  // 'd'
+buf[3] = 0x65;  // 'e'
+
+console.log(buf.toString()); // Node
+
+// Read/write multi-byte integers (useful for binary protocols)
+const numBuf = Buffer.alloc(4);
+numBuf.writeUInt32BE(305419896, 0); // big-endian
+console.log(numBuf.readUInt32BE(0)); // 305419896
+```
+
+**5. Slicing and copying:**
+
+```js
+const buf = Buffer.from('Node.js is great');
+
+// subarray() — returns a view (shares memory, does NOT copy)
+const view = buf.subarray(0, 7);
+console.log(view.toString()); // Node.js
+
+// copy() — copies bytes into another buffer
+const dest = Buffer.alloc(7);
+buf.copy(dest, 0, 0, 7);
+console.log(dest.toString()); // Node.js
+
+// Mutating the view also mutates the original
+view[0] = 0x58; // 'X'
+console.log(buf.toString()); // Xode.js is great  ← shared memory!
+```
+
+**6. Concatenating Buffers:**
+
+```js
+const part1 = Buffer.from('Hello, ');
+const part2 = Buffer.from('Node.js!');
+
+const combined = Buffer.concat([part1, part2]);
+console.log(combined.toString()); // Hello, Node.js!
+```
+
+**7. Comparing Buffers:**
+
+```js
+const a = Buffer.from('ABC');
+const b = Buffer.from('ABC');
+const c = Buffer.from('XYZ');
+
+console.log(a.equals(b));    // true
+console.log(a.equals(c));    // false
+console.log(Buffer.compare(a, c)); // -1 (a < c lexicographically)
+```
+
+**8. Real-world use — reading a file as a Buffer:**
+
+```js
+const fs = require('fs');
+
+fs.readFile('image.png', (err, data) => {
+  // data is a Buffer containing raw binary file contents
+  console.log(`File size: ${data.length} bytes`);
+  console.log(`First 4 bytes (PNG magic number): ${data.subarray(0, 4).toString('hex')}`);
+  // PNG files always start with: 89504e47
+});
+```
+
+**Buffer vs string performance:**
+
+- Use **Buffer** for binary data (files, sockets, crypto)
+- Use **string** for text data
+- Converting between them has a cost — minimize unnecessary conversions in hot paths
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -677,50 +1220,129 @@ console.log(buf4.subarray(0, 4).toString()); // Node
 
 ## Q. What is the difference between CommonJS and ES Modules in Node.js?
 
-Node.js supports two module systems: **CommonJS (CJS)** (traditional) and **ES Modules (ESM)** (modern standard, stable since Node.js v12 LTS).
+Node.js supports two module systems: **CommonJS (CJS)** — the original system — and **ES Modules (ESM)** — the modern JavaScript standard
 
-| Feature | CommonJS | ES Modules |
-|---------|----------|------------|
+**Feature comparison:**
+
+| Feature | CommonJS (CJS) | ES Modules (ESM) |
+|---------|---------------|-----------------|
 | Syntax | `require()` / `module.exports` | `import` / `export` |
-| Loading | Synchronous | Asynchronous |
+| Loading | Synchronous (blocking) | Asynchronous (deferred) |
 | File extension | `.js` or `.cjs` | `.mjs` or `.js` with `"type":"module"` |
-| `__dirname` available | Yes | No — use `import.meta` |
-| Top-level `await` | Not supported | Supported |
-| Tree shaking | Not supported | Supported by bundlers |
-| Default in Node.js | Yes | Opt-in via `"type":"module"` |
+| `__dirname` / `__filename` | Available | Not available — use `import.meta` |
+| Top-level `await` | ❌ Not supported | ✅ Supported |
+| Tree shaking | ❌ Not supported | ✅ Supported by bundlers |
+| Named exports | Via destructuring `require` | Native `export` keyword |
+| Default in Node.js | Yes | Opt-in (`"type":"module"` in package.json) |
+| `require()` inside ESM | ❌ Not available by default | ✅ Via `createRequire()` |
+| Dynamic import | `require()` (sync) | `import()` (async, returns Promise) |
 
-**CommonJS:**
+**1. CommonJS — exporting and importing:**
 
 ```js
-// math.js
+// math.js (CJS)
 function add(a, b) { return a + b; }
-module.exports = { add };
+function subtract(a, b) { return a - b; }
 
-// app.js
-const { add } = require('./math');
-console.log(add(2, 3)); // 5
+// Named exports via object
+module.exports = { add, subtract };
+
+// OR default export pattern
+module.exports = add;
 ```
 
-**ES Modules:**
+```js
+// app.js (CJS)
+const { add, subtract } = require('./math');
+console.log(add(2, 3));      // 5
+console.log(subtract(5, 2)); // 3
+```
+
+**2. ES Modules — named and default exports:**
 
 ```js
-// math.mjs
+// math.mjs (ESM) — named exports
 export function add(a, b) { return a + b; }
+export function subtract(a, b) { return a - b; }
+export const PI = 3.14159;
 
-// app.mjs
-import { add } from './math.mjs';
-console.log(add(2, 3)); // 5
+// Default export
+export default function multiply(a, b) { return a * b; }
 ```
 
-**Get `__dirname` equivalent in ESM:**
+```js
+// app.mjs (ESM)
+import multiply, { add, subtract, PI } from './math.mjs';
+
+console.log(add(2, 3));        // 5
+console.log(subtract(5, 2));   // 3
+console.log(multiply(4, 5));   // 20
+console.log(PI);               // 3.14159
+```
+
+**3. Enabling ESM in a project:**
+
+```json
+// package.json — treat all .js files as ESM
+{
+  "type": "module"
+}
+```
+
+Or use `.mjs` extension for individual files without changing `package.json`.
+
+**4. `__dirname` and `__filename` equivalent in ESM:**
 
 ```js
+// ESM does not have __dirname — use import.meta.url instead
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname  = dirname(__filename);
+
+console.log(__dirname);                   // current directory
+console.log(join(__dirname, 'data.json')); // absolute path to a file
 ```
+
+**5. Top-level `await` — ESM only:**
+
+```js
+// app.mjs — await at the top level (no async wrapper needed)
+const data = await fetch('https://api.example.com/config').then(r => r.json());
+console.log(data);
+```
+
+```js
+// app.js (CJS) — must wrap in async function
+(async () => {
+  const data = await fetch('https://api.example.com/config').then(r => r.json());
+  console.log(data);
+})();
+```
+
+**6. Using `require()` inside ESM (interop):**
+
+```js
+// ESM file that needs to require() a CJS module
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const lodash = require('lodash'); // works in ESM via createRequire
+```
+
+**7. Dynamic import — works in both CJS and ESM:**
+
+```js
+// Lazy-load a module only when needed (returns a Promise)
+async function loadModule() {
+  const { add } = await import('./math.mjs');
+  console.log(add(1, 2)); // 3
+}
+loadModule();
+```
+
+> **Recommendation:** Use **ESM** (`import`/`export`) for new projects — it supports top-level `await`, tree shaking, and is the official JavaScript standard. Use **CommonJS** only when working with legacy codebases or packages that don't yet support ESM.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -731,6 +1353,7 @@ const __dirname = dirname(__filename);
 When `require()` loads a module for the first time, Node.js **executes** the module file and **caches** the exported object in `require.cache`. Every subsequent `require()` call for the same file path returns the **cached exports directly**, without re-executing the file.
 
 **This means:**
+
 - Module-level code (e.g., a database connection) runs **only once**.
 - Mutating an exported object in one module is **visible** to all other modules that required it.
 
@@ -792,32 +1415,48 @@ module.exports = pool; // cached: every require('./db') returns the same Pool
 
 ## Q. How does Node.js works?
 
-Node.js is completely event-driven. Basically the server consists of one thread processing one event after another.
-
-A new request coming in is one kind of event. The server starts processing it and when there is a blocking IO operation, it does not wait until it completes and instead registers a callback function. The server then immediately starts to process another event ( maybe another request ). When the IO operation is finished, that is another kind of event, and the server will process it ( i.e. continue working on the request ) by executing the callback as soon as it has time.
-
-Node.js Platform does not follow Request/Response Multi-Threaded Stateless Model. It follows Single Threaded with Event Loop Model. Node.js Processing model mainly based on Javascript Event based model with Javascript callback mechanism.  
+Node.js is **single-threaded and event-driven**, using a non-blocking I/O model to handle many concurrent operations efficiently.
 
 <p align="center">
   <img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
 </p>
-  
-**Single Threaded Event Loop Model Processing Steps:**
 
-* Clients Send request to Web Server.
-* Node.js Web Server internally maintains a Limited Thread pool to provide services to the Client Requests.
-* Node.js Web Server receives those requests and places them into a Queue. It is known as **Event Queue**.
-* Node.js Web Server internally has a Component, known as **Event Loop**. Why it got this name is that it uses indefinite loop to receive requests and process them.
-* Event Loop uses Single Thread only. It is main heart of Node.js Platform Processing Model.
-* Event Loop checks any Client Request is placed in Event Queue. If no, then wait for incoming requests for indefinitely.
-* If yes, then pick up one Client Request from Event Queue
-    * Starts process that Client Request
-    * If that Client Request Does Not requires any Blocking IO Operations, then process everything, prepare response and send it back to client.
-    * If that Client Request requires some Blocking IO Operations like interacting with Database, File System, External Services then it will follow different approach
-        * Checks Threads availability from Internal Thread Pool
-        * Picks up one Thread and assign this Client Request to that thread.
-        * That Thread is responsible for taking that request, process it, perform Blocking IO operations, prepare response and send it back to the Event Loop
-        * Event Loop in turn, sends that Response to the respective Client.
+**Core Components**
+
+| Component | Role |
+|-----------|------|
+| **V8 Engine** | Executes JavaScript (same engine as Chrome) |
+| **libuv** | C library handling async I/O, thread pool, and event loop |
+| **Event Queue** | Holds incoming requests/events in FIFO order |
+| **Event Loop** | Continuously polls the queue and dispatches callbacks |
+| **Thread Pool** | Background workers for blocking operations (file, DNS, crypto) |
+
+**Request Lifecycle**
+
+1. Request arrives → placed in the **Event Queue**
+2. **Event Loop** picks it up (only when the call stack is empty)
+3. **No blocking I/O?** → Process immediately, send response
+4. **Blocking I/O needed?** → Offload to a **thread pool worker**, register a callback, free the main thread
+5. Worker completes → fires an event → callback executes → response sent
+
+```
+Client Requests
+      ↓
+  Event Queue
+      ↓
+  Event Loop (single thread)
+    ├── Non-blocking? → Process & respond immediately
+    └── Blocking I/O? → Thread Pool (libuv)
+                              ↓
+                         Callback fired → response sent
+```
+
+**Key Design Principles**
+
+- **Single-threaded JS execution** — no thread management overhead
+- **Non-blocking by default** — APIs are async with callbacks/promises
+- **Observer pattern** — events trigger registered listeners
+- **Concurrency without threads** — achieved via event loop + callbacks, not parallel execution
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -827,41 +1466,53 @@ Node.js Platform does not follow Request/Response Multi-Threaded Stateless Model
 
 Node.js has a set of core modules that are part of the platform and come with the Node.js installation. These modules can be loaded into the program by using the require function.
 
-**Syntax:**
-
-```js
-const module = require('module_name');
-```
-
-**Example:**
-
-```js
-const http = require('http');
-
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write('Welcome to Node.js!');
-  res.end();
-}).listen(3000);
-```
-
 The following table lists some of the important core modules in Node.js.
 
 |Name         |Description                                             |
 |-------------|--------------------------------------------------------|
-|Assert       |It is used by Node.js for testing itself. It can be accessed with require('assert').|
-|Buffer       |It is used to perform operations on raw bytes of data which reside in memory. It can be accessed with require('buffer')|
-|Child Process|It is used by node.js for managing child processes. It can be accessed with require('child_process').|
-|Cluster      |This module is used by Node.js to take advantage of multi-core systems, so that it can handle more load. It can be accessed with require('cluster').|
-|Console      |It is used to write data to console. Node.js has a Console object which contains functions to write data to console. It can be accessed with require('console'). |
-|Crypto       |It is used to support cryptography for encryption and decryption. It can be accessed with require('crypto').|
-|HTTP         |It includes classes, methods and events to create Node.js http server.|
-|URL          |It includes methods for URL resolution and parsing.|
-|Query String |It includes methods to deal with query string.|
-|Path         |It includes methods to deal with file paths.|
-|File System  |It includes classes, methods, and events to work with file I/O.|
-|Util         |It includes utility functions useful for programmers.|
-|Zlib         |It is used to compress and decompress data. It can be accessed with require('zlib').|
+|`assert`       |It is used by Node.js for testing itself.|
+|`buffer`       |Handle raw binary data outside the V8 heap|
+|`child_process`|Spawn child processes (`exec`, `spawn`, `fork`)|
+|`cluster`      |This module is used by Node.js to take advantage of multi-core systems, so that it can handle more load.|
+|`console`      |It is used to write data to console. Node.js has a Console object which contains functions to write data to console.|
+|`crypto`       |Cryptographic functions — hashing, encryption, HMAC|
+|`http`/`https` |Create HTTP/HTTPS servers and make requests|
+|`url`          |It includes methods for URL resolution and parsing.|
+|`querystring` |It includes methods to deal with query string.|
+|`path`         |Utilities for working with file and directory paths|
+|`fs`           |File system — read, write, update, delete, rename files.|
+|`stream`       |Readable, Writable, Duplex, and Transform streams|
+|`worker_threads`|Run CPU-intensive JS in background threads|
+|`util`         |It includes utility functions useful for programmers.|
+|`zlib`         |It is used to compress and decompress data. |
+
+**Example:**
+
+```js
+const http   = require('http');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
+
+// HTTP server
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World');
+}).listen(3000);
+
+// File path
+const filePath = path.join(__dirname, 'data', 'file.txt');
+
+// Read file
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+// Hash a string
+const hash = crypto.createHash('sha256').update('secret').digest('hex');
+console.log(hash);
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -869,16 +1520,16 @@ The following table lists some of the important core modules in Node.js.
 
 ## Q. What do you understand by Reactor Pattern in Node.js?
 
-**Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a demultiplexer, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
+**Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a **de-multiplexer**, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
 
-**There are two ways in which I/O operations are performed:**
+**Types of Input/Output operations**
 
-**1. Blocking I/O:** Application will make a function call and pause its execution at a point until the data is received. It is called as "Synchronous".
+**1. Blocking I/O (Synchronous):** Application will make a function call and pause its execution at a point until the data is received.
 
-**2. Non-Blocking I/O:** Application will make a function call, and, without waiting for the results it continues its execution. It is called as "Asynchronous".
+**2. Non-Blocking I/O (Asynchronous):** Application will make a function call, and, without waiting for the results it continues its execution. Node.js uses non-blocking I/O exclusively.
 
 <p align="center">
-  <img src="/assets/reactor-pattern.jpg" alt="Reactor Pattern" width="600px" />
+  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="500px" />
 </p>
 
 **Reactor Pattern comprises of:**
@@ -899,56 +1550,52 @@ The following table lists some of the important core modules in Node.js.
 
 Node.js Global Objects are the objects that are available in all modules. Global Objects are built-in objects that are part of the JavaScript and can be used directly in the application without importing any particular module.
 
-These objects are modules, functions, strings and object itself as explained below.
+**Global Objects**
 
-**1. global:**
+| Object | Description |
+|--------|-------------|
+| `global` | The global namespace object (equivalent to `window` in browsers) |
+| `process` | Info and control over the current Node.js process |
+| `console` | Write to stdout/stderr |
+| `Buffer` | Handle raw binary data |
+| `__dirname` | Absolute path of the current module's **directory** |
+| `__filename` | Absolute path of the current module's **file** |
+| `setTimeout` / `clearTimeout` | Schedule a one-time callback |
+| `setInterval` / `clearInterval` | Schedule a repeating callback |
+| `setImmediate` / `clearImmediate` | Execute after current event loop iteration |
+| `queueMicrotask` | Queue a microtask |
+| `URL` / `URLSearchParams` | Web-compatible URL API |
+| `fetch` | HTTP client (available since Node.js v18) |
+| `crypto` | Web Crypto API (available since Node.js v19) |
 
-It is a global namespace. Defining a variable within this namespace makes it globally accessible.
-
-```js
-var myvar;
-```
-
-**2. process:**
-
-It is an inbuilt global object that is an instance of EventEmitter used to get information on current process. It can also be accessed using require() explicitly.
-
-**3. console:**
-
-It is an inbuilt global object used to print to stdout and stderr.
-
-```js
-console.log("Hello World"); // Hello World
-```
-
-**4. setTimeout(), clearTimeout(), setInterval(), clearInterval():**
-
-The built-in timer functions are globals
+**Examples:**
 
 ```js
-function printHello() {
-   console.log( "Hello, World!");
-}
+// __dirname and __filename
+console.log(__dirname);   // D:\projects\myapp
+console.log(__filename);  // D:\projects\myapp\index.js
 
-// Now call above function after 2 seconds
-var timeoutObj = setTimeout(printHello, 2000);
+// process — runtime info
+console.log(process.version);       // v20.x.x
+console.log(process.platform);      // 'win32' / 'linux'
+console.log(process.env.NODE_ENV);  // 'development'
+console.log(process.pid);           // process ID
+process.exit(0);                    // exit with code 0
+
+// global — set a truly global variable (avoid in practice)
+global.appName = 'MyApp';
+console.log(appName); // 'MyApp' — accessible anywhere
+
+// Buffer
+const buf = Buffer.from('hello');
+console.log(buf.toString('hex')); // 68656c6c6f
+
+// Timers
+const timer = setTimeout(() => console.log('done'), 1000);
+clearTimeout(timer); // cancel it
 ```
 
-**5. __dirname:**
-
-It is a string. It specifies the name of the directory that currently contains the code.
-
-```js
-console.log(__dirname);
-```
-
-**6. __filename:**
-
-It specifies the filename of the code being executed. This is the resolved absolute path of this code file. The value inside a module is the path to that module file.
-
-```js
-console.log(__filename);
-```
+> `__dirname` and `__filename` are **not available in ES Modules** — use `import.meta.url` with `fileURLToPath()` instead. The `global` object in Node.js v21+ is also aliased as `globalThis` (the standard cross-environment global).
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -956,11 +1603,24 @@ console.log(__filename);
 
 ## Q. What is chrome v8 engine?
 
-V8 is a C++ based open-source JavaScript engine developed by Google. It was originally designed for Google Chrome and Chromium-based browsers ( such as Brave ) in 2008, but it was later utilized to create Node.js for server-side coding.
+V8 is an open-source, high-performance JavaScript and WebAssembly engine written in C++, developed by Google. It was originally designed for Google Chrome and Chromium-based browsers ( such as Brave ) in 2008, but it was later utilized to create Node.js for server-side coding.
 
 V8 is the JavaScript engine i.e. it parses and executes JavaScript code. The DOM, and the other Web Platform APIs ( they all makeup runtime environment ) are provided by the browser.
 
 V8 is known to be a JavaScript engine because it takes JavaScript code and executes it while browsing in Chrome. It provides a runtime environment for the execution of JavaScript code. The best part is that the JavaScript engine is completely independent of the browser in which it runs.
+
+**Just-In-Time (JIT) compilation:**
+
+V8 uses two compilers working together:
+
+* **Ignition** — baseline interpreter that converts JS to bytecode quickly, collects profiling data
+* **TurboFan** — optimizing compiler that re-compiles "hot" (frequently run) code into highly optimized machine code
+
+**V8 Key Optimizations**
+
+* **Hidden classes** — optimizes property access on objects
+* **Inline caching** — caches results of repeated operations
+* **Garbage collection** — generational GC (Scavenger + Mark-Compact) with minimal pause times
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -968,12 +1628,32 @@ V8 is known to be a JavaScript engine because it takes JavaScript code and execu
 
 ## Q. Why is LIBUV needed in Node JS?
 
-**libuv** is a C library originally written for Node.js to abstract non-blocking I/O operations. It provides the following features:
+**libuv** is a cross-platform C library that gives Node.js its ability to perform **non-blocking, asynchronous I/O** — the core of everything Node.js does efficiently. It provides the following features:
 
 * It allows the CPU and other resources to be used simultaneously while still performing I/O operations, thereby resulting in efficient use of resources and network.
 * It facilitates an event-driven approach wherein I/O and other activities are performed using callback-based notifications.
 * It provides mechanisms to handle file system, DNS, network, child processes, pipes, signal handling, polling and streaming
 * It also includes a thread pool for offloading work for some things that can\'t be done asynchronously at the operating system level.
+
+**Example: Thread Pool**
+
+Some operations **can\'t be made async at the OS level** (e.g., some file system calls, DNS lookups, crypto). **libuv** offloads these to a pool of worker threads:
+
+```js
+const fs = require('fs');
+const crypto = require('crypto');
+
+// These are offloaded to libuv\'s thread pool — main thread never blocks
+fs.readFile('large-file.txt', (err, data) => {
+  console.log('File read complete');
+});
+
+crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', (err, key) => {
+  console.log('Hash complete');
+});
+
+console.log('Main thread continues immediately'); // prints first
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -988,6 +1668,74 @@ Compilation is the process of converting human-readable code to machine code. Th
 
 The V8 engine uses both a compiler and an interpreter and follows **just-in-time (JIT)** compilation to speed up the execution. JIT compiling works by compiling small portions of code that are just about to be executed. This prevents long compilation time and the code being compiles is only that which is highly likely to run.
 
+**Compilation Pipeline**
+
+```
+JavaScript Source
+       ↓
+   Parser
+       ↓ generates
+Abstract Syntax Tree (AST)
+       ↓
+   Ignition (Interpreter)
+       ↓ produces
+   Bytecode  ←──────────────────────┐
+       ↓  + profiling data          │ de-optimize if
+   TurboFan (Optimizing Compiler)   │ assumptions wrong
+       ↓                            │
+Optimized Machine Code ─────────────┘
+```
+
+**Stage 1 — Parsing**
+
+V8 reads JS source and builds an **Abstract Syntax Tree (AST)**:
+
+```js
+const x = a + b;
+
+// AST (simplified):
+// VariableDeclaration
+//   └── BinaryExpression (+)
+//         ├── Identifier (a)
+//         └── Identifier (b)
+```
+
+- **Scanner** tokenizes the raw text
+- **Parser** builds the AST from tokens
+- **Pre-parser** skips function bodies not yet called (lazy parsing — speeds up startup)
+
+**Stage 2 — Ignition (Interpreter)**
+
+Ignition converts the AST into **bytecode** — a compact, platform-independent instruction set:
+
+```
+// Bytecode for: return a + b
+LdaNamedProperty a
+Add b
+Return
+```
+
+- Starts executing **immediately** — no wait for full compilation
+- Collects **type feedback** (e.g., "a and b are always integers")
+- Much faster to generate than machine code
+
+**Stage 3 — TurboFan (Optimizing Compiler)**
+
+When a function becomes **"hot"** (called many times), TurboFan kicks in:
+
+- Uses Ignition's profiling data to make **type assumptions**
+- Compiles to **highly optimized native machine code**
+- Eliminates type checks, inlines functions, unboxes numbers
+
+```js
+function add(a, b) { return a + b; }
+
+add(1, 2);   // interpreted by Ignition
+add(3, 4);   // still Ignition, profiling
+add(5, 6);   // ... "hot" → TurboFan optimizes assuming a,b are integers
+add('x','y') // ❌ assumption broken → deoptimize back to Ignition
+```
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
@@ -998,7 +1746,7 @@ The V8 engine uses both a compiler and an interpreter and follows **just-in-time
 
 ## Q. What is EventEmitter in Node.js?
 
-The EventEmitter is a class that facilitates communication/interaction between objects in Node.js. The EventEmitter class can be used to create and handle custom events.
+**EventEmitter** is a class from Node.js\'s built-in events module that implements the **Observer (Pub/Sub)** pattern — objects can emit named events, and listeners registered for those events are called when they fire.
 
 EventEmitter is at the core of Node asynchronous event-driven architecture. Many of Node\'s built-in modules inherit from EventEmitter including prominent frameworks like Express.js. An emitter object basically has two main features:
 
@@ -1025,11 +1773,29 @@ eventEmitter.emit('status', 200, 'ok');
 status 200 and ok
 ```
 
+## Key Methods
+
+| Method | Description |
+|--------|-------------|
+| `.on(event, listener)` | Register a listener (fires every time) |
+| `.once(event, listener)` | Register a listener that fires **only once** |
+| `.emit(event, ...args)` | Trigger all listeners for an event |
+| `.off(event, listener)` | Remove a specific listener |
+| `.removeAllListeners(event)` | Remove all listeners for an event |
+| `.listeners(event)` | Returns array of listeners for an event |
+| `.listenerCount(event)` | Returns number of listeners |
+| `.setMaxListeners(n)` | Change the limit (default: 10) |
+
+
+> Node.js prints a warning when more than **10 listeners** are registered for a single event — use `emitter.setMaxListeners(0)` to disable the limit, or increase it as needed.
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. How does the EventEmitter works in Node.js?
+
+`EventEmitter` maintains an internal **registry** (a plain object) mapping event names to arrays of listener functions. When you emit an event, it looks up that array and calls each function synchronously in registration order.
 
 * Event Emitter emits the data in an event called message
 * A Listened is registered on the event message
@@ -1105,18 +1871,88 @@ listenerOnce fired once
 
 ## Q. What are the EventEmitter methods available in Node.js?
 
-|EventEmitter Methods | Description         |
-|---------------------|---------------------|
-|.addListener(event, listener) |Adds a listener to the end of the listeners array for the specified event.|
-|.on(event, listener) |Adds a listener to the end of the listeners array for the specified event. It can also be called as an alias of emitter.addListener()|
-|.once(event, listener)|This listener is invoked only the next time the event is fired, after which it is removed.|
-|.removeListener(event, listener)|Removes a listener from the listener array for the specified event.|
-|.removeAllListeners([event])|Removes all listeners, or those of the specified event.|
-|.setMaxListeners(n)  |By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.|
-|.getMaxListeners()   |Returns the current maximum listener value for the emitter which is either set by emitter.setMaxListeners(n) or defaults to EventEmitter.defaultMaxListeners.|
-|.listeners(event)    |Returns a copy of the array of listeners for the specified event.|
-|.emit(event[, arg1][, arg2][, ...]) |Raise the specified events with the supplied arguments.|
-|.listenerCount(type) |Returns the number of listeners listening to the type of event.|
+**Listener Registration**
+
+| Method | Description |
+|--------|-------------|
+| `.on(event, listener)` | Add a listener — fires **every time** the event is emitted |
+| `.addListener(event, listener)` | Alias for `.on()` |
+| `.once(event, listener)` | Add a listener that fires **only once**, then auto-removes |
+| `.prependListener(event, listener)` | Add listener to the **beginning** of the array (fires first) |
+| `.prependOnceListener(event, listener)` | Same as `.prependListener()` but fires only once |
+
+**Listener Removal**
+
+| Method | Description |
+|--------|-------------|
+| `.off(event, listener)` | Remove a specific listener |
+| `.removeListener(event, listener)` | Alias for `.off()` |
+| `.removeAllListeners([event])` | Remove all listeners for an event (or all events if omitted) |
+
+**Emitting Events**
+
+| Method | Description |
+|--------|-------------|
+| `.emit(event, ...args)` | Trigger all listeners for the event synchronously. Returns `true` if listeners exist |
+
+**Inspection**
+
+| Method | Description |
+|--------|-------------|
+| `.listeners(event)` | Returns a **copy** of the listeners array for the event |
+| `.rawListeners(event)` | Returns raw listeners including `.once()` wrappers |
+| `.listenerCount(event)` | Returns the number of listeners registered for an event |
+| `.eventNames()` | Returns an array of all event names with registered listeners |
+
+**Configuration**
+
+| Method | Description |
+|--------|-------------|
+| `.setMaxListeners(n)` | Set the max listener limit (default: `10`). Use `0` for unlimited |
+| `.getMaxListeners()` | Returns the current max listener limit |
+
+**Code Examples**
+
+```js
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+// --- Registration ---
+emitter.on('data', (msg) => console.log('on:', msg));
+emitter.once('data', (msg) => console.log('once:', msg));
+emitter.prependListener('data', (msg) => console.log('prepend:', msg));
+
+emitter.emit('data', 'hello');
+// prepend: hello   ← fired first
+// on: hello
+// once: hello
+
+emitter.emit('data', 'world');
+// prepend: world
+// on: world        ← once() is already removed
+
+// --- Inspection ---
+console.log(emitter.listenerCount('data'));  // 2
+console.log(emitter.eventNames());           // ['data']
+
+// --- Removal ---
+const handler = (x) => console.log(x);
+emitter.on('click', handler);
+emitter.off('click', handler);              // removes specific listener
+emitter.removeAllListeners('data');         // removes all 'data' listeners
+emitter.removeAllListeners();              // removes everything
+
+// --- Max listeners ---
+emitter.setMaxListeners(20);
+console.log(emitter.getMaxListeners());     // 20
+
+// --- rawListeners (includes once wrapper) ---
+emitter.once('ping', () => {});
+console.log(emitter.rawListeners('ping')); // [Function: bound onceWrapper]
+console.log(emitter.listeners('ping'));    // [Function (anonymous)] ← unwrapped
+```
+
+> Always call `.off()` or `.removeAllListeners()` when a listener is no longer needed — especially inside long-lived objects — to prevent **memory leaks**.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1124,7 +1960,7 @@ listenerOnce fired once
 
 ## Q. How the Event Loop Works in Node.js?
 
-The **event loop** allows Node.js to perform non-blocking I/O operations despite the fact that JavaScript is single-threaded. It is done by offloading operations to the system kernel whenever possible.
+The **Event Loop** is the mechanism that allows Node.js to perform non-blocking I/O on a single thread by delegating operations to **the OS kernel or libuv thread pool**, then executing callbacks when they complete.
 
 Node.js is a single-threaded application, but it can support **concurrency** via the concept of **event** and **callbacks**. Every API of Node.js is asynchronous and being single-threaded, they use **async function calls** to maintain concurrency. Node uses observer pattern. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
 
@@ -1139,37 +1975,41 @@ Node.js is a single-threaded application, but it can support **concurrency** via
   <img src="assets/nodejs-event-loop.png" alt="Event Loop" width="600px" />
 </p>
 
+**The Six Main Phases**
+
+|Phase 	      |Description|
+|-------------|----------------------------|
+|Timers	      |Executes callbacks from setTimeout() and setInterval() once their minimum threshold has passed.|
+|Pending Callbacks|	Handles certain system-level error callbacks, such as TCP errors (e.g., ECONNREFUSED).|
+|Idle, Prepare|	Used only internally by Node.js for housekeeping.|
+|Poll	        |The heart of the loop. It retrieves new I/O events (network, disk) and executes their callbacks immediately.|
+|Check	      |Executes setImmediate() callbacks, which are specifically designed to run right after the Poll phase.|
+|Close Callbacks|	Handles the closing of resources, like socket.on('close'), stream.on('close')|
+
+Between every phase, Node.js drains microtasks in this order:
+
+* `process.nextTick` queue
+* Promise `.then` / `.catch` queue
+
 **Example:**
 
 ```js
-/**
- * Event loop in Node.js
- */
-const events = require('events');
-const eventEmitter = new events.EventEmitter();
+console.log('1. sync');
 
-// Create an event handler as follows
-const connectHandler = function connected() {
-   console.log('connection succesful.');
-   eventEmitter.emit('data_received');
-}
+setTimeout(() => console.log('2. setTimeout'), 0);
+setImmediate(() => console.log('3. setImmediate'));
+Promise.resolve().then(() => console.log('4. Promise'));
+process.nextTick(() => console.log('5. nextTick'));
 
-// Bind the connection event with the handler
-eventEmitter.on('connection', connectHandler);
- 
-// Bind the data_received event with the anonymous function
-eventEmitter.on('data_received', function() {
-   console.log('data received succesfully.');
-});
+console.log('6. sync end');
 
-// Fire the connection event 
-eventEmitter.emit('connection');
-console.log("Program Ended.");
-
-// Output
-Connection succesful.
-Data received succesfully.
-Program Ended.
+// Output:
+// 1. sync
+// 6. sync end
+// 5. nextTick       ← microtask (highest priority)
+// 4. Promise        ← microtask
+// 2. setTimeout     ← timers phase
+// 3. setImmediate   ← check phase
 ```
 
 <div align="right">
@@ -1178,7 +2018,7 @@ Program Ended.
 
 ## Q. How are event listeners created in Node.JS?
 
-An array containing all eventListeners is maintained by Node. Each time **.on()** function is executed, a new event listener is added to that array. When the concerned event is emitted, each **eventListener** that is present in the array is called in a sequential or synchronous manner.
+An array containing all eventListeners is maintained by Node.js. Each time `.on()`, `.once()`, or `.addListener()` function is executed, a new event listener is added to that array. When the concerned event is emitted, each **eventListener** that is present in the array is called in a sequential or synchronous manner.
 
 The event listeners are called in a synchronous manner to avoid logical errors, race conditions etc. The total number of listeners that can be registered for a particular event, is controlled by **.setMaxListeners(n)**. The default number of listeners is 10.
 
@@ -1186,7 +2026,45 @@ The event listeners are called in a synchronous manner to avoid logical errors, 
 emitter.setMaxListeners(12);
 ```
 
+**Example: `.on()` — persistent listener**
+
+```js
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+// Fires every time the event is emitted
+emitter.on('message', (data) => {
+  console.log('Received:', data);
+});
+
+emitter.emit('message', 'hello');  // Received: hello
+emitter.emit('message', 'world');  // Received: world
+```
+
+**Example: `.once()` — single-fire listener**
+
+```js
+// Auto-removes itself after first call
+emitter.once('connect', () => {
+  console.log('Connected!');
+});
+
+emitter.emit('connect'); // Connected!
+emitter.emit('connect'); // (nothing — listener is gone)
+```
+
 As an event Listener once registered, exists throughout the life cycle of the program. It is important to detach an event Listener once its no longer needed to avoid memory leaks. Functions like **.removeListener()**, **.removeAllListeners()** enable the removal of listeners from the listeners Array.
+
+**Example: removeAllListeners()**
+
+```js
+// In long-lived objects, clean up to prevent memory leaks
+class Connection extends EventEmitter {
+  destroy() {
+    this.removeAllListeners(); // clean up everything
+  }
+}
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1196,44 +2074,55 @@ As an event Listener once registered, exists throughout the life cycle of the pr
 
 **1. process.nextTick():**
 
-The process.nextTick() method adds the callback function to the start of the next event queue. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
+The `process.nextTick()` method adds the callback function to the start of the next event queue. It is to be noted that, at the start of the program process.nextTick() method is called for the first time before the event loop is processed.
 
 **2. setImmediate():**
 
 The setImmediate() method is used to execute a function right after the current event loop finishes. It is callback function is placed in the check phase of the next event queue.
 
-**Example:**
+**Example:** Execution Order
 
 ```js
 /**
  * setImmediate() and process.nextTick()
  */
-setImmediate(() => {
-  console.log("1st Immediate");
-});
+setImmediate(() => console.log('1. setImmediate'));
 
-setImmediate(() => {
-  console.log("2nd Immediate");
-});
+process.nextTick(() => console.log('2. nextTick'));
 
-process.nextTick(() => {
-  console.log("1st Process");
-});
+Promise.resolve().then(() => console.log('3. Promise'));
 
-process.nextTick(() => {
-  console.log("2nd Process");
-});
+console.log('4. sync');
 
-// First event queue ends here
-console.log("Program Started");
-
-// Output
-Program Started
-1st Process
-2nd Process
-1st Immediate
-2nd Immediate
+// Output:
+// 4. sync
+// 2. nextTick       ← microtask, runs before event loop phases
+// 3. Promise        ← microtask, runs after nextTick queue
+// 1. setImmediate   ← check phase
 ```
+
+**Example:** Inside an I/O Callback
+
+```js
+const fs = require('fs');
+
+fs.readFile(__filename, () => {
+  setTimeout(() => console.log('1. setTimeout'), 0);
+  setImmediate(() => console.log('2. setImmediate'));
+  process.nextTick(() => console.log('3. nextTick'));
+});
+
+// Output:
+// 3. nextTick      ← always first (microtask)
+// 2. setImmediate  ← always before setTimeout inside I/O
+// 1. setTimeout
+```
+
+**When to Use Each**
+
+* **process.nextTick()** — when you need a callback to fire before any I/O in the current operation completes (e.g., emitting errors after constructor returns)
+* **setImmediate()** — when you want to execute after I/O events in the current loop iteration, without blocking I/O
+
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1317,6 +2206,7 @@ console.log('8. Synchronous code');
 ```
 
 **Key rules to remember:**
+
 - `process.nextTick` fires before Promises, before any event loop phase.
 - Inside an I/O callback, `setImmediate` always executes before `setTimeout(fn, 0)`.
 - Outside I/O, the order of `setTimeout(fn, 0)` vs `setImmediate` is non-deterministic.
@@ -1477,26 +2367,56 @@ Total: 30
 
 Callback functions are called when an asynchronous function returns its result, whereas event handling works on the **observer pattern**. The functions that listen to events act as Observers. Whenever an event gets fired, its listener function starts executing. Node.js has multiple in-built events available through events module and EventEmitter class which are used to bind events and event-listeners
 
+> In practice, modern Node.js prefers **Promises/async-await** over raw callbacks, while **EventEmitter** remains the standard for streaming data, servers, and pub/sub patterns.
+
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. What is an error-first callback?
 
-The pattern used across all the asynchronous methods in Node.js is called *Error-first Callback*. Here is an example:
+The **error-first callback** is a Node.js convention where the first argument of every callback is reserved for an error object, and subsequent arguments carry the success result.
+
+**The Pattern**
 
 ```js
-fs.readFile( "file.json", function ( err, data ) {
-  if ( err ) {
-    console.error( err );
+function(err, result1, result2, ...) {
+  if (err) {
+    // handle error — always check first
+    return;
   }
-  console.log( data );
-});
+  // use result
+}
 ```
 
-Any asynchronous method expects one of the arguments to be a callback. The full callback argument list depends on the caller method, but the first argument is always an error object or null. When we go for the asynchronous method, an exception thrown during function execution cannot be detected in a try/catch statement. The event happens after the JavaScript engine leaves the try block.
+* If the operation **failed** → `err` is an `Error` object, results are `undefined`
+* If the operation **succeeded** → `err` is `null`, results contain the data
 
-In the preceding example, if any exception is thrown during the reading of the file, it lands on the callback function as the first and mandatory parameter.
+**Why It Exists**
+
+Async exceptions cannot be caught with try/catch because the callback fires after the call stack has moved on:
+
+**Example:**
+
+```js
+// ❌ This does NOT work for async errors
+try {
+  fs.readFile('file.txt', (err, data) => {
+    throw new Error('oops'); // uncaught!
+  });
+} catch (e) {
+  // never reaches here
+}
+
+// ✅ Error-first callback handles it correctly
+fs.readFile('file.txt', (err, data) => {
+  if (err) {
+    console.error('Failed:', err.message); // caught here
+    return;
+  }
+  console.log(data);
+});
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1504,85 +2424,106 @@ In the preceding example, if any exception is thrown during the reading of the f
 
 ## Q. What is callback hell in Node.js?
 
-The callback hell contains complex nested callbacks. Here, every callback takes an argument that is a result of the previous callbacks. In this way, the code structure looks like a pyramid, making it difficult to read and maintain. Also, if there is an error in one function, then all other functions get affected.
+**Callback hell** (also called the "Pyramid of Doom") is a situation where multiple nested callbacks make the code deeply indented, hard to read, and difficult to maintain.
 
-An asynchronous function is one where some external activity must complete before a result can be processed; it is "asynchronous" in the sense that there is an unpredictable amount of time before a result becomes available. Such functions require a callback function to handle errors and process the result.
+**The Problem**
 
-**Example:**
+When async operations depend on each other's results, callbacks get nested inside callbacks:
+
+**Example**:
 
 ```js
-/**
- * Callback Hell
- */
-firstFunction(function (a) {
-  secondFunction(a, function (b) {
-    thirdFunction(b, function (c) {
-      // And so on…
+// Real-world example: read file → parse → query DB → send email
+fs.readFile('config.json', (err, config) => {
+  if (err) return handleError(err);
+
+  db.connect(config.dbUrl, (err, connection) => {
+    if (err) return handleError(err);
+
+    connection.query('SELECT * FROM users', (err, users) => {
+      if (err) return handleError(err);
+
+      emailService.send(users[0].email, (err, result) => {
+        if (err) return handleError(err);
+
+        // actual logic buried 4 levels deep
+        console.log('Done!');
+      });
     });
   });
 });
 ```
 
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
+**Why It's a Problem**
 
-## Q. How to avoid callback hell in Node.js?
+| Issue | Description |
+|-------|-------------|
+| **Readability** | Code grows rightward in a pyramid shape |
+| **Maintainability** | Hard to follow the flow of data |
+| **Error handling** | Must handle errors at every level separately |
+| **Debugging** | Stack traces are misleading; hard to pinpoint errors |
+| **Reusability** | Logic is tightly coupled inside nested functions |
 
-**1. Managing callbacks using Async.js:**  
+**How to Avoid It**
 
-`Async` is a really powerful npm module for managing asynchronous nature of JavaScript. Along with Node.js, it also works for JavaScript written for browsers.
-
-Async provides lots of powerful utilities to work with asynchronous processes under different scenarios.
+**1. Named functions** — extract callbacks into named functions:
 
 ```js
-npm install --save async
+fs.readFile('config.json', onFileRead);
+
+function onFileRead(err, config) {
+  if (err) return handleError(err);
+  db.connect(config.dbUrl, onDbConnect);
+}
+
+function onDbConnect(err, connection) {
+  if (err) return handleError(err);
+  // ...
+}
 ```
 
-**2. Managing callbacks hell using promises:**  
-
-Promises are alternative to callbacks while dealing with asynchronous code. Promises return the value of the result or an error exception. The core of the promises is the `.then()` function, which waits for the promise object to be returned.
-
-The `.then()` function takes two optional functions as arguments and depending on the state of the promise only one will ever be called. The first function is called when the promise if fulfilled (A successful result). The second function is called when the promise is rejected.
-
-**Example:**
+**2. Promises** — chain `.then()` instead of nesting:
 
 ```js
-/**
- * Promises
- */
-const myPromise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("Successful!");
-  }, 300);
+readFile('config.json')
+  .then(config => db.connect(config.dbUrl))
+  .then(connection => connection.query('SELECT * FROM users'))
+  .then(users => emailService.send(users[0].email))
+  .then(() => console.log('Done!'))
+  .catch(handleError); // single error handler for all
+```
+
+**3. Async/Await** — the modern, cleanest solution:
+
+```js
+async function run() {
+  try {
+    const config = await readFile('config.json');
+    const connection = await db.connect(config.dbUrl);
+    const users = await connection.query('SELECT * FROM users');
+    await emailService.send(users[0].email);
+    console.log('Done!');
+  } catch (err) {
+    handleError(err);
+  }
+}
+```
+
+**4. Async.js library** — utility functions for common async patterns:
+```js
+const async = require('async');
+
+async.waterfall([
+  (cb) => fs.readFile('config.json', cb),
+  (config, cb) => db.connect(config.dbUrl, cb),
+  (connection, cb) => connection.query('SELECT * FROM users', cb),
+], (err, result) => {
+  if (err) return handleError(err);
+  console.log('Done!');
 });
 ```
 
-**3. Using Async Await:**  
-
-Async await makes asynchronous code look like it\'s synchronous. This has only been possible because of the reintroduction of promises into node.js. Async-Await only works with functions that return a promise.
-
-**Example:**
-
-```js
-/**
- * Async Await
- */
-const getrandomnumber = function(){
-    return new Promise((resolve, reject)=>{
-        setTimeout(() => {
-            resolve(Math.floor(Math.random() * 20));
-        }, 1000);
-    });
-}
-
-const addRandomNumber = async function(){
-    const sum = await getrandomnumber() + await getrandomnumber();
-    console.log(sum);
-}
-
-addRandomNumber();
-```
+> Modern Node.js strongly prefers **async/await** — it reads like synchronous code, has a single `try/catch` for all errors, and completely eliminates the pyramid structure.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1590,7 +2531,7 @@ addRandomNumber();
 
 ## Q. What is typically the first argument passed to a callback handler?
 
-The first parameter of the callback is the **error** value. If the function hits an error, then they typically call the **callback** with the first parameter being an Error object.
+The first argument passed to a callback handler in Node.js is always the **error object (err)**. This is the error-first (or "Node-style") callback convention.
 
 **Example:**
 
@@ -1625,9 +2566,9 @@ The Timers module in Node.js contains functions that execute code after a set pe
 
 Some of the functions provided in this module are
 
-**1. setTimeout():**
+**1. setTimeout(callback, delay, ...args)**
 
-This function schedules code execution after the assigned amount of time ( in milliseconds ). Only after the timeout has occurred, the code will be executed. This method returns an ID that can be used in **clearTimeout()** method.
+Executes the callback once after at least `delay` milliseconds. Returns a `Timeout` object usable with `clearTimeout()`.
 
 **Syntax:**
 
@@ -1638,16 +2579,17 @@ setTimeout(callback, delay, args )
 **Example:**
 
 ```js
-function printMessage(arg) {
-  console.log(`${arg}`);
-}
+const timer = setTimeout((msg) => {
+  console.log(msg); // prints after ~1 second
+}, 1000, 'Hello after 1 second');
 
-setTimeout(printMessage, 1000, 'Display this Message after 1 seconds!');
+// Cancel before it fires:
+clearTimeout(timer);
 ```
 
-**2. setImmediate():**
+**2. setImmediate(callback, ...args)**
 
-The setImmediate() method executes the code at the end of the current event loop cycle. The function passed in the setImmediate() argument is a function that will be executed in the next iteration of the event loop.
+Executes the callback once, at the end of the current event loop iteration — after I/O events but before timers.
 
 **Syntax:**
 
@@ -1658,28 +2600,19 @@ setImmediate(callback, args)
 **Example:**
 
 ```js
-// Setting timeout for the function
-setTimeout(function () {
-    console.log('setTimeout() function running...');
-}, 500);
+setImmediate(() => console.log('setImmediate'));
+setTimeout(() => console.log('setTimeout'), 0);
+console.log('sync');
 
-// Running this function immediately before any other
-setImmediate(function () {
-   console.log('setImmediate() function running...');
-});
-
-// Directly printing the statement
-console.log('Normal statement in the event loop');
-
-// Output
-// Normal statement in the event loop
-// setImmediate() function running...
-// setTimeout() function running...
+// Output:
+// sync
+// setImmediate  ← (inside I/O: always before setTimeout)
+// setTimeout
 ```
 
-**3. setInterval():**
+**3. setInterval(callback, delay, ...args)**
 
-The setInterval() method executes the code after the specified interval. The function is executed multiple times after the interval has passed. The function will keep on calling until the process is stopped externally or using code after specified time period. The clearInterval() method can be used to prevent the function from running.
+Executes the callback **repeatedly** every `delay` milliseconds until stopped with `clearInterval()`.
 
 **Syntax:**
 
@@ -1690,33 +2623,69 @@ setInterval(callback, delay, args)
 **Example:**
 
 ```js
-setInterval(function() {
-    console.log('Display this Message intervals of 1 seconds!');
+let count = 0;
+const id = setInterval(() => {
+  count++;
+  console.log(`Tick ${count}`);
+  if (count === 3) clearInterval(id); // stop after 3 ticks
 }, 1000);
 ```
 
+**4. process.nextTick(callback)**
+
+Fires **before** the event loop moves to the next phase — even before `setImmediate`. It's a microtask, not technically a "timer" but closely related.
+
+```js
+process.nextTick(() => console.log('nextTick'));
+setImmediate(() => console.log('setImmediate'));
+console.log('sync');
+
+// Output:
+// sync
+// nextTick      ← microtask, runs first
+// setImmediate
+```
+
+**Execution Order Summary**
+
+```
+Synchronous code
+     ↓
+process.nextTick()     ← microtask (highest priority)
+     ↓
+Promise.then()         ← microtask
+     ↓
+setTimeout / setInterval  ← timers phase
+     ↓
+setImmediate           ← check phase
+```
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
 ## Q. How to implement a sleep function in Node.js?
 
-One way to delay execution of a function in Node.js is to use async/await with promises to delay execution without callbacks function. Just put the code you want to delay in the callback. For example, below is how you can wait 1 second before executing some code.
+Node.js has no built-in `sleep()` — but you can implement one using a `Promise` + `setTimeout` combination with `async/await`.
 
 **Example:**
 
 ```js
-function delay(time) {
+function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+// Usage
 async function run() {
-  await delay(1000);
+  await sleep(1000); // pause for 1 second
   console.log("This printed after about 1 second");
 }
 
 run();
 ```
+
+The function returns a Promise that resolves after `ms` milliseconds. `await`-ing it pauses execution without blocking the event loop.
+
+> In Node.js v16+, `timers/promises` provides a built-in alternative: `import { setTimeout as sleep } from 'timers/promises'; await sleep(1000);`
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -1728,43 +2697,524 @@ run();
 
 ## Q. How Node.js read the content of a file?
 
-The "normal" way in Node.js is probably to read in the content of a file in a non-blocking, asynchronous way. That is, to tell Node to read in the file, and then to get a callback when the file-reading has been finished. That would allow us to handle several requests in parallel.
+Node.js provides several ways to read file content using the built-in `fs` (File System) module. The choice depends on whether you want the operation to be blocking (synchronous) or non-blocking (asynchronous).
 
-Common use for the File System module:
+**1. Asynchronous (Non-Blocking) – Recommended**
 
-* Read files
-* Create files
-* Update files
-* Delete files
-* Rename files  
+This is the standard approach for most Node.js applications as it allows the event loop to continue working while the file is being read. 
 
-**Example:** Read Files
+* **Promises (fs.promises)**: Modern standard using async/await for clean, readable code.
 
-```html
-<!-- index.html -->
-<html>
-<body>
-  <h1>File Header</h1>
-  <p>File Paragraph.</p>
-</body>
-</html>
-```
+**Example**:
 
 ```js
-/**
- * read_file.js
- */
-const http = require('http');
+const fs = require('fs').promises;
+
+async function readFile() {
+  try {
+    const data = await fs.readFile('file.txt', 'utf8');
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+```
+
+* **Callbacks**: The traditional method using an error-first callback function.
+
+**Example**:
+
+```js
+const fs = require('fs');
+fs.readFile('file.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+```
+
+**2. Synchronous (Blocking)**
+
+The `fs.readFileSync()` method stops all other code execution until the file is fully read. It returns the content directly rather than using a callback.
+
+* **Best for**: Simple scripts or loading configuration files during application startup.
+* **Avoid in**: Production web servers, as it can severely impact performance by blocking concurrent requests.
+
+**Example**:
+
+```js
 const fs = require('fs');
 
-http.createServer(function (req, res) {
-  fs.readFile('index.html', function(err, data) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    res.end();
-  });
-}).listen(3000);
+try {
+  const data = fs.readFileSync('file.txt', 'utf8');
+  console.log(data);
+} catch (err) {
+  console.error('Error reading file:', err.message);
+}
 ```
+
+**3. Streams – For Large Files** 
+
+For very large files (e.g., GBs of data), loading the entire content into memory at once can crash your app. Instead, use `fs.createReadStream()` to read the file in smaller chunks.  
+
+* **Usage**: Emits a data event for every chunk received and an end event when finished.
+
+**Example**:
+
+```js
+const fs = require('fs');
+
+const stream = fs.createReadStream('large-file.txt', { encoding: 'utf8' });
+
+stream.on('data', (chunk) => {
+  console.log(`Received chunk: ${chunk.length} characters`);
+});
+
+stream.on('end', () => {
+  console.log('Finished reading file.');
+});
+
+stream.on('error', (err) => {
+  console.error('Error reading file:', err.message);
+});
+```
+
+**Note**
+
+* **Encoding**: Always specify 'utf8' if you want the data as a string. If omitted, Node.js returns a Buffer (raw binary data).
+* **Error Handling**: Always wrap file operations in try/catch (for promises/sync) or check the err argument (for callbacks) to prevent crashes.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to write a file in Node.js?
+
+Node.js provides `fs.writeFile()` (async) and `fs.writeFileSync()` (sync) to write data to a file. If the file does not exist, it is created. If it exists, its content is **replaced**.
+
+**1. Asynchronous with Callback:**
+
+```js
+const fs = require('fs');
+
+fs.writeFile('output.txt', 'Hello, Node.js!', 'utf8', (err) => {
+  if (err) {
+    console.error('Error writing file:', err.message);
+    return;
+  }
+  console.log('File written successfully.');
+});
+```
+
+**2. Asynchronous with Promises (async/await):**
+
+```js
+const fs = require('fs').promises;
+
+async function writeFile() {
+  try {
+    await fs.writeFile('output.txt', 'Hello, Node.js!', 'utf8');
+    console.log('File written successfully.');
+  } catch (err) {
+    console.error('Error writing file:', err.message);
+  }
+}
+
+writeFile();
+```
+
+**3. Synchronous:**
+
+```js
+const fs = require('fs');
+
+try {
+  fs.writeFileSync('output.txt', 'Hello, Node.js!', 'utf8');
+  console.log('File written successfully.');
+} catch (err) {
+  console.error('Error writing file:', err.message);
+}
+```
+
+> Use the `flag` option to control write behavior: `'w'` (default, overwrite), `'a'` (append), `'wx'` (fail if file exists).
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to append content to a file in Node.js?
+
+Use `fs.appendFile()` to add content to the **end** of an existing file. If the file does not exist, it is created automatically.
+
+**1. Asynchronous with Callback:**
+
+```js
+const fs = require('fs');
+
+fs.appendFile('log.txt', 'New log entry\n', 'utf8', (err) => {
+  if (err) {
+    console.error('Error appending to file:', err.message);
+    return;
+  }
+  console.log('Content appended successfully.');
+});
+```
+
+**2. Asynchronous with Promises:**
+
+```js
+const fs = require('fs').promises;
+
+async function appendToFile() {
+  try {
+    await fs.appendFile('log.txt', `[${new Date().toISOString()}] App started\n`, 'utf8');
+    console.log('Log entry added.');
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
+}
+
+appendToFile();
+```
+
+**3. Synchronous:**
+
+```js
+const fs = require('fs');
+
+try {
+  fs.appendFileSync('log.txt', 'Sync log entry\n', 'utf8');
+  console.log('Content appended.');
+} catch (err) {
+  console.error('Error:', err.message);
+}
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to delete a file in Node.js?
+
+Use `fs.unlink()` (async) or `fs.unlinkSync()` (sync) to delete a file.
+
+**1. Asynchronous with Callback:**
+
+```js
+const fs = require('fs');
+
+fs.unlink('output.txt', (err) => {
+  if (err) {
+    console.error('Error deleting file:', err.message);
+    return;
+  }
+  console.log('File deleted successfully.');
+});
+```
+
+**2. Asynchronous with Promises:**
+
+```js
+const fs = require('fs').promises;
+
+async function deleteFile(filePath) {
+  try {
+    await fs.unlink(filePath);
+    console.log(`${filePath} deleted.`);
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      console.log('File does not exist.');
+    } else {
+      console.error('Error:', err.message);
+    }
+  }
+}
+
+deleteFile('output.txt');
+```
+
+**3. Synchronous:**
+
+```js
+const fs = require('fs');
+
+try {
+  fs.unlinkSync('output.txt');
+  console.log('File deleted.');
+} catch (err) {
+  console.error('Error:', err.message);
+}
+```
+
+> In Node.js v14.14+, you can also use `fs.rm(path, { force: true })` which does not throw if the file is missing.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to rename or move a file in Node.js?
+
+Use `fs.rename()` to rename a file or move it to a different path.
+
+**Example — Rename:**
+
+```js
+const fs = require('fs');
+
+fs.rename('old-name.txt', 'new-name.txt', (err) => {
+  if (err) {
+    console.error('Error renaming file:', err.message);
+    return;
+  }
+  console.log('File renamed successfully.');
+});
+```
+
+**Example — Move (rename across directories):**
+
+```js
+const fs = require('fs').promises;
+const path = require('path');
+
+async function moveFile(src, dest) {
+  try {
+    // Ensure destination directory exists
+    await fs.mkdir(path.dirname(dest), { recursive: true });
+    await fs.rename(src, dest);
+    console.log(`Moved: ${src} → ${dest}`);
+  } catch (err) {
+    console.error('Error moving file:', err.message);
+  }
+}
+
+moveFile('uploads/temp.txt', 'archive/2026/temp.txt');
+```
+
+> `fs.rename()` only works within the same filesystem/volume. To move across volumes, copy the file then delete the source using `fs.copyFile()` + `fs.unlink()`.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to check if a file or directory exists in Node.js?
+
+**1. Using `fs.existsSync()` (synchronous):**
+
+```js
+const fs = require('fs');
+
+if (fs.existsSync('config.json')) {
+  console.log('File exists.');
+} else {
+  console.log('File not found.');
+}
+```
+
+**2. Using `fs.access()` (asynchronous, preferred):**
+
+```js
+const fs = require('fs');
+
+fs.access('config.json', fs.constants.F_OK, (err) => {
+  if (err) {
+    console.log('File does not exist.');
+  } else {
+    console.log('File exists.');
+  }
+});
+```
+
+**3. Check read/write permissions:**
+
+```js
+const fs = require('fs');
+
+// Check if file is readable AND writable
+fs.access('data.txt', fs.constants.R_OK | fs.constants.W_OK, (err) => {
+  if (err) {
+    console.error('No read/write access:', err.message);
+  } else {
+    console.log('File is readable and writable.');
+  }
+});
+```
+
+| Constant | Meaning |
+|----------|---------|
+| `fs.constants.F_OK` | File exists |
+| `fs.constants.R_OK` | File is readable |
+| `fs.constants.W_OK` | File is writable |
+| `fs.constants.X_OK` | File is executable |
+
+> Avoid the pattern "check if exists, then act" — the file could be deleted between the check and the action. Instead, attempt the operation directly and handle the `ENOENT` error.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to get file information (stats) in Node.js?
+
+Use `fs.stat()` or `fs.statSync()` to retrieve metadata about a file or directory.
+
+```js
+const fs = require('fs');
+
+fs.stat('file.txt', (err, stats) => {
+  if (err) {
+    console.error('Error:', err.message);
+    return;
+  }
+
+  console.log('Is file:', stats.isFile());           // true
+  console.log('Is directory:', stats.isDirectory()); // false
+  console.log('Size (bytes):', stats.size);
+  console.log('Created:', stats.birthtime);
+  console.log('Modified:', stats.mtime);
+  console.log('Permissions (octal):', (stats.mode & 0o777).toString(8));
+});
+```
+
+**Using async/await:**
+
+```js
+const fs = require('fs').promises;
+
+async function getFileInfo(filePath) {
+  try {
+    const stats = await fs.stat(filePath);
+    return {
+      size: stats.size,
+      isFile: stats.isFile(),
+      isDirectory: stats.isDirectory(),
+      modified: stats.mtime,
+    };
+  } catch (err) {
+    if (err.code === 'ENOENT') return null; // file not found
+    throw err;
+  }
+}
+
+getFileInfo('file.txt').then(console.log);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to work with directories in Node.js?
+
+**1. Create a directory:**
+
+```js
+const fs = require('fs').promises;
+
+// Create a single directory
+await fs.mkdir('logs');
+
+// Create nested directories (recursive)
+await fs.mkdir('logs/2026/april', { recursive: true });
+```
+
+**2. Read directory contents:**
+
+```js
+const fs = require('fs');
+
+fs.readdir('./src', (err, files) => {
+  if (err) {
+    console.error('Error reading directory:', err.message);
+    return;
+  }
+  files.forEach((file) => console.log(file));
+});
+```
+
+**3. Read directory with file types:**
+
+```js
+const fs = require('fs').promises;
+
+async function listDirectory(dirPath) {
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+
+  entries.forEach((entry) => {
+    if (entry.isDirectory()) {
+      console.log(`[DIR]  ${entry.name}`);
+    } else {
+      console.log(`[FILE] ${entry.name}`);
+    }
+  });
+}
+
+listDirectory('./src');
+```
+
+**4. Remove a directory:**
+
+```js
+const fs = require('fs').promises;
+
+// Remove empty directory
+await fs.rmdir('logs');
+
+// Remove directory and all contents (Node.js v14.14+)
+await fs.rm('logs', { recursive: true, force: true });
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to watch a file for changes in Node.js?
+
+Use `fs.watch()` to monitor a file or directory for changes. It fires a callback whenever the file is modified, renamed, or deleted.
+
+**Example — watch a single file:**
+
+```js
+const fs = require('fs');
+
+const watcher = fs.watch('config.json', (eventType, filename) => {
+  console.log(`Event: ${eventType}`);   // 'change' or 'rename'
+  console.log(`File: ${filename}`);
+});
+
+// Stop watching after 10 seconds
+setTimeout(() => {
+  watcher.close();
+  console.log('Stopped watching.');
+}, 10000);
+```
+
+**Example — watch a directory:**
+
+```js
+const fs = require('fs');
+
+fs.watch('./src', { recursive: true }, (eventType, filename) => {
+  if (filename) {
+    console.log(`[${eventType}] ${filename}`);
+  }
+});
+```
+
+**Example — using `fs.watchFile()` for polling (more reliable across platforms):**
+
+```js
+const fs = require('fs');
+
+fs.watchFile('data.txt', { interval: 1000 }, (curr, prev) => {
+  if (curr.mtime > prev.mtime) {
+    console.log('File was modified at:', curr.mtime);
+  }
+});
+```
+
+| Method | Mechanism | Reliability | CPU Usage |
+|--------|-----------|-------------|-----------|
+| `fs.watch()` | OS events | Fast, but inconsistent across platforms | Low |
+| `fs.watchFile()` | Polling | Consistent across all platforms | Higher |
+
+> For production file watching, consider the [**chokidar**](https://github.com/paulmillr/chokidar) library — it normalizes behavior across all OS platforms.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -2403,7 +3853,7 @@ if (isMainThread) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 9. NODE.JS WEB MODULE
+## # 09. NODE.JS WEB MODULE
 
 <br/>
 
@@ -4422,7 +5872,7 @@ module.exports = router
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 12. NODE.JS DATABASE INTEGRATION
+## # 13. NODE.JS DATABASE INTEGRATION
 
 <br/>
 
@@ -4605,7 +6055,7 @@ module.exports = router;
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 13. NODE.JS CACHING
+## # 14. NODE.JS CACHING
 
 <br/>
 
@@ -4796,7 +6246,7 @@ const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, re
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 14. NODE.JS ERROR HANDLING
+## # 15. NODE.JS ERROR HANDLING
 
 <br/>
 
@@ -5378,7 +6828,7 @@ app.use((err, req, res, next) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 15. NODE.JS LOGGING
+## # 16. NODE.JS LOGGING
 
 <br/>
 
@@ -5435,17 +6885,440 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 16. NODE.JS INTERNATIONALIZATION
+## # 17. NODE.JS INTERNATIONALIZATION
 
 <br/>
 
-#### Q. How to use locale (i18n) in Node.js?
+## Q. How to use locale (i18n) in Node.js?
+
+Internationalization (i18n) in Node.js allows applications to support multiple languages and regional formats. The most common approach is the `i18n` npm package, which provides locale-aware string translations and formatting.
+
+**Installation:**
+
+```bash
+npm install i18n
+```
+
+**Project structure:**
+
+```
+project/
+├── locales/
+│   ├── en.json
+│   ├── fr.json
+│   └── de.json
+├── app.js
+```
+
+**Locale files:**
+
+```json
+// locales/en.json
+{
+  "greeting": "Hello, %s!",
+  "farewell": "Goodbye!",
+  "items_count": {
+    "one": "You have %d item.",
+    "other": "You have %d items."
+  }
+}
+```
+
+```json
+// locales/fr.json
+{
+  "greeting": "Bonjour, %s !",
+  "farewell": "Au revoir !",
+  "items_count": {
+    "one": "Vous avez %d article.",
+    "other": "Vous avez %d articles."
+  }
+}
+```
+
+```json
+// locales/de.json
+{
+  "greeting": "Hallo, %s!",
+  "farewell": "Auf Wiedersehen!",
+  "items_count": {
+    "one": "Sie haben %d Artikel.",
+    "other": "Sie haben %d Artikel."
+  }
+}
+```
+
+**Configuring i18n in Express:**
+
+```js
+const express = require('express');
+const i18n = require('i18n');
+const path = require('path');
+
+const app = express();
+
+// Configure i18n
+i18n.configure({
+  locales: ['en', 'fr', 'de'],
+  defaultLocale: 'en',
+  directory: path.join(__dirname, 'locales'),
+  queryParameter: 'lang',   // ?lang=fr switches locale
+  cookie: 'locale',
+  autoReload: true,
+  updateFiles: false,
+});
+
+// Bind i18n to every request
+app.use(i18n.init);
+
+// Route that responds in the requested locale
+app.get('/greet/:name', (req, res) => {
+  res.json({
+    message: res.__('greeting', req.params.name),
+    farewell: res.__('farewell'),
+    items: res.__n('items_count', 3),
+  });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**Testing the endpoint:**
+
+```bash
+# English (default)
+GET /greet/Alice
+# { "message": "Hello, Alice!", "farewell": "Goodbye!", "items": "You have 3 items." }
+
+# French
+GET /greet/Alice?lang=fr
+# { "message": "Bonjour, Alice !", "farewell": "Au revoir !", "items": "Vous avez 3 articles." }
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 17. NODE.JS TESTING
+## Q. How to implement internationalization using i18next in Node.js?
+
+`i18next` is a feature-rich i18n framework for JavaScript (browser and Node.js). `i18next-http-middleware` integrates it with Express.
+
+**Installation:**
+
+```bash
+npm install i18next i18next-http-middleware i18next-fs-backend
+```
+
+**Locale files:**
+
+```json
+// locales/en/translation.json
+{
+  "welcome": "Welcome to our application!",
+  "user": {
+    "profile": "Profile of {{name}}",
+    "role": "Role: {{role}}"
+  },
+  "errors": {
+    "not_found": "Resource not found",
+    "unauthorized": "Access denied"
+  }
+}
+```
+
+```json
+// locales/es/translation.json
+{
+  "welcome": "¡Bienvenido a nuestra aplicación!",
+  "user": {
+    "profile": "Perfil de {{name}}",
+    "role": "Rol: {{role}}"
+  },
+  "errors": {
+    "not_found": "Recurso no encontrado",
+    "unauthorized": "Acceso denegado"
+  }
+}
+```
+
+**Setup:**
+
+```js
+const express = require('express');
+const i18next = require('i18next');
+const Backend = require('i18next-fs-backend');
+const middleware = require('i18next-http-middleware');
+const path = require('path');
+
+i18next
+  .use(Backend)
+  .use(middleware.LanguageDetector)
+  .init({
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'es'],
+    backend: {
+      loadPath: path.join(__dirname, 'locales/{{lng}}/{{ns}}.json'),
+    },
+    detection: {
+      order: ['querystring', 'header'],
+      lookupQuerystring: 'lng',
+      lookupHeader: 'accept-language',
+    },
+  });
+
+const app = express();
+app.use(middleware.handle(i18next));
+
+app.get('/', (req, res) => {
+  res.json({ message: req.t('welcome') });
+});
+
+app.get('/user/:name', (req, res) => {
+  res.json({
+    profile: req.t('user.profile', { name: req.params.name }),
+    role: req.t('user.role', { role: 'admin' }),
+  });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**Output:**
+
+```bash
+# English (default)
+GET /user/Alice
+# { "profile": "Profile of Alice", "role": "Role: admin" }
+
+# Spanish via Accept-Language header or ?lng=es
+GET /user/Alice?lng=es
+# { "profile": "Perfil de Alice", "role": "Rol: admin" }
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to format dates, numbers, and currencies for different locales using the Intl API in Node.js?
+
+The built-in `Intl` (ECMAScript Internationalization API) object in Node.js provides locale-sensitive formatting for dates, numbers, and currencies — no external packages required.
+
+**1. Date and Time Formatting (`Intl.DateTimeFormat`):**
+
+```js
+const date = new Date('2026-04-18T10:30:00Z');
+
+// US English — Month/Day/Year
+const usFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric',
+  hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York',
+});
+console.log(usFormatter.format(date)); // April 18, 2026 at 06:30 AM
+
+// German — Day.Month.Year
+const deFormatter = new Intl.DateTimeFormat('de-DE', {
+  year: 'numeric', month: 'long', day: 'numeric',
+  timeZone: 'Europe/Berlin',
+});
+console.log(deFormatter.format(date)); // 18. April 2026
+
+// Japanese
+const jaFormatter = new Intl.DateTimeFormat('ja-JP', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+console.log(jaFormatter.format(date)); // 2026年4月18日
+```
+
+**2. Number Formatting (`Intl.NumberFormat`):**
+
+```js
+const number = 1234567.89;
+
+// US — comma as thousands separator, period as decimal
+console.log(new Intl.NumberFormat('en-US').format(number)); // 1,234,567.89
+
+// German — period as thousands separator, comma as decimal
+console.log(new Intl.NumberFormat('de-DE').format(number)); // 1.234.567,89
+
+// Indian — lakh/crore grouping
+console.log(new Intl.NumberFormat('en-IN').format(number)); // 12,34,567.89
+```
+
+**3. Currency Formatting:**
+
+```js
+const amount = 9999.99;
+
+const formatCurrency = (value, locale, currency) =>
+  new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
+
+console.log(formatCurrency(amount, 'en-US', 'USD')); // $9,999.99
+console.log(formatCurrency(amount, 'en-GB', 'GBP')); // £9,999.99
+console.log(formatCurrency(amount, 'de-DE', 'EUR')); // 9.999,99 €
+console.log(formatCurrency(amount, 'ja-JP', 'JPY')); // ¥10,000
+console.log(formatCurrency(amount, 'hi-IN', 'INR')); // ₹9,999.99
+```
+
+**4. Relative Time Formatting (`Intl.RelativeTimeFormat`):**
+
+```js
+const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+console.log(rtf.format(-1, 'day'));    // yesterday
+console.log(rtf.format(2, 'day'));     // in 2 days
+console.log(rtf.format(-3, 'month')); // 3 months ago
+console.log(rtf.format(1, 'year'));    // next year
+
+// French
+const rtfFr = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
+console.log(rtfFr.format(-2, 'day')); // avant-hier
+```
+
+**5. Sorting with locale awareness (`Intl.Collator`):**
+
+```js
+const words = ['ångström', 'apple', 'Zebra', 'banana', 'Älmhult'];
+
+// Default JS sort (incorrect for locale-aware sorting)
+console.log(words.sort());
+// ['Zebra', 'apple', 'banana', 'Älmhult', 'ångström']
+
+// Swedish locale-aware sort
+console.log(words.sort(new Intl.Collator('sv').compare));
+// ['apple', 'banana', 'Zebra', 'ångström', 'Älmhult']
+```
+
+**6. Express middleware using Intl:**
+
+```js
+const express = require('express');
+const app = express();
+
+// Middleware to attach locale-aware formatters to res.locals
+app.use((req, res, next) => {
+  const locale = req.headers['accept-language']?.split(',')[0] || 'en-US';
+  res.locals.formatDate = (date) =>
+    new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(new Date(date));
+  res.locals.formatCurrency = (amount, currency = 'USD') =>
+    new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+  next();
+});
+
+app.get('/product', (req, res) => {
+  res.json({
+    name: 'Laptop',
+    price: res.locals.formatCurrency(1299.99),
+    releaseDate: res.locals.formatDate('2026-01-15'),
+  });
+});
+
+app.listen(3000, () => console.log('Server on port 3000'));
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to detect and switch languages dynamically in a Node.js Express application?
+
+Language detection can be done from multiple sources: query string, cookies, `Accept-Language` header, or user profile settings.
+
+**Installation:**
+
+```bash
+npm install i18n accept-language-parser
+```
+
+**Implementation:**
+
+```js
+const express = require('express');
+const i18n = require('i18n');
+const parser = require('accept-language-parser');
+const path = require('path');
+
+const app = express();
+app.use(express.json());
+
+i18n.configure({
+  locales: ['en', 'fr', 'de', 'es'],
+  defaultLocale: 'en',
+  directory: path.join(__dirname, 'locales'),
+  cookie: 'app_locale',
+});
+
+app.use(i18n.init);
+
+// Language detection middleware — priority order:
+// 1. Query param  2. Cookie  3. Accept-Language header
+app.use((req, res, next) => {
+  const queryLang = req.query.lang;
+  const cookieLang = req.cookies?.app_locale;
+  const headerLangs = parser.parse(req.headers['accept-language'] || '');
+  const headerLang = headerLangs[0]?.code;
+
+  const supported = ['en', 'fr', 'de', 'es'];
+  const detected = [queryLang, cookieLang, headerLang].find(
+    (l) => l && supported.includes(l)
+  );
+
+  if (detected) {
+    req.setLocale(detected);
+    res.setLocale(detected);
+  }
+  next();
+});
+
+// Language switch endpoint — sets a persistent cookie
+app.post('/language', (req, res) => {
+  const { lang } = req.body;
+  const supported = ['en', 'fr', 'de', 'es'];
+
+  if (!supported.includes(lang)) {
+    return res.status(400).json({ error: 'Unsupported language' });
+  }
+
+  res.cookie('app_locale', lang, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+  res.json({ message: res.__('language_changed'), locale: lang });
+});
+
+app.get('/dashboard', (req, res) => {
+  res.json({
+    title: res.__('dashboard_title'),
+    locale: req.getLocale(),
+  });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**Locale files:**
+
+```json
+// locales/en.json
+{ "dashboard_title": "Dashboard", "language_changed": "Language updated successfully." }
+
+// locales/fr.json
+{ "dashboard_title": "Tableau de bord", "language_changed": "Langue mise à jour avec succès." }
+```
+
+**Usage:**
+
+```bash
+# Switch language via query param
+GET /dashboard?lang=fr
+# { "title": "Tableau de bord", "locale": "fr" }
+
+# Persist language via cookie
+POST /language   Body: { "lang": "de" }
+# { "message": "Sprache erfolgreich aktualisiert.", "locale": "de" }
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 18. NODE.JS TESTING
 
 <br/>
 
@@ -5499,7 +7372,7 @@ Mike Cohn\'s original test pyramid consists of three layers that your test suite
 
 ## Q. How to use Joi module for schema validation in Node.js?
 
-Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like optional(), required(), min(), max(), etc which make it easy to use and a user-friendly module for validating the data.
+Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like `optional()`, `required()`, `min()`, `max()`, etc which make it easy to use and a user-friendly module for validating the data.
 
 **Example:**
 
@@ -5513,9 +7386,7 @@ function validateUser(user) {
   const JoiSchema = Joi.object({
 
     username: Joi.string().min(5).max(30).required(),
-
     email: Joi.string().email().min(5).max(50).optional(),
-
     date_of_birth: Joi.date().optional(),
 
     account_status: Joi.string()
@@ -5768,7 +7639,7 @@ it('returns 200 with valid token', async () => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 18. NODE.JS MISCELLANEOUS
+## # 19. NODE.JS MISCELLANEOUS
 
 <br/>
 
@@ -6954,7 +8825,7 @@ module.exports = createApp;
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 19. NODE.JS ENVIRONMENT & CONFIGURATION
+## # 20. NODE.JS ENVIRONMENT & CONFIGURATION
 
 <br/>
 
@@ -7157,7 +9028,7 @@ console.log(`Starting on port ${config.app.port}`);
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 20. NODE.JS SECURITY
+## # 21. NODE.JS SECURITY
 
 <br/>
 
@@ -7467,7 +9338,7 @@ async function loginUser(plainPassword, storedHash) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 21. NODE.JS DEBUGGING & PROFILING
+## # 22. NODE.JS DEBUGGING & PROFILING
 
 <br/>
 
@@ -7708,7 +9579,7 @@ node app.js
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 22. NODE.JS PERFORMANCE & OPTIMIZATION
+## # 23. NODE.JS PERFORMANCE & OPTIMIZATION
 
 <br/>
 
