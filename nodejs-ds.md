@@ -11,115 +11,115 @@
 * [Arrays](#-3-arrays)
 * [String](#-4-string)
 * [Sorting](#-5-sorting-algorithms)
-    * Bubble Sort
-    * Selection Sort
-    * Insertion Sort
-    * Quick Sort
-    * Merge Sort
-    * Heap Sort
-    * Shell Sort
-    * Radix Sort
-    * Bucket Sort
-    * Address Calculation Sort
-    * Binary Tree Sort
+    * [Bubble Sort](#-5-sorting-algorithms)
+    * [Selection Sort](#-5-sorting-algorithms)
+    * [Insertion Sort](#-5-sorting-algorithms)
+    * [Quick Sort](#-5-sorting-algorithms)
+    * [Merge Sort](#-5-sorting-algorithms)
+    * [Heap Sort](#-5-sorting-algorithms)
+    * [Shell Sort](#-5-sorting-algorithms)
+    * [Radix Sort](#-5-sorting-algorithms)
+    * [Bucket Sort](#-5-sorting-algorithms)
+    * [Address Calculation Sort](#-5-sorting-algorithms)
+    * [Binary Tree Sort](#-5-sorting-algorithms)
 * [Searching](#-6-searching-algorithms)
-    * Linear Search
-    * Binary Search
-    * Indexed Sequential Search
+    * [Linear Search](#-6-searching-algorithms)
+    * [Binary Search](#-6-searching-algorithms)
+    * [Indexed Sequential Search](#-6-searching-algorithms)
 * [Two Pointers Technique](#-7-two-pointers-technique)
 * [Sliding Window](#-8-sliding-window)
 * [Linked Lists](#-9-linked-lists)
-    * Operations on Linked Lists
-        * Creating a Linked Lists
-        * Traversing a Linked Lists
-        * Displaying a Linked Lists
-        * Length Operation
-        * Searching a Linked Lists
-        * Insertion into a Linked Lists
-        * Deletion Operations on a singly Linked Lists
-        * Sorting a Linked Lists
-        * Reversing a Linked Lists
-        * Merging of two Sorted Lists
-    * Types of Linked Lists
-        * Singly Linked Lists
-        * Circular Linked Lists
-            * Creation of a CLL
-            * Display operation on a CLL
-            * Insertion into a CLL
-            * Deletion of a node from CLL
-            * Implementation of Stacks using CLL
-            * Implementation of Queue using CLL
-        * Doubly Linked Lists
-            * Creating a DLL
-            * Displaying a DLL
-            * Inserting a node into DLL
-            * Deleting a node from DLL
-        * Header Linked Lists
-            * Grounded Header Linked List
-            * Circular Header Linked List
-            * Application of Linked Lists
-    * Linked List Implementation of Stacks
-    * Linked List Implementation of Queue
-    * Linked List Implementation of Priority Queue
+    * [Operations on Linked Lists](#-9-linked-lists)
+        * [Creating a Linked Lists](#-9-linked-lists)
+        * [Traversing a Linked Lists](#-9-linked-lists)
+        * [Displaying a Linked Lists](#-9-linked-lists)
+        * [Length Operation](#-9-linked-lists)
+        * [Searching a Linked Lists](#-9-linked-lists)
+        * [Insertion into a Linked Lists](#-9-linked-lists)
+        * [Deletion Operations on a singly Linked Lists](#-9-linked-lists)
+        * [Sorting a Linked Lists](#-9-linked-lists)
+        * [Reversing a Linked Lists](#-9-linked-lists)
+        * [Merging of two Sorted Lists](#-9-linked-lists)
+    * [Types of Linked Lists](#-9-linked-lists)
+        * [Singly Linked Lists](#-9-linked-lists)
+        * [Circular Linked Lists](#-9-linked-lists)
+            * [Creation of a CLL](#-9-linked-lists)
+            * [Display operation on a CLL](#-9-linked-lists)
+            * [Insertion into a CLL](#-9-linked-lists)
+            * [Deletion of a node from CLL](#-9-linked-lists)
+            * [Implementation of Stacks using CLL](#-9-linked-lists)
+            * [Implementation of Queue using CLL](#-9-linked-lists)
+        * [Doubly Linked Lists](#-9-linked-lists)
+            * [Creating a DLL](#-9-linked-lists)
+            * [Displaying a DLL](#-9-linked-lists)
+            * [Inserting a node into DLL](#-9-linked-lists)
+            * [Deleting a node from DLL](#-9-linked-lists)
+        * [Header Linked Lists](#-9-linked-lists)
+            * [Grounded Header Linked List](#-9-linked-lists)
+            * [Circular Header Linked List](#-9-linked-lists)
+            * [Application of Linked Lists](#-9-linked-lists)
+    * [Linked List Implementation of Stacks](#-9-linked-lists)
+    * [Linked List Implementation of Queue](#-9-linked-lists)
+    * [Linked List Implementation of Priority Queue](#-9-linked-lists)
 * [Stacks](#-10-stacks)
-    * Operations on Stacks
-        * PUSH Operation
-        * POP Operation
-        * Display Operation
-        * isEmpty Operation
-    * Application of Stacks
-        * Recursion
-        * Reversal of String
-        * Checking the Parenthesis Matching
-        * Polish Notation of Arithmetic Expressions
-        * Conversion of the Expressions
-        * Evaluation of POSTFIX Expression
-    * Linked List Implementation of Stacks
+    * [Operations on Stacks](#-10-stacks)
+        * [PUSH Operation](#-10-stacks)
+        * [POP Operation](#-10-stacks)
+        * [Display Operation](#-10-stacks)
+        * [isEmpty Operation](#-10-stacks)
+    * [Application of Stacks](#-10-stacks)
+        * [Recursion](#-10-stacks)
+        * [Reversal of String](#-10-stacks)
+        * [Checking the Parenthesis Matching](#-10-stacks)
+        * [Polish Notation of Arithmetic Expressions](#-10-stacks)
+        * [Conversion of the Expressions](#-10-stacks)
+        * [Evaluation of POSTFIX Expression](#-10-stacks)
+    * [Linked List Implementation of Stacks](#-10-stacks)
 * [Queues](#-11-queues)
-    * Operations on a Queue
-        * Insertion
-        * Deletion
-        * Qempty Operation
-        * Qfull Operation
-        * Display Operation
-    * Types of Queues
-        * Simple Queue
-        * Circular Queue
-        * Priority Queue
-        * Double Ended Queue
-    * Linked List Implementation of Queue
+    * [Operations on a Queue](#-11-queues)
+        * [Insertion](#-11-queues)
+        * [Deletion](#-11-queues)
+        * [Qempty Operation](#-11-queues)
+        * [Qfull Operation](#-11-queues)
+        * [Display Operation](#-11-queues)
+    * [Types of Queues](#-11-queues)
+        * [Simple Queue](#-11-queues)
+        * [Circular Queue](#-11-queues)
+        * [Priority Queue](#-11-queues)
+        * [Double Ended Queue](#-11-queues)
+    * [Linked List Implementation of Queue](#-11-queues)
 * [Hash Table](#-12-hash-table)
 * [Trees](#-13-trees)
-    * Binary Trees
-        * Strictly Binary Tree
-        * Complete Binary Tree
-        * Almost Full Binary Tree
-    * Binary Search Trees
-        * Operations on a Binary Search Tree
-            * Constructing Binary Search Tree Insertion
-            * Searching Operation on a BST
-            * Deletion operatin on BST
-            * Traversals
-            * Finding Maximum value in BST
-            * Finding Minimum value in BST
-    * Threaded Binary Tree
-        * Right in Threaded Binary Trees
-        * Left in Threaded Binary Trees
-    * Creation of BST from preorder and inorder traversals
-    * Creation of BST from postorder and inorder traversals
-    * AVL Trees
-    * B- Trees
-    * B+ Trees
-    * Red-Black Trees
+    * [Binary Trees](#-13-trees)
+        * [Strictly Binary Tree](#-13-trees)
+        * [Complete Binary Tree](#-13-trees)
+        * [Almost Full Binary Tree](#-13-trees)
+    * [Binary Search Trees](#-13-trees)
+        * [Operations on a Binary Search Tree](#-13-trees)
+            * [Constructing Binary Search Tree Insertion](#-13-trees)
+            * [Searching Operation on a BST](#-13-trees)
+            * [Deletion operatin on BST](#-13-trees)
+            * [Traversals](#-13-trees)
+            * [Finding Maximum value in BST](#-13-trees)
+            * [Finding Minimum value in BST](#-13-trees)
+    * [Threaded Binary Tree](#-13-trees)
+        * [Right in Threaded Binary Trees](#-13-trees)
+        * [Left in Threaded Binary Trees](#-13-trees)
+    * [Creation of BST from preorder and inorder traversals](#-13-trees)
+    * [Creation of BST from postorder and inorder traversals](#-13-trees)
+    * [AVL Trees](#-13-trees)
+    * [B- Trees](#-13-trees)
+    * [B+ Trees](#-13-trees)
+    * [Red-Black Trees](#-13-trees)
 * [Heap](#-14-heap)
 * [Graph](#-15-graph)
-    * Breadth First Search Algorithm
-    * Depth First Search Algorithm
-    * Kruskal\'s Algorithm
-    * Dijkstra Algorithm
-    * Prim\'s Algorithm
-    * Travelling Salesman Problem
-    * Floyd-Warshall Algorithm
+    * [Breadth First Search Algorithm](#-15-graph)
+    * [Depth First Search Algorithm](#-15-graph)
+    * [Kruskal\'s Algorithm](#-15-graph)
+    * [Dijkstra Algorithm](#-15-graph)
+    * [Prim\'s Algorithm](#-15-graph)
+    * [Travelling Salesman Problem](#-15-graph)
+    * [Floyd-Warshall Algorithm](#-15-graph)
 * [Recursion & Dynamic Programming](#-16-recursion--dynamic-programming)
 * [Miscellaneous](#-17-miscellaneous)
 
