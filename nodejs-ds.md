@@ -124,6 +124,7 @@
 * [Miscellaneous](#-17-miscellaneous)
 
 <br/>
+
 ## # 1. INTRODUCTION
 
 <br/>
@@ -1105,8 +1106,6 @@ console.log(indexedSequentialSearch(arr, 22, 3)); // -1
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-<br/>
-
 ## # 7. TWO POINTERS TECHNIQUE
 
 <br/>
@@ -1319,8 +1318,6 @@ console.log(longestUniqueSubstring('pwwkew'));   // 3  ('wke')
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
-
-<br/>
 
 ## # 9. LINKED LISTS
 
@@ -1720,8 +1717,6 @@ console.log(polyToString(addPolynomials(p1, p2)));
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-<br/>
-
 ## # 10. STACKS
 
 <br/>
@@ -1998,8 +1993,6 @@ console.log(ls.size()); // 2
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-<br/>
-
 ## # 11. QUEUES
 
 <br/>
@@ -2248,8 +2241,6 @@ console.log(lq.peek());    // 'B'
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
-
-<br/>
 
 ## # 12. HASH TABLE
 
@@ -2752,8 +2743,6 @@ function threadedInorder(root) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-<br/>
-
 ## # 14. HEAP
 
 <br/>
@@ -2955,8 +2944,6 @@ console.log(mf.findMedian()); // 2.5
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
-
-<br/>
 
 ## # 15. GRAPH
 
@@ -3286,8 +3273,6 @@ console.log(tspBruteForce(tspDist));
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
-
-<br/>
 
 ## # 16. RECURSION & DYNAMIC PROGRAMMING
 
