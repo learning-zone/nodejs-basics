@@ -1385,7 +1385,7 @@ import { join } from "node:path";
 const BASE = "./sandbox";
 
 async function demo() {
-  // 1. Create directory (recursive: true won't throw if exists — Node.js 10.12+)
+  // 1. Create directory (recursive: true won\'t throw if exists — Node.js 10.12+)
   await mkdir(BASE, { recursive: true });
 
   // 2. Write a file (creates or overwrites)
@@ -2143,6 +2143,1287 @@ app.use(helmet.contentSecurityPolicy({
 | Sensitive Data Exposure (A02) | HTTPS, encrypt at rest |
 | Rate Limiting (A04) | `express-rate-limit` |
 | Path Traversal (A01) | `path.resolve` + whitelist check |
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Spawn a child process to run a shell command and capture its output
+
+<details><summary><b>Answer</b></summary>
+
+```js
+import { exec, execFile, spawn, fork } from "node:child_process";
+import { promisify } from "node:util";
+
+const execAsync = promisify(exec);
+
+// ── exec — runs command in a shell, buffers output ────────────────────────────
+// ❌ Never interpolate user input into exec — shell injection risk
+async function getNodeVersion() {
+  const { stdout, stderr } = await execAsync("node --version");
+  return stdout.trim(); // e.g. "v22.0.0"
+}
+
+// ── execFile — runs a file directly, no shell — safer for user-controlled args
+import { execFile as execFileCb } from "node:child_process";
+const execFileAsync = promisify(execFileCb);
+
+async function listDir(safePath) {
+  // execFile does NOT invoke a shell, so shell metacharacters are harmless
+  const { stdout } = await execFileAsync("ls", ["-la", safePath]);
+  return stdout;
+}
+
+// ── spawn — streams output, suitable for long-running or large-output commands
+function runCommand(cmd, args = []) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, args, { stdio: ["ignore", "pipe", "pipe"] });
+    let out = "";
+    let err = "";
+
+    child.stdout.on("data", (chunk) => (out += chunk));
+    child.stderr.on("data", (chunk) => (err += chunk));
+
+    child.on("close", (code) => {
+      if (code === 0) resolve(out.trim());
+      else reject(new Error(`Command failed (${code}): ${err.trim()}`));
+    });
+  });
+}
+
+// ── fork — spawns a Node.js child process with an IPC channel ────────────────
+// parent.js
+const child = fork("./worker.js");
+child.send({ task: "compute", n: 42 });
+child.on("message", (result) => console.log("Result:", result));
+child.on("exit", (code) => console.log("Child exited:", code));
+
+// worker.js
+process.on("message", ({ task, n }) => {
+  if (task === "compute") {
+    process.send(fibonacci(n)); // send result back to parent
+  }
+});
+```
+
+| Method | Shell | Output | Use case |
+|---|---|---|---|
+| `exec` | ✅ yes | buffered | Simple shell commands, small output |
+| `execFile` | ❌ no | buffered | Known executable, safe args |
+| `spawn` | ❌ no | streamed | Long-running, large output |
+| `fork` | ❌ no | IPC | Node.js child with message passing |
+
+> **Security:** Always use `execFile` or `spawn` (not `exec`) when any part of the command comes from user input. `exec` passes the command to `/bin/sh`, making it vulnerable to shell injection (e.g., `; rm -rf /`).
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement custom error classes with proper inheritance in Node.js
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// ── Base application error ─────────────────────────────────────────────────────
+class AppError extends Error {
+  constructor(message, statusCode = 500, code = "INTERNAL_ERROR") {
+    super(message);
+    this.name = this.constructor.name; // "NotFoundError", "ValidationError", etc.
+    this.statusCode = statusCode;
+    this.code = code;
+    this.isOperational = true; // distinguish known errors from bugs
+    Error.captureStackTrace(this, this.constructor); // clean stack trace
+  }
+}
+
+// ── Domain-specific errors ────────────────────────────────────────────────────
+class NotFoundError extends AppError {
+  constructor(resource = "Resource") {
+    super(`${resource} not found`, 404, "NOT_FOUND");
+  }
+}
+
+class ValidationError extends AppError {
+  constructor(message, fields = {}) {
+    super(message, 422, "VALIDATION_ERROR");
+    this.fields = fields;
+  }
+}
+
+class UnauthorizedError extends AppError {
+  constructor(message = "Authentication required") {
+    super(message, 401, "UNAUTHORIZED");
+  }
+}
+
+class ConflictError extends AppError {
+  constructor(message = "Resource already exists") {
+    super(message, 409, "CONFLICT");
+  }
+}
+
+// ── Usage in Express ──────────────────────────────────────────────────────────
+async function getUserById(req, res, next) {
+  try {
+    const user = await db.findById(req.params.id);
+    if (!user) throw new NotFoundError("User");
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ── Central error handler ─────────────────────────────────────────────────────
+app.use((err, req, res, next) => {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      error: { code: err.code, message: err.message, ...(err.fields && { fields: err.fields }) },
+    });
+  }
+  // Unknown/programmer error — log and return generic message
+  console.error("Unexpected error:", err);
+  res.status(500).json({ error: { code: "INTERNAL_ERROR", message: "Something went wrong" } });
+});
+
+// ── Type guard ────────────────────────────────────────────────────────────────
+function isOperationalError(err) {
+  return err instanceof AppError && err.isOperational;
+}
+```
+
+> **`Error.captureStackTrace(this, this.constructor)`** removes the constructor call from the stack trace, making stack traces point to the throw site rather than the error class definition.
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Explain Node.js module caching and how to avoid stale module state
+
+```js
+// counter.js
+let count = 0;
+module.exports = {
+  increment: () => ++count,
+  getCount:  () => count,
+};
+```
+
+```js
+// a.js
+const counter = require("./counter");
+counter.increment();
+console.log(counter.getCount()); // ?
+
+// b.js
+const counter = require("./counter");
+counter.increment();
+console.log(counter.getCount()); // ?
+```
+
+<details><summary><b>Answer</b></summary>
+
+**Output in a.js:** `1`
+**Output in b.js:** `2`
+
+Node.js caches every module after the first `require()`. Both `a.js` and `b.js` receive the **same object reference**, so mutations in one module are visible in the other — the module acts like a singleton.
+
+```js
+// Verify module caching
+console.log(require("./counter") === require("./counter")); // true
+
+// Clear cache (testing / hot-reload only — avoid in production)
+delete require.cache[require.resolve("./counter")];
+const freshCounter = require("./counter"); // new instance, count = 0
+
+// ── Avoid unintended shared state ─────────────────────────────────────────────
+// ❌ Mutable module-level state shared across the app
+let config = {};
+module.exports.setConfig = (c) => { config = c; };
+module.exports.getConfig = () => config;
+
+// ✅ Export a factory function — each caller gets its own instance
+module.exports = function createCounter(initial = 0) {
+  let count = initial;
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    getCount:  () => count,
+  };
+};
+
+// ESM modules are also cached but live bindings are read-only
+// import { count } from "./counter.mjs"; // live binding — reflects mutations
+```
+
+**Module resolution order (`require("x")`):**
+1. Core modules (`node:fs`, `node:path`, ...)
+2. `node_modules/x` (walks up directory tree)
+3. File modules (`./x`, `../x`) — tries `.js`, `.json`, `.node`
+4. Cached instance (if already loaded)
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Identify and fix a memory leak in a Node.js application
+
+<details><summary><b>Answer</b></summary>
+
+**Common memory leak patterns and fixes:**
+
+```js
+// ── Leak 1: Growing array / Map without cleanup ────────────────────────────────
+// ❌ Cache that never evicts
+const cache = new Map();
+app.get("/data/:id", async (req, res) => {
+  if (!cache.has(req.params.id)) {
+    cache.set(req.params.id, await fetchData(req.params.id)); // grows forever
+  }
+  res.json(cache.get(req.params.id));
+});
+
+// ✅ Use a size-bounded LRU cache
+import { LRUCache } from "lru-cache"; // npm install lru-cache
+const lru = new LRUCache({ max: 500, ttl: 1000 * 60 * 5 }); // 500 items, 5-min TTL
+
+// ── Leak 2: Event listeners never removed ────────────────────────────────────
+// ❌ New listener added on every request
+app.get("/stream", (req, res) => {
+  process.on("SIGTERM", () => res.end()); // accumulates on each request
+});
+
+// ✅ Remove the listener when the request ends
+app.get("/stream", (req, res) => {
+  const handler = () => res.end();
+  process.once("SIGTERM", handler);
+  res.on("close", () => process.off("SIGTERM", handler)); // cleanup on disconnect
+});
+
+// ── Leak 3: Closures retaining large objects ──────────────────────────────────
+// ❌ Closure captures large buffer unnecessarily
+function processData(largeBuffer) {
+  const id = largeBuffer.slice(0, 4); // we only need the first 4 bytes
+  return () => console.log(id, largeBuffer); // largeBuffer kept alive
+}
+
+// ✅ Extract only what you need
+function processData(largeBuffer) {
+  const id = Buffer.from(largeBuffer.slice(0, 4)); // copy, then release ref
+  return () => console.log(id);
+}
+
+// ── Detecting leaks with built-in tools ───────────────────────────────────────
+// 1. Heap snapshot via CLI:
+//    node --inspect app.js  → open chrome://inspect → Memory tab → Take snapshot
+
+// 2. Programmatic heap stats:
+import v8 from "node:v8";
+import process from "node:process";
+
+setInterval(() => {
+  const heap = process.memoryUsage();
+  console.log({
+    heapUsed:  `${(heap.heapUsed  / 1024 / 1024).toFixed(1)} MB`,
+    heapTotal: `${(heap.heapTotal / 1024 / 1024).toFixed(1)} MB`,
+    rss:       `${(heap.rss       / 1024 / 1024).toFixed(1)} MB`,
+    external:  `${(heap.external  / 1024 / 1024).toFixed(1)} MB`,
+  });
+}, 10_000);
+
+// 3. WeakRef and FinalizationRegistry (Node.js 14.6+) — hold references without preventing GC
+const ref = new WeakRef(largeObject);
+const registry = new FinalizationRegistry((label) => {
+  console.log(`${label} was garbage collected`);
+});
+registry.register(largeObject, "largeObject");
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement the Singleton pattern and a service locator in Node.js
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// ── Singleton via module caching (simplest pattern) ───────────────────────────
+// db.js — the module itself is the singleton
+import postgres from "postgres";
+
+let instance = null;
+
+export function getDb() {
+  if (!instance) {
+    instance = postgres(process.env.DATABASE_URL, {
+      max: 20,              // connection pool size
+      idle_timeout: 30,     // seconds
+      connect_timeout: 10,
+    });
+  }
+  return instance;
+}
+
+// Usage
+import { getDb } from "./db.js";
+const db = getDb(); // same instance every time
+
+// ── Class-based Singleton ─────────────────────────────────────────────────────
+class ConfigService {
+  static #instance = null;
+
+  #config;
+
+  constructor() {
+    if (ConfigService.#instance) return ConfigService.#instance;
+    this.#config = this.#load();
+    ConfigService.#instance = this;
+  }
+
+  #load() {
+    return {
+      port:    parseInt(process.env.PORT ?? "3000", 10),
+      nodeEnv: process.env.NODE_ENV ?? "development",
+      dbUrl:   process.env.DATABASE_URL,
+    };
+  }
+
+  get(key) { return this.#config[key]; }
+
+  static getInstance() {
+    if (!ConfigService.#instance) new ConfigService();
+    return ConfigService.#instance;
+  }
+}
+
+// ── Service Locator (lightweight DI container) ────────────────────────────────
+class ServiceLocator {
+  #registry = new Map();
+
+  register(name, factory) {
+    this.#registry.set(name, { factory, instance: null });
+    return this;
+  }
+
+  resolve(name) {
+    const entry = this.#registry.get(name);
+    if (!entry) throw new Error(`Service "${name}" not registered`);
+    if (!entry.instance) entry.instance = entry.factory(this);
+    return entry.instance;
+  }
+}
+
+// Bootstrap
+const container = new ServiceLocator()
+  .register("config",  ()        => ConfigService.getInstance())
+  .register("db",      (c)       => new DatabaseService(c.resolve("config")))
+  .register("userRepo",(c)       => new UserRepository(c.resolve("db")))
+  .register("userSvc", (c)       => new UserService(c.resolve("userRepo")));
+
+// Usage
+const userService = container.resolve("userSvc");
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement structured logging with log levels for a production Node.js app
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// Using Pino — the fastest Node.js JSON logger (npm install pino pino-pretty)
+import pino from "pino";
+
+const logger = pino({
+  level: process.env.LOG_LEVEL ?? "info",
+  ...(process.env.NODE_ENV !== "production" && {
+    transport: {
+      target: "pino-pretty",
+      options: { colorize: true, translateTime: "SYS:standard" },
+    },
+  }),
+  base: { pid: process.pid, service: "api-service" },
+  redact: ["req.headers.authorization", "*.password", "*.token"], // never log secrets
+});
+
+// Child logger — inherits parent settings, adds context
+export function createRequestLogger(req) {
+  return logger.child({
+    requestId: req.headers["x-request-id"] ?? crypto.randomUUID(),
+    method:    req.method,
+    url:       req.url,
+  });
+}
+
+// Express request logging middleware
+export function requestLogger(req, res, next) {
+  req.log = createRequestLogger(req);
+  const start = Date.now();
+
+  res.on("finish", () => {
+    req.log.info(
+      { statusCode: res.statusCode, duration: Date.now() - start },
+      "request completed"
+    );
+  });
+
+  next();
+}
+
+// Usage
+logger.info({ userId: 123 }, "User logged in");
+logger.warn({ retryCount: 3 }, "Retrying failed request");
+logger.error({ err: new Error("DB down"), query: "SELECT *" }, "Database error");
+
+// ── Log levels (ascending severity) ─────────────────────────────────────────
+// trace → debug → info → warn → error → fatal
+
+// ── Production JSON output ───────────────────────────────────────────────────
+// {"level":30,"time":1714000000000,"pid":1234,"service":"api","msg":"User logged in","userId":123}
+
+// ── Avoid these anti-patterns ────────────────────────────────────────────────
+// ❌ console.log(user)        — logs PII, no level, no structure
+// ❌ logger.info(req.body)    — may log passwords; use redact
+// ❌ logger.error(err.stack)  — pass the error object, not .stack string
+// ✅ logger.error({ err }, "msg") — pino serializes err.message + stack automatically
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Write unit tests for a Node.js module using Jest
+
+```js
+// math.js — module to test
+export function add(a, b) { return a + b; }
+export function divide(a, b) {
+  if (b === 0) throw new Error("Division by zero");
+  return a / b;
+}
+export async function fetchUser(id, httpClient) {
+  const res = await httpClient.get(`/users/${id}`);
+  return res.data;
+}
+```
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// math.test.js
+import { add, divide, fetchUser } from "./math.js";
+
+// ── Basic assertions ──────────────────────────────────────────────────────────
+describe("add()", () => {
+  test("adds two positive numbers", () => {
+    expect(add(2, 3)).toBe(5);
+  });
+
+  test("handles negative numbers", () => {
+    expect(add(-1, 1)).toBe(0);
+  });
+
+  test.each([
+    [1, 2, 3],
+    [0, 0, 0],
+    [-5, 5, 0],
+  ])("add(%i, %i) = %i", (a, b, expected) => {
+    expect(add(a, b)).toBe(expected);
+  });
+});
+
+describe("divide()", () => {
+  test("divides correctly", () => {
+    expect(divide(10, 2)).toBe(5);
+  });
+
+  test("throws on division by zero", () => {
+    expect(() => divide(10, 0)).toThrow("Division by zero");
+  });
+});
+
+// ── Mocking a dependency ──────────────────────────────────────────────────────
+describe("fetchUser()", () => {
+  test("returns user data on success", async () => {
+    const mockClient = {
+      get: jest.fn().mockResolvedValue({ data: { id: 1, name: "Alice" } }),
+    };
+
+    const user = await fetchUser(1, mockClient);
+
+    expect(mockClient.get).toHaveBeenCalledWith("/users/1");
+    expect(user).toEqual({ id: 1, name: "Alice" });
+  });
+
+  test("propagates HTTP errors", async () => {
+    const mockClient = {
+      get: jest.fn().mockRejectedValue(new Error("Network error")),
+    };
+
+    await expect(fetchUser(1, mockClient)).rejects.toThrow("Network error");
+  });
+});
+
+// ── Spy on a module function ──────────────────────────────────────────────────
+import * as math from "./math.js";
+
+test("spying on add", () => {
+  const spy = jest.spyOn(math, "add");
+  math.add(1, 2);
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenCalledWith(1, 2);
+  spy.mockRestore();
+});
+
+// ── Setup and teardown ────────────────────────────────────────────────────────
+describe("database tests", () => {
+  let db;
+
+  beforeAll(async () => { db = await connectTestDb(); });
+  afterAll(async  () => { await db.close(); });
+  beforeEach(async () => { await db.seed(); });
+  afterEach(async  () => { await db.reset(); });
+
+  test("finds user by id", async () => {
+    const user = await db.users.findById(1);
+    expect(user).toMatchObject({ id: 1, name: expect.any(String) });
+  });
+});
+```
+
+**`package.json` Jest configuration:**
+
+```json
+{
+  "scripts": { "test": "jest --coverage", "test:watch": "jest --watch" },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": { "^.+\\.js$": ["babel-jest", { "presets": ["@babel/preset-env"] }] },
+    "coverageThreshold": { "global": { "lines": 80 } }
+  }
+}
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement a real-time chat server using WebSockets (`ws` package)
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// server.js — npm install ws
+import { WebSocketServer, WebSocket } from "ws";
+import { createServer } from "node:http";
+import { randomUUID } from "node:crypto";
+
+const httpServer = createServer();
+const wss = new WebSocketServer({ server: httpServer });
+
+// Track connected clients with metadata
+const clients = new Map(); // Map<WebSocket, { id, username, room }>
+
+function broadcast(room, message, excludeSocket = null) {
+  const payload = JSON.stringify(message);
+  for (const [socket, meta] of clients) {
+    if (meta.room === room && socket !== excludeSocket && socket.readyState === WebSocket.OPEN) {
+      socket.send(payload);
+    }
+  }
+}
+
+wss.on("connection", (ws, req) => {
+  const clientId = randomUUID();
+  clients.set(ws, { id: clientId, username: null, room: null });
+
+  ws.on("message", (raw) => {
+    let msg;
+    try { msg = JSON.parse(raw); }
+    catch { return ws.send(JSON.stringify({ error: "Invalid JSON" })); }
+
+    const meta = clients.get(ws);
+
+    switch (msg.type) {
+      case "join":
+        meta.username = msg.username?.slice(0, 30) ?? `user_${clientId.slice(0, 6)}`;
+        meta.room     = msg.room ?? "general";
+        broadcast(meta.room, { type: "system", text: `${meta.username} joined` }, ws);
+        ws.send(JSON.stringify({ type: "joined", room: meta.room, id: clientId }));
+        break;
+
+      case "message":
+        if (!meta.room) return ws.send(JSON.stringify({ error: "Join a room first" }));
+        broadcast(meta.room, {
+          type:     "message",
+          id:       randomUUID(),
+          from:     meta.username,
+          text:     msg.text?.slice(0, 2000) ?? "",
+          timestamp: new Date().toISOString(),
+        });
+        break;
+    }
+  });
+
+  ws.on("close", () => {
+    const meta = clients.get(ws);
+    if (meta?.room) broadcast(meta.room, { type: "system", text: `${meta.username} left` });
+    clients.delete(ws);
+  });
+
+  ws.on("error", (err) => console.error("WebSocket error:", err));
+
+  // Heartbeat — detect dead connections
+  ws.isAlive = true;
+  ws.on("pong", () => { ws.isAlive = true; });
+});
+
+// Ping all clients every 30 s; terminate unresponsive ones
+const heartbeat = setInterval(() => {
+  for (const [ws] of clients) {
+    if (!ws.isAlive) { ws.terminate(); continue; }
+    ws.isAlive = false;
+    ws.ping();
+  }
+}, 30_000);
+
+wss.on("close", () => clearInterval(heartbeat));
+
+httpServer.listen(3001, () => console.log("WebSocket server on ws://localhost:3001"));
+```
+
+```js
+// client.js (Node.js test client)
+const ws = new WebSocket("ws://localhost:3001");
+ws.on("open",    ()    => { ws.send(JSON.stringify({ type: "join", username: "Alice", room: "dev" })); });
+ws.on("message", (raw) => console.log(JSON.parse(raw)));
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement the Circuit Breaker pattern for resilient microservice calls
+
+<details><summary><b>Answer</b></summary>
+
+```js
+const State = Object.freeze({ CLOSED: "CLOSED", OPEN: "OPEN", HALF_OPEN: "HALF_OPEN" });
+
+class CircuitBreaker {
+  #state       = State.CLOSED;
+  #failureCount = 0;
+  #successCount = 0;
+  #lastFailureTime = null;
+
+  constructor(fn, {
+    failureThreshold = 5,   // open after N consecutive failures
+    successThreshold = 2,   // close again after N successes in HALF_OPEN
+    timeout          = 60_000, // ms to wait before trying HALF_OPEN
+  } = {}) {
+    this.fn = fn;
+    this.failureThreshold = failureThreshold;
+    this.successThreshold = successThreshold;
+    this.timeout          = timeout;
+  }
+
+  async call(...args) {
+    if (this.#state === State.OPEN) {
+      const elapsed = Date.now() - this.#lastFailureTime;
+      if (elapsed < this.timeout) {
+        throw new Error(`Circuit OPEN — retry after ${this.timeout - elapsed}ms`);
+      }
+      this.#state = State.HALF_OPEN;
+      this.#successCount = 0;
+    }
+
+    try {
+      const result = await this.fn(...args);
+      this.#onSuccess();
+      return result;
+    } catch (err) {
+      this.#onFailure();
+      throw err;
+    }
+  }
+
+  #onSuccess() {
+    this.#failureCount = 0;
+    if (this.#state === State.HALF_OPEN) {
+      this.#successCount++;
+      if (this.#successCount >= this.successThreshold) {
+        this.#state = State.CLOSED;
+        console.log("Circuit CLOSED — service recovered");
+      }
+    }
+  }
+
+  #onFailure() {
+    this.#failureCount++;
+    this.#lastFailureTime = Date.now();
+    if (this.#failureCount >= this.failureThreshold || this.#state === State.HALF_OPEN) {
+      this.#state = State.OPEN;
+      console.warn(`Circuit OPEN after ${this.#failureCount} failures`);
+    }
+  }
+
+  get state() { return this.#state; }
+}
+
+// Usage
+const breaker = new CircuitBreaker(
+  (userId) => fetch(`https://user-service/users/${userId}`).then(r => r.json()),
+  { failureThreshold: 3, timeout: 30_000 }
+);
+
+async function getUser(userId) {
+  try {
+    return await breaker.call(userId);
+  } catch (err) {
+    if (err.message.startsWith("Circuit OPEN")) {
+      return getCachedUser(userId); // fallback
+    }
+    throw err;
+  }
+}
+```
+
+**State transitions:**
+
+```
+CLOSED  ──(N failures)──▶  OPEN  ──(timeout)──▶  HALF_OPEN
+  ▲                                                    │
+  └──────────── (M successes) ────────────────────────┘
+                             └──(1 failure)──▶  OPEN
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Handle file uploads in Express.js using `multer` with size and type validation
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// npm install multer
+import multer from "multer";
+import path from "node:path";
+import { randomUUID } from "node:crypto";
+import { mkdir } from "node:fs/promises";
+
+const UPLOAD_DIR  = "./uploads";
+const MAX_SIZE_MB = 5;
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "application/pdf"]);
+
+await mkdir(UPLOAD_DIR, { recursive: true });
+
+// ── Disk storage with safe filename ───────────────────────────────────────────
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+  filename:    (_req,  file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `${randomUUID()}${ext}`); // never use originalname — path traversal risk
+  },
+});
+
+// ── File filter — validate MIME type ─────────────────────────────────────────
+function fileFilter(_req, file, cb) {
+  if (ALLOWED_TYPES.has(file.mimetype)) return cb(null, true);
+  cb(Object.assign(new Error("File type not allowed"), { code: "INVALID_TYPE" }));
+}
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize:  MAX_SIZE_MB * 1024 * 1024,
+    files:     5,   // max 5 files per request
+  },
+});
+
+// ── Routes ────────────────────────────────────────────────────────────────────
+// Single file
+app.post("/upload/avatar", upload.single("avatar"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  res.json({ filename: req.file.filename, size: req.file.size });
+});
+
+// Multiple files
+app.post("/upload/gallery", upload.array("photos", 5), (req, res) => {
+  const files = req.files.map(({ filename, size, mimetype }) => ({ filename, size, mimetype }));
+  res.json({ files });
+});
+
+// ── Multer error handler ───────────────────────────────────────────────────────
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    const messages = {
+      LIMIT_FILE_SIZE:  `File too large (max ${MAX_SIZE_MB}MB)`,
+      LIMIT_FILE_COUNT: "Too many files",
+      LIMIT_UNEXPECTED_FILE: "Unexpected field name",
+    };
+    return res.status(413).json({ error: messages[err.code] ?? err.message });
+  }
+  if (err.code === "INVALID_TYPE") return res.status(415).json({ error: err.message });
+  next(err);
+});
+```
+
+> **Security:** Always generate server-side filenames (`randomUUID()`), never use `req.file.originalname` for storage paths. Serve uploaded files from a dedicated static route, not the source directory, and add a virus scanner (e.g. `clamscan`) for production uploads.
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement graceful shutdown with resource cleanup in a Node.js server
+
+<details><summary><b>Answer</b></summary>
+
+```js
+import { createServer } from "node:http";
+import express from "express";
+
+const app = express();
+const server = createServer(app);
+
+// Simulate resources that need cleanup
+let dbConnection = null;
+let redisClient  = null;
+let scheduledJob = null;
+
+async function startup() {
+  dbConnection = await connectDatabase();
+  redisClient  = await connectRedis();
+  scheduledJob  = startCronJob();
+
+  server.listen(process.env.PORT ?? 3000, () =>
+    console.log("Server started on port", process.env.PORT ?? 3000)
+  );
+}
+
+// ── Graceful shutdown ─────────────────────────────────────────────────────────
+let isShuttingDown = false;
+
+async function shutdown(signal) {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+
+  console.log(`\n${signal} received — starting graceful shutdown`);
+
+  // 1. Stop accepting new requests
+  server.close(async () => {
+    console.log("HTTP server closed");
+
+    try {
+      // 2. Close resources in parallel
+      await Promise.allSettled([
+        dbConnection?.end(),
+        redisClient?.quit(),
+        scheduledJob?.stop(),
+      ]);
+      console.log("All resources released");
+      process.exit(0);
+    } catch (err) {
+      console.error("Error during shutdown:", err);
+      process.exit(1);
+    }
+  });
+
+  // 3. Force kill if graceful shutdown takes too long
+  setTimeout(() => {
+    console.error("Forced shutdown after timeout");
+    process.exit(1);
+  }, 10_000).unref(); // .unref() so this timer doesn\'t prevent process exit
+}
+
+// Handle termination signals
+process.on("SIGTERM", () => shutdown("SIGTERM")); // Kubernetes, Docker stop
+process.on("SIGINT",  () => shutdown("SIGINT"));  // Ctrl+C
+
+// Handle unexpected errors — exit so supervisor can restart
+process.on("uncaughtException",  (err) => { console.error("Uncaught:", err); process.exit(1); });
+process.on("unhandledRejection", (err) => { console.error("Unhandled:", err); process.exit(1); });
+
+// Kubernetes readiness — signal not ready during shutdown
+app.get("/health/ready", (_req, res) => {
+  if (isShuttingDown) return res.status(503).json({ status: "shutting_down" });
+  res.json({ status: "ready" });
+});
+
+startup().catch((err) => { console.error("Startup failed:", err); process.exit(1); });
+```
+
+**Shutdown sequence checklist:**
+1. Stop load balancer traffic (readiness probe returns 503)
+2. Stop accepting new HTTP connections
+3. Wait for in-flight requests to complete
+4. Close database connections and message queue consumers
+5. Flush logs and metrics
+6. Exit with code `0`
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Protect a Node.js app from prototype pollution attacks
+
+```js
+// Attacker sends: POST /merge { "__proto__": { "isAdmin": true } }
+function merge(target, source) {
+  for (const key in source) {
+    target[key] = source[key]; // ❌ copies __proto__ key
+  }
+  return target;
+}
+```
+
+<details><summary><b>Answer</b></summary>
+
+**What is prototype pollution?** An attacker manipulates `Object.prototype` by injecting properties via keys like `__proto__`, `constructor`, or `prototype`. This can affect all objects in the process and lead to privilege escalation or RCE.
+
+```js
+// ── Detecting the vulnerability ───────────────────────────────────────────────
+const malicious = JSON.parse('{"__proto__": {"isAdmin": true}}');
+const obj = {};
+merge(obj, malicious);
+console.log({}.isAdmin); // true ← Object.prototype is polluted!
+
+// ── Fix 1: Check for dangerous keys in merge ─────────────────────────────────
+function safeMerge(target, source) {
+  if (source === null || typeof source !== "object") return target;
+  for (const key of Object.keys(source)) { // Object.keys() — own enumerable props only
+    if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
+    const val = source[key];
+    target[key] = val && typeof val === "object" ? safeMerge({}, val) : val;
+  }
+  return target;
+}
+
+// ── Fix 2: Use Object.create(null) — prototype-free objects ──────────────────
+const clean = Object.create(null); // no __proto__ chain
+clean.name = "safe";
+console.log(clean.__proto__); // undefined
+
+// ── Fix 3: JSON parse with null prototype ────────────────────────────────────
+function safeParse(json) {
+  const parsed = JSON.parse(json);
+  // Walk the object and block dangerous keys
+  return JSON.parse(json, (key, value) => {
+    if (key === "__proto__" || key === "constructor") return undefined;
+    return value;
+  });
+}
+
+// ── Fix 4: Freeze Object.prototype in application entry point ─────────────────
+Object.freeze(Object.prototype);
+// After this, attempts to add properties to Object.prototype silently fail (or throw in strict mode)
+
+// ── Fix 5: Use structuredClone for deep clone (Node.js 17+) ─────────────────
+const cloned = structuredClone(userInput); // built-in, safe deep clone
+
+// ── Express body parser protection ───────────────────────────────────────────
+// express.json() + body-parser are NOT vulnerable by default,
+// but always validate/sanitize parsed bodies before passing to merge-style functions
+app.use(express.json());
+app.post("/merge", (req, res) => {
+  const safe = safeMerge({}, req.body); // use safeMerge, never direct spread on nested objects
+  res.json(safe);
+});
+```
+
+> **Rule of thumb:** Never iterate user-provided keys with `for...in` and assign them directly to an existing object. Always use `Object.keys()` (own-only) or `Object.hasOwn()`, and explicitly block `__proto__`, `constructor`, and `prototype`.
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement API pagination (cursor-based and offset-based) in Express.js
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// ── Offset-based pagination ────────────────────────────────────────────────────
+// Simple but inconsistent when data changes between pages
+app.get("/api/products", async (req, res) => {
+  const page  = Math.max(1, parseInt(req.query.page  ?? "1",  10));
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit ?? "20", 10)));
+  const offset = (page - 1) * limit;
+
+  const [items, total] = await Promise.all([
+    db.query("SELECT * FROM products ORDER BY id LIMIT $1 OFFSET $2", [limit, offset]),
+    db.query("SELECT COUNT(*) FROM products"),
+  ]);
+
+  const totalCount = parseInt(total.rows[0].count, 10);
+  const totalPages = Math.ceil(totalCount / limit);
+
+  res.json({
+    data: items.rows,
+    pagination: {
+      page,
+      limit,
+      total:      totalCount,
+      totalPages,
+      hasNext:    page < totalPages,
+      hasPrev:    page > 1,
+      nextPage:   page < totalPages ? page + 1 : null,
+      prevPage:   page > 1         ? page - 1 : null,
+    },
+  });
+});
+
+// ── Cursor-based pagination ────────────────────────────────────────────────────
+// Consistent, efficient for large datasets (no OFFSET scan)
+app.get("/api/products/cursor", async (req, res) => {
+  const limit  = Math.min(100, parseInt(req.query.limit ?? "20", 10));
+  const cursor = req.query.cursor; // opaque cursor = base64-encoded last item ID
+
+  let afterId = null;
+  if (cursor) {
+    try {
+      afterId = parseInt(Buffer.from(cursor, "base64url").toString("utf8"), 10);
+    } catch {
+      return res.status(400).json({ error: "Invalid cursor" });
+    }
+  }
+
+  const query = afterId
+    ? "SELECT * FROM products WHERE id > $1 ORDER BY id LIMIT $2"
+    : "SELECT * FROM products ORDER BY id LIMIT $1";
+  const params = afterId ? [afterId, limit + 1] : [limit + 1];
+
+  const rows = (await db.query(query, params)).rows;
+  const hasMore = rows.length > limit;
+  const items   = hasMore ? rows.slice(0, limit) : rows;
+
+  const nextCursor = hasMore
+    ? Buffer.from(String(items.at(-1).id)).toString("base64url")
+    : null;
+
+  res.json({
+    data: items,
+    pagination: { hasMore, nextCursor },
+  });
+});
+```
+
+| Strategy | Pros | Cons |
+|---|---|---|
+| **Offset** | Simple, supports random access | Skips/duplicates when data changes; slow at high offsets |
+| **Cursor** | Consistent, efficient | Cannot jump to arbitrary pages |
+
+> Use **cursor-based** for real-time feeds (social, chat, events). Use **offset-based** for admin UIs where page jumping is needed.
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. What is libuv and how does Node.js use the thread pool?
+
+<details><summary><b>Answer</b></summary>
+
+**libuv** is the C library that provides Node.js with its cross-platform event loop, asynchronous I/O, and a thread pool. The single-threaded JavaScript event loop delegates blocking operations to libuv\'s thread pool, so the main thread never blocks.
+
+```js
+// ── Operations that use the libuv thread pool ─────────────────────────────────
+// • fs.readFile / fs.writeFile (file I/O — not network I/O)
+// • dns.lookup (not dns.resolve)
+// • crypto.pbkdf2, crypto.scrypt, crypto.randomBytes (CPU-heavy crypto)
+// • zlib compression / decompression
+// • user C++ addons that opt in
+
+// Default pool size: 4 threads (UV_THREADPOOL_SIZE env var, max 1024)
+// Set at startup — cannot be changed at runtime
+process.env.UV_THREADPOOL_SIZE = "16"; // must set BEFORE requiring any module
+
+// ── Demonstrating thread pool saturation ──────────────────────────────────────
+import { pbkdf2 } from "node:crypto";
+import { promisify } from "node:util";
+
+const pbkdf2Async = promisify(pbkdf2);
+
+console.time("4 parallel hashes");
+await Promise.all([
+  pbkdf2Async("pwd1", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd2", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd3", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd4", "salt", 100_000, 64, "sha512"),
+]);
+console.timeEnd("4 parallel hashes"); // ~T ms (all 4 run concurrently on 4 threads)
+
+console.time("5 parallel hashes");
+await Promise.all([
+  pbkdf2Async("pwd1", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd2", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd3", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd4", "salt", 100_000, 64, "sha512"),
+  pbkdf2Async("pwd5", "salt", 100_000, 64, "sha512"), // queued — waits for a free thread
+]);
+console.timeEnd("5 parallel hashes"); // ~2×T ms — 5th hash waits for pool
+
+// ── Network I/O does NOT use the thread pool ──────────────────────────────────
+// fetch, http.get, net.connect — handled by OS async I/O (epoll/kqueue/IOCP)
+// These scale to thousands of concurrent connections without extra threads.
+
+// ── Event loop phases (simplified) ───────────────────────────────────────────
+// 1. timers          → setTimeout, setInterval callbacks
+// 2. pending I/O     → deferred I/O callbacks
+// 3. idle / prepare  → internal use
+// 4. poll            → retrieve new I/O events (blocks here if nothing pending)
+// 5. check           → setImmediate callbacks
+// 6. close callbacks → socket.on("close", ...) etc.
+// + nextTick queue and microtask queue drain between each phase
+```
+
+**Summary diagram:**
+
+```
+JavaScript (single thread)
+         │
+         ▼
+    libuv Event Loop
+    ┌────────────────────────────────┐
+    │  timers → I/O → check → close │
+    └──────────────┬─────────────────┘
+                   │ offload blocking ops
+                   ▼
+         libuv Thread Pool (default: 4 threads)
+         [fs I/O] [dns.lookup] [crypto] [zlib]
+```
+
+</details>
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. Implement an in-memory cache with TTL and LRU eviction
+
+<details><summary><b>Answer</b></summary>
+
+```js
+// Simple TTL cache without external dependencies
+class TTLCache {
+  #store  = new Map();
+  #timers = new Map();
+
+  constructor(defaultTTL = 60_000) {
+    this.defaultTTL = defaultTTL;
+  }
+
+  set(key, value, ttl = this.defaultTTL) {
+    this.delete(key); // clear any existing timer
+    this.#store.set(key, value);
+    if (ttl > 0) {
+      const timer = setTimeout(() => this.delete(key), ttl).unref();
+      this.#timers.set(key, timer);
+    }
+    return this;
+  }
+
+  get(key) { return this.#store.get(key); }
+  has(key) { return this.#store.has(key); }
+  size()   { return this.#store.size; }
+
+  delete(key) {
+    clearTimeout(this.#timers.get(key));
+    this.#timers.delete(key);
+    return this.#store.delete(key);
+  }
+
+  clear() {
+    this.#timers.forEach(clearTimeout);
+    this.#timers.clear();
+    this.#store.clear();
+  }
+}
+
+// ── LRU Cache (Least Recently Used) — O(1) get/set via Map ───────────────────
+class LRUCache {
+  #map;
+  #max;
+
+  constructor(max = 100) {
+    this.#max = max;
+    this.#map = new Map(); // insertion-order Map acts as a doubly-linked list
+  }
+
+  get(key) {
+    if (!this.#map.has(key)) return undefined;
+    // Move to end (most recently used)
+    const value = this.#map.get(key);
+    this.#map.delete(key);
+    this.#map.set(key, value);
+    return value;
+  }
+
+  set(key, value) {
+    if (this.#map.has(key)) this.#map.delete(key);
+    else if (this.#map.size >= this.#max) {
+      // Evict least recently used (first entry in Map)
+      this.#map.delete(this.#map.keys().next().value);
+    }
+    this.#map.set(key, value);
+    return this;
+  }
+
+  has(key)  { return this.#map.has(key); }
+  get size() { return this.#map.size; }
+}
+
+// ── Cache-aside pattern with Express ─────────────────────────────────────────
+const cache = new LRUCache(500);
+
+app.get("/api/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const cacheKey = `product:${id}`;
+
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    res.setHeader("X-Cache", "HIT");
+    return res.json(cached);
+  }
+
+  const product = await db.products.findById(id);
+  if (!product) return res.status(404).json({ error: "Not found" });
+
+  cache.set(cacheKey, product);
+  res.setHeader("X-Cache", "MISS");
+  res.json(product);
+});
+```
 
 </details>
 
