@@ -9,14 +9,14 @@
 * *[HTML Basics](https://github.com/learning-zone/html-basics)*
 * *[CSS Basics](https://github.com/learning-zone/css-basics)*
 * *[JavaScript Basics](https://github.com/learning-zone/javascript-basics)*
-* *[MSSQL Basics](https://github.com/learning-zone/sql-basics)*
+* *[SQL-Server Basics](https://github.com/learning-zone/sql-basics)*
 * *[MongoDB Basics](https://github.com/learning-zone/mongodb-basics)*
 * *[Node.js APIs](nodejs-api.md)*
 * *[Node.js Commands](nodejs-commands.md)*
 * *[Node.js Multiple Choice Questions](nodejs-mcq.md)*
 * *[Node.js Coding Practice](nodejs-programming.md)*
-* *[Design Patterns in Node.js](nodejs-dp.md)*
-* *[Data Structures and Algorithms in Node.js](nodejs-ds.md)*
+* *[Design Patterns](https://github.com/learning-zone/javascript-design-patterns)*
+* *[Data Structures and Algorithms](https://github.com/learning-zone/javascript-data-structure)*
 
 <br/>
 
@@ -623,21 +623,21 @@ typeof 42n;            // 'bigint'
 **Important restrictions:**
 
 ```js
-// ❌ Cannot mix BigInt and Number directly
+//  Cannot mix BigInt and Number directly
 10n + 5;              // TypeError
 
-// ✅ Explicit conversion required
+//  Explicit conversion required
 10n + BigInt(5);      // 15n
 Number(10n) + 5;      // 15
 
-// ❌ No decimal BigInt
+//  No decimal BigInt
 1.5n;                 // SyntaxError
 
-// ✅ Comparison with Number works (loose equality only)
+//  Comparison with Number works (loose equality only)
 42n == 42;            // true  (loose)
 42n === 42;           // false (strict — different types)
 
-// ✅ JSON.stringify does NOT support BigInt natively
+//  JSON.stringify does NOT support BigInt natively
 JSON.stringify(42n);  // TypeError — use .toString() first
 ```
 
@@ -1230,11 +1230,11 @@ Node.js supports two module systems: **CommonJS (CJS)** — the original system 
 | Loading | Synchronous (blocking) | Asynchronous (deferred) |
 | File extension | `.js` or `.cjs` | `.mjs` or `.js` with `"type":"module"` |
 | `__dirname` / `__filename` | Available | Not available — use `import.meta` |
-| Top-level `await` | ❌ Not supported | ✅ Supported |
-| Tree shaking | ❌ Not supported | ✅ Supported by bundlers |
+| Top-level `await` |  Not supported |  Supported |
+| Tree shaking |  Not supported |  Supported by bundlers |
 | Named exports | Via destructuring `require` | Native `export` keyword |
 | Default in Node.js | Yes | Opt-in (`"type":"module"` in package.json) |
-| `require()` inside ESM | ❌ Not available by default | ✅ Via `createRequire()` |
+| `require()` inside ESM |  Not available by default |  Via `createRequire()` |
 | Dynamic import | `require()` (sync) | `import()` (async, returns Promise) |
 
 **1. CommonJS — exporting and importing:**
@@ -1733,7 +1733,7 @@ function add(a, b) { return a + b; }
 add(1, 2);   // interpreted by Ignition
 add(3, 4);   // still Ignition, profiling
 add(5, 6);   // ... "hot" → TurboFan optimizes assuming a,b are integers
-add('x','y') // ❌ assumption broken → deoptimize back to Ignition
+add('x','y') //  assumption broken → deoptimize back to Ignition
 ```
 
 <div align="right">
@@ -2258,13 +2258,13 @@ console.log('7. End');
 Recursively calling `process.nextTick` or resolving promises in a loop can **starve the event loop**, preventing I/O callbacks from ever running:
 
 ```js
-// ❌ Dangerous: starves the event loop
+//  Dangerous: starves the event loop
 function recursive() {
   process.nextTick(recursive);
 }
 recursive();
 
-// ✅ Safe: use setImmediate to yield to I/O
+//  Safe: use setImmediate to yield to I/O
 function recursive() {
   setImmediate(recursive);
 }
@@ -2399,7 +2399,7 @@ Async exceptions cannot be caught with try/catch because the callback fires afte
 **Example:**
 
 ```js
-// ❌ This does NOT work for async errors
+//  This does NOT work for async errors
 try {
   fs.readFile('file.txt', (err, data) => {
     throw new Error('oops'); // uncaught!
@@ -2408,7 +2408,7 @@ try {
   // never reaches here
 }
 
-// ✅ Error-first callback handles it correctly
+//  Error-first callback handles it correctly
 fs.readFile('file.txt', (err, data) => {
   if (err) {
     console.error('Failed:', err.message); // caught here
@@ -3224,15 +3224,24 @@ fs.watchFile('data.txt', { interval: 1000 }, (curr, prev) => {
 
 <br/>
 
-## Q. How many types of streams are present in node.js?
+## Q. How many types of streams are present in Node.js?
 
 Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
 There are four types of streams
 
-* **Readable** − Stream which is used for read operation.
-* **Writable** − Stream which is used for write operation.
-* **Duplex** − Stream which can be used for both read and write operation.
-* **Transform** − A type of duplex stream where the output is computed based on input.  
+Node.js has **4 types of streams**:
+
+| Type | Description | Example |
+|---|---|---|
+| **Readable** | Data can be read from it | `fs.createReadStream()`, `http.IncomingMessage` |
+| **Writable** | Data can be written to it | `fs.createWriteStream()`, `http.ServerResponse` |
+| **Duplex** | Both readable and writable | `net.Socket`, `TCP socket` |
+| **Transform** | Duplex that modifies data as it passes through | `zlib.createGzip()`, `crypto.createCipher()` |
+
+**Additional stream utilities:**
+
+- **`PassThrough`** — a Transform that passes data through unchanged (useful for testing/piping)
+- **`stream.pipeline()`** — connects streams and handles backpressure + error propagation automatically (preferred over `.pipe()`)
 
 Each type of Stream is an EventEmitter instance and throws several events at different instance of times.  
 
@@ -3336,11 +3345,92 @@ console.log("File Compressed.");
 
 The Node.js stream feature makes it possible to process large data continuously in smaller chunks without keeping it all in memory. One benefit of using streams is that it saves time, since you don\'t have to wait for all the data to load before you start processing. This also makes the process less memory-intensive.
 
-Some of the use cases of Node.js streams include:
+**1. Use Streams (most important)**
 
-* Reading a file that\'s larger than the free memory space, because it\'s broken into smaller chunks and processed by streams. For example, a browser processes videos from streaming platforms like Netflix in small chunks, making it possible to watch videos immediately without having to download them all at once.
+Never load large files/datasets into memory at once — process them chunk by chunk:
 
-* Reading large log files and writing selected parts directly to another file without downloading the source file. For example, you can go through traffic records spanning multiple years to extract the busiest day in a given year and save that data to a new file.
+```js
+import { createReadStream, createWriteStream } from "node:fs";
+import { pipeline } from "node:stream/promises";
+import { createGzip } from "node:zlib";
+
+// Process a large file without loading it all into memory
+await pipeline(
+  createReadStream("large-file.csv"),
+  createGzip(),
+  createWriteStream("large-file.csv.gz")
+);
+```
+
+**2. Async Iteration over Streams**
+
+```js
+const stream = createReadStream("data.json", { encoding: "utf8" });
+for await (const chunk of stream) {
+  process(chunk); // handles one chunk at a time
+}
+```
+
+**3. Database Pagination / Cursor**
+
+```js
+// Cursor-based: fetch in batches, not all at once
+async function* iterateUsers(db) {
+  let cursor = null;
+  do {
+    const rows = await db.query(
+      "SELECT * FROM users WHERE id > $1 ORDER BY id LIMIT 1000",
+      [cursor ?? 0]
+    );
+    if (!rows.length) break;
+    yield rows;
+    cursor = rows.at(-1).id;
+  } while (true);
+}
+
+for await (const batch of iterateUsers(db)) {
+  await processBatch(batch);
+}
+```
+
+**4. Worker Threads for CPU-heavy Processing**
+
+```js
+import { Worker } from "node:worker_threads";
+
+// Offload heavy computation (parsing, aggregation) to a worker
+const worker = new Worker("./data-processor.js", { workerData: { filePath } });
+worker.on("message", (result) => console.log(result));
+```
+
+**5. Node.js `--max-old-space-size` (last resort)**
+
+```bash
+node --max-old-space-size=4096 app.js  # increase heap to 4 GB
+```
+
+**6. Limit Concurrency to Avoid Memory Spikes**
+
+```js
+async function processBatchWithLimit(items, concurrency = 5) {
+  for (let i = 0; i < items.length; i += concurrency) {
+    await Promise.all(items.slice(i, i + concurrency).map(processItem));
+  }
+}
+```
+
+**Summary**
+
+| Strategy | Best For |
+|---|---|
+| **Streams + pipeline** | Large files, logs, CSV, JSON lines |
+| **Async generators** | Database rows, API pagination |
+| **Worker Threads** | CPU-intensive transformations |
+| **Batched processing** | Rate-limited APIs, bulk DB inserts |
+| **LRU/TTL Cache** | Repeated reads of hot data |
+| **`--max-old-space-size`** | Temporary fix only — not a solution |
+
+> **Golden rule:** If data doesn\'t fit comfortably in RAM, stream it. Never use `fs.readFileSync` or load entire collections into arrays for large datasets.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3348,17 +3438,17 @@ Some of the use cases of Node.js streams include:
 
 ## Q. What is backpressure in Node.js streams?
 
-**Backpressure** is a flow-control mechanism that prevents a fast-producing readable stream from overwhelming a slow-consuming writable stream. When the writable\'s internal buffer fills up (exceeds `highWaterMark`), `writable.write()` returns `false` and the readable should pause until the `drain` event fires.
+**Backpressure** is a flow-control mechanism that prevents a fast-producing **readable** stream from overwhelming a slow-consuming **writable** stream. When the writable\'s internal buffer fills up (exceeds `highWaterMark`), `writable.write()` returns `false` and the readable should pause until the `drain` event fires.
 
-**Without backpressure handling, data accumulates in memory and can crash the process.**
+**How it works**
 
-**Example — manual backpressure:**
+When `writable.write(chunk)` returns `false`, the internal buffer has exceeded its `highWaterMark` (default **16 KB**). The readable should pause until the writable emits a `drain` event.
+
+**Example:**
 
 ```js
-const fs = require('fs');
-
-const readable = fs.createReadStream('./large-file.txt');
-const writable = fs.createWriteStream('./output.txt');
+const readable = fs.createReadStream("huge.file");
+const writable = fs.createWriteStream("output.file");
 
 readable.on('data', (chunk) => {
   // Returns false when the buffer exceeds highWaterMark
@@ -3375,15 +3465,315 @@ writable.on('drain', () => {
 readable.on('end', () => writable.end());
 ```
 
-**Recommended: use `pipe()` which handles backpressure automatically:**
+**Recommended:** use `pipeline()` which handles backpressure automatically
+
+```js
+import { pipeline } from "node:stream/promises";
+import { createReadStream, createWriteStream } from "node:fs";
+
+// pipeline pauses/resumes automatically + propagates errors + cleans up streams
+await pipeline(
+  createReadStream("huge.file"),
+  createWriteStream("output.file")
+);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between `pipe()` and `pipeline()` in Node.js streams?
+
+Both connect a readable stream to a writable stream, but they differ significantly in **error handling** and **cleanup**.
+
+| | `.pipe()` | `stream.pipeline()` |
+|---|---|---|
+| Error propagation | Does NOT forward errors | Propagates errors to all streams |
+| Stream cleanup | Destination not destroyed on source error | All streams destroyed on any error |
+| Return value | Returns the destination stream | Returns `void` (or Promise with `stream/promises`) |
+| Async/await | No | Yes (via `node:stream/promises`) |
+| Available since | Node.js 0.9 | Node.js 10 (`callback`), Node.js 15 (`promises`) |
+
+**Example — `.pipe()` leaks on error:**
 
 ```js
 const fs = require('fs');
 
-// pipe() manages backpressure internally
-fs.createReadStream('./large-file.txt')
-  .pipe(fs.createWriteStream('./output.txt'));
+const readable = fs.createReadStream('nonexistent.txt');
+const writable = fs.createWriteStream('output.txt');
+
+readable.on('error', (err) => console.error('Read error:', err.message));
+// writable is NOT closed — resource leak!
+readable.pipe(writable);
 ```
+
+**Example — `pipeline()` cleans up automatically:**
+
+```js
+const { pipeline } = require('node:stream/promises');
+const { createReadStream, createWriteStream } = require('node:fs');
+const { createGzip } = require('node:zlib');
+
+async function compress(input, output) {
+  try {
+    await pipeline(
+      createReadStream(input),
+      createGzip(),
+      createWriteStream(output)
+    );
+    console.log('Compression complete');
+  } catch (err) {
+    // All streams are automatically destroyed on error
+    console.error('Pipeline failed:', err.message);
+  }
+}
+
+compress('data.txt', 'data.txt.gz');
+```
+
+> **Rule:** Always use `stream.pipeline()` over `.pipe()` in production code. `.pipe()` is only safe for simple, error-free scenarios.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between flowing mode and paused mode in Node.js streams?
+
+A **Readable** stream operates in one of two modes:
+
+| | Paused Mode | Flowing Mode |
+|---|---|---|
+| **Default** | Yes | No |
+| **Data delivery** | On demand via `.read()` | Auto-pushed via `'data'` events |
+| **Switch to flowing** | Add `'data'` listener / `.resume()` / `.pipe()` | — |
+| **Switch to paused** | `.pause()` / remove `'data'` listeners / `.unpipe()` | — |
+| **Backpressure** | Easy to control | Requires `.pause()` / `.resume()` |
+
+```js
+const { createReadStream } = require('node:fs');
+const stream = createReadStream('file.txt');
+
+// ── Paused mode — pull data manually ─────────────────────────────────────────
+stream.on('readable', () => {
+  let chunk;
+  while ((chunk = stream.read(64)) !== null) { // pull 64 bytes at a time
+    console.log('Read:', chunk.toString());
+  }
+});
+
+stream.on('end', () => console.log('Done'));
+
+// ── Flowing mode — data pushed automatically ──────────────────────────────────
+const stream2 = createReadStream('file.txt');
+
+// Adding a 'data' listener switches to flowing mode
+stream2.on('data', (chunk) => {
+  console.log('Chunk:', chunk.length, 'bytes');
+});
+
+stream2.on('end', () => console.log('Done'));
+
+// ── Async iteration (recommended — handles both modes internally) ─────────────
+const stream3 = createReadStream('file.txt', { encoding: 'utf8' });
+
+for await (const chunk of stream3) {
+  console.log(chunk);
+}
+```
+
+**Switching modes:**
+
+```js
+const stream = createReadStream('file.txt');
+// starts in paused mode
+
+stream.resume();   // switch to flowing — discards data (use only to drain)
+stream.pause();    // switch back to paused
+
+stream.on('data', handler); // switches to flowing
+stream.off('data', handler); // does NOT automatically switch back to paused
+stream.pause();              // must explicitly pause
+```
+
+> **Best practice:** Use `for await...of` or `stream.pipeline()` instead of manually managing modes — both handle backpressure and mode switching automatically.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is `highWaterMark` in Node.js streams and how does it affect performance?
+
+**`highWaterMark`** is the threshold (in bytes for binary streams, or number of objects for object-mode streams) at which a stream's internal buffer is considered "full". It controls the balance between memory usage and throughput.
+
+```js
+const { createReadStream, createWriteStream } = require('node:fs');
+
+// Default highWaterMark is 16 KB (16384 bytes)
+const defaultStream = createReadStream('file.txt');
+console.log(defaultStream.readableHighWaterMark); // 16384
+
+// Increase for high-throughput scenarios (fewer I/O calls)
+const highThroughput = createReadStream('large.bin', {
+  highWaterMark: 64 * 1024  // 64 KB chunks
+});
+
+// Decrease for low-memory or real-time scenarios
+const lowMemory = createReadStream('stream.txt', {
+  highWaterMark: 1024  // 1 KB chunks
+});
+
+// Object mode — highWaterMark is a COUNT (not bytes)
+const { Transform } = require('node:stream');
+const objectTransform = new Transform({
+  objectMode: true,
+  highWaterMark: 16,     // buffer up to 16 objects
+  transform(obj, enc, cb) {
+    this.push(process(obj));
+    cb();
+  }
+});
+```
+
+**How `highWaterMark` affects backpressure:**
+
+```js
+const writable = createWriteStream('output.txt', {
+  highWaterMark: 4096  // 4 KB — writable.write() returns false when buffer > 4 KB
+});
+
+const readable = createReadStream('input.txt', {
+  highWaterMark: 65536  // 64 KB read chunks
+});
+
+// With pipeline(), the mismatch is handled automatically:
+// readable produces 64 KB → writable buffers → backpressure → readable pauses
+const { pipeline } = require('node:stream/promises');
+await pipeline(readable, writable);
+```
+
+**Tuning guidelines:**
+
+| Scenario | `highWaterMark` | Effect |
+|---|---|---|
+| Default | 16 KB | Good balance for most cases |
+| High throughput (disk copy) | 64–256 KB | Fewer syscalls, more memory |
+| Real-time / streaming | 1–4 KB | Lower latency, more syscalls |
+| Object mode | 16 objects | Adjust based on object size |
+
+> Increasing `highWaterMark` improves throughput at the cost of memory. Decreasing it saves memory but increases I/O overhead. Profile with `node --prof` before tuning.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement a Duplex stream in Node.js?
+
+A **Duplex** stream is both Readable and Writable, but the two sides are **independent** — data written to the writable side does not automatically appear on the readable side (unlike Transform).
+
+```js
+const { Duplex } = require('node:stream');
+
+// ── Simple Duplex — echo server simulation ────────────────────────────────────
+class EchoStream extends Duplex {
+  constructor(options) {
+    super(options);
+    this._buffer = [];
+  }
+
+  // Writable side — receives incoming data
+  _write(chunk, encoding, callback) {
+    this._buffer.push(chunk); // store for reading
+    callback();
+  }
+
+  // Readable side — produces data when consumer pulls
+  _read(size) {
+    if (this._buffer.length > 0) {
+      this.push(this._buffer.shift());
+    } else {
+      this.push(null); // signal end
+    }
+  }
+}
+
+const echo = new EchoStream();
+echo.write('Hello');
+echo.write('World');
+echo.end();
+
+echo.on('data', (chunk) => console.log(chunk.toString())); // Hello, World
+```
+
+**Duplex vs Transform:**
+
+| | Duplex | Transform |
+|---|---|---|
+| Readable ↔ Writable relationship | Independent | Input is transformed into output |
+| Use case | TCP sockets, bidirectional channels | Compression, encryption, parsing |
+| `_read` + `_write` | Both required | `_transform` + optional `_flush` |
+
+</details>
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to handle stream errors properly in Node.js?
+
+```js
+const { createReadStream, createWriteStream } = require('node:fs');
+const { createGzip } = require('node:zlib');
+const { pipeline } = require('node:stream/promises');
+
+// ── always listen for 'error' on every stream when using .pipe() ─
+readable.on('error', (err) => {
+  console.error('Read error:', err.message);
+  writable.destroy(err); // manually destroy writable
+});
+writable.on('error', (err) => {
+  console.error('Write error:', err.message);
+});
+
+// ── use pipeline() which handles ALL of this automatically ───────────
+try {
+  await pipeline(
+    createReadStream('input.txt'),
+    createGzip(),
+    createWriteStream('output.txt.gz')
+  );
+} catch (err) {
+  // All streams are destroyed automatically on any error
+  console.error('Pipeline failed:', err.message);
+  // err.code e.g. 'ENOENT', 'EACCES', 'ERR_STREAM_DESTROYED'
+}
+
+// ── Error types in streams ────────────────────────────────────────────────────
+const stream = createReadStream('file.txt');
+
+stream.on('error', (err) => {
+  switch (err.code) {
+    case 'ENOENT':   console.error('File not found');      break;
+    case 'EACCES':   console.error('Permission denied');   break;
+    case 'EISDIR':   console.error('Path is a directory'); break;
+    default:         console.error('Stream error:', err);
+  }
+});
+
+// ── Checking if a stream is destroyed ────────────────────────────────────────
+if (!stream.destroyed) {
+  stream.destroy(); // forcefully close a stream
+}
+
+stream.on('close', () => console.log('Stream closed and resources released'));
+
+```
+
+**Error handling checklist:**
+
+- Use `stream.pipeline()` — handles cleanup automatically
+- Wrap `await pipeline()` in `try/catch`
+- In custom streams, always call `callback(err)` on failure
+- Listen for `'close'` event to confirm resources are released
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3395,11 +3785,34 @@ fs.createReadStream('./large-file.txt')
 
 ## Q. Is Node.js entirely based on a single-thread?
 
-Yes, it is true that Node.js processes all requests on a single thread. But it is just a part of the theory behind Node.js design. In fact, more than the single thread mechanism, it makes use of events and callbacks to handle a large no. of requests asynchronously.
+**No**, Node.js is not entirely single-threaded. Here's the full picture:
 
-Moreover, Node.js has an optimized design which utilizes both JavaScript and C++ to guarantee maximum performance. JavaScript executes at the server-side by Google Chrome v8 engine. And the C++ lib UV library takes care of the non-sequential I/O via background workers.
+**What runs on a single thread**
 
-To explain it practically, let\'s assume there are 100s of requests lined up in Node.js queue. As per design, the main thread of Node.js event loop will receive all of them and forwards to background workers for execution. Once the workers finish processing requests, the registered callbacks get notified on event loop thread to pass the result back to the user.
+- **JavaScript execution** — your JS code, the event loop, and all callbacks run on one thread
+
+**What runs on multiple threads (behind the scenes)**
+
+- **libuv thread pool** (default: 4 threads) handles:
+  - File system I/O (`fs.readFile`, etc.)
+  - DNS lookups (`dns.lookup`)
+  - CPU-heavy crypto (`pbkdf2`, `scrypt`, `randomBytes`)
+  - `zlib` compression
+- **OS-level async I/O** — network I/O (TCP/HTTP) is handled by the OS kernel directly, not the thread pool
+- **Worker Threads** (`worker_threads` module) — explicitly run JS on separate threads for CPU-intensive tasks
+- **Child Processes** (`child_process` module) — spawn separate OS processes
+
+**Summary**
+
+```
+Your JavaScript code         → single thread (event loop)
+File I/O, DNS, crypto, zlib  → libuv thread pool (4 threads by default)
+Network I/O (TCP, HTTP)      → OS kernel async (no threads)
+Worker Threads               → separate JS threads (explicit, opt-in)
+Child Processes              → separate OS processes (separate memory)
+```
+
+> **The design goal:** keep the JS thread free from blocking by offloading slow work to libuv or OS — giving the illusion of concurrency without the complexity of multi-threaded programming. Use `worker_threads` explicitly when you need true JS parallelism for CPU-heavy tasks.
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3407,15 +3820,66 @@ To explain it practically, let\'s assume there are 100s of requests lined up in 
 
 ## Q. How does Node.js handle child threads?
 
-Node.js is a single threaded language which in background uses multiple threads to execute asynchronous code.
-Node.js is non-blocking which means that all functions ( callbacks ) are delegated to the event loop and they are ( or can be ) executed by different threads. That is handled by Node.js run-time.
+While Node.js is primarily a single-threaded runtime that uses an event loop for asynchronous tasks, it handles "child threads" and parallel execution through two main built-in modules: `worker_threads` and `child_process`.
 
-* Nodejs Primary application runs in an event loop, which is in a single thread.
-* Background I/O is running in a thread pool that is only accessible to C/C++ or other compiled/native modules and mostly transparent to the JS.
-* Node.js supports `worker_threads` for CPU-intensive tasks (stable since Node.js v12 LTS).
-* Node.js does support forking multiple processes ( which are executed on different cores ).
-* It is important to know that state is not shared between master and forked process.
-* We can pass messages to forked process ( which is different script ) and to master process from forked process with function send.
+Node.js handles "child threads" through three distinct mechanisms:
+
+**1. libuv Thread Pool (automatic, transparent)**
+
+Node.js internally uses a pool of C++ threads via **libuv** to offload blocking operations:
+
+```js
+const fs = require('fs');
+const crypto = require('crypto');
+
+// These silently run on libuv thread pool — JS thread never blocks
+fs.readFile('large.txt', (err, data) => console.log('done'));
+crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', (err, key) => console.log('hashed'));
+
+console.log('main thread continues immediately');
+```
+
+Default pool size is **4 threads** — increase via env var before any `require()`:
+
+```js
+process.env.UV_THREADPOOL_SIZE = '16'; // max 1024
+```
+
+**2. Worker Threads (`worker_threads` — JS parallelism)**
+
+For **CPU-intensive JavaScript** tasks (stable since Node.js v12):
+
+```js
+// main.js
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+
+if (isMainThread) {
+  const worker = new Worker(__filename, { workerData: { n: 40 } });
+  worker.on('message', (result) => console.log('Result:', result));
+  worker.on('error', (err) => console.error(err));
+} else {
+  // runs in a separate thread, shares memory via SharedArrayBuffer
+  const fib = (n) => n <= 1 ? n : fib(n-1) + fib(n-2);
+  parentPort.postMessage(fib(workerData.n));
+}
+```
+
+**3. Child Processes (`child_process` — separate OS processes)**
+
+For running **external programs** or isolating work in a separate Node.js process:
+
+```js
+const { fork, spawn, exec } = require('child_process');
+
+// fork — separate Node.js process with IPC channel
+const child = fork('./worker.js');
+child.send({ task: 'compute' });
+child.on('message', (result) => console.log(result));
+
+// spawn — stream output from any executable
+const ls = spawn('ls', ['-la']);
+ls.stdout.on('data', (data) => console.log(data.toString()));
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -3423,14 +3887,77 @@ Node.js is non-blocking which means that all functions ( callbacks ) are delegat
 
 ## Q. How does Node.js support multi-processor platforms, and does it fully utilize all processor resources?
 
-Since Node.js is by default a single thread application, it will run on a single processor core and will not take full advantage of multiple core resources. However, Node.js provides support for deployment on multiple-core systems, to take greater advantage of the hardware. The Cluster module is one of the core Node.js modules and it allows running multiple Node.js worker processes that will share the same port.
+By default, a single Node.js instance runs on **one CPU core** and does not fully utilize multi-core systems. Node.js provides three ways to leverage all processors:
 
-The cluster module helps to spawn new processes on the operating system. Each process works independently, so you cannot use shared state between child processes. Each process communicates with the main process by IPC and pass server handles back and forth.
+**1. Cluster Module (built-in — most common)**
 
-Cluster supports two types of load distribution:
+Forks one worker process per CPU core, all sharing the same port:
 
-* The main process listens on a port, accepts new connection and assigns it to a child process in a round robin fashion.
-* The main process assigns the port to a child process and child process itself listen the port.
+```js
+const cluster = require('cluster');
+const os = require('os');
+const express = require('express');
+
+if (cluster.isPrimary) {
+  const numCPUs = os.cpus().length; // e.g., 8 on an 8-core machine
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork(); // each worker is a full Node.js process
+  }
+
+  cluster.on('exit', (worker) => {
+    console.log(`Worker ${worker.process.pid} died — restarting`);
+    cluster.fork(); // auto-restart crashed workers
+  });
+} else {
+  const app = express();
+  app.get('/', (req, res) => res.send(`Handled by PID ${process.pid}`));
+  app.listen(3000);
+}
+```
+
+**2. PM2 Process Manager (production standard)**
+
+```bash
+pm2 start app.js -i max        # fork one process per CPU core
+pm2 start app.js -i 4          # fork exactly 4 processes
+pm2 reload app.js              # zero-downtime reload across all workers
+```
+
+**3. Worker Threads (CPU-bound JS tasks)**
+
+```js
+const { Worker, isMainThread } = require('worker_threads');
+const os = require('os');
+
+// Spread CPU-intensive work across all cores
+if (isMainThread) {
+  const tasks = largeDataset.chunk(os.cpus().length);
+  tasks.forEach((chunk, i) => {
+    new Worker('./process-chunk.js', { workerData: chunk });
+  });
+}
+```
+
+**Does it fully utilize all processors?**
+
+| Mechanism | Uses all cores? | Notes |
+|---|---|---|
+| Single Node.js process |  1 core only | Default behavior |
+| **Cluster module** |  Yes | Separate processes, shared port |
+| **PM2 cluster mode** |  Yes | Managed, zero-downtime restarts |
+| **Worker Threads** |  Yes | Shared memory, same process |
+
+**Key limitations**
+
+- **No shared state** between cluster workers — use Redis or a DB for shared data
+- **IPC overhead** — inter-process communication between primary and workers has a cost
+- `os.availableParallelism()` (Node.js 19+) is preferred over `os.cpus().length` as it respects container CPU limits (cgroups)
+
+```js
+const { availableParallelism } = require('os'); // Node.js 19+
+const numCPUs = availableParallelism(); // respects Docker/K8s CPU limits
+```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -8520,14 +9047,14 @@ Use tools like **Datadog**, **New Relic**, or **Prometheus + Grafana** to detect
 **S — Single Responsibility Principle:**
 
 ```js
-// ❌ Bad: one class does too many things
+//  Bad: one class does too many things
 class UserService {
   createUser(data) { /* ... */ }
   sendWelcomeEmail(user) { /* ... */ } // email logic does not belong here
   saveToDatabase(user) { /* ... */ }   // DB logic does not belong here
 }
 
-// ✅ Good: each class has one responsibility
+//  Good: each class has one responsibility
 class UserService {
   constructor(userRepository, emailService) {
     this.repo = userRepository;
@@ -8544,14 +9071,14 @@ class UserService {
 **O — Open/Closed Principle:**
 
 ```js
-// ❌ Bad: must modify existing code to add a new discount type
+//  Bad: must modify existing code to add a new discount type
 function getDiscount(type, price) {
   if (type === 'student') return price * 0.8;
   if (type === 'senior')  return price * 0.7;
   // adding new type requires editing this function
 }
 
-// ✅ Good: extend via new classes without modifying existing ones
+//  Good: extend via new classes without modifying existing ones
 class StudentDiscount { apply(price) { return price * 0.8; } }
 class SeniorDiscount  { apply(price) { return price * 0.7; } }
 class VIPDiscount     { apply(price) { return price * 0.6; } } // new type, no edit
@@ -8577,14 +9104,14 @@ function printArea(shape) {
 **I — Interface Segregation Principle:**
 
 ```js
-// ❌ Bad: one fat interface forces unused methods
+//  Bad: one fat interface forces unused methods
 class Animal {
   eat() {}
   fly() {}   // fish don\'t fly — forced to implement or leave empty
   swim() {}
 }
 
-// ✅ Good: split into focused interfaces (mixins)
+//  Good: split into focused interfaces (mixins)
 const Swimmer = (Base) => class extends Base { swim() { console.log('swimming'); } };
 const Flyer   = (Base) => class extends Base { fly()  { console.log('flying');   } };
 
@@ -8596,7 +9123,7 @@ class Bird    extends Flyer(Swimmer(Animal)) {}
 **D — Dependency Inversion Principle:**
 
 ```js
-// ❌ Bad: high-level module depends on a concrete low-level module
+//  Bad: high-level module depends on a concrete low-level module
 class OrderService {
   constructor() {
     // tightly coupled — impossible to swap DB or unit test without a real MSSQL connection
@@ -8604,7 +9131,7 @@ class OrderService {
   }
 }
 
-// ✅ Good: depend on an abstraction injected from outside
+//  Good: depend on an abstraction injected from outside
 // db/mssqlDatabase.js — concrete MSSQL implementation
 const sql = require('mssql');
 
@@ -9142,7 +9669,7 @@ SQL injection occurs when user-supplied input is directly concatenated into an S
 **Vulnerable code:**
 
 ```js
-// ❌ DANGEROUS — Never do this
+//  DANGEROUS — Never do this
 app.get('/user', async (req, res) => {
   const name = req.query.name;
   // Attacker sends: ?name=' OR '1'='1
@@ -9155,7 +9682,7 @@ app.get('/user', async (req, res) => {
 **Fix — use parameterized queries (placeholders):**
 
 ```js
-// ✅ Safe — input is treated as data, not SQL code
+//  Safe — input is treated as data, not SQL code
 const sql = require('mssql');
 const { poolPromise } = require('../db/mssql');
 
@@ -9440,12 +9967,12 @@ setInterval(() => {
 const { EventEmitter } = require('events');
 const emitter = new EventEmitter();
 
-// ❌ Leak — new listener added on every request
+//  Leak — new listener added on every request
 function handleRequest(req) {
   emitter.on('data', (data) => processData(req, data));
 }
 
-// ✅ Fix — remove listener when done, or use .once()
+//  Fix — remove listener when done, or use .once()
 function handleRequest(req) {
   const handler = (data) => {
     processData(req, data);
