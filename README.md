@@ -22,29 +22,29 @@
 
 ## Table of Contents
 
-* Fundamentals & Core Concepts
+* **Fundamentals & Core Concepts**
   * [Introduction](#-1-introduction)
   * [Node.js Architecture](#-2-nodejs-architecture)
   * [Node.js Setup](#-3-nodejs-setup)
   * [Node.js Environment & Configuration](#-4-nodejs-environment--configuration)
   * [Node.js Data Types](#-5-nodejs-data-types)
-* Core Modules & System Operations
+* **Core Modules & System Operations**
   * [Node.js Events](#-6-nodejs-events)
   * [Node.js File System](#-7-nodejs-file-system)
   * [Node.js Streams](#-8-nodejs-streams)
   * [Node.js Multithreading](#-9-nodejs-multithreading)
-* Web Development & APIs
+* **Web Development & APIs**
   * [Node.js Web Module](#-10-nodejs-web-module)
   * [Node.js Routing](#-11-nodejs-routing)
   * [Node.js Middleware](#-12-nodejs-middleware)
   * [Node.js RESTFul API](#-13-nodejs-restful-api)
   * [Node.js Database Integration](#-14-nodejs-database-integration)
-* Reliability & Maintenance
+* **Reliability & Maintenance**
   * [Node.js Error Handling](#-15-nodejs-error-handling)
   * [Node.js Logging](#-16-nodejs-logging)
   * [Node.js Debugging & Profiling](#-17-nodejs-debugging--profiling)
   * [Node.js Testing](#-18-nodejs-testing)
-* Advanced Optimization & Security
+* **Advanced Optimization & Security**
   * [Node.js Security](#-19-nodejs-security)
   * [Node.js Caching](#-20-nodejs-caching)
   * [Node.js Performance & Optimization](#-21-nodejs-performance--optimization)
