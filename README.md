@@ -22,30 +22,34 @@
 
 ## Table of Contents
 
-* [Introduction](#-1-introduction)
-* [Node.js Setup](#-2-nodejs-setup)
-* [Node.js Data Types](#-3-nodejs-data-types)
-* [Node.js Architecture](#-4-nodejs-architecture)
-* [Node.js Events](#-5-nodejs-events)
-* [Node.js File System](#-6-nodejs-file-system)
-* [Node.js Streams](#-7-nodejs-streams)
-* [Node.js Multithreading](#-8-nodejs-multithreading)
-* [Node.js Web Module](#-9-nodejs-web-module)
-* [Node.js Middleware](#-10-nodejs-middleware)
-* [Node.js RESTFul API](#-11-nodejs-restful-api)
-* [Node.js Routing](#-12-nodejs-routing)
-* [Node.js Database Integration](#-13-nodejs-database-integration)
-* [Node.js Caching](#-14-nodejs-caching)
-* [Node.js Error Handling](#-15-nodejs-error-handling)
-* [Node.js Logging](#-16-nodejs-logging)
-* [Node.js Internationalization](#-17-nodejs-internationalization)
-* [Node.js Testing](#-18-nodejs-testing)
-* [Node.js Environment & Configuration](#-19-nodejs-environment--configuration)
-* [Node.js Security](#-20-nodejs-security)
-* [Node.js Debugging & Profiling](#-21-nodejs-debugging--profiling)
-* [Node.js Performance & Optimization](#-22-nodejs-performance--optimization)
-* [Node.js Miscellaneous](#-23-nodejs-miscellaneous)
-
+* Fundamentals & Core Concepts
+  * [Introduction](#-1-introduction)
+  * [Node.js Architecture](#-2-nodejs-architecture)
+  * [Node.js Setup](#-3-nodejs-setup)
+  * [Node.js Environment & Configuration](#-4-nodejs-environment--configuration)
+  * [Node.js Data Types](#-5-nodejs-data-types)
+* Core Modules & System Operations
+  * [Node.js Events](#-6-nodejs-events)
+  * [Node.js File System](#-7-nodejs-file-system)
+  * [Node.js Streams](#-8-nodejs-streams)
+  * [Node.js Multithreading](#-9-nodejs-multithreading)
+* Web Development & APIs
+  * [Node.js Web Module](#-10-nodejs-web-module)
+  * [Node.js Routing](#-11-nodejs-routing)
+  * [Node.js Middleware](#-12-nodejs-middleware)
+  * [Node.js RESTFul API](#-13-nodejs-restful-api)
+  * [Node.js Database Integration](#-14-nodejs-database-integration)
+* Reliability & Maintenance
+  * [Node.js Error Handling](#-15-nodejs-error-handling)
+  * [Node.js Logging](#-16-nodejs-logging)
+  * [Node.js Debugging & Profiling](#-17-nodejs-debugging--profiling)
+  * [Node.js Testing](#-18-nodejs-testing)
+* Advanced Optimization & Security
+  * [Node.js Security](#-19-nodejs-security)
+  * [Node.js Caching](#-20-nodejs-caching)
+  * [Node.js Performance & Optimization](#-21-nodejs-performance--optimization)
+  * [Node.js Internationalization](#-22-nodejs-internationalization)
+  * [Node.js Miscellaneous](#-23-nodejs-miscellaneous)
 
 <br/>
 
@@ -188,7 +192,338 @@ A **thread** is a unit of execution within a process.
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 2. NODE.JS SETUP
+## # 2. NODE.JS ARCHITECTURE
+
+<br/>
+
+## Q. How does Node.js works?
+
+Node.js is **single-threaded and event-driven**, using a non-blocking I/O model to handle many concurrent operations efficiently.
+
+<p align="center">
+  <img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
+</p>
+
+**Core Components**
+
+| Component | Role |
+|-----------|------|
+| **V8 Engine** | Executes JavaScript (same engine as Chrome) |
+| **libuv** | C library handling async I/O, thread pool, and event loop |
+| **Event Queue** | Holds incoming requests/events in FIFO order |
+| **Event Loop** | Continuously polls the queue and dispatches callbacks |
+| **Thread Pool** | Background workers for blocking operations (file, DNS, crypto) |
+
+**Request Lifecycle**
+
+1. Request arrives → placed in the **Event Queue**
+2. **Event Loop** picks it up (only when the call stack is empty)
+3. **No blocking I/O?** → Process immediately, send response
+4. **Blocking I/O needed?** → Offload to a **thread pool worker**, register a callback, free the main thread
+5. Worker completes → fires an event → callback executes → response sent
+
+```
+Client Requests
+      ↓
+  Event Queue
+      ↓
+  Event Loop (single thread)
+    ├── Non-blocking? → Process & respond immediately
+    └── Blocking I/O? → Thread Pool (libuv)
+                              ↓
+                         Callback fired → response sent
+```
+
+**Key Design Principles**
+
+- **Single-threaded JS execution** — no thread management overhead
+- **Non-blocking by default** — APIs are async with callbacks/promises
+- **Observer pattern** — events trigger registered listeners
+- **Concurrency without threads** — achieved via event loop + callbacks, not parallel execution
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are the core modules of Node.js?
+
+Node.js has a set of core modules that are part of the platform and come with the Node.js installation. These modules can be loaded into the program by using the require function.
+
+The following table lists some of the important core modules in Node.js.
+
+|Name         |Description                                             |
+|-------------|--------------------------------------------------------|
+|`assert`       |It is used by Node.js for testing itself.|
+|`buffer`       |Handle raw binary data outside the V8 heap|
+|`child_process`|Spawn child processes (`exec`, `spawn`, `fork`)|
+|`cluster`      |This module is used by Node.js to take advantage of multi-core systems, so that it can handle more load.|
+|`console`      |It is used to write data to console. Node.js has a Console object which contains functions to write data to console.|
+|`crypto`       |Cryptographic functions — hashing, encryption, HMAC|
+|`http`/`https` |Create HTTP/HTTPS servers and make requests|
+|`url`          |It includes methods for URL resolution and parsing.|
+|`querystring` |It includes methods to deal with query string.|
+|`path`         |Utilities for working with file and directory paths|
+|`fs`           |File system — read, write, update, delete, rename files.|
+|`stream`       |Readable, Writable, Duplex, and Transform streams|
+|`worker_threads`|Run CPU-intensive JS in background threads|
+|`util`         |It includes utility functions useful for programmers.|
+|`zlib`         |It is used to compress and decompress data. |
+
+**Example:**
+
+```js
+const http   = require('http');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
+
+// HTTP server
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World');
+}).listen(3000);
+
+// File path
+const filePath = path.join(__dirname, 'data', 'file.txt');
+
+// Read file
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+// Hash a string
+const hash = crypto.createHash('sha256').update('secret').digest('hex');
+console.log(hash);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What do you understand by Reactor Pattern in Node.js?
+
+**Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a **de-multiplexer**, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
+
+**Types of Input/Output operations**
+
+**1. Blocking I/O (Synchronous):** Application will make a function call and pause its execution at a point until the data is received.
+
+**2. Non-Blocking I/O (Asynchronous):** Application will make a function call, and, without waiting for the results it continues its execution. Node.js uses non-blocking I/O exclusively.
+
+<p align="center">
+  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="500px" />
+</p>
+
+**Reactor Pattern comprises of:**
+
+**1. Resources:** They are shared by multiple applications for I/O operations, generally slower in executions.
+
+**2. Synchronous Event De-multiplexer/Event Notifier:** This uses Event Loop for blocking on all resources. When a set of I/O operations completes, the Event De-multiplexer pushes the new events into the Event Queue.
+
+**3. Event Loop and Event Queue:** Event Queue queues up the new events that occurred along with its event-handler, pair.
+
+**4. Request Handler/Application:** This is, generally, the application that provides the handler to be executed for registered events on resources.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are the global objects of Node.js?
+
+Node.js Global Objects are the objects that are available in all modules. Global Objects are built-in objects that are part of the JavaScript and can be used directly in the application without importing any particular module.
+
+**Global Objects**
+
+| Object | Description |
+|--------|-------------|
+| `global` | The global namespace object (equivalent to `window` in browsers) |
+| `process` | Info and control over the current Node.js process |
+| `console` | Write to stdout/stderr |
+| `Buffer` | Handle raw binary data |
+| `__dirname` | Absolute path of the current module's **directory** |
+| `__filename` | Absolute path of the current module's **file** |
+| `setTimeout` / `clearTimeout` | Schedule a one-time callback |
+| `setInterval` / `clearInterval` | Schedule a repeating callback |
+| `setImmediate` / `clearImmediate` | Execute after current event loop iteration |
+| `queueMicrotask` | Queue a microtask |
+| `URL` / `URLSearchParams` | Web-compatible URL API |
+| `fetch` | HTTP client (available since Node.js v18) |
+| `crypto` | Web Crypto API (available since Node.js v19) |
+
+**Examples:**
+
+```js
+// __dirname and __filename
+console.log(__dirname);   // D:\projects\myapp
+console.log(__filename);  // D:\projects\myapp\index.js
+
+// process — runtime info
+console.log(process.version);       // v20.x.x
+console.log(process.platform);      // 'win32' / 'linux'
+console.log(process.env.NODE_ENV);  // 'development'
+console.log(process.pid);           // process ID
+process.exit(0);                    // exit with code 0
+
+// global — set a truly global variable (avoid in practice)
+global.appName = 'MyApp';
+console.log(appName); // 'MyApp' — accessible anywhere
+
+// Buffer
+const buf = Buffer.from('hello');
+console.log(buf.toString('hex')); // 68656c6c6f
+
+// Timers
+const timer = setTimeout(() => console.log('done'), 1000);
+clearTimeout(timer); // cancel it
+```
+
+> `__dirname` and `__filename` are **not available in ES Modules** — use `import.meta.url` with `fileURLToPath()` instead. The `global` object in Node.js v21+ is also aliased as `globalThis` (the standard cross-environment global).
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is chrome v8 engine?
+
+V8 is an open-source, high-performance JavaScript and WebAssembly engine written in C++, developed by Google. It was originally designed for Google Chrome and Chromium-based browsers ( such as Brave ) in 2008, but it was later utilized to create Node.js for server-side coding.
+
+V8 is the JavaScript engine i.e. it parses and executes JavaScript code. The DOM, and the other Web Platform APIs ( they all makeup runtime environment ) are provided by the browser.
+
+V8 is known to be a JavaScript engine because it takes JavaScript code and executes it while browsing in Chrome. It provides a runtime environment for the execution of JavaScript code. The best part is that the JavaScript engine is completely independent of the browser in which it runs.
+
+**Just-In-Time (JIT) compilation:**
+
+V8 uses two compilers working together:
+
+* **Ignition** — baseline interpreter that converts JS to bytecode quickly, collects profiling data
+* **TurboFan** — optimizing compiler that re-compiles "hot" (frequently run) code into highly optimized machine code
+
+**V8 Key Optimizations**
+
+* **Hidden classes** — optimizes property access on objects
+* **Inline caching** — caches results of repeated operations
+* **Garbage collection** — generational GC (Scavenger + Mark-Compact) with minimal pause times
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Why is LIBUV needed in Node JS?
+
+**libuv** is a cross-platform C library that gives Node.js its ability to perform **non-blocking, asynchronous I/O** — the core of everything Node.js does efficiently. It provides the following features:
+
+* It allows the CPU and other resources to be used simultaneously while still performing I/O operations, thereby resulting in efficient use of resources and network.
+* It facilitates an event-driven approach wherein I/O and other activities are performed using callback-based notifications.
+* It provides mechanisms to handle file system, DNS, network, child processes, pipes, signal handling, polling and streaming
+* It also includes a thread pool for offloading work for some things that can\'t be done asynchronously at the operating system level.
+
+**Example: Thread Pool**
+
+Some operations **can\'t be made async at the OS level** (e.g., some file system calls, DNS lookups, crypto). **libuv** offloads these to a pool of worker threads:
+
+```js
+const fs = require('fs');
+const crypto = require('crypto');
+
+// These are offloaded to libuv\'s thread pool — main thread never blocks
+fs.readFile('large-file.txt', (err, data) => {
+  console.log('File read complete');
+});
+
+crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', (err, key) => {
+  console.log('Hash complete');
+});
+
+console.log('Main thread continues immediately'); // prints first
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How V8 compiles JavaScript code?
+
+Compilation is the process of converting human-readable code to machine code. There are two ways to compile the code
+
+* **Using an Interpreter**: The interpreter scans the code line by line and converts it into byte code.
+* **Using a Compiler**: The Compiler scans the entire document and compiles it into highly optimized byte code.
+
+The V8 engine uses both a compiler and an interpreter and follows **just-in-time (JIT)** compilation to speed up the execution. JIT compiling works by compiling small portions of code that are just about to be executed. This prevents long compilation time and the code being compiles is only that which is highly likely to run.
+
+**Compilation Pipeline**
+
+```
+JavaScript Source
+       ↓
+   Parser
+       ↓ generates
+Abstract Syntax Tree (AST)
+       ↓
+   Ignition (Interpreter)
+       ↓ produces
+   Bytecode  ←──────────────────────┐
+       ↓  + profiling data          │ de-optimize if
+   TurboFan (Optimizing Compiler)   │ assumptions wrong
+       ↓                            │
+Optimized Machine Code ─────────────┘
+```
+
+**Stage 1 — Parsing**
+
+V8 reads JS source and builds an **Abstract Syntax Tree (AST)**:
+
+```js
+const x = a + b;
+
+// AST (simplified):
+// VariableDeclaration
+//   └── BinaryExpression (+)
+//         ├── Identifier (a)
+//         └── Identifier (b)
+```
+
+- **Scanner** tokenizes the raw text
+- **Parser** builds the AST from tokens
+- **Pre-parser** skips function bodies not yet called (lazy parsing — speeds up startup)
+
+**Stage 2 — Ignition (Interpreter)**
+
+Ignition converts the AST into **bytecode** — a compact, platform-independent instruction set:
+
+```
+// Bytecode for: return a + b
+LdaNamedProperty a
+Add b
+Return
+```
+
+- Starts executing **immediately** — no wait for full compilation
+- Collects **type feedback** (e.g., "a and b are always integers")
+- Much faster to generate than machine code
+
+**Stage 3 — TurboFan (Optimizing Compiler)**
+
+When a function becomes **"hot"** (called many times), TurboFan kicks in:
+
+- Uses Ignition's profiling data to make **type assumptions**
+- Compiles to **highly optimized native machine code**
+- Eliminates type checks, inlines functions, unboxes numbers
+
+```js
+function add(a, b) { return a + b; }
+
+add(1, 2);   // interpreted by Ignition
+add(3, 4);   // still Ignition, profiling
+add(5, 6);   // ... "hot" → TurboFan optimizes assuming a,b are integers
+add('x','y') //  assumption broken → deoptimize back to Ignition
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 3. NODE.JS SETUP
 
 <br/>
 
@@ -433,7 +768,210 @@ npm list express
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 3. NODE.JS DATA TYPES
+## # 4. NODE.JS ENVIRONMENT & CONFIGURATION
+
+<br/>
+
+## Q. What are environment variables in Node.js and how to use them?
+
+Environment variables are key-value pairs available to a process at runtime, stored outside the application code. In Node.js they are accessed via `process.env`. They are the standard way to configure application behaviour (ports, credentials, feature flags) across different environments (development, test, production) without changing code.
+
+**Example:**
+
+```js
+// Set via the terminal before running the app:
+// PORT=4000 NODE_ENV=production node app.js
+
+const port = process.env.PORT || 3000;
+const env  = process.env.NODE_ENV || 'development';
+
+console.log(`Running on port ${port} in ${env} mode`);
+```
+
+**Common environment variables in Node.js projects:**
+
+| Variable | Purpose |
+|----------|---------|
+| `NODE_ENV` | Runtime environment (`development`, `test`, `production`) |
+| `PORT` | HTTP server port |
+| `DATABASE_URL` | Database connection string |
+| `JWT_SECRET` | Secret key for signing JSON Web Tokens |
+| `LOG_LEVEL` | Logging verbosity (`debug`, `info`, `error`) |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use the dotenv package in Node.js?
+
+The `dotenv` package loads environment variables from a `.env` file into `process.env`, keeping secrets out of source code and making local configuration easy.
+
+**Installation:**
+
+```bash
+npm install dotenv
+```
+
+**`.env` file** (never commit this to version control):
+
+```env
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+JWT_SECRET=supersecretkey
+```
+
+**app.js:**
+
+```js
+// Load .env as early as possible — before any other require()
+require('dotenv').config();
+
+const express = require('express');
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send(`Environment: ${process.env.NODE_ENV}`);
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+```
+
+**Best practices:**
+
+```bash
+# .gitignore — never commit secrets
+.env
+.env.local
+.env.production
+```
+
+```env
+# .env.example — commit this template with placeholder values
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+JWT_SECRET=
+```
+
+> In production, set environment variables through the hosting platform (AWS Parameter Store, Heroku Config Vars, Kubernetes Secrets) instead of deploying a `.env` file.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the purpose of NODE_ENV in Node.js?
+
+`NODE_ENV` is a convention used by Node.js frameworks and libraries to alter their behaviour based on the runtime environment. It is not set automatically — you must define it explicitly.
+
+**Common values:**
+
+| Value | Usage |
+|-------|-------|
+| `development` | Verbose errors, hot reload, debug logging |
+| `test` | Isolated databases, mocked services |
+| `production` | Minified output, cached templates, suppressed stack traces |
+
+**Example — toggling behaviour:**
+
+```js
+require('dotenv').config();
+
+const express = require('express');
+const app = express();
+
+// Express automatically disables view cache and enables verbose errors
+// when NODE_ENV !== 'production'
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+
+// Custom behaviour based on environment
+if (process.env.NODE_ENV === 'production') {
+  // Use a real database connection
+  app.use(require('./middleware/errorHandler'));   // hides stack traces
+} else {
+  // Use an in-memory SQLite database for development
+  app.use((err, req, res, next) => {
+    console.error(err.stack);   // show full stack in dev
+    res.status(500).json({ error: err.message, stack: err.stack });
+  });
+}
+```
+
+**Setting NODE_ENV:**
+
+```bash
+# Linux / macOS
+NODE_ENV=production node app.js
+
+# Windows PowerShell
+$env:NODE_ENV="production"; node app.js
+
+# Cross-platform via npm script (cross-env package)
+npm install --save-dev cross-env
+# package.json
+"scripts": {
+  "start": "cross-env NODE_ENV=production node app.js",
+  "dev":   "cross-env NODE_ENV=development nodemon app.js"
+}
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to manage configuration for different environments in Node.js?
+
+A common pattern is a dedicated `config` module that reads from environment variables and provides typed, validated configuration to the rest of the application.
+
+**Example — config module:**
+
+```js
+// config/index.js
+require('dotenv').config();
+
+const config = {
+  app: {
+    port: parseInt(process.env.PORT, 10) || 3000,
+    env: process.env.NODE_ENV || 'development',
+  },
+  db: {
+    url: process.env.DATABASE_URL,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+  },
+};
+
+// Validate required variables at startup
+const required = ['DATABASE_URL', 'JWT_SECRET'];
+for (const key of required) {
+  if (!process.env[key]) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+}
+
+module.exports = config;
+```
+
+```js
+// app.js
+const config = require('./config');
+
+console.log(`Starting on port ${config.app.port}`);
+```
+
+**Failing fast** on missing variables at startup prevents hard-to-diagnose runtime errors.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 5. NODE.JS DATA TYPES
 
 <br/>
 
@@ -1409,338 +1947,7 @@ module.exports = pool; // cached: every require('./db') returns the same Pool
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 4. NODE.JS ARCHITECTURE
-
-<br/>
-
-## Q. How does Node.js works?
-
-Node.js is **single-threaded and event-driven**, using a non-blocking I/O model to handle many concurrent operations efficiently.
-
-<p align="center">
-  <img src="assets/event-loop.png" alt="Node Architecture" width="800px" />
-</p>
-
-**Core Components**
-
-| Component | Role |
-|-----------|------|
-| **V8 Engine** | Executes JavaScript (same engine as Chrome) |
-| **libuv** | C library handling async I/O, thread pool, and event loop |
-| **Event Queue** | Holds incoming requests/events in FIFO order |
-| **Event Loop** | Continuously polls the queue and dispatches callbacks |
-| **Thread Pool** | Background workers for blocking operations (file, DNS, crypto) |
-
-**Request Lifecycle**
-
-1. Request arrives → placed in the **Event Queue**
-2. **Event Loop** picks it up (only when the call stack is empty)
-3. **No blocking I/O?** → Process immediately, send response
-4. **Blocking I/O needed?** → Offload to a **thread pool worker**, register a callback, free the main thread
-5. Worker completes → fires an event → callback executes → response sent
-
-```
-Client Requests
-      ↓
-  Event Queue
-      ↓
-  Event Loop (single thread)
-    ├── Non-blocking? → Process & respond immediately
-    └── Blocking I/O? → Thread Pool (libuv)
-                              ↓
-                         Callback fired → response sent
-```
-
-**Key Design Principles**
-
-- **Single-threaded JS execution** — no thread management overhead
-- **Non-blocking by default** — APIs are async with callbacks/promises
-- **Observer pattern** — events trigger registered listeners
-- **Concurrency without threads** — achieved via event loop + callbacks, not parallel execution
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What are the core modules of Node.js?
-
-Node.js has a set of core modules that are part of the platform and come with the Node.js installation. These modules can be loaded into the program by using the require function.
-
-The following table lists some of the important core modules in Node.js.
-
-|Name         |Description                                             |
-|-------------|--------------------------------------------------------|
-|`assert`       |It is used by Node.js for testing itself.|
-|`buffer`       |Handle raw binary data outside the V8 heap|
-|`child_process`|Spawn child processes (`exec`, `spawn`, `fork`)|
-|`cluster`      |This module is used by Node.js to take advantage of multi-core systems, so that it can handle more load.|
-|`console`      |It is used to write data to console. Node.js has a Console object which contains functions to write data to console.|
-|`crypto`       |Cryptographic functions — hashing, encryption, HMAC|
-|`http`/`https` |Create HTTP/HTTPS servers and make requests|
-|`url`          |It includes methods for URL resolution and parsing.|
-|`querystring` |It includes methods to deal with query string.|
-|`path`         |Utilities for working with file and directory paths|
-|`fs`           |File system — read, write, update, delete, rename files.|
-|`stream`       |Readable, Writable, Duplex, and Transform streams|
-|`worker_threads`|Run CPU-intensive JS in background threads|
-|`util`         |It includes utility functions useful for programmers.|
-|`zlib`         |It is used to compress and decompress data. |
-
-**Example:**
-
-```js
-const http   = require('http');
-const fs     = require('fs');
-const path   = require('path');
-const crypto = require('crypto');
-
-// HTTP server
-http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello World');
-}).listen(3000);
-
-// File path
-const filePath = path.join(__dirname, 'data', 'file.txt');
-
-// Read file
-fs.readFile(filePath, 'utf8', (err, data) => {
-  if (err) throw err;
-  console.log(data);
-});
-
-// Hash a string
-const hash = crypto.createHash('sha256').update('secret').digest('hex');
-console.log(hash);
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What do you understand by Reactor Pattern in Node.js?
-
-**Reactor Pattern** is used to avoid the blocking of the Input/Output operations. It provides us with a handler that is associated with I/O operations. When the I/O requests are to be generated, they get submitted to a **de-multiplexer**, which handles concurrency in avoiding the blocking of the I/O mode and collects the requests in form of an event and queues those events.
-
-**Types of Input/Output operations**
-
-**1. Blocking I/O (Synchronous):** Application will make a function call and pause its execution at a point until the data is received.
-
-**2. Non-Blocking I/O (Asynchronous):** Application will make a function call, and, without waiting for the results it continues its execution. Node.js uses non-blocking I/O exclusively.
-
-<p align="center">
-  <img src="assets/reactor-pattern.jpg" alt="Reactor Pattern" width="500px" />
-</p>
-
-**Reactor Pattern comprises of:**
-
-**1. Resources:** They are shared by multiple applications for I/O operations, generally slower in executions.
-
-**2. Synchronous Event De-multiplexer/Event Notifier:** This uses Event Loop for blocking on all resources. When a set of I/O operations completes, the Event De-multiplexer pushes the new events into the Event Queue.
-
-**3. Event Loop and Event Queue:** Event Queue queues up the new events that occurred along with its event-handler, pair.
-
-**4. Request Handler/Application:** This is, generally, the application that provides the handler to be executed for registered events on resources.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What are the global objects of Node.js?
-
-Node.js Global Objects are the objects that are available in all modules. Global Objects are built-in objects that are part of the JavaScript and can be used directly in the application without importing any particular module.
-
-**Global Objects**
-
-| Object | Description |
-|--------|-------------|
-| `global` | The global namespace object (equivalent to `window` in browsers) |
-| `process` | Info and control over the current Node.js process |
-| `console` | Write to stdout/stderr |
-| `Buffer` | Handle raw binary data |
-| `__dirname` | Absolute path of the current module's **directory** |
-| `__filename` | Absolute path of the current module's **file** |
-| `setTimeout` / `clearTimeout` | Schedule a one-time callback |
-| `setInterval` / `clearInterval` | Schedule a repeating callback |
-| `setImmediate` / `clearImmediate` | Execute after current event loop iteration |
-| `queueMicrotask` | Queue a microtask |
-| `URL` / `URLSearchParams` | Web-compatible URL API |
-| `fetch` | HTTP client (available since Node.js v18) |
-| `crypto` | Web Crypto API (available since Node.js v19) |
-
-**Examples:**
-
-```js
-// __dirname and __filename
-console.log(__dirname);   // D:\projects\myapp
-console.log(__filename);  // D:\projects\myapp\index.js
-
-// process — runtime info
-console.log(process.version);       // v20.x.x
-console.log(process.platform);      // 'win32' / 'linux'
-console.log(process.env.NODE_ENV);  // 'development'
-console.log(process.pid);           // process ID
-process.exit(0);                    // exit with code 0
-
-// global — set a truly global variable (avoid in practice)
-global.appName = 'MyApp';
-console.log(appName); // 'MyApp' — accessible anywhere
-
-// Buffer
-const buf = Buffer.from('hello');
-console.log(buf.toString('hex')); // 68656c6c6f
-
-// Timers
-const timer = setTimeout(() => console.log('done'), 1000);
-clearTimeout(timer); // cancel it
-```
-
-> `__dirname` and `__filename` are **not available in ES Modules** — use `import.meta.url` with `fileURLToPath()` instead. The `global` object in Node.js v21+ is also aliased as `globalThis` (the standard cross-environment global).
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is chrome v8 engine?
-
-V8 is an open-source, high-performance JavaScript and WebAssembly engine written in C++, developed by Google. It was originally designed for Google Chrome and Chromium-based browsers ( such as Brave ) in 2008, but it was later utilized to create Node.js for server-side coding.
-
-V8 is the JavaScript engine i.e. it parses and executes JavaScript code. The DOM, and the other Web Platform APIs ( they all makeup runtime environment ) are provided by the browser.
-
-V8 is known to be a JavaScript engine because it takes JavaScript code and executes it while browsing in Chrome. It provides a runtime environment for the execution of JavaScript code. The best part is that the JavaScript engine is completely independent of the browser in which it runs.
-
-**Just-In-Time (JIT) compilation:**
-
-V8 uses two compilers working together:
-
-* **Ignition** — baseline interpreter that converts JS to bytecode quickly, collects profiling data
-* **TurboFan** — optimizing compiler that re-compiles "hot" (frequently run) code into highly optimized machine code
-
-**V8 Key Optimizations**
-
-* **Hidden classes** — optimizes property access on objects
-* **Inline caching** — caches results of repeated operations
-* **Garbage collection** — generational GC (Scavenger + Mark-Compact) with minimal pause times
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. Why is LIBUV needed in Node JS?
-
-**libuv** is a cross-platform C library that gives Node.js its ability to perform **non-blocking, asynchronous I/O** — the core of everything Node.js does efficiently. It provides the following features:
-
-* It allows the CPU and other resources to be used simultaneously while still performing I/O operations, thereby resulting in efficient use of resources and network.
-* It facilitates an event-driven approach wherein I/O and other activities are performed using callback-based notifications.
-* It provides mechanisms to handle file system, DNS, network, child processes, pipes, signal handling, polling and streaming
-* It also includes a thread pool for offloading work for some things that can\'t be done asynchronously at the operating system level.
-
-**Example: Thread Pool**
-
-Some operations **can\'t be made async at the OS level** (e.g., some file system calls, DNS lookups, crypto). **libuv** offloads these to a pool of worker threads:
-
-```js
-const fs = require('fs');
-const crypto = require('crypto');
-
-// These are offloaded to libuv\'s thread pool — main thread never blocks
-fs.readFile('large-file.txt', (err, data) => {
-  console.log('File read complete');
-});
-
-crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', (err, key) => {
-  console.log('Hash complete');
-});
-
-console.log('Main thread continues immediately'); // prints first
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How V8 compiles JavaScript code?
-
-Compilation is the process of converting human-readable code to machine code. There are two ways to compile the code
-
-* **Using an Interpreter**: The interpreter scans the code line by line and converts it into byte code.
-* **Using a Compiler**: The Compiler scans the entire document and compiles it into highly optimized byte code.
-
-The V8 engine uses both a compiler and an interpreter and follows **just-in-time (JIT)** compilation to speed up the execution. JIT compiling works by compiling small portions of code that are just about to be executed. This prevents long compilation time and the code being compiles is only that which is highly likely to run.
-
-**Compilation Pipeline**
-
-```
-JavaScript Source
-       ↓
-   Parser
-       ↓ generates
-Abstract Syntax Tree (AST)
-       ↓
-   Ignition (Interpreter)
-       ↓ produces
-   Bytecode  ←──────────────────────┐
-       ↓  + profiling data          │ de-optimize if
-   TurboFan (Optimizing Compiler)   │ assumptions wrong
-       ↓                            │
-Optimized Machine Code ─────────────┘
-```
-
-**Stage 1 — Parsing**
-
-V8 reads JS source and builds an **Abstract Syntax Tree (AST)**:
-
-```js
-const x = a + b;
-
-// AST (simplified):
-// VariableDeclaration
-//   └── BinaryExpression (+)
-//         ├── Identifier (a)
-//         └── Identifier (b)
-```
-
-- **Scanner** tokenizes the raw text
-- **Parser** builds the AST from tokens
-- **Pre-parser** skips function bodies not yet called (lazy parsing — speeds up startup)
-
-**Stage 2 — Ignition (Interpreter)**
-
-Ignition converts the AST into **bytecode** — a compact, platform-independent instruction set:
-
-```
-// Bytecode for: return a + b
-LdaNamedProperty a
-Add b
-Return
-```
-
-- Starts executing **immediately** — no wait for full compilation
-- Collects **type feedback** (e.g., "a and b are always integers")
-- Much faster to generate than machine code
-
-**Stage 3 — TurboFan (Optimizing Compiler)**
-
-When a function becomes **"hot"** (called many times), TurboFan kicks in:
-
-- Uses Ignition's profiling data to make **type assumptions**
-- Compiles to **highly optimized native machine code**
-- Eliminates type checks, inlines functions, unboxes numbers
-
-```js
-function add(a, b) { return a + b; }
-
-add(1, 2);   // interpreted by Ignition
-add(3, 4);   // still Ignition, profiling
-add(5, 6);   // ... "hot" → TurboFan optimizes assuming a,b are integers
-add('x','y') //  assumption broken → deoptimize back to Ignition
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 5. NODE.JS EVENTS
+## # 6. NODE.JS EVENTS
 
 <br/>
 
@@ -2691,7 +2898,7 @@ The function returns a Promise that resolves after `ms` milliseconds. `await`-in
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 6. NODE.JS FILE SYSTEM
+## # 7. NODE.JS FILE SYSTEM
 
 <br/>
 
@@ -3220,7 +3427,7 @@ fs.watchFile('data.txt', { interval: 1000 }, (curr, prev) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 7. NODE.JS STREAMS
+## # 8. NODE.JS STREAMS
 
 <br/>
 
@@ -3779,7 +3986,7 @@ stream.on('close', () => console.log('Stream closed and resources released'));
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 8. NODE.JS MULTITHREADING
+## # 9. NODE.JS MULTITHREADING
 
 <br/>
 
@@ -4380,7 +4587,7 @@ if (isMainThread) {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 09. NODE.JS WEB MODULE
+## # 10. NODE.JS WEB MODULE
 
 <br/>
 
@@ -4629,7 +4836,132 @@ http.createServer((req, res) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 10. NODE.JS MIDDLEWARE
+## # 11. NODE.JS ROUTING
+
+<br/>
+
+## Q. How does routing work in Node.js?
+
+Routing defines the way in which the client requests are handled by the application endpoints. We define routing using methods of the Express app object that correspond to HTTP methods; for example, `app.get()` to handle `GET` requests and `app.post` to handle `POST` requests, `app.all()` to handle all HTTP methods and `app.use()` to specify middleware as the callback function.
+
+These routing methods "listens" for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
+
+*Syntax*:
+
+```js
+app.METHOD(PATH, HANDLER)
+```
+
+Where:
+
+* app is an instance of express.
+* METHOD is an `HTTP request method`.
+* PATH is a path on the server.
+* HANDLER is the function executed when the route is matched.
+
+**a) Route methods:**
+
+```js
+// GET method route
+app.get('/', function (req, res) {
+  res.send('GET request')
+})
+
+// POST method route
+app.post('/login', function (req, res) {
+  res.send('POST request')
+})
+
+// ALL method route
+app.all('/secret', function (req, res, next) {
+  console.log('Accessing the secret section ...')
+  next() // pass control to the next handler
+})
+```
+
+**b) Route paths:**
+
+Route paths, in combination with a request method, define the endpoints at which requests can be made. Route paths can be strings, string patterns, or regular expressions.
+
+The characters `?`, `+`, `*`, and `()` are subsets of their regular expression counterparts. The hyphen `(-)` and the dot `(.)` are interpreted literally by string-based paths.
+
+**Example:**
+
+```js
+// This route path will match requests to /about.
+app.get('/about', function (req, res) {
+  res.send('about')
+})
+
+
+// This route path will match acd and abcd.
+app.get('/ab?cd', function (req, res) {
+  res.send('ab?cd')
+})
+
+
+// This route path will match butterfly and dragonfly
+app.get(/.*fly$/, function (req, res) {
+  res.send('/.*fly$/')
+})
+```
+
+**c) Route parameters:**
+
+Route parameters are named URL segments that are used to capture the values specified at their position in the URL. The captured values are populated in the `req.params` object, with the name of the route parameter specified in the path as their respective keys.
+
+**Example:**
+
+```js
+app.get('/users/:userId', function (req, res) {
+  res.send(req.params)
+})
+```
+
+**Response methods:**
+
+| Method            | Description                   |
+|-------------------|-------------------------------|
+|`res.download()`   |Prompt a file to be downloaded.|
+|`res.end()`        |End the response process.|
+|`res.json()`       |Send a JSON response.|
+|`res.jsonp()`      |Send a JSON response with JSONP support.|
+|`res.redirect()`   |Redirect a request.|
+|`res.render()`     |Render a view template.|
+|`res.send()`       |Send a response of various types.|
+|`res.sendFile()`   |Send a file as an octet stream.|
+|`res.sendStatus()` |Set the response status code and send its string representation as the response body.|
+
+**d) Router method:**
+
+```js
+const express = require('express')
+const router = express.Router()
+
+// middleware that is specific to this router
+router.use(function timeLog (req, res, next) {
+  console.log('Time: ', Date.now())
+  next()
+})
+
+// define the home page route
+router.get('/', function (req, res) {
+  res.send('Birds home page')
+})
+
+// define the about route
+router.get('/about', function (req, res) {
+  res.send('About birds')
+})
+
+module.exports = router
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 12. NODE.JS MIDDLEWARE
 
 <br/>
 
@@ -5381,7 +5713,7 @@ const limiter = rateLimit({
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 11. NODE.JS RESTFUL API
+## # 13. NODE.JS RESTFUL API
 
 <br/>
 
@@ -6274,132 +6606,7 @@ app.get('/api/users', async (req, res) => {
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 12. NODE.JS ROUTING
-
-<br/>
-
-## Q. How does routing work in Node.js?
-
-Routing defines the way in which the client requests are handled by the application endpoints. We define routing using methods of the Express app object that correspond to HTTP methods; for example, `app.get()` to handle `GET` requests and `app.post` to handle `POST` requests, `app.all()` to handle all HTTP methods and `app.use()` to specify middleware as the callback function.
-
-These routing methods "listens" for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
-
-*Syntax*:
-
-```js
-app.METHOD(PATH, HANDLER)
-```
-
-Where:
-
-* app is an instance of express.
-* METHOD is an `HTTP request method`.
-* PATH is a path on the server.
-* HANDLER is the function executed when the route is matched.
-
-**a) Route methods:**
-
-```js
-// GET method route
-app.get('/', function (req, res) {
-  res.send('GET request')
-})
-
-// POST method route
-app.post('/login', function (req, res) {
-  res.send('POST request')
-})
-
-// ALL method route
-app.all('/secret', function (req, res, next) {
-  console.log('Accessing the secret section ...')
-  next() // pass control to the next handler
-})
-```
-
-**b) Route paths:**
-
-Route paths, in combination with a request method, define the endpoints at which requests can be made. Route paths can be strings, string patterns, or regular expressions.
-
-The characters `?`, `+`, `*`, and `()` are subsets of their regular expression counterparts. The hyphen `(-)` and the dot `(.)` are interpreted literally by string-based paths.
-
-**Example:**
-
-```js
-// This route path will match requests to /about.
-app.get('/about', function (req, res) {
-  res.send('about')
-})
-
-
-// This route path will match acd and abcd.
-app.get('/ab?cd', function (req, res) {
-  res.send('ab?cd')
-})
-
-
-// This route path will match butterfly and dragonfly
-app.get(/.*fly$/, function (req, res) {
-  res.send('/.*fly$/')
-})
-```
-
-**c) Route parameters:**
-
-Route parameters are named URL segments that are used to capture the values specified at their position in the URL. The captured values are populated in the `req.params` object, with the name of the route parameter specified in the path as their respective keys.
-
-**Example:**
-
-```js
-app.get('/users/:userId', function (req, res) {
-  res.send(req.params)
-})
-```
-
-**Response methods:**
-
-| Method            | Description                   |
-|-------------------|-------------------------------|
-|`res.download()`   |Prompt a file to be downloaded.|
-|`res.end()`        |End the response process.|
-|`res.json()`       |Send a JSON response.|
-|`res.jsonp()`      |Send a JSON response with JSONP support.|
-|`res.redirect()`   |Redirect a request.|
-|`res.render()`     |Render a view template.|
-|`res.send()`       |Send a response of various types.|
-|`res.sendFile()`   |Send a file as an octet stream.|
-|`res.sendStatus()` |Set the response status code and send its string representation as the response body.|
-
-**d) Router method:**
-
-```js
-const express = require('express')
-const router = express.Router()
-
-// middleware that is specific to this router
-router.use(function timeLog (req, res, next) {
-  console.log('Time: ', Date.now())
-  next()
-})
-
-// define the home page route
-router.get('/', function (req, res) {
-  res.send('Birds home page')
-})
-
-// define the about route
-router.get('/about', function (req, res) {
-  res.send('About birds')
-})
-
-module.exports = router
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 13. NODE.JS DATABASE INTEGRATION
+## # 14. NODE.JS DATABASE INTEGRATION
 
 <br/>
 
@@ -6577,197 +6784,6 @@ module.exports = router;
 | `sql.Decimal(p,s)` | `DECIMAL(p,s)` |
 | `sql.Bit` | `BIT` |
 | `sql.DateTime2` | `DATETIME2` |
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 14. NODE.JS CACHING
-
-<br/>
-
-## Q. How to access cache data in Node.js?
-
-Caching is a technique used in web development to handle performance bottlenecks related to how data is managed, stored, and retrieved. A cache layer or server acts as a secondary storage layer, usually faster and highly performant to temporarily store a subset of data. It is expected that data stored in a cache does not change often. Cache can be stored using various techniques like in-memory cache, file cache or a separate cache database.
-
-**Installation:**
-
-```js
-npm install express node-cache axios
-```
-
-**Node-cache has following major functions:**
-
-* **.set(key, val, [ ttl ]):** Used to set some value corresponding to a particular key in the cache. This same key must be used to retrieve this value.
-* **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
-* **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
-
-**Implement in-memory cache with following approach:**
-
-* On API request, check if the cache has key already set using has(key) function
-* If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
-* If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
-
-**Example:**
-
-```js
-/**
- * In-Memory Cache 
- */
-const express = require("express");
-const NodeCache = require("node-cache");
-const axios = require("axios");
-
-const app = express();
-const cache = new NodeCache({ stdTTL: 15 });
-
-/**
- * GET Cached Data
- */
-const verifyCache = (req, res, next) => {
-  try {
-    const { id } = req.params;
-    if (cache.has(id)) {
-      return res.status(200).json(cache.get(id));
-    }
-    return next();
-  } catch (err) {
-    throw new Error(err);
-  }
-};
-
-app.get("/", (req, res) => {
-  return res.json({ message: "Hello World" });
-});
-
-/**
- * GET ToDo Items
- */
-app.get("/todos/:id", verifyCache, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
-    cache.set(id, data);
-    return res.status(200).json(data);
-  } catch ({ response }) {
-    return res.sendStatus(response.status);
-  }
-});
-
-app.listen(3000, function () {
-  console.log(`App listening at http://localhost:3000/`);
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to implement caching using Redis in Node.js?
-
-Redis is an open-source (BSD licensed), in-memory data structure store used as a database, cache, and message broker. Redis also supports disk-persistent data storage.
-
-Its key-value data storage system is another plus because it makes storage and retrieval much simpler. Using Redis, we can store and retrieve data in the cache using the SET and GET methods, respectively.
-
-**Installation:**
-
-```js
-npm install -save redis
-```
-
-**Example:**
-
-```js
-const express = require("express");
-const axios = require("axios");
-const redis = require("redis");
-const app = express();
-
-const client = redis.createClient(6379);
-
-client.on("error", (error) => {
-  console.error(error);
-});
-
-app.get("/", (req, res) => {
-  return res.json({ message: "Hello World" });
-});
-
-const cache = (req, res, next) => {
-  try {
-    const { id } = req.params;
-    client.get(id, (error, result) => {
-      if (error) throw error;
-      if (result !== null) {
-        return res.json(JSON.parse(result));
-      } else {
-        return next();
-      }
-    });
-  } catch (err) {
-    throw new Error(err);
-  }
-};
-
-app.get("/todos/:id", cache, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
-    client.set(id, JSON.stringify(data), "ex", 15);
-    return res.status(200).json(data);
-  } catch ({ response }) {
-    return res.sendStatus(response.status);
-  }
-});
-
-app.listen(3000, function () {
-  console.log(`App listening at http://localhost:3000/`);
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to implement Memcached in Node.js?
-
-**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
-
-We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
-
-**Installation:**
-
-```js
-npm install memcached
-```
-
-**Setting up the client:**
-
-The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
-
-```js
-const Memcached = require('memcached');
-const memcached = new Memcached(Server locations, options);
-```
-
-**Example:**
-
-```js
-/**
- * Memcached
- */
-const Memcached = require('memcached');
-// all global configurations should be applied to the .config object of the Client.
-Memcached.config.poolSize = 25;
-
-const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, remove:true, failOverServers:['192.168.0.103:11211']});
-```
-
-<br/>
-
-**Reference:**
-
-* *[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)*
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
@@ -7326,7 +7342,7 @@ app.get('/users/:id', asyncHandler(async (req, res) => {
 }));
 ```
 
-**3. Express 5 (stable since 2024) — async errors handled natively:**
+**3. Express 5 — async errors handled natively:**
 
 ```js
 // npm install express@5
@@ -7412,7 +7428,1452 @@ Libraries that enhance stack trace information
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 17. NODE.JS INTERNATIONALIZATION
+## # 17. NODE.JS DEBUGGING & PROFILING
+
+<br/>
+
+## Q. How to debug a Node.js application?
+
+Node.js provides several built-in and third-party debugging tools.
+
+**1. Using Chrome DevTools (`--inspect`):**
+
+```bash
+# Start the app in inspect mode
+node --inspect app.js
+
+# Break on the very first line
+node --inspect-brk app.js
+```
+
+Then open `chrome://inspect` in Chrome, click **Open dedicated DevTools for Node**, and you can:
+- Set breakpoints
+- Inspect variables
+- Step through code
+- Profile CPU and memory
+
+**2. Using VS Code debugger (`launch.json`):**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Node.js App",
+      "program": "${workspaceFolder}/app.js",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+**3. Using the built-in `node inspect` CLI:**
+
+```bash
+node inspect app.js
+```
+
+| Command | Action |
+|---------|--------|
+| `c` | Continue execution |
+| `n` | Step over (next line) |
+| `s` | Step into function |
+| `o` | Step out of function |
+| `repl` | Open interactive REPL at current scope |
+
+**4. `console` methods for quick debugging:**
+
+```js
+console.log('Value:', value);
+console.dir(obj, { depth: null });   // deep inspect objects
+console.time('label');               // start timer
+console.timeEnd('label');            // log elapsed time
+console.trace('Where am I?');        // print call stack
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to detect and fix memory leaks in Node.js?
+
+A memory leak occurs when objects are retained in memory that are no longer needed. Symptoms include steadily increasing memory usage that never drops.
+
+**Common causes:**
+
+| Cause | Example |
+|-------|---------|
+| Event listeners not removed | `emitter.on()` inside a loop without `removeListener` |
+| Closures holding large references | Callbacks capturing big objects |
+| Global variables accumulating data | Arrays/objects appended to indefinitely |
+| Unresolved Promises | Pending Promises that never settle |
+| Cache without eviction policy | In-memory maps that grow forever |
+
+**Example — detecting with `process.memoryUsage()`:**
+
+```js
+function formatMB(bytes) {
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+setInterval(() => {
+  const { heapUsed, heapTotal, rss } = process.memoryUsage();
+  console.log(`Heap Used: ${formatMB(heapUsed)} / ${formatMB(heapTotal)} | RSS: ${formatMB(rss)}`);
+}, 5000);
+```
+
+**Example — common leak: event listener accumulation:**
+
+```js
+const { EventEmitter } = require('events');
+const emitter = new EventEmitter();
+
+//  Leak — new listener added on every request
+function handleRequest(req) {
+  emitter.on('data', (data) => processData(req, data));
+}
+
+//  Fix — remove listener when done, or use .once()
+function handleRequest(req) {
+  const handler = (data) => {
+    processData(req, data);
+    emitter.removeListener('data', handler);
+  };
+  emitter.on('data', handler);
+}
+```
+
+**Heap snapshot with Chrome DevTools:**
+
+```bash
+node --inspect app.js
+# Take heap snapshots before and after suspected leak
+# Compare to find objects accumulating in memory
+```
+
+**clinic.js — automated performance diagnostics:**
+
+```bash
+npm install -g clinic
+clinic doctor -- node app.js   # detects event loop blocking, memory leaks
+clinic heap   -- node app.js   # detailed heap profiling
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to profile CPU performance in Node.js?
+
+CPU profiling identifies which functions consume the most execution time (hot paths), helping you optimise bottlenecks.
+
+**1. Using Chrome DevTools CPU profiler:**
+
+```bash
+node --inspect app.js
+```
+
+In Chrome DevTools → **Profiler** tab → Click **Start** → Run load → Click **Stop**. The flame chart shows which functions consume the most CPU time.
+
+**2. Using `--prof` flag (V8 built-in profiler):**
+
+```bash
+node --prof app.js
+# Generates isolate-XXXXX-v8.log
+
+# Process the log into human-readable output
+node --prof-process isolate-*.log > profile.txt
+```
+
+**3. Using `perf_hooks` module for targeted measurement:**
+
+```js
+const { performance, PerformanceObserver } = require('perf_hooks');
+
+// Measure a specific code section
+performance.mark('start-work');
+
+// Simulate work
+for (let i = 0; i < 1_000_000; i++) { Math.sqrt(i); }
+
+performance.mark('end-work');
+performance.measure('work-duration', 'start-work', 'end-work');
+
+const obs = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    console.log(`${entry.name}: ${entry.duration.toFixed(2)}ms`);
+  }
+});
+obs.observe({ entryTypes: ['measure'] });
+```
+
+**Output:**
+
+```
+work-duration: 12.34ms
+```
+
+**4. `console.time` / `console.timeEnd` for quick measurements:**
+
+```js
+console.time('db-query');
+const result = await db.query('SELECT * FROM users');
+console.timeEnd('db-query'); // db-query: 45.21ms
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use the Node.js built-in `util.debuglog` for conditional debug logging?
+
+`util.debuglog` creates a logging function that only writes output when the `NODE_DEBUG` environment variable includes the section name. This gives zero-overhead debug logging in production.
+
+**Example:**
+
+```js
+const util = require('util');
+
+const debugHttp = util.debuglog('http');
+const debugDb   = util.debuglog('db');
+
+function fetchUser(id) {
+  debugDb('Fetching user with id=%d', id);
+  // ... database call
+}
+
+function handleRequest(req) {
+  debugHttp('Received %s %s', req.method, req.url);
+  fetchUser(42);
+}
+
+handleRequest({ method: 'GET', url: '/users/42' });
+```
+
+**Activate selectively:**
+
+```bash
+# Show only DB debug messages
+NODE_DEBUG=db node app.js
+
+# Show both HTTP and DB messages
+NODE_DEBUG=http,db node app.js
+
+# Show nothing (production)
+node app.js
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 18. NODE.JS TESTING
+
+<br/>
+
+## Q. What is a stub?
+
+Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
+
+**Features of Stub:**  
+
+* Produces simple, lightweight Objects capable of extending down their tree
+* Compatible with Nodejs
+* Easily extendable directly or through an ExtensionManager
+* Comes with predefined, usable extensions
+
+Stubs are functions/programs that simulate the behaviours of components/modules. Stubs provide canned answers to function calls made during test cases. Also, you can assert on with what these stubs were called.
+
+A use-case can be a file read, when you do not want to read an actual file:
+
+```js
+const fs = require('fs');
+
+const readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {  
+  return cb(null, 'filecontent');
+});
+
+expect(readFileStub).to.be.called;  
+readFileStub.restore();
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is a test pyramid?
+
+The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
+
+<p align="center">
+  <img src="assets/testPyramid.png" alt="Test Pyramid" />
+</p>
+
+Mike Cohn\'s original test pyramid consists of three layers that your test suite should consist of (bottom to top):
+
+1. Unit Tests
+1. Service Tests
+1. User Interface Tests
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use Joi module for schema validation in Node.js?
+
+Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like `optional()`, `required()`, `min()`, `max()`, etc which make it easy to use and a user-friendly module for validating the data.
+
+**Example:**
+
+```js
+const Joi = require("joi");
+
+// User-defined function to validate the user
+
+function validateUser(user) {
+
+  const JoiSchema = Joi.object({
+
+    username: Joi.string().min(5).max(30).required(),
+    email: Joi.string().email().min(5).max(50).optional(),
+    date_of_birth: Joi.date().optional(),
+
+    account_status: Joi.string()
+      .valid("activated")
+      .valid("unactivated")
+      .optional(),
+  }).options({ abortEarly: false });
+
+  return JoiSchema.validate(user);
+}
+
+const user = {
+  username: "Deepak Lucky",
+  email: "deepak.lucky@gmail.com",
+  date_of_birth: "2000-07-07",
+  account_status: "activated",
+};
+
+let response = validateUser(user);
+
+if (response.error) {
+  console.log(response.error.details);
+} else {
+  console.log("Validated Data");
+}
+```
+
+**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to write unit tests using Jest in Node.js?
+
+[Jest](https://jestjs.io/) is the most popular testing framework for Node.js. It includes a test runner, assertion library, and mocking utilities out of the box.
+
+**Installation:**
+
+```js
+npm install --save-dev jest
+```
+
+**package.json:**
+
+```json
+{
+  "scripts": { "test": "jest", "test:coverage": "jest --coverage" }
+}
+```
+
+**Testing a utility function:**
+
+```js
+// math.js
+function add(a, b) { return a + b; }
+function divide(a, b) {
+  if (b === 0) throw new Error('Division by zero');
+  return a / b;
+}
+module.exports = { add, divide };
+```
+
+```js
+// math.test.js
+const { add, divide } = require('./math');
+
+describe('Math utilities', () => {
+  test('adds two numbers correctly', () => {
+    expect(add(2, 3)).toBe(5);
+    expect(add(-1, 1)).toBe(0);
+  });
+
+  test('divides two numbers correctly', () => {
+    expect(divide(10, 2)).toBe(5);
+  });
+
+  test('throws on division by zero', () => {
+    expect(() => divide(10, 0)).toThrow('Division by zero');
+  });
+});
+```
+
+**Mocking a module:**
+
+```js
+// userService.test.js
+jest.mock('./db');
+const db = require('./db');
+
+test('fetches user by id', async () => {
+  db.findUser.mockResolvedValue({ id: 1, name: 'Alice' });
+
+  const user = await db.findUser(1);
+
+  expect(user.name).toBe('Alice');
+  expect(db.findUser).toHaveBeenCalledWith(1);
+});
+```
+
+**Run tests:**
+
+```bash
+npx jest                # run all tests
+npx jest --watch        # watch mode for development
+npx jest --coverage     # generate a coverage report
+npx jest path/to/test   # run a specific test file
+```
+
+**Common Jest matchers:**
+
+| Matcher | Description |
+|---------|-------------|
+| `toBe(value)` | Strict equality (`===`) |
+| `toEqual(obj)` | Deep equality for objects/arrays |
+| `toBeNull()` / `toBeUndefined()` | Check for null/undefined |
+| `toThrow(msg)` | Assert a function throws |
+| `toHaveBeenCalledWith(args)` | Assert mock was called with specific args |
+| `resolves` / `rejects` | Assert promise outcome |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to test Express API routes using Supertest in Node.js?
+
+**Supertest** allows you to make HTTP requests directly against an Express app in tests — no running server required. It integrates seamlessly with Jest or Mocha.
+
+**Installation:**
+
+```bash
+npm install --save-dev supertest jest
+```
+
+**App setup (keep app and server separate for testability):**
+
+```js
+// app.js — export app without listening
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+const users = [{ id: 1, name: 'Alice' }]; // in-memory store for demo
+
+app.get('/users', (req, res) => {
+  res.json(users);
+});
+
+app.get('/users/:id', (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json(user);
+});
+
+app.post('/users', (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ message: 'Name is required' });
+  const user = { id: users.length + 1, name };
+  users.push(user);
+  res.status(201).json(user);
+});
+
+module.exports = app; // export — do NOT call app.listen() here
+```
+
+```js
+// server.js — only entry point calls listen
+const app = require('./app');
+app.listen(3000, () => console.log('Server on port 3000'));
+```
+
+**Integration tests with Supertest + Jest:**
+
+```js
+// tests/users.test.js
+const request = require('supertest');
+const app = require('../app');
+
+describe('GET /users', () => {
+  it('returns an array of users', async () => {
+    const res = await request(app).get('/users');
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
+});
+
+describe('GET /users/:id', () => {
+  it('returns a user by id', async () => {
+    const res = await request(app).get('/users/1');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toMatchObject({ id: 1, name: 'Alice' });
+  });
+
+  it('returns 404 for missing user', async () => {
+    const res = await request(app).get('/users/999');
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toBe('User not found');
+  });
+});
+
+describe('POST /users', () => {
+  it('creates a new user', async () => {
+    const res = await request(app)
+      .post('/users')
+      .send({ name: 'Bob' })
+      .set('Content-Type', 'application/json');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toMatchObject({ name: 'Bob' });
+    expect(res.body.id).toBeDefined();
+  });
+
+  it('returns 400 if name is missing', async () => {
+    const res = await request(app).post('/users').send({});
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe('Name is required');
+  });
+});
+```
+
+**Testing with authentication headers:**
+
+```js
+it('returns 401 without token', async () => {
+  const res = await request(app).get('/protected');
+  expect(res.statusCode).toBe(401);
+});
+
+it('returns 200 with valid token', async () => {
+  const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET);
+  const res = await request(app)
+    .get('/protected')
+    .set('Authorization', `Bearer ${token}`);
+  expect(res.statusCode).toBe(200);
+});
+```
+
+**Unit test vs Integration test with Supertest:**
+
+| | Unit Test | Integration Test (Supertest) |
+|--|-----------|------------------------------|
+| Tests | Individual functions/modules | Full HTTP request-response cycle |
+| Database | Mocked | Real or in-memory (e.g., sqlite) |
+| Speed | Fast | Slower |
+| Confidence | Logic correctness | Route + middleware + logic together |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 19. NODE.JS SECURITY
+
+<br/>
+
+## Q. How to secure a Node.js application?
+
+Node.js application security involves protecting against the OWASP Top 10 and other common threats. Key practices include:
+
+| Practice | Tool / Technique |
+|----------|-----------------|
+| Set security HTTP headers | `helmet` middleware |
+| Rate limiting | `express-rate-limit` |
+| Input validation | `joi`, `zod`, `express-validator` |
+| Hash passwords | `bcrypt` |
+| Avoid command injection | `execFile()` instead of `exec()` |
+| Use parameterized queries | Avoid raw SQL string interpolation |
+| Keep dependencies updated | `npm audit`, `npm update` |
+| Store secrets in env vars | `dotenv`, secrets manager |
+
+**Example — applying essential security middleware:**
+
+```js
+const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// 1. Set secure HTTP headers
+app.use(helmet());
+
+// 2. Limit repeated requests
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,                  // max 100 requests per window per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api', limiter);
+
+// 3. Parse JSON bodies with a size limit to prevent payload attacks
+app.use(express.json({ limit: '10kb' }));
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is Helmet.js and how to use it in Node.js?
+
+`helmet` is an Express middleware that sets various HTTP response headers to protect against well-known web vulnerabilities. It is a collection of smaller middleware functions, each setting or removing a specific header.
+
+**Installation:**
+
+```bash
+npm install helmet
+```
+
+**Example:**
+
+```js
+const express = require('express');
+const helmet = require('helmet');
+
+const app = express();
+
+// Apply all default Helmet middleware
+app.use(helmet());
+
+app.get('/', (req, res) => {
+  res.send('Secured with Helmet!');
+});
+
+app.listen(3000);
+```
+
+**Headers set by Helmet (defaults):**
+
+| Header | Protection |
+|--------|-----------|
+| `Content-Security-Policy` | Prevents XSS and data injection attacks |
+| `X-Frame-Options` | Blocks clickjacking via iframes |
+| `X-Content-Type-Options` | Prevents MIME sniffing |
+| `Strict-Transport-Security` | Enforces HTTPS |
+| `Referrer-Policy` | Controls referrer information leakage |
+| `X-Permitted-Cross-Domain-Policies` | Restricts Adobe Flash/PDF access |
+
+**Customising individual policies:**
+
+```js
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc:  ["'self'", "trusted-cdn.com"],
+      },
+    },
+    frameguard: { action: 'deny' },
+  })
+);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to prevent SQL injection in Node.js?
+
+SQL injection occurs when user-supplied input is directly concatenated into an SQL query, allowing attackers to modify the query\'s logic.
+
+**Vulnerable code:**
+
+```js
+//  DANGEROUS — Never do this
+app.get('/user', async (req, res) => {
+  const name = req.query.name;
+  // Attacker sends: ?name=' OR '1'='1
+  const query = `SELECT * FROM users WHERE name = '${name}'`;
+  const rows = await db.query(query);
+  res.json(rows);
+});
+```
+
+**Fix — use parameterized queries (placeholders):**
+
+```js
+//  Safe — input is treated as data, not SQL code
+const sql = require('mssql');
+const { poolPromise } = require('../db/mssql');
+
+app.get('/user', async (req, res) => {
+  const { name } = req.query;
+
+  // Validate input first
+  if (!name || typeof name !== 'string') {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
+
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('name', sql.NVarChar(100), name)  // named parameter — never concatenated
+      .query('SELECT id, name, email FROM users WHERE name = @name');
+
+    res.json(result.recordset);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+```
+
+**Stored procedure — also injection-safe with `mssql`:**
+
+```js
+app.get('/user/:id', async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('userId', sql.Int, parseInt(req.params.id, 10))
+      .execute('sp_GetUserById');   // all inputs passed as typed parameters
+
+    if (!result.recordset.length) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(result.recordset[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+```
+
+**With an ORM (Sequelize / Prisma) — safe by default:**
+
+```js
+// Sequelize
+const users = await User.findAll({ where: { name: req.query.name } });
+
+// Prisma
+const users = await prisma.user.findMany({ where: { name: req.query.name } });
+```
+
+> Always use `.input('param', sql.Type, value)` named parameters with `mssql` — never interpolate user values into query strings. Named parameters are typed and escaped by the driver, making SQL injection impossible.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement rate limiting in Node.js?
+
+Rate limiting restricts the number of requests a client can make in a given time window, protecting against brute-force attacks, credential stuffing, and denial-of-service attempts.
+
+**Installation:**
+
+```bash
+npm install express-rate-limit
+```
+
+**Example — global and per-route rate limiting:**
+
+```js
+const express = require('express');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// Global limit: 200 requests per 15 minutes per IP
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,  // Return RateLimit-* headers
+  legacyHeaders: false,
+});
+
+// Strict limit on auth endpoints: 10 attempts per 15 minutes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many login attempts, please try again after 15 minutes.' },
+});
+
+app.use(globalLimiter);
+app.use('/api/auth/login', authLimiter);
+
+app.post('/api/auth/login', (req, res) => {
+  res.json({ message: 'Login endpoint' });
+});
+
+app.listen(3000);
+```
+
+**Using Redis for distributed rate limiting** (multiple server instances):
+
+```bash
+npm install rate-limit-redis ioredis
+```
+
+```js
+const RedisStore = require('rate-limit-redis');
+const Redis = require('ioredis');
+
+const client = new Redis(process.env.REDIS_URL);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  store: new RedisStore({ sendCommand: (...args) => client.call(...args) }),
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to hash passwords securely in Node.js?
+
+Passwords must never be stored as plain text. Use `bcrypt`, which applies a slow, salted hashing algorithm designed to resist brute-force attacks.
+
+**Installation:**
+
+```bash
+npm install bcrypt
+```
+
+**Example — registration and login:**
+
+```js
+const bcrypt = require('bcrypt');
+
+const SALT_ROUNDS = 12; // higher = slower hash = more secure
+
+// --- Registration ---
+async function registerUser(plainPassword) {
+  const hash = await bcrypt.hash(plainPassword, SALT_ROUNDS);
+  // Store `hash` in the database — never store plainPassword
+  console.log('Stored hash:', hash);
+  return hash;
+}
+
+// --- Login ---
+async function loginUser(plainPassword, storedHash) {
+  const match = await bcrypt.compare(plainPassword, storedHash);
+  if (!match) {
+    throw new Error('Invalid credentials');
+  }
+  console.log('Password verified successfully');
+  return true;
+}
+
+// Usage
+(async () => {
+  const hash = await registerUser('MyP@ssw0rd!');
+  await loginUser('MyP@ssw0rd!', hash);  // true
+  await loginUser('wrongpassword', hash); // throws Error
+})();
+```
+
+**Why bcrypt?**
+
+- **Salted**: each hash is unique even for identical passwords (prevents rainbow table attacks)
+- **Slow by design**: `SALT_ROUNDS` controls the computational cost — increasing it by 1 doubles hashing time
+- **One-way**: a hash cannot be reversed to the original password
+
+> Never use MD5, SHA-1, or SHA-256 to hash passwords — they are too fast and vulnerable to brute-force attacks.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 20. NODE.JS CACHING
+
+<br/>
+
+## Q. How to access cache data in Node.js?
+
+Caching is a technique used in web development to handle performance bottlenecks related to how data is managed, stored, and retrieved. A cache layer or server acts as a secondary storage layer, usually faster and highly performant to temporarily store a subset of data. It is expected that data stored in a cache does not change often. Cache can be stored using various techniques like in-memory cache, file cache or a separate cache database.
+
+**Installation:**
+
+```js
+npm install express node-cache axios
+```
+
+**Node-cache has following major functions:**
+
+* **.set(key, val, [ ttl ]):** Used to set some value corresponding to a particular key in the cache. This same key must be used to retrieve this value.
+* **.get(key):** Used to get value set to specified key. It returns undefined, if the key is not already present.
+* **has(key):** Used to check if the cache already has some value set for specified key. Returns true if present otherwise false.
+
+**Implement in-memory cache with following approach:**
+
+* On API request, check if the cache has key already set using has(key) function
+* If the cache has the key, retrieve the cached value by get(key) function and use it instead of performing operation again. (This saves time)
+* If the cache doesn\'t have a key, perform the operations required, and before sending the response, set the value for that key so that further requests can be responded to directly through cached data.
+
+**Example:**
+
+```js
+/**
+ * In-Memory Cache 
+ */
+const express = require("express");
+const NodeCache = require("node-cache");
+const axios = require("axios");
+
+const app = express();
+const cache = new NodeCache({ stdTTL: 15 });
+
+/**
+ * GET Cached Data
+ */
+const verifyCache = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (cache.has(id)) {
+      return res.status(200).json(cache.get(id));
+    }
+    return next();
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello World" });
+});
+
+/**
+ * GET ToDo Items
+ */
+app.get("/todos/:id", verifyCache, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    cache.set(id, data);
+    return res.status(200).json(data);
+  } catch ({ response }) {
+    return res.sendStatus(response.status);
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement caching using Redis in Node.js?
+
+Redis is an open-source (BSD licensed), in-memory data structure store used as a database, cache, and message broker. Redis also supports disk-persistent data storage.
+
+Its key-value data storage system is another plus because it makes storage and retrieval much simpler. Using Redis, we can store and retrieve data in the cache using the SET and GET methods, respectively.
+
+**Installation:**
+
+```js
+npm install -save redis
+```
+
+**Example:**
+
+```js
+const express = require("express");
+const axios = require("axios");
+const redis = require("redis");
+const app = express();
+
+const client = redis.createClient(6379);
+
+client.on("error", (error) => {
+  console.error(error);
+});
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Hello World" });
+});
+
+const cache = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    client.get(id, (error, result) => {
+      if (error) throw error;
+      if (result !== null) {
+        return res.json(JSON.parse(result));
+      } else {
+        return next();
+      }
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+app.get("/todos/:id", cache, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    client.set(id, JSON.stringify(data), "ex", 15);
+    return res.status(200).json(data);
+  } catch ({ response }) {
+    return res.sendStatus(response.status);
+  }
+});
+
+app.listen(3000, function () {
+  console.log(`App listening at http://localhost:3000/`);
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to implement Memcached in Node.js?
+
+**Memcached** is a general-purpose distributed memory caching system. It is often used to speed up dynamic database-driven websites by caching data and objects in RAM to reduce the number of times an external data source (such as a database or API) must be read. Memcached is free and open-source software, licensed under the Revised BSD licence. Memcached runs on Unix-like operating systems (at least LINUX and OS X) and on Microsoft windows.
+
+We can store data to memcached server in key pair format. So whenever any request come from the app can be matched with memcached server without any query from mysql/Nosql server. This increases the performance of the application.
+
+**Installation:**
+
+```js
+npm install memcached
+```
+
+**Setting up the client:**
+
+The constructor of the memcached client take 2 different arguments server locations and options. Syntax:
+
+```js
+const Memcached = require('memcached');
+const memcached = new Memcached(Server locations, options);
+```
+
+**Example:**
+
+```js
+/**
+ * Memcached
+ */
+const Memcached = require('memcached');
+// all global configurations should be applied to the .config object of the Client.
+Memcached.config.poolSize = 25;
+
+const memcached = new Memcached('localhost:11211', { retries:10, retry:10000, remove:true, failOverServers:['192.168.0.103:11211']});
+```
+
+<br/>
+
+**Reference:**
+
+* *[https://www.npmjs.com/package/memcached](https://www.npmjs.com/package/memcached)*
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 21. NODE.JS PERFORMANCE & OPTIMIZATION
+
+<br/>
+
+## Q. How to improve Node.js application performance through caching?
+
+Caching stores the result of an expensive operation so subsequent requests can be served from memory, reducing latency and database load.
+
+**1. In-memory caching (single instance):**
+
+```js
+const express = require('express');
+const app = express();
+
+// Simple in-memory cache with TTL
+const cache = new Map();
+const CACHE_TTL_MS = 60 * 1000; // 1 minute
+
+function setCache(key, value) {
+  cache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
+function getCache(key) {
+  const entry = cache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    cache.delete(key);
+    return null;
+  }
+  return entry.value;
+}
+
+app.get('/api/products', async (req, res) => {
+  const cacheKey = 'all-products';
+  const cached = getCache(cacheKey);
+
+  if (cached) {
+    return res.json({ source: 'cache', data: cached });
+  }
+
+  const products = await db.query('SELECT * FROM products');
+  setCache(cacheKey, products);
+  res.json({ source: 'database', data: products });
+});
+```
+
+**2. Redis caching (distributed — works across multiple instances):**
+
+```bash
+npm install ioredis
+```
+
+```js
+const Redis = require('ioredis');
+const redis = new Redis(process.env.REDIS_URL);
+
+const CACHE_TTL_SECONDS = 60;
+
+app.get('/api/products', async (req, res) => {
+  const cacheKey = 'all-products';
+  const cached = await redis.get(cacheKey);
+
+  if (cached) {
+    return res.json({ source: 'cache', data: JSON.parse(cached) });
+  }
+
+  const products = await db.query('SELECT * FROM products');
+  await redis.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(products));
+  res.json({ source: 'database', data: products });
+});
+```
+
+**Cache invalidation — clear on update:**
+
+```js
+app.post('/api/products', async (req, res) => {
+  await db.query('INSERT INTO products ...', [...]);
+  await redis.del('all-products'); // invalidate stale cache
+  res.status(201).json({ message: 'Product created' });
+});
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use compression middleware to improve Node.js performance?
+
+HTTP response compression (gzip/Brotli) reduces the size of response payloads, lowering bandwidth consumption and speeding up client-side page load and API consumption.
+
+**Installation:**
+
+```bash
+npm install compression
+```
+
+**Example:**
+
+```js
+const express = require('express');
+const compression = require('compression');
+
+const app = express();
+
+// Apply compression to all responses
+// Only compresses if response is > 1KB (default threshold)
+app.use(compression({
+  level: 6,      // zlib compression level (1–9); 6 is the default balance
+  threshold: 1024, // only compress responses larger than 1KB
+  filter: (req, res) => {
+    // Don't compress responses with this header
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res); // default filter
+  },
+}));
+
+app.get('/api/data', (req, res) => {
+  const largePayload = { items: Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` })) };
+  res.json(largePayload);
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**How it works:**
+
+1. Client sends `Accept-Encoding: gzip, deflate, br`
+2. Compression middleware detects this header
+3. Response body is compressed before being sent
+4. `Content-Encoding: gzip` header is added to the response
+
+> For high-traffic production deployments, offload compression to a reverse proxy (Nginx, Caddy) or a CDN, which is more efficient than per-process Node.js compression.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use connection pooling to improve database performance in Node.js?
+
+Opening a new database connection for every request is expensive. A **connection pool** maintains a set of reusable connections, dramatically reducing connection overhead.
+
+**Why pooling matters:**
+
+| Approach | Connection overhead | Throughput |
+|----------|-------------------|------------|
+| New connection per request | High (TCP handshake + auth each time) | Low |
+| Connection pool | Low (connections reused) | High |
+
+**Example — Microsoft SQL Server with `mssql` pool:**
+
+```bash
+npm install mssql
+```
+
+**`.env`:**
+
+```env
+DB_SERVER=localhost
+DB_PORT=1433
+DB_USER=sa
+DB_PASSWORD=YourStrong@Passw0rd
+DB_NAME=myDatabase
+DB_ENCRYPT=true
+DB_TRUST_CERT=false
+```
+
+**`db/mssql.js` — create pool once, share via module cache:**
+
+```js
+const sql = require('mssql');
+
+const config = {
+  server:   process.env.DB_SERVER,
+  port:     parseInt(process.env.DB_PORT, 10) || 1433,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  options: {
+    encrypt:              process.env.DB_ENCRYPT === 'true',  // required for Azure SQL
+    trustServerCertificate: process.env.DB_TRUST_CERT === 'true', // true for local dev only
+  },
+  pool: {
+    max: 10,              // maximum number of connections in the pool
+    min: 2,               // minimum connections kept alive
+    idleTimeoutMillis: 30000, // close idle connections after 30s
+    acquireTimeoutMillis: 5000, // fail if no connection available within 5s
+  },
+};
+
+// Create the pool once — module cache ensures it\'s shared across the app
+const poolPromise = sql.connect(config)
+  .then(pool => {
+    console.log('Connected to MSSQL');
+    return pool;
+  })
+  .catch(err => {
+    console.error('MSSQL connection failed:', err.message);
+    process.exit(1);
+  });
+
+module.exports = { sql, poolPromise };
+```
+
+**`routes/users.js` — query using the shared pool:**
+
+```js
+const { sql, poolPromise } = require('../db/mssql');
+
+// GET all users
+async function getUsers(req, res, next) {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .query('SELECT id, name, email FROM users');
+    res.json(result.recordset);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// GET user by id — parameterized query (prevents SQL injection)
+async function getUserById(req, res, next) {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('id', sql.Int, parseInt(req.params.id, 10))
+      .query('SELECT id, name, email FROM users WHERE id = @id');
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(result.recordset[0]);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// POST create user — parameterized inputs
+async function createUser(req, res, next) {
+  try {
+    const { name, email } = req.body;
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('name',  sql.NVarChar(100), name)
+      .input('email', sql.NVarChar(200), email)
+      .query(`
+        INSERT INTO users (name, email)
+        OUTPUT INSERTED.id, INSERTED.name, INSERTED.email
+        VALUES (@name, @email)
+      `);
+    res.status(201).json(result.recordset[0]);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getUsers, getUserById, createUser };
+```
+
+**`app.js` — wire routes:**
+
+```js
+require('dotenv').config();
+const express = require('express');
+const { getUsers, getUserById, createUser } = require('./routes/users');
+
+const app = express();
+app.use(express.json());
+
+app.get('/users',     getUsers);
+app.get('/users/:id', getUserById);
+app.post('/users',    createUser);
+
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+**MSSQL pool configuration options:**
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `pool.max` | Maximum connections in the pool | `10` |
+| `pool.min` | Minimum idle connections | `0` |
+| `pool.idleTimeoutMillis` | Milliseconds before closing an idle connection | `30000` |
+| `pool.acquireTimeoutMillis` | Max wait time to acquire a connection | `5000` |
+| `options.encrypt` | Use TLS encryption (required for Azure SQL) | `false` |
+| `options.trustServerCertificate` | Skip certificate validation (dev only) | `false` |
+
+**Using stored procedures:**
+
+```js
+const result = await pool.request()
+  .input('userId', sql.Int, 1)
+  .output('userName', sql.NVarChar(100))
+  .execute('sp_GetUserById');
+
+console.log(result.output.userName);
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use PM2 for Node.js process management in production?
+
+PM2 is a production-grade process manager for Node.js that provides automatic restarts, clustering, log management, and monitoring.
+
+**Installation:**
+
+```bash
+npm install -g pm2
+```
+
+**Basic commands:**
+
+```bash
+# Start the application
+pm2 start app.js --name "my-app"
+
+# Start in cluster mode (one process per CPU core)
+pm2 start app.js --name "my-app" -i max
+
+# List running processes
+pm2 list
+
+# Monitor CPU and memory in real time
+pm2 monit
+
+# View logs
+pm2 logs my-app
+
+# Restart / reload (zero-downtime)
+pm2 reload my-app
+
+# Stop and delete
+pm2 delete my-app
+
+# Save process list and auto-start on system reboot
+pm2 save
+pm2 startup
+```
+
+**`ecosystem.config.js` — configuration file:**
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: 'my-app',
+      script: 'app.js',
+      instances: 'max',      // one per CPU core
+      exec_mode: 'cluster',
+      watch: false,
+      env: {
+        NODE_ENV: 'development',
+        PORT: 3000,
+      },
+      env_production: {
+        NODE_ENV: 'production',
+        PORT: 8080,
+      },
+      max_memory_restart: '500M',  // restart if memory exceeds 500MB
+      error_file: 'logs/err.log',
+      out_file: 'logs/out.log',
+    },
+  ],
+};
+```
+
+```bash
+# Start using ecosystem file
+pm2 start ecosystem.config.js --env production
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## # 22. NODE.JS INTERNATIONALIZATION
 
 <br/>
 
@@ -7845,328 +9306,7 @@ POST /language   Body: { "lang": "de" }
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
 
-## # 18. NODE.JS TESTING
-
-<br/>
-
-## Q. What is a stub?
-
-Stubbing and verification for node.js tests. Enables you to validate and override behaviour of nested pieces of code such as methods, require() and npm modules or even instances of classes. This library is inspired on node-gently, MockJS and mock-require.  
-
-**Features of Stub:**  
-
-* Produces simple, lightweight Objects capable of extending down their tree
-* Compatible with Nodejs
-* Easily extendable directly or through an ExtensionManager
-* Comes with predefined, usable extensions
-
-Stubs are functions/programs that simulate the behaviours of components/modules. Stubs provide canned answers to function calls made during test cases. Also, you can assert on with what these stubs were called.
-
-A use-case can be a file read, when you do not want to read an actual file:
-
-```js
-const fs = require('fs');
-
-const readFileStub = sinon.stub(fs, 'readFile', function (path, cb) {  
-  return cb(null, 'filecontent');
-});
-
-expect(readFileStub).to.be.called;  
-readFileStub.restore();
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is a test pyramid?
-
-The "Test Pyramid" is a metaphor that tells us to group software tests into buckets of different granularity. It also gives an idea of how many tests we should have in each of these groups. It shows which kinds of tests you should be looking for in the different levels of the pyramid and gives practical examples on how these can be implemented.
-
-<p align="center">
-  <img src="assets/testPyramid.png" alt="Test Pyramid" />
-</p>
-
-Mike Cohn\'s original test pyramid consists of three layers that your test suite should consist of (bottom to top):
-
-1. Unit Tests
-1. Service Tests
-1. User Interface Tests
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use Joi module for schema validation in Node.js?
-
-Joi module is a popular module for data validation. This module validates the data based on schemas. There are various functions like `optional()`, `required()`, `min()`, `max()`, etc which make it easy to use and a user-friendly module for validating the data.
-
-**Example:**
-
-```js
-const Joi = require("joi");
-
-// User-defined function to validate the user
-
-function validateUser(user) {
-
-  const JoiSchema = Joi.object({
-
-    username: Joi.string().min(5).max(30).required(),
-    email: Joi.string().email().min(5).max(50).optional(),
-    date_of_birth: Joi.date().optional(),
-
-    account_status: Joi.string()
-      .valid("activated")
-      .valid("unactivated")
-      .optional(),
-  }).options({ abortEarly: false });
-
-  return JoiSchema.validate(user);
-}
-
-const user = {
-  username: "Deepak Lucky",
-  email: "deepak.lucky@gmail.com",
-  date_of_birth: "2000-07-07",
-  account_status: "activated",
-};
-
-let response = validateUser(user);
-
-if (response.error) {
-  console.log(response.error.details);
-} else {
-  console.log("Validated Data");
-}
-```
-
-**&#9885; [Try this example on CodeSandbox](https://codesandbox.io/s/schema-validation-using-joi-s2nhzs)**
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to write unit tests using Jest in Node.js?
-
-[Jest](https://jestjs.io/) is the most popular testing framework for Node.js. It includes a test runner, assertion library, and mocking utilities out of the box.
-
-**Installation:**
-
-```js
-npm install --save-dev jest
-```
-
-**package.json:**
-
-```json
-{
-  "scripts": { "test": "jest", "test:coverage": "jest --coverage" }
-}
-```
-
-**Testing a utility function:**
-
-```js
-// math.js
-function add(a, b) { return a + b; }
-function divide(a, b) {
-  if (b === 0) throw new Error('Division by zero');
-  return a / b;
-}
-module.exports = { add, divide };
-```
-
-```js
-// math.test.js
-const { add, divide } = require('./math');
-
-describe('Math utilities', () => {
-  test('adds two numbers correctly', () => {
-    expect(add(2, 3)).toBe(5);
-    expect(add(-1, 1)).toBe(0);
-  });
-
-  test('divides two numbers correctly', () => {
-    expect(divide(10, 2)).toBe(5);
-  });
-
-  test('throws on division by zero', () => {
-    expect(() => divide(10, 0)).toThrow('Division by zero');
-  });
-});
-```
-
-**Mocking a module:**
-
-```js
-// userService.test.js
-jest.mock('./db');
-const db = require('./db');
-
-test('fetches user by id', async () => {
-  db.findUser.mockResolvedValue({ id: 1, name: 'Alice' });
-
-  const user = await db.findUser(1);
-
-  expect(user.name).toBe('Alice');
-  expect(db.findUser).toHaveBeenCalledWith(1);
-});
-```
-
-**Run tests:**
-
-```bash
-npx jest                # run all tests
-npx jest --watch        # watch mode for development
-npx jest --coverage     # generate a coverage report
-npx jest path/to/test   # run a specific test file
-```
-
-**Common Jest matchers:**
-
-| Matcher | Description |
-|---------|-------------|
-| `toBe(value)` | Strict equality (`===`) |
-| `toEqual(obj)` | Deep equality for objects/arrays |
-| `toBeNull()` / `toBeUndefined()` | Check for null/undefined |
-| `toThrow(msg)` | Assert a function throws |
-| `toHaveBeenCalledWith(args)` | Assert mock was called with specific args |
-| `resolves` / `rejects` | Assert promise outcome |
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to test Express API routes using Supertest in Node.js?
-
-**Supertest** allows you to make HTTP requests directly against an Express app in tests — no running server required. It integrates seamlessly with Jest or Mocha.
-
-**Installation:**
-
-```bash
-npm install --save-dev supertest jest
-```
-
-**App setup (keep app and server separate for testability):**
-
-```js
-// app.js — export app without listening
-const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-const users = [{ id: 1, name: 'Alice' }]; // in-memory store for demo
-
-app.get('/users', (req, res) => {
-  res.json(users);
-});
-
-app.get('/users/:id', (req, res) => {
-  const user = users.find(u => u.id === Number(req.params.id));
-  if (!user) return res.status(404).json({ message: 'User not found' });
-  res.json(user);
-});
-
-app.post('/users', (req, res) => {
-  const { name } = req.body;
-  if (!name) return res.status(400).json({ message: 'Name is required' });
-  const user = { id: users.length + 1, name };
-  users.push(user);
-  res.status(201).json(user);
-});
-
-module.exports = app; // export — do NOT call app.listen() here
-```
-
-```js
-// server.js — only entry point calls listen
-const app = require('./app');
-app.listen(3000, () => console.log('Server on port 3000'));
-```
-
-**Integration tests with Supertest + Jest:**
-
-```js
-// tests/users.test.js
-const request = require('supertest');
-const app = require('../app');
-
-describe('GET /users', () => {
-  it('returns an array of users', async () => {
-    const res = await request(app).get('/users');
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeGreaterThan(0);
-  });
-});
-
-describe('GET /users/:id', () => {
-  it('returns a user by id', async () => {
-    const res = await request(app).get('/users/1');
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toMatchObject({ id: 1, name: 'Alice' });
-  });
-
-  it('returns 404 for missing user', async () => {
-    const res = await request(app).get('/users/999');
-    expect(res.statusCode).toBe(404);
-    expect(res.body.message).toBe('User not found');
-  });
-});
-
-describe('POST /users', () => {
-  it('creates a new user', async () => {
-    const res = await request(app)
-      .post('/users')
-      .send({ name: 'Bob' })
-      .set('Content-Type', 'application/json');
-
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toMatchObject({ name: 'Bob' });
-    expect(res.body.id).toBeDefined();
-  });
-
-  it('returns 400 if name is missing', async () => {
-    const res = await request(app).post('/users').send({});
-    expect(res.statusCode).toBe(400);
-    expect(res.body.message).toBe('Name is required');
-  });
-});
-```
-
-**Testing with authentication headers:**
-
-```js
-it('returns 401 without token', async () => {
-  const res = await request(app).get('/protected');
-  expect(res.statusCode).toBe(401);
-});
-
-it('returns 200 with valid token', async () => {
-  const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET);
-  const res = await request(app)
-    .get('/protected')
-    .set('Authorization', `Bearer ${token}`);
-  expect(res.statusCode).toBe(200);
-});
-```
-
-**Unit test vs Integration test with Supertest:**
-
-| | Unit Test | Integration Test (Supertest) |
-|--|-----------|------------------------------|
-| Tests | Individual functions/modules | Full HTTP request-response cycle |
-| Database | Mocked | Real or in-memory (e.g., sqlite) |
-| Speed | Fast | Slower |
-| Confidence | Logic correctness | Route + middleware + logic together |
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 19. NODE.JS MISCELLANEOUS
+## # 23. NODE.JS MISCELLANEOUS
 
 <br/>
 
@@ -9347,1142 +10487,6 @@ module.exports = createApp;
 | **L** | Any repository implementing `findById`/`save` works with `UserService` |
 | **I** | Validator only exposes what routes need |
 | **D** | All dependencies injected — fully testable with mocks |
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 20. NODE.JS ENVIRONMENT & CONFIGURATION
-
-<br/>
-
-## Q. What are environment variables in Node.js and how to use them?
-
-Environment variables are key-value pairs available to a process at runtime, stored outside the application code. In Node.js they are accessed via `process.env`. They are the standard way to configure application behaviour (ports, credentials, feature flags) across different environments (development, test, production) without changing code.
-
-**Example:**
-
-```js
-// Set via the terminal before running the app:
-// PORT=4000 NODE_ENV=production node app.js
-
-const port = process.env.PORT || 3000;
-const env  = process.env.NODE_ENV || 'development';
-
-console.log(`Running on port ${port} in ${env} mode`);
-```
-
-**Common environment variables in Node.js projects:**
-
-| Variable | Purpose |
-|----------|---------|
-| `NODE_ENV` | Runtime environment (`development`, `test`, `production`) |
-| `PORT` | HTTP server port |
-| `DATABASE_URL` | Database connection string |
-| `JWT_SECRET` | Secret key for signing JSON Web Tokens |
-| `LOG_LEVEL` | Logging verbosity (`debug`, `info`, `error`) |
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use the dotenv package in Node.js?
-
-The `dotenv` package loads environment variables from a `.env` file into `process.env`, keeping secrets out of source code and making local configuration easy.
-
-**Installation:**
-
-```bash
-npm install dotenv
-```
-
-**`.env` file** (never commit this to version control):
-
-```env
-PORT=3000
-NODE_ENV=development
-DATABASE_URL=postgres://user:password@localhost:5432/mydb
-JWT_SECRET=supersecretkey
-```
-
-**app.js:**
-
-```js
-// Load .env as early as possible — before any other require()
-require('dotenv').config();
-
-const express = require('express');
-const app = express();
-
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send(`Environment: ${process.env.NODE_ENV}`);
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-```
-
-**Best practices:**
-
-```bash
-# .gitignore — never commit secrets
-.env
-.env.local
-.env.production
-```
-
-```env
-# .env.example — commit this template with placeholder values
-PORT=3000
-NODE_ENV=development
-DATABASE_URL=postgres://user:password@localhost:5432/mydb
-JWT_SECRET=
-```
-
-> In production, set environment variables through the hosting platform (AWS Parameter Store, Heroku Config Vars, Kubernetes Secrets) instead of deploying a `.env` file.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is the purpose of NODE_ENV in Node.js?
-
-`NODE_ENV` is a convention used by Node.js frameworks and libraries to alter their behaviour based on the runtime environment. It is not set automatically — you must define it explicitly.
-
-**Common values:**
-
-| Value | Usage |
-|-------|-------|
-| `development` | Verbose errors, hot reload, debug logging |
-| `test` | Isolated databases, mocked services |
-| `production` | Minified output, cached templates, suppressed stack traces |
-
-**Example — toggling behaviour:**
-
-```js
-require('dotenv').config();
-
-const express = require('express');
-const app = express();
-
-// Express automatically disables view cache and enables verbose errors
-// when NODE_ENV !== 'production'
-console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-
-// Custom behaviour based on environment
-if (process.env.NODE_ENV === 'production') {
-  // Use a real database connection
-  app.use(require('./middleware/errorHandler'));   // hides stack traces
-} else {
-  // Use an in-memory SQLite database for development
-  app.use((err, req, res, next) => {
-    console.error(err.stack);   // show full stack in dev
-    res.status(500).json({ error: err.message, stack: err.stack });
-  });
-}
-```
-
-**Setting NODE_ENV:**
-
-```bash
-# Linux / macOS
-NODE_ENV=production node app.js
-
-# Windows PowerShell
-$env:NODE_ENV="production"; node app.js
-
-# Cross-platform via npm script (cross-env package)
-npm install --save-dev cross-env
-# package.json
-"scripts": {
-  "start": "cross-env NODE_ENV=production node app.js",
-  "dev":   "cross-env NODE_ENV=development nodemon app.js"
-}
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to manage configuration for different environments in Node.js?
-
-A common pattern is a dedicated `config` module that reads from environment variables and provides typed, validated configuration to the rest of the application.
-
-**Example — config module:**
-
-```js
-// config/index.js
-require('dotenv').config();
-
-const config = {
-  app: {
-    port: parseInt(process.env.PORT, 10) || 3000,
-    env: process.env.NODE_ENV || 'development',
-  },
-  db: {
-    url: process.env.DATABASE_URL,
-  },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
-  },
-};
-
-// Validate required variables at startup
-const required = ['DATABASE_URL', 'JWT_SECRET'];
-for (const key of required) {
-  if (!process.env[key]) {
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-}
-
-module.exports = config;
-```
-
-```js
-// app.js
-const config = require('./config');
-
-console.log(`Starting on port ${config.app.port}`);
-```
-
-**Failing fast** on missing variables at startup prevents hard-to-diagnose runtime errors.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 21. NODE.JS SECURITY
-
-<br/>
-
-## Q. How to secure a Node.js application?
-
-Node.js application security involves protecting against the OWASP Top 10 and other common threats. Key practices include:
-
-| Practice | Tool / Technique |
-|----------|-----------------|
-| Set security HTTP headers | `helmet` middleware |
-| Rate limiting | `express-rate-limit` |
-| Input validation | `joi`, `zod`, `express-validator` |
-| Hash passwords | `bcrypt` |
-| Avoid command injection | `execFile()` instead of `exec()` |
-| Use parameterized queries | Avoid raw SQL string interpolation |
-| Keep dependencies updated | `npm audit`, `npm update` |
-| Store secrets in env vars | `dotenv`, secrets manager |
-
-**Example — applying essential security middleware:**
-
-```js
-const express = require('express');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-
-const app = express();
-
-// 1. Set secure HTTP headers
-app.use(helmet());
-
-// 2. Limit repeated requests
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,                  // max 100 requests per window per IP
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use('/api', limiter);
-
-// 3. Parse JSON bodies with a size limit to prevent payload attacks
-app.use(express.json({ limit: '10kb' }));
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. What is Helmet.js and how to use it in Node.js?
-
-`helmet` is an Express middleware that sets various HTTP response headers to protect against well-known web vulnerabilities. It is a collection of smaller middleware functions, each setting or removing a specific header.
-
-**Installation:**
-
-```bash
-npm install helmet
-```
-
-**Example:**
-
-```js
-const express = require('express');
-const helmet = require('helmet');
-
-const app = express();
-
-// Apply all default Helmet middleware
-app.use(helmet());
-
-app.get('/', (req, res) => {
-  res.send('Secured with Helmet!');
-});
-
-app.listen(3000);
-```
-
-**Headers set by Helmet (defaults):**
-
-| Header | Protection |
-|--------|-----------|
-| `Content-Security-Policy` | Prevents XSS and data injection attacks |
-| `X-Frame-Options` | Blocks clickjacking via iframes |
-| `X-Content-Type-Options` | Prevents MIME sniffing |
-| `Strict-Transport-Security` | Enforces HTTPS |
-| `Referrer-Policy` | Controls referrer information leakage |
-| `X-Permitted-Cross-Domain-Policies` | Restricts Adobe Flash/PDF access |
-
-**Customising individual policies:**
-
-```js
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc:  ["'self'", "trusted-cdn.com"],
-      },
-    },
-    frameguard: { action: 'deny' },
-  })
-);
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to prevent SQL injection in Node.js?
-
-SQL injection occurs when user-supplied input is directly concatenated into an SQL query, allowing attackers to modify the query\'s logic.
-
-**Vulnerable code:**
-
-```js
-//  DANGEROUS — Never do this
-app.get('/user', async (req, res) => {
-  const name = req.query.name;
-  // Attacker sends: ?name=' OR '1'='1
-  const query = `SELECT * FROM users WHERE name = '${name}'`;
-  const rows = await db.query(query);
-  res.json(rows);
-});
-```
-
-**Fix — use parameterized queries (placeholders):**
-
-```js
-//  Safe — input is treated as data, not SQL code
-const sql = require('mssql');
-const { poolPromise } = require('../db/mssql');
-
-app.get('/user', async (req, res) => {
-  const { name } = req.query;
-
-  // Validate input first
-  if (!name || typeof name !== 'string') {
-    return res.status(400).json({ error: 'Invalid input' });
-  }
-
-  try {
-    const pool = await poolPromise;
-    const result = await pool.request()
-      .input('name', sql.NVarChar(100), name)  // named parameter — never concatenated
-      .query('SELECT id, name, email FROM users WHERE name = @name');
-
-    res.json(result.recordset);
-  } catch (err) {
-    res.status(500).json({ error: 'Database error' });
-  }
-});
-```
-
-**Stored procedure — also injection-safe with `mssql`:**
-
-```js
-app.get('/user/:id', async (req, res) => {
-  try {
-    const pool = await poolPromise;
-    const result = await pool.request()
-      .input('userId', sql.Int, parseInt(req.params.id, 10))
-      .execute('sp_GetUserById');   // all inputs passed as typed parameters
-
-    if (!result.recordset.length) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(result.recordset[0]);
-  } catch (err) {
-    res.status(500).json({ error: 'Database error' });
-  }
-});
-```
-
-**With an ORM (Sequelize / Prisma) — safe by default:**
-
-```js
-// Sequelize
-const users = await User.findAll({ where: { name: req.query.name } });
-
-// Prisma
-const users = await prisma.user.findMany({ where: { name: req.query.name } });
-```
-
-> Always use `.input('param', sql.Type, value)` named parameters with `mssql` — never interpolate user values into query strings. Named parameters are typed and escaped by the driver, making SQL injection impossible.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to implement rate limiting in Node.js?
-
-Rate limiting restricts the number of requests a client can make in a given time window, protecting against brute-force attacks, credential stuffing, and denial-of-service attempts.
-
-**Installation:**
-
-```bash
-npm install express-rate-limit
-```
-
-**Example — global and per-route rate limiting:**
-
-```js
-const express = require('express');
-const rateLimit = require('express-rate-limit');
-
-const app = express();
-
-// Global limit: 200 requests per 15 minutes per IP
-const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  message: { error: 'Too many requests, please try again later.' },
-  standardHeaders: true,  // Return RateLimit-* headers
-  legacyHeaders: false,
-});
-
-// Strict limit on auth endpoints: 10 attempts per 15 minutes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: { error: 'Too many login attempts, please try again after 15 minutes.' },
-});
-
-app.use(globalLimiter);
-app.use('/api/auth/login', authLimiter);
-
-app.post('/api/auth/login', (req, res) => {
-  res.json({ message: 'Login endpoint' });
-});
-
-app.listen(3000);
-```
-
-**Using Redis for distributed rate limiting** (multiple server instances):
-
-```bash
-npm install rate-limit-redis ioredis
-```
-
-```js
-const RedisStore = require('rate-limit-redis');
-const Redis = require('ioredis');
-
-const client = new Redis(process.env.REDIS_URL);
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  store: new RedisStore({ sendCommand: (...args) => client.call(...args) }),
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to hash passwords securely in Node.js?
-
-Passwords must never be stored as plain text. Use `bcrypt`, which applies a slow, salted hashing algorithm designed to resist brute-force attacks.
-
-**Installation:**
-
-```bash
-npm install bcrypt
-```
-
-**Example — registration and login:**
-
-```js
-const bcrypt = require('bcrypt');
-
-const SALT_ROUNDS = 12; // higher = slower hash = more secure
-
-// --- Registration ---
-async function registerUser(plainPassword) {
-  const hash = await bcrypt.hash(plainPassword, SALT_ROUNDS);
-  // Store `hash` in the database — never store plainPassword
-  console.log('Stored hash:', hash);
-  return hash;
-}
-
-// --- Login ---
-async function loginUser(plainPassword, storedHash) {
-  const match = await bcrypt.compare(plainPassword, storedHash);
-  if (!match) {
-    throw new Error('Invalid credentials');
-  }
-  console.log('Password verified successfully');
-  return true;
-}
-
-// Usage
-(async () => {
-  const hash = await registerUser('MyP@ssw0rd!');
-  await loginUser('MyP@ssw0rd!', hash);  // true
-  await loginUser('wrongpassword', hash); // throws Error
-})();
-```
-
-**Why bcrypt?**
-
-- **Salted**: each hash is unique even for identical passwords (prevents rainbow table attacks)
-- **Slow by design**: `SALT_ROUNDS` controls the computational cost — increasing it by 1 doubles hashing time
-- **One-way**: a hash cannot be reversed to the original password
-
-> Never use MD5, SHA-1, or SHA-256 to hash passwords — they are too fast and vulnerable to brute-force attacks.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 22. NODE.JS DEBUGGING & PROFILING
-
-<br/>
-
-## Q. How to debug a Node.js application?
-
-Node.js provides several built-in and third-party debugging tools.
-
-**1. Using Chrome DevTools (`--inspect`):**
-
-```bash
-# Start the app in inspect mode
-node --inspect app.js
-
-# Break on the very first line
-node --inspect-brk app.js
-```
-
-Then open `chrome://inspect` in Chrome, click **Open dedicated DevTools for Node**, and you can:
-- Set breakpoints
-- Inspect variables
-- Step through code
-- Profile CPU and memory
-
-**2. Using VS Code debugger (`launch.json`):**
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Node.js App",
-      "program": "${workspaceFolder}/app.js",
-      "console": "integratedTerminal"
-    }
-  ]
-}
-```
-
-**3. Using the built-in `node inspect` CLI:**
-
-```bash
-node inspect app.js
-```
-
-| Command | Action |
-|---------|--------|
-| `c` | Continue execution |
-| `n` | Step over (next line) |
-| `s` | Step into function |
-| `o` | Step out of function |
-| `repl` | Open interactive REPL at current scope |
-
-**4. `console` methods for quick debugging:**
-
-```js
-console.log('Value:', value);
-console.dir(obj, { depth: null });   // deep inspect objects
-console.time('label');               // start timer
-console.timeEnd('label');            // log elapsed time
-console.trace('Where am I?');        // print call stack
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to detect and fix memory leaks in Node.js?
-
-A memory leak occurs when objects are retained in memory that are no longer needed. Symptoms include steadily increasing memory usage that never drops.
-
-**Common causes:**
-
-| Cause | Example |
-|-------|---------|
-| Event listeners not removed | `emitter.on()` inside a loop without `removeListener` |
-| Closures holding large references | Callbacks capturing big objects |
-| Global variables accumulating data | Arrays/objects appended to indefinitely |
-| Unresolved Promises | Pending Promises that never settle |
-| Cache without eviction policy | In-memory maps that grow forever |
-
-**Example — detecting with `process.memoryUsage()`:**
-
-```js
-function formatMB(bytes) {
-  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
-}
-
-setInterval(() => {
-  const { heapUsed, heapTotal, rss } = process.memoryUsage();
-  console.log(`Heap Used: ${formatMB(heapUsed)} / ${formatMB(heapTotal)} | RSS: ${formatMB(rss)}`);
-}, 5000);
-```
-
-**Example — common leak: event listener accumulation:**
-
-```js
-const { EventEmitter } = require('events');
-const emitter = new EventEmitter();
-
-//  Leak — new listener added on every request
-function handleRequest(req) {
-  emitter.on('data', (data) => processData(req, data));
-}
-
-//  Fix — remove listener when done, or use .once()
-function handleRequest(req) {
-  const handler = (data) => {
-    processData(req, data);
-    emitter.removeListener('data', handler);
-  };
-  emitter.on('data', handler);
-}
-```
-
-**Heap snapshot with Chrome DevTools:**
-
-```bash
-node --inspect app.js
-# Take heap snapshots before and after suspected leak
-# Compare to find objects accumulating in memory
-```
-
-**clinic.js — automated performance diagnostics:**
-
-```bash
-npm install -g clinic
-clinic doctor -- node app.js   # detects event loop blocking, memory leaks
-clinic heap   -- node app.js   # detailed heap profiling
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to profile CPU performance in Node.js?
-
-CPU profiling identifies which functions consume the most execution time (hot paths), helping you optimise bottlenecks.
-
-**1. Using Chrome DevTools CPU profiler:**
-
-```bash
-node --inspect app.js
-```
-
-In Chrome DevTools → **Profiler** tab → Click **Start** → Run load → Click **Stop**. The flame chart shows which functions consume the most CPU time.
-
-**2. Using `--prof` flag (V8 built-in profiler):**
-
-```bash
-node --prof app.js
-# Generates isolate-XXXXX-v8.log
-
-# Process the log into human-readable output
-node --prof-process isolate-*.log > profile.txt
-```
-
-**3. Using `perf_hooks` module for targeted measurement:**
-
-```js
-const { performance, PerformanceObserver } = require('perf_hooks');
-
-// Measure a specific code section
-performance.mark('start-work');
-
-// Simulate work
-for (let i = 0; i < 1_000_000; i++) { Math.sqrt(i); }
-
-performance.mark('end-work');
-performance.measure('work-duration', 'start-work', 'end-work');
-
-const obs = new PerformanceObserver((list) => {
-  for (const entry of list.getEntries()) {
-    console.log(`${entry.name}: ${entry.duration.toFixed(2)}ms`);
-  }
-});
-obs.observe({ entryTypes: ['measure'] });
-```
-
-**Output:**
-
-```
-work-duration: 12.34ms
-```
-
-**4. `console.time` / `console.timeEnd` for quick measurements:**
-
-```js
-console.time('db-query');
-const result = await db.query('SELECT * FROM users');
-console.timeEnd('db-query'); // db-query: 45.21ms
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use the Node.js built-in `util.debuglog` for conditional debug logging?
-
-`util.debuglog` creates a logging function that only writes output when the `NODE_DEBUG` environment variable includes the section name. This gives zero-overhead debug logging in production.
-
-**Example:**
-
-```js
-const util = require('util');
-
-const debugHttp = util.debuglog('http');
-const debugDb   = util.debuglog('db');
-
-function fetchUser(id) {
-  debugDb('Fetching user with id=%d', id);
-  // ... database call
-}
-
-function handleRequest(req) {
-  debugHttp('Received %s %s', req.method, req.url);
-  fetchUser(42);
-}
-
-handleRequest({ method: 'GET', url: '/users/42' });
-```
-
-**Activate selectively:**
-
-```bash
-# Show only DB debug messages
-NODE_DEBUG=db node app.js
-
-# Show both HTTP and DB messages
-NODE_DEBUG=http,db node app.js
-
-# Show nothing (production)
-node app.js
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## # 23. NODE.JS PERFORMANCE & OPTIMIZATION
-
-<br/>
-
-## Q. How to improve Node.js application performance through caching?
-
-Caching stores the result of an expensive operation so subsequent requests can be served from memory, reducing latency and database load.
-
-**1. In-memory caching (single instance):**
-
-```js
-const express = require('express');
-const app = express();
-
-// Simple in-memory cache with TTL
-const cache = new Map();
-const CACHE_TTL_MS = 60 * 1000; // 1 minute
-
-function setCache(key, value) {
-  cache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
-}
-
-function getCache(key) {
-  const entry = cache.get(key);
-  if (!entry) return null;
-  if (Date.now() > entry.expiresAt) {
-    cache.delete(key);
-    return null;
-  }
-  return entry.value;
-}
-
-app.get('/api/products', async (req, res) => {
-  const cacheKey = 'all-products';
-  const cached = getCache(cacheKey);
-
-  if (cached) {
-    return res.json({ source: 'cache', data: cached });
-  }
-
-  const products = await db.query('SELECT * FROM products');
-  setCache(cacheKey, products);
-  res.json({ source: 'database', data: products });
-});
-```
-
-**2. Redis caching (distributed — works across multiple instances):**
-
-```bash
-npm install ioredis
-```
-
-```js
-const Redis = require('ioredis');
-const redis = new Redis(process.env.REDIS_URL);
-
-const CACHE_TTL_SECONDS = 60;
-
-app.get('/api/products', async (req, res) => {
-  const cacheKey = 'all-products';
-  const cached = await redis.get(cacheKey);
-
-  if (cached) {
-    return res.json({ source: 'cache', data: JSON.parse(cached) });
-  }
-
-  const products = await db.query('SELECT * FROM products');
-  await redis.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(products));
-  res.json({ source: 'database', data: products });
-});
-```
-
-**Cache invalidation — clear on update:**
-
-```js
-app.post('/api/products', async (req, res) => {
-  await db.query('INSERT INTO products ...', [...]);
-  await redis.del('all-products'); // invalidate stale cache
-  res.status(201).json({ message: 'Product created' });
-});
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use compression middleware to improve Node.js performance?
-
-HTTP response compression (gzip/Brotli) reduces the size of response payloads, lowering bandwidth consumption and speeding up client-side page load and API consumption.
-
-**Installation:**
-
-```bash
-npm install compression
-```
-
-**Example:**
-
-```js
-const express = require('express');
-const compression = require('compression');
-
-const app = express();
-
-// Apply compression to all responses
-// Only compresses if response is > 1KB (default threshold)
-app.use(compression({
-  level: 6,      // zlib compression level (1–9); 6 is the default balance
-  threshold: 1024, // only compress responses larger than 1KB
-  filter: (req, res) => {
-    // Don't compress responses with this header
-    if (req.headers['x-no-compression']) return false;
-    return compression.filter(req, res); // default filter
-  },
-}));
-
-app.get('/api/data', (req, res) => {
-  const largePayload = { items: Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` })) };
-  res.json(largePayload);
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
-```
-
-**How it works:**
-
-1. Client sends `Accept-Encoding: gzip, deflate, br`
-2. Compression middleware detects this header
-3. Response body is compressed before being sent
-4. `Content-Encoding: gzip` header is added to the response
-
-> For high-traffic production deployments, offload compression to a reverse proxy (Nginx, Caddy) or a CDN, which is more efficient than per-process Node.js compression.
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use connection pooling to improve database performance in Node.js?
-
-Opening a new database connection for every request is expensive. A **connection pool** maintains a set of reusable connections, dramatically reducing connection overhead.
-
-**Why pooling matters:**
-
-| Approach | Connection overhead | Throughput |
-|----------|-------------------|------------|
-| New connection per request | High (TCP handshake + auth each time) | Low |
-| Connection pool | Low (connections reused) | High |
-
-**Example — Microsoft SQL Server with `mssql` pool:**
-
-```bash
-npm install mssql
-```
-
-**`.env`:**
-
-```env
-DB_SERVER=localhost
-DB_PORT=1433
-DB_USER=sa
-DB_PASSWORD=YourStrong@Passw0rd
-DB_NAME=myDatabase
-DB_ENCRYPT=true
-DB_TRUST_CERT=false
-```
-
-**`db/mssql.js` — create pool once, share via module cache:**
-
-```js
-const sql = require('mssql');
-
-const config = {
-  server:   process.env.DB_SERVER,
-  port:     parseInt(process.env.DB_PORT, 10) || 1433,
-  user:     process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  options: {
-    encrypt:              process.env.DB_ENCRYPT === 'true',  // required for Azure SQL
-    trustServerCertificate: process.env.DB_TRUST_CERT === 'true', // true for local dev only
-  },
-  pool: {
-    max: 10,              // maximum number of connections in the pool
-    min: 2,               // minimum connections kept alive
-    idleTimeoutMillis: 30000, // close idle connections after 30s
-    acquireTimeoutMillis: 5000, // fail if no connection available within 5s
-  },
-};
-
-// Create the pool once — module cache ensures it\'s shared across the app
-const poolPromise = sql.connect(config)
-  .then(pool => {
-    console.log('Connected to MSSQL');
-    return pool;
-  })
-  .catch(err => {
-    console.error('MSSQL connection failed:', err.message);
-    process.exit(1);
-  });
-
-module.exports = { sql, poolPromise };
-```
-
-**`routes/users.js` — query using the shared pool:**
-
-```js
-const { sql, poolPromise } = require('../db/mssql');
-
-// GET all users
-async function getUsers(req, res, next) {
-  try {
-    const pool = await poolPromise;
-    const result = await pool.request()
-      .query('SELECT id, name, email FROM users');
-    res.json(result.recordset);
-  } catch (err) {
-    next(err);
-  }
-}
-
-// GET user by id — parameterized query (prevents SQL injection)
-async function getUserById(req, res, next) {
-  try {
-    const pool = await poolPromise;
-    const result = await pool.request()
-      .input('id', sql.Int, parseInt(req.params.id, 10))
-      .query('SELECT id, name, email FROM users WHERE id = @id');
-
-    if (result.recordset.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(result.recordset[0]);
-  } catch (err) {
-    next(err);
-  }
-}
-
-// POST create user — parameterized inputs
-async function createUser(req, res, next) {
-  try {
-    const { name, email } = req.body;
-    const pool = await poolPromise;
-    const result = await pool.request()
-      .input('name',  sql.NVarChar(100), name)
-      .input('email', sql.NVarChar(200), email)
-      .query(`
-        INSERT INTO users (name, email)
-        OUTPUT INSERTED.id, INSERTED.name, INSERTED.email
-        VALUES (@name, @email)
-      `);
-    res.status(201).json(result.recordset[0]);
-  } catch (err) {
-    next(err);
-  }
-}
-
-module.exports = { getUsers, getUserById, createUser };
-```
-
-**`app.js` — wire routes:**
-
-```js
-require('dotenv').config();
-const express = require('express');
-const { getUsers, getUserById, createUser } = require('./routes/users');
-
-const app = express();
-app.use(express.json());
-
-app.get('/users',     getUsers);
-app.get('/users/:id', getUserById);
-app.post('/users',    createUser);
-
-app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
-```
-
-**MSSQL pool configuration options:**
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `pool.max` | Maximum connections in the pool | `10` |
-| `pool.min` | Minimum idle connections | `0` |
-| `pool.idleTimeoutMillis` | Milliseconds before closing an idle connection | `30000` |
-| `pool.acquireTimeoutMillis` | Max wait time to acquire a connection | `5000` |
-| `options.encrypt` | Use TLS encryption (required for Azure SQL) | `false` |
-| `options.trustServerCertificate` | Skip certificate validation (dev only) | `false` |
-
-**Using stored procedures:**
-
-```js
-const result = await pool.request()
-  .input('userId', sql.Int, 1)
-  .output('userName', sql.NVarChar(100))
-  .execute('sp_GetUserById');
-
-console.log(result.output.userName);
-```
-
-<div align="right">
-    <b><a href="#table-of-contents">↥ back to top</a></b>
-</div>
-
-## Q. How to use PM2 for Node.js process management in production?
-
-PM2 is a production-grade process manager for Node.js that provides automatic restarts, clustering, log management, and monitoring.
-
-**Installation:**
-
-```bash
-npm install -g pm2
-```
-
-**Basic commands:**
-
-```bash
-# Start the application
-pm2 start app.js --name "my-app"
-
-# Start in cluster mode (one process per CPU core)
-pm2 start app.js --name "my-app" -i max
-
-# List running processes
-pm2 list
-
-# Monitor CPU and memory in real time
-pm2 monit
-
-# View logs
-pm2 logs my-app
-
-# Restart / reload (zero-downtime)
-pm2 reload my-app
-
-# Stop and delete
-pm2 delete my-app
-
-# Save process list and auto-start on system reboot
-pm2 save
-pm2 startup
-```
-
-**`ecosystem.config.js` — configuration file:**
-
-```js
-module.exports = {
-  apps: [
-    {
-      name: 'my-app',
-      script: 'app.js',
-      instances: 'max',      // one per CPU core
-      exec_mode: 'cluster',
-      watch: false,
-      env: {
-        NODE_ENV: 'development',
-        PORT: 3000,
-      },
-      env_production: {
-        NODE_ENV: 'production',
-        PORT: 8080,
-      },
-      max_memory_restart: '500M',  // restart if memory exceeds 500MB
-      error_file: 'logs/err.log',
-      out_file: 'logs/out.log',
-    },
-  ],
-};
-```
-
-```bash
-# Start using ecosystem file
-pm2 start ecosystem.config.js --env production
-```
 
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
